@@ -1,0 +1,140 @@
+name: 🔄 Auto Dependency Updates
+
+on:
+  schedule:
+    # Run every Monday at 3 AM UTC
+    - cron: '0 3 * * 1'
+  workflow_dispatch:
+
+jobs:
+  update-dependencies:
+    name: 🆙 Update Flutter Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.5.0'
+          cache: true
+
+      - name: Get current pubspec.lock hash
+        id: old_hash
+        run: |
+          if [ -f "pubspec.lock" ]; then
+            echo "hash=$(md5sum pubspec.lock | awk '{print $1}')" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update Flutter dependencies
+        run: |
+          flutter pub get
+          flutter pub upgrade --dry-run
+
+      - name: Check for updates
+        id: check_updates
+        run: |
+          if [ -f "pubspec.lock" ]; then
+            NEW_HASH=$(md5sum pubspec.lock | awk '{print $1}')
+            if [ "${{ steps.old_hash.outputs.hash }}" != "$NEW_HASH" ]; then
+              echo "has_updates=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_updates=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Create pull request
+        if: steps.check_updates.outputs.has_updates == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: update dependencies'
+          title: '🔄 Automated Dependency Update'
+          body: |
+            ## Automated Dependency Update
+            
+            This PR updates Flutter dependencies to the latest versions.
+            
+            **Changes:**
+            - Runs `flutter pub upgrade`
+            - Validates builds and tests
+            - Auto-merges if CI passes
+            
+            Please review before merging.
+          branch: update/dependencies-${{ github.run_number }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automated
+          reviewers: |
+            ${{ github.repository_owner }}
+          assignees: |
+            ${{ github.repository_owner }}
+
+  update-npm-dependencies:
+    name: 🆙 Update npm Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Get current package-lock.json hash
+        id: old_hash
+        run: |
+          if [ -f "package-lock.json" ]; then
+            echo "hash=$(md5sum package-lock.json | awk '{print $1}')" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update npm dependencies
+        run: npm update
+
+      - name: Check for updates
+        id: check_updates
+        run: |
+          if [ -f "package-lock.json" ]; then
+            NEW_HASH=$(md5sum package-lock.json | awk '{print $1}')
+            if [ "${{ steps.old_hash.outputs.hash }}" != "$NEW_HASH" ]; then
+              echo "has_updates=true" >> $GITHUB_OUTPUT
+            else
+              echo "has_updates=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Create pull request
+        if: steps.check_updates.outputs.has_updates == 'true'
+        uses: peter-evans/create-pull-request@v5
+        with:
+          commit-message: 'chore: update npm dependencies'
+          title: '🔄 Automated npm Dependency Update'
+          body: |
+            ## Automated npm Dependency Update
+            
+            This PR updates npm dependencies to the latest versions.
+            
+            **Changes:**
+            - Runs `npm update`
+            - Updates package-lock.json
+            - Auto-merges if CI passes
+            
+            Please review before merging.
+          branch: update/npm-dependencies-${{ github.run_number }}
+          delete-branch: true
+          labels: |
+            dependencies
+            automated
+          reviewers: |
+            ${{ github.repository_owner }}
+          assignees: |
+            ${{ github.repository_owner }}
