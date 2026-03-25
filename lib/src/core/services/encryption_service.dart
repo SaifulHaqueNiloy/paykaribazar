@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 class EncryptionService {
   // 32-byte key for AES-256 (exactly 32 characters for UTF-8 encoding)
   final _key = encrypt_lib.Key.fromUtf8('MySecureAES256KeyFor32BytLength!');
-  final _iv = encrypt_lib.IV.fromUtf8('MySecureIVFor16!!');
+  final _iv = encrypt_lib.IV.fromUtf8('MySecureIVFor16!');
   late final encrypt_lib.Encrypter _encrypter;
 
   EncryptionService() {
