@@ -204,7 +204,7 @@ class Order {
       'total': total,
       'address': address,
       'paymentMethod': paymentMethod,
-      'status': status.toDisplayString(),
+      'status': status.name,
       'riderUid': riderUid,
       'isEmergency': isEmergency,
       'createdAt': createdAt,
