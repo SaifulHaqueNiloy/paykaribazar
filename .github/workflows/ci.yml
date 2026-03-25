@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -50,7 +50,7 @@ jobs:
     needs: analyze
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -72,7 +72,7 @@ jobs:
           KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
 
       - name: Upload APK artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.4.0
         with:
           name: customer-app-apk
           path: build/app/outputs/flutter-apk/app-release.apk
@@ -85,7 +85,7 @@ jobs:
     needs: analyze
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
