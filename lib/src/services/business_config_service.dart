@@ -81,7 +81,7 @@ class BusinessConfigService {
         return merged[key] as T;
       }
     } catch (e) {
-      print('Error fetching business rule $key: $e');
+      // Error fetching business rule handled silently
     }
     return defaults[key] as T;
   }

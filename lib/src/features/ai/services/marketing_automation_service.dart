@@ -50,11 +50,11 @@ class MarketingAutomationService {
             body: data['body'] ?? 'আমাদের নতুন কালেকশন দেখে নিন।',
           );
         } catch (e) {
-          print('Failed to parse AI Marketing Response: $e');
+          // Failed to parse AI Marketing Response
         }
       }
     } catch (e) {
-      print('Marketing Automation Error: $e');
+      // Marketing Automation Error handled silently
     }
   }
 

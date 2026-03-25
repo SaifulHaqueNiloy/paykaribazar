@@ -51,7 +51,6 @@ class InventoryPredictionService {
       
       return List<Map<String, dynamic>>.from(jsonDecode(clean));
     } catch (e) {
-      print('Inventory Prediction Error: $e');
       return [];
     }
   }

@@ -26,7 +26,7 @@ class AIRequestLogger {
         'status': 'sent',
       });
     } catch (e) {
-      print('AIRequestLogger.logRequest error: $e');
+      // Log request error handled silently
     }
   }
 
@@ -53,7 +53,7 @@ class AIRequestLogger {
         'type': 'response',
       });
     } catch (e) {
-      print('AIRequestLogger.logResponse error: $e');
+      // Log response error handled silently
     }
   }
 
@@ -199,7 +199,6 @@ class AIRequestLogger {
 
       return deletedCount;
     } catch (e) {
-      print('AIRequestLogger.deleteLogsOlderThan error: $e');
       return 0;
     }
   }

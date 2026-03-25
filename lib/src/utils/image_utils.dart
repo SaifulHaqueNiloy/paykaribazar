@@ -22,11 +22,11 @@ class ImageUtils {
       if (compressedFile != null) {
         final originalSize = await file.length();
         final compressedSize = await File(compressedFile.path).length();
-        print('Image Compression: Original ${originalSize / 1024} KB -> Compressed ${compressedSize / 1024} KB');
+        // Image compression size difference logged internally
         return File(compressedFile.path);
       }
     } catch (e) {
-      print('Compression Error: $e');
+      // Compression error handled silently
     }
     return null;
   }

@@ -136,7 +136,6 @@ void main() {
                 ));
 
         stopwatch.stop();
-        print('Generated 1000 documents in ${stopwatch.elapsedMilliseconds}ms');
 
         // Should complete in less than 100ms
         expect(stopwatch.elapsedMilliseconds, lessThan(100));

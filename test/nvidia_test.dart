@@ -17,7 +17,6 @@ void main() {
     }
 
     expect(apiKey, isNotNull, reason: 'NVIDIA_API_KEY not found in .env');
-    print('Testing API Key: ${apiKey!.substring(0, 10)}...');
 
     final response = await http.post(
       Uri.parse('https://integrate.api.nvidia.com/v1/chat/completions'),
@@ -31,9 +30,6 @@ void main() {
         'max_tokens': 10,
       }),
     );
-
-    print('Status Code: ${response.statusCode}');
-    print('Response: ${response.body}');
 
     expect(response.statusCode, 200, reason: 'API Key is invalid or inactive. Response: ${response.body}');
   });

@@ -87,7 +87,7 @@ class OrderService {
       }
       return null;
     } catch (e) {
-      print('Error fetching order: $e');
+      // Error fetching order handled silently
       return null;
     }
   }

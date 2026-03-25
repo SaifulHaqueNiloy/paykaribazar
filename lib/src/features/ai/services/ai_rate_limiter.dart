@@ -18,7 +18,6 @@ class AIRateLimiter {
       // Check daily quota in Firestore
       return await _checkDailyQuota(userId);
     } catch (e) {
-      print('AIRateLimiter.canMakeRequest error: $e');
       // Fail open - allow request if quota check fails
       return true;
     }
@@ -55,7 +54,6 @@ class AIRateLimiter {
 
       return usedCount < AIConfig.dailyQuotaLimit;
     } catch (e) {
-      print('Error checking daily quota: $e');
       return true; // Fail open
     }
   }
@@ -81,7 +79,7 @@ class AIRateLimiter {
         'last_ai_request': FieldValue.serverTimestamp(),
       }).catchError((_) => null); // Fail silently if user doc doesn't exist
     } catch (e) {
-      print('AIRateLimiter.recordRequest error: $e');
+      // Request recording error handled silently
     }
   }
 

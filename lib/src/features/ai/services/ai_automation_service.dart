@@ -39,10 +39,9 @@ class AiAutomationService {
         
         await doc.reference.update({'ai_processed': true});
       }
-      
-      print('✅ AI Background Caching Task Completed');
+      // AI Background Caching Task Completed
     } catch (e) {
-      print('❌ AI Caching Error: $e');
+      // AI Caching Error handled silently
     }
   }
 
