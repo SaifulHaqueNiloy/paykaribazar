@@ -20,7 +20,7 @@ class FloatingCartBar extends ConsumerWidget {
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: AppStyles.primaryColor.withOpacity(0.3),
+              color: AppStyles.primaryColor.withValues(alpha: 0.3),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),

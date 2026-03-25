@@ -36,7 +36,7 @@ class EmptyState extends StatelessWidget {
               child: Icon(
                 icon,
                 size: 64,
-                color: AppStyles.primaryColor.withOpacity(0.3),
+                color: AppStyles.primaryColor.withValues(alpha: 0.3),
               ),
             ),
             const SizedBox(height: 24),

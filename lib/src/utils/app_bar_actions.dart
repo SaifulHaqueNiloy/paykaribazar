@@ -22,7 +22,7 @@ class AppBarActions extends ConsumerWidget {
             width: 32, height: 32,
             margin: const EdgeInsets.symmetric(horizontal: 4),
             decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
+              color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
               shape: BoxShape.circle,
               border: Border.all(color: isDark ? Colors.white10 : Colors.grey[300]!),
             ),
@@ -42,7 +42,7 @@ class AppBarActions extends ConsumerWidget {
           width: 32, height: 32,
           margin: const EdgeInsets.only(left: 4, right: 8),
           decoration: BoxDecoration(
-            color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
+            color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
             shape: BoxShape.circle,
             border: Border.all(color: isDark ? Colors.white10 : Colors.grey[300]!),
           ),

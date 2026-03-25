@@ -24,8 +24,6 @@ class VoiceSearchService {
         }
       },
       localeId: 'bn_BD', // Default to Bangla as per DNA
-      cancelOnError: true,
-      listenMode: ListenMode.search,
     );
   }
 

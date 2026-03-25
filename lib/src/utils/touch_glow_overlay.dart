@@ -70,8 +70,8 @@ class _TouchGlowOverlayState extends State<TouchGlowOverlay> with SingleTickerPr
                         shape: BoxShape.circle,
                         gradient: RadialGradient(
                           colors: [
-                            AppStyles.primaryColor.withOpacity(0.4),
-                            AppStyles.primaryColor.withOpacity(0.1),
+                            AppStyles.primaryColor.withValues(alpha: 0.4),
+                            AppStyles.primaryColor.withValues(alpha: 0.1),
                             Colors.transparent,
                           ],
                         ),

@@ -87,7 +87,7 @@ class CompassService {
   /// Gets compass heading stream (0-360 degrees, 0 = North)
   /// Note: Uses magnetometer data from device sensors
   Stream<double> get compassStream {
-    return magnetometerEvents.map((MagnetometerEvent event) {
+    return magnetometerEventStream().map((MagnetometerEvent event) {
       var heading = atan2(event.y, event.x) * 180 / pi;
       heading = (heading + 360) % 360;
       return heading;

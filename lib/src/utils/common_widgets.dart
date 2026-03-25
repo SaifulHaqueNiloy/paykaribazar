@@ -150,13 +150,13 @@ class EmptyStatePlaceholder extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(30),
       decoration: BoxDecoration(
-        color: AppStyles.primaryColor.withOpacity(0.05),
+        color: AppStyles.primaryColor.withValues(alpha: 0.05),
         shape: BoxShape.circle,
       ),
       child: Icon(
         icon ?? Icons.shopping_basket_outlined, 
         size: 80, 
-        color: AppStyles.primaryColor.withOpacity(0.2),
+        color: AppStyles.primaryColor.withValues(alpha: 0.2),
       ),
     );
   }
