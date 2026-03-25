@@ -27,7 +27,7 @@ jobs:
       - name: 🦋 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.25.0'
           cache: true
 
       - name: 📚 Install dependencies
@@ -62,7 +62,7 @@ jobs:
       - name: 🦋 Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.25.0'
           cache: true
 
       - name: 📚 Install dependencies
@@ -173,7 +173,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.25.0'
 
       - name: Install Shorebird CLI
         run: |
@@ -211,7 +211,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.0'
+          flutter-version: '3.25.0'
           cache: true
 
       - name: Install dependencies

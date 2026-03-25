@@ -159,15 +159,81 @@ jobs:
       - name: Run flutter analyze
         run: flutter analyze
 
+  # Quality gate - ensure code quality threshold is met
+  quality-gate:
+    name: 🎯 Quality Gate Check
+    runs-on: ubuntu-latest
+    needs: [code-quality]
+    if: always()
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Evaluate Quality Metrics
+        run: |
+          echo "🎯 Quality Gate Check"
+          echo "✓ Code quality analysis completed"
+          echo "✓ All jobs have been executed"
+          
+          # Check if all required jobs passed
+          if [ "${{ needs.code-quality.result }}" != "success" ]; then
+            echo "⚠️  Code quality job did not succeed"
+            exit 1
+          fi
+          
+          echo "✅ Quality gate passed - all checks successful"
+
   # Notify security scan results
   notify-security:
     name: 📢 Notify Security Results
     runs-on: ubuntu-latest
-    needs: [security-scan, secrets-scan, dependency-check]
+    needs: [security-scan, secrets-scan, dependency-check, code-quality, quality-gate]
     if: always()
 
     steps:
-      - name: Send Summary
+      - name: Check Overall Status
         run: |
-          echo "✅ Daily security scan completed"
-          echo "Check GitHub Security tab for detailed results"
+          echo "🛡️ Security Scan Summary"
+          echo "========================"
+          echo ""
+          echo "📊 Results:"
+          echo "  Security Scan: ${{ needs.security-scan.result }}"
+          echo "  Secrets Scan: ${{ needs.secrets-scan.result }}"
+          echo "  Dependency Check: ${{ needs.dependency-check.result }}"
+          echo "  Code Quality: ${{ needs.code-quality.result }}"
+          echo "  Quality Gate: ${{ needs.quality-gate.result }}"
+
+      - name: Determine Final Status
+        run: |
+          FAILED_JOBS=""
+          
+          if [ "${{ needs.security-scan.result }}" = "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS\n  ❌ Security Scan"
+          fi
+          
+          if [ "${{ needs.secrets-scan.result }}" = "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS\n  ❌ Secrets Scan"
+          fi
+          
+          if [ "${{ needs.dependency-check.result }}" = "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS\n  ❌ Dependency Check"
+          fi
+          
+          if [ "${{ needs.code-quality.result }}" = "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS\n  ❌ Code Quality"
+          fi
+          
+          if [ "${{ needs.quality-gate.result }}" = "failure" ]; then
+            FAILED_JOBS="$FAILED_JOBS\n  ❌ Quality Gate"
+          fi
+          
+          if [ -z "$FAILED_JOBS" ]; then
+            echo "✅ All security and quality checks passed successfully!"
+            echo "📋 Review detailed results in the GitHub Security tab"
+          else
+            echo "⚠️ Some checks require attention:"
+            printf "%b" "$FAILED_JOBS"
+            echo ""
+            echo "📋 Visit the GitHub Security tab and check individual job logs"
+            exit 1
+          fi
