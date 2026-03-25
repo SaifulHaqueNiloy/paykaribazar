@@ -42,7 +42,7 @@ jobs:
       should_deploy: ${{ steps.setup.outputs.should_deploy }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
         with:
           fetch-depth: 0  # Full history for versioning
 
@@ -61,7 +61,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
 
       - name: Validate environment
@@ -142,7 +142,7 @@ jobs:
     if: ${{ github.event.inputs.skip_tests != 'true' }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -188,7 +188,7 @@ jobs:
         build-type: ['apk', 'aab']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -254,7 +254,7 @@ jobs:
         build-type: ['apk', 'aab']
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -315,7 +315,7 @@ jobs:
     needs: [setup, test-and-analyze]
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -351,12 +351,12 @@ jobs:
     if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'firebase-only' || github.event_name == 'push')
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Node.js & Firebase CLI
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install Firebase Tools
         run: npm install -g firebase-tools
@@ -396,7 +396,7 @@ jobs:
     if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'play-store-only')
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Download AAB artifacts
         uses: actions/download-artifact@v4
@@ -438,7 +438,7 @@ jobs:
     if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'shorebird-only')
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -481,7 +481,7 @@ jobs:
     if: always() && needs.setup.result == 'success'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.2.0
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
