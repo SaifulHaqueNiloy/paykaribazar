@@ -8,14 +8,11 @@ import 'ai_service.dart';
 /// Service for Multi-Modal AI operations (Image + Text)
 /// Uses Gemini 2.0 Flash to analyze Cloudinary images and generate content
 class MultimodalAIService {
-  final AIService _aiService;
   final SecretsService _secrets;
 
   MultimodalAIService({
-    required AIService aiService,
     required SecretsService secrets,
-  }) : _aiService = aiService,
-       _secrets = secrets;
+  }) : _secrets = secrets;
 
   /// Generate a professional product description in Bengali and English from a Cloudinary URL
   Future<Map<String, dynamic>> generateProductDetailsFromImage({

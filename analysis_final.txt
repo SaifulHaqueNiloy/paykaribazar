@@ -1,0 +1,321 @@
+﻿Resolving dependencies...
+Downloading packages...
+  _fe_analyzer_shared 67.0.0 (98.0.0 available)
+  _flutterfire_internals 1.3.59 (1.3.68 available)
+  analyzer 6.4.1 (12.0.0 available)
+  audio_session 0.1.25 (0.2.3 available)
+  build 2.4.1 (4.0.5 available)
+  build_config 1.1.2 (1.3.0 available)
+  build_resolvers 2.4.2 (3.0.4 available)
+  build_runner 2.4.13 (2.13.1 available)
+  build_runner_core 7.3.2 (9.3.2 available)
+  built_value 8.12.4 (8.12.5 available)
+  cloud_firestore 5.6.12 (6.2.0 available)
+  cloud_firestore_platform_interface 6.6.12 (7.1.0 available)
+  cloud_firestore_web 4.4.12 (5.2.0 available)
+  connectivity_plus 6.1.5 (7.0.0 available)
+  csv 6.0.0 (8.0.0 available)
+  cupertino_icons 1.0.8 (1.0.9 available)
+  dart_style 2.3.6 (3.1.8 available)
+  device_info_plus 10.1.2 (12.3.0 available)
+  facebook_auth_desktop 2.1.1 (2.1.2 available)
+  file_picker 8.3.7 (10.3.10 available)
+  firebase_analytics 11.6.0 (12.2.0 available)
+  firebase_analytics_platform_interface 4.4.3 (5.1.0 available)
+  firebase_analytics_web 0.5.10+16 (0.6.1+4 available)
+  firebase_auth 5.7.0 (6.3.0 available)
+  firebase_auth_platform_interface 7.7.3 (8.1.8 available)
+  firebase_auth_web 5.15.3 (6.1.4 available)
+  firebase_core 3.15.2 (4.6.0 available)
+  firebase_core_web 2.24.1 (3.5.1 available)
+  firebase_crashlytics 4.3.10 (5.1.0 available)
+  firebase_crashlytics_platform_interface 3.8.10 (3.8.19 available)
+  firebase_database 11.3.10 (12.2.0 available)
+  firebase_database_platform_interface 0.2.6+10 (0.3.1 available)
+  firebase_database_web 0.2.6+16 (0.2.7+5 available)
+  firebase_messaging 15.2.10 (16.1.3 available)
+  firebase_messaging_platform_interface 4.6.10 (4.7.8 available)
+  firebase_messaging_web 3.10.10 (4.1.4 available)
+  firebase_remote_config 5.5.0 (6.3.0 available)
+  firebase_remote_config_platform_interface 2.0.0 (2.1.1 available)
+  firebase_remote_config_web 1.8.9 (1.10.5 available)
+  firebase_storage 12.4.10 (13.2.0 available)
+  firebase_storage_platform_interface 5.2.10 (5.2.19 available)
+  firebase_storage_web 3.10.17 (3.11.4 available)
+  fl_chart 0.69.2 (1.2.0 available)
+  flutter_dotenv 5.2.1 (6.0.0 available)
+  flutter_facebook_auth 7.1.5 (7.1.6 available)
+  flutter_launcher_icons 0.13.1 (0.14.4 available)
+  flutter_lints 4.0.0 (6.0.0 available)
+  flutter_local_notifications 17.2.4 (21.0.0 available)
+  flutter_local_notifications_linux 4.0.1 (8.0.0 available)
+  flutter_local_notifications_platform_interface 7.2.0 (11.0.0 available)
+  flutter_plugin_android_lifecycle 2.0.33 (2.0.34 available)
+  flutter_riverpod 2.6.1 (3.3.1 available)
+  flutter_secure_storage 9.2.4 (10.0.0 available)
+  flutter_secure_storage_linux 1.2.3 (3.0.0 available)
+  flutter_secure_storage_macos 3.1.3 (4.0.0 available)
+  flutter_secure_storage_platform_interface 1.1.2 (2.0.1 available)
+  flutter_secure_storage_web 1.2.1 (2.1.0 available)
+  flutter_secure_storage_windows 3.1.2 (4.1.0 available)
+  flutter_widget_from_html 0.15.3 (0.17.1 available)
+  flutter_widget_from_html_core 0.15.2 (0.17.0 available)
+  fwfh_cached_network_image 0.14.3 (0.16.1 available)
+  fwfh_chewie 0.14.8 (0.16.1 available)
+  fwfh_just_audio 0.15.2 (0.17.0 available)
+  fwfh_svg 0.8.3 (0.16.1 available)
+  fwfh_url_launcher 0.9.1 (0.16.1 available)
+  geolocator 12.0.0 (14.0.2 available)
+  geolocator_android 4.6.2 (5.0.2 available)
+  get_it 8.3.0 (9.2.1 available)
+  go_router 14.8.1 (17.1.0 available)
+  google_fonts 7.1.0 (8.0.2 available)
+  google_maps_flutter_android 2.19.3 (2.19.5 available)
+  google_maps_flutter_ios 2.18.0 (2.18.1 available)
+  google_sign_in 6.3.0 (7.2.0 available)
+  google_sign_in_android 6.2.1 (7.2.10 available)
+  google_sign_in_ios 5.9.0 (6.3.0 available)
+  google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+  google_sign_in_web 0.12.4+4 (1.1.3 available)
+  image_picker_android 0.8.13+14 (0.8.13+15 available)
+  jni 0.14.2 (0.15.2 available)
+  js 0.6.7 (0.7.2 available)
+  just_audio 0.9.46 (0.10.5 available)
+  lints 4.0.0 (6.1.0 available)
+  local_auth 2.3.0 (3.0.1 available)
+  local_auth_android 1.0.56 (2.0.7 available)
+  local_auth_darwin 1.6.1 (2.0.3 available)
+  local_auth_windows 1.0.11 (2.0.1 available)
+  meta 1.17.0 (1.18.2 available)
+  mockito 5.4.4 (5.6.4 available)
+  path_provider_android 2.2.22 (2.2.23 available)
+  permission_handler 11.4.0 (12.0.1 available)
+  permission_handler_android 12.1.0 (13.0.1 available)
+  pointycastle 3.9.1 (4.0.0 available)
+  riverpod 2.6.1 (3.2.1 available)
+  sensors_plus 6.1.2 (7.0.0 available)
+  share_plus 10.1.4 (12.0.1 available)
+  share_plus_platform_interface 5.0.2 (6.1.0 available)
+  shared_preferences_android 2.4.21 (2.4.22 available)
+  shelf_web_socket 2.0.1 (3.0.0 available)
+  source_gen 1.5.0 (4.2.2 available)
+  source_helper 1.3.5 (1.3.11 available)
+  test_api 0.7.10 (0.7.11 available)
+  timezone 0.9.4 (0.11.0 available)
+  url_launcher_android 6.3.28 (6.3.29 available)
+  vector_math 2.2.0 (2.3.0 available)
+  video_player_android 2.9.4 (2.9.5 available)
+  webview_flutter_android 4.10.13 (4.10.14 available)
+  webview_flutter_platform_interface 2.14.0 (2.15.0 available)
+  win32 5.15.0 (6.0.0 available)
+  win32_registry 1.1.5 (3.0.2 available)
+  workmanager 0.6.0 (0.9.0+3 available)
+Got dependencies!
+110 packages have newer versions incompatible with dependency constraints.
+Try `flutter pub outdated` for more information.
+Analyzing paykari_bazar...                                      
+
+   info - Local variables should be final - lib\src\core\services\secure_auth_service.dart:114:5 - prefer_final_locals
+   info - The import of 'package:flutter/services.dart' is unnecessary because all of the used elements are also provided by the import of 'package:flutter/material.dart' - lib\src\features\admin\admin_screen.dart:2:8 - unnecessary_import
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\admin\widgets\analytics_tab.dart:182:27 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\admin\widgets\analytics_tab.dart:182:52 - avoid_redundant_argument_values
+   info - The private field _isProcessing could be 'final' - lib\src\features\admin\widgets\categories\category_form_sheet.dart:32:8 - prefer_final_fields
+   info - 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre - lib\src\features\admin\widgets\categories\category_form_sheet.dart:114:15 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps - lib\src\features\admin\widgets\custom_notification_sheet.dart:41:27 - use_build_context_synchronously
+   info - Statements in an if should be enclosed in a block - lib\src\features\admin\widgets\database_tab.dart:445:56 - curly_braces_in_flow_control_structures
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\database_tab.dart:565:31 - use_build_context_synchronously
+   info - Statements in an if should be enclosed in a block - lib\src\features\admin\widgets\database_tab.dart:602:60 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\src\features\admin\widgets\database_tab.dart:603:55 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\src\features\admin\widgets\database_tab.dart:604:24 - curly_braces_in_flow_control_structures
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\database_tab.dart:616:29 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\database_tab.dart:636:29 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\emergency_tab.dart:150:44 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\emergency_tab.dart:244:44 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\emergency_tab.dart:332:44 - use_build_context_synchronously
+   info - Don't invoke 'print' in production code - lib\src\features\admin\widgets\inventory\csv_import_sheet.dart:158:9 - avoid_print
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\logistics_tab.dart:457:50 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:285:56 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:329:62 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:462:52 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:534:52 - use_build_context_synchronously
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor or activeTrackColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\src\features\admin\widgets\marketing_tab.dart:569:11 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:687:54 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:827:58 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:1014:56 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\marketing_tab.dart:1093:42 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\src\features\admin\widgets\orders\order_card.dart:362:45 - use_build_context_synchronously
+   info - The private field _catId could be 'final' - lib\src\features\admin\widgets\product_form_sheet.dart:28:10 - prefer_final_fields
+   info - The private field _catName could be 'final' - lib\src\features\admin\widgets\product_form_sheet.dart:28:30 - prefer_final_fields
+   info - The private field _catNameBn could be 'final' - lib\src\features\admin\widgets\product_form_sheet.dart:28:52 - prefer_final_fields
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\settings_tab.dart:182:42 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\src\features\admin\widgets\settings_tab.dart:212:28 - use_build_context_synchronously
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\src\features\admin\widgets\settings_tab.dart:272:9 - deprecated_member_use
+   info - Statements in an if should be enclosed in a block - lib\src\features\admin\widgets\settings_tab.dart:315:18 - curly_braces_in_flow_control_structures
+   info - 'activeColor' is deprecated and shouldn't be used. Use activeThumbColor or activeTrackColor instead. This feature was deprecated after v3.31.0-2.0.pre - lib\src\features\admin\widgets\staff_management_tab.dart:231:19 - deprecated_member_use
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\staff_security_tab.dart:139:44 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check - lib\src\features\admin\widgets\staff_security_tab.dart:175:42 - use_build_context_synchronously
+   info - Don't use 'BuildContext's across async gaps - lib\src\features\admin\widgets\teams_tab.dart:133:350 - use_build_context_synchronously
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\ai\services\ai_automation_service.dart:38:54 - avoid_redundant_argument_values
+   info - Don't invoke 'print' in production code - lib\src\features\ai\services\ai_rate_limiter.dart:99:7 - avoid_print
+warning - The value of the field '_errorHandler' isn't used - lib\src\features\ai\services\ai_service.dart:31:29 - unused_field
+warning - The value of the field '_logger' isn't used - lib\src\features\ai\services\ai_service.dart:32:30 - unused_field
+  error - Undefined name '_rateLimiter' - lib\src\features\ai\services\ai_service.dart:56:5 - undefined_identifier
+warning - The value of the field '_aiService' isn't used - lib\src\features\ai\services\multimodal_ai_service.dart:11:19 - unused_field
+   info - Unnecessary use of double quotes - lib\src\features\ai\services\voice_commerce_service.dart:34:15 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\src\features\ai\services\voice_commerce_service.dart:34:25 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\src\features\ai\services\voice_commerce_service.dart:34:36 - prefer_single_quotes
+   info - Unnecessary use of double quotes - lib\src\features\ai\services\voice_commerce_service.dart:34:47 - prefer_single_quotes
+warning - The value of the local variable 'query' isn't used - lib\src\features\ai\services\voice_commerce_service.dart:44:15 - unused_local_variable
+warning - The value of the local variable 'target' isn't used - lib\src\features\ai\services\voice_commerce_service.dart:56:15 - unused_local_variable
+   info - Statements in an if should be enclosed in a block - lib\src\features\auth\forgot_password_screen.dart:47:36 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\src\features\auth\forgot_password_screen.dart:48:14 - curly_braces_in_flow_control_structures
+  error - Undefined name '_biometricInitializing' - lib\src\features\auth\login_screen.dart:40:7 - undefined_identifier
+  error - Undefined name '_biometricInitializing' - lib\src\features\auth\login_screen.dart:47:11 - undefined_identifier
+  error - Undefined name '_biometricInitializing' - lib\src\features\auth\login_screen.dart:54:24 - undefined_identifier
+warning - The operand can't be 'null', so the condition is always 'true' - lib\src\features\auth\login_screen.dart:125:26 - unnecessary_null_comparison
+   info - Don't use 'BuildContext's across async gaps - lib\src\features\chat\private_chat_screen.dart:81:28 - use_build_context_synchronously
+   info - An uninitialized variable should have an explicit type annotation - lib\src\features\commerce\providers\orders_pagination_provider.dart:26:13 - prefer_typing_uninitialized_variables
+   info - An uninitialized variable should have an explicit type annotation - lib\src\features\commerce\providers\orders_pagination_provider.dart:88:13 - prefer_typing_uninitialized_variables
+   info - An uninitialized variable should have an explicit type annotation - lib\src\features\commerce\providers\products_pagination_provider.dart:24:13 - prefer_typing_uninitialized_variables
+   info - An uninitialized variable should have an explicit type annotation - lib\src\features\commerce\providers\products_pagination_provider.dart:80:13 - prefer_typing_uninitialized_variables
+   info - Local variables should be final - lib\src\features\commerce\services\cart_pos_service.dart:91:5 - prefer_final_locals
+   info - Unnecessary use of double quotes - lib\src\features\commerce\services\group_buying_service.dart:56:20 - prefer_single_quotes
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\commerce\services\group_buying_service.dart:57:62 - avoid_redundant_argument_values
+   info - Use 'const' with the constructor to improve performance - lib\src\features\home\widgets\home_widgets.dart:263:50 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - lib\src\features\home\widgets\home_widgets.dart:265:23 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - lib\src\features\home\widgets\home_widgets.dart:265:42 - prefer_const_constructors
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\home\widgets\loyalty_status_card.dart:44:80 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\home\widgets\notice_slider.dart:25:33 - avoid_redundant_argument_values
+   info - Local variables should be final - lib\src\features\home\widgets\qibla_indicator.dart:69:7 - prefer_final_locals
+   info - Use 'const' with the constructor to improve performance - lib\src\features\logistics\services\geofencing_service.dart:170:30 - prefer_const_constructors
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\products\all_products_screen.dart:48:17 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\products\all_products_screen.dart:49:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\products\all_products_screen.dart:50:19 - avoid_redundant_argument_values
+   info - Statements in an if should be enclosed in a block - lib\src\features\profile\application_form_screen.dart:52:36 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\src\features\profile\application_form_screen.dart:53:38 - curly_braces_in_flow_control_structures
+   info - Statements in an if should be enclosed in a block - lib\src\features\profile\application_form_screen.dart:54:10 - curly_braces_in_flow_control_structures
+   info - The constant name 'MECCA_LAT' isn't a lowerCamelCase identifier - lib\src\features\qibla\services\compass_service.dart:7:23 - constant_identifier_names
+   info - The constant name 'MECCA_LNG' isn't a lowerCamelCase identifier - lib\src\features\qibla\services\compass_service.dart:8:23 - constant_identifier_names
+   info - The value of the argument is redundant because it matches the default value - lib\src\features\qibla\services\compass_service.dart:31:26 - avoid_redundant_argument_values
+   info - Use 'const' with the constructor to improve performance - lib\src\features\search\search_screen.dart:261:14 - prefer_const_constructors
+   info - Use 'const' literals as arguments to constructors of '@immutable' classes - lib\src\features\search\search_screen.dart:263:19 - prefer_const_literals_to_create_immutables
+   info - Use 'const' for final variables initialized to a constant value - lib\src\services\backup_service.dart:106:5 - prefer_const_declarations
+warning - Unnecessary cast - lib\src\services\business_config_service.dart:71:12 - unnecessary_cast
+  error - The name 'Rider' isn't a type, so it can't be used as a type argument - lib\src\services\fleet_service.dart:7:15 - non_type_as_type_argument
+  error - Undefined name 'Rider' - lib\src\services\fleet_service.dart:11:37 - undefined_identifier
+  error - The name 'FleetStatus' isn't a type, so it can't be used as a type argument - lib\src\services\fleet_service.dart:15:10 - non_type_as_type_argument
+  error - Undefined name 'FleetStatus' - lib\src\services\fleet_service.dart:17:19 - undefined_identifier
+  error - The name 'ShorebirdStatus' isn't a type, so it can't be used as a type argument - lib\src\services\fleet_service.dart:21:10 - non_type_as_type_argument
+  error - The method 'ShorebirdStatus' isn't defined for the type 'FleetService' - lib\src\services\fleet_service.dart:26:16 - undefined_method
+  error - The method 'ShorebirdStatus' isn't defined for the type 'FleetService' - lib\src\services\fleet_service.dart:35:12 - undefined_method
+warning - The value of the local variable 'originalSize' isn't used - lib\src\utils\image_utils.dart:23:15 - unused_local_variable
+warning - The value of the local variable 'compressedSize' isn't used - lib\src\utils\image_utils.dart:24:15 - unused_local_variable
+   info - The value of the argument is redundant because it matches the default value - test\order_model_test.dart:137:17 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:66:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:67:18 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:68:23 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:71:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:79:25 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:114:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:115:18 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:117:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:118:23 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:119:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:122:17 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:123:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:126:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:127:25 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:145:19 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:162:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:163:18 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:165:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:166:23 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:167:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:170:17 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:171:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:174:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:175:25 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:193:19 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:217:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:218:18 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:220:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:221:23 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:222:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:225:17 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:226:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:229:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:230:25 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:264:19 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:281:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:282:18 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:284:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:285:23 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:286:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:289:17 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:290:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:293:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:294:25 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:317:19 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:334:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:335:18 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:337:21 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:338:23 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:339:22 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\product_model_test.dart:347:25 - avoid_redundant_argument_values
+warning - The value of the local variable 'mockProducts' isn't used - test\providers\pagination_providers_test.dart:39:15 - unused_local_variable
+warning - The value of the local variable 'notifier' isn't used - test\providers\pagination_providers_test.dart:64:15 - unused_local_variable
+warning - The value of the local variable 'notifier' isn't used - test\providers\pagination_providers_test.dart:75:15 - unused_local_variable
+warning - The value of the local variable 'notifier' isn't used - test\providers\pagination_providers_test.dart:86:15 - unused_local_variable
+warning - The value of the local variable 'notifier' isn't used - test\providers\pagination_providers_test.dart:98:15 - unused_local_variable
+warning - The value of the local variable 'notifier' isn't used - test\providers\pagination_providers_test.dart:109:15 - unused_local_variable
+warning - The value of the local variable 'notifier' isn't used - test\providers\pagination_providers_test.dart:119:15 - unused_local_variable
+   info - The value of the argument is redundant because it matches the default value - test\services\ai_provider_fallback_test.dart:42:58 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\services\ai_provider_fallback_test.dart:53:60 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\services\ai_provider_fallback_test.dart:60:59 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\services\ai_provider_fallback_test.dart:76:58 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\services\ai_provider_fallback_test.dart:79:59 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\services\ai_provider_fallback_test.dart:117:57 - avoid_redundant_argument_values
+   info - The value of the argument is redundant because it matches the default value - test\services\ai_provider_fallback_test.dart:153:51 - avoid_redundant_argument_values
+warning - The value of the local variable 'aiService' isn't used - test\services\ai_service_test.dart:13:18 - unused_local_variable
+warning - The value of the local variable 'mockFirestore' isn't used - test\services\ai_service_test.dart:14:29 - unused_local_variable
+warning - The value of the local variable 'mockSecrets' isn't used - test\services\ai_service_test.dart:15:27 - unused_local_variable
+warning - The value of the local variable 'mockKimi' isn't used - test\services\ai_service_test.dart:16:23 - unused_local_variable
+warning - The value of the local variable 'mockDeepSeek' isn't used - test\services\ai_service_test.dart:17:23 - unused_local_variable
+warning - The value of the local variable 'mockGemini' isn't used - test\services\ai_service_test.dart:18:23 - unused_local_variable
+   info - The imported package 'path_provider_platform_interface' isn't a dependency of the importing package - test\services\cache_service_test.dart:4:8 - depend_on_referenced_packages
+   info - The imported package 'plugin_platform_interface' isn't a dependency of the importing package - test\services\cache_service_test.dart:5:8 - depend_on_referenced_packages
+warning - The class 'Query' shouldn't be extended, mixed in, or implemented because it's sealed - test\services\firebase_pagination_service_test.dart:9:1 - subtype_of_sealed_class
+warning - The class 'Query' shouldn't be extended, mixed in, or implemented because it's sealed - test\services\firebase_pagination_service_test.dart:11:1 - subtype_of_sealed_class
+warning - The class 'DocumentSnapshot' shouldn't be extended, mixed in, or implemented because it's sealed - test\services\firebase_pagination_service_test.dart:15:1 - subtype_of_sealed_class
+warning - The value of the local variable 'mockFirestore' isn't used - test\services\firebase_pagination_service_test.dart:19:32 - unused_local_variable
+warning - The value of the local variable 'paginationService' isn't used - test\services\firebase_pagination_service_test.dart:20:36 - unused_local_variable
+warning - The value of the local variable 'mockDocs' isn't used - test\services\firebase_pagination_service_test.dart:131:15 - unused_local_variable
+   info - The value of the argument is redundant because it matches the default value - test\services\order_service_test.dart:51:17 - avoid_redundant_argument_values
+warning - The value of the local variable 'firestoreService' isn't used - test\unit\firestore_service_test.dart:18:25 - unused_local_variable
+warning - The value of the local variable 'mockDb' isn't used - test\unit\firestore_service_test.dart:19:30 - unused_local_variable
+warning - The value of the local variable 'mockCollection' isn't used - test\unit\firestore_service_test.dart:20:54 - unused_local_variable
+warning - The value of the local variable 'mockDoc' isn't used - test\unit\firestore_service_test.dart:21:52 - unused_local_variable
+warning - The value of the local variable 'mockDb' isn't used - test\unit\quota_service_test.dart:11:30 - unused_local_variable
+warning - The value of the local variable 'mockCollection' isn't used - test\unit\quota_service_test.dart:12:54 - unused_local_variable
+warning - The value of the local variable 'mockDoc' isn't used - test\unit\quota_service_test.dart:13:52 - unused_local_variable
+warning - The value of the local variable 'mockSnapshot' isn't used - test\unit\quota_service_test.dart:14:51 - unused_local_variable
+   info - 'window' is deprecated and shouldn't be used. Use WidgetTester.platformDispatcher or WidgetTester.view instead. Deprecated to prepare for the upcoming multi-window support. This feature was deprecated after v3.9.0-0.1.pre - test\widgets\flash_sale_timer_test.dart:98:36 - deprecated_member_use
+   info - 'clearPhysicalSizeTestValue' is deprecated and shouldn't be used. Use WidgetTester.view.resetPhysicalSize() instead. Deprecated to prepare for the upcoming multi-window support. This feature was deprecated after v3.9.0-0.1.pre - test\widgets\flash_sale_timer_test.dart:98:43 - deprecated_member_use
+   info - Use 'const' with the constructor to improve performance - test\widgets\flash_sale_timer_test.dart:127:11 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\widgets\home_widgets_test.dart:12:11 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\widgets\home_widgets_test.dart:13:19 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\widgets\home_widgets_test.dart:14:21 - prefer_const_constructors
+   info - Use 'const' literals as arguments to constructors of '@immutable' classes - test\widgets\home_widgets_test.dart:14:43 - prefer_const_literals_to_create_immutables
+   info - Use 'const' with the constructor to improve performance - test\widgets\home_widgets_test.dart:139:11 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\widgets\home_widgets_test.dart:140:19 - prefer_const_constructors
+   info - Use 'const' with the constructor to improve performance - test\widgets\home_widgets_test.dart:141:21 - prefer_const_constructors
+   info - Use 'const' literals as arguments to constructors of '@immutable' classes - test\widgets\home_widgets_test.dart:142:27 - prefer_const_literals_to_create_immutables
+
+flutter : 195 issues found. (ran in 57.6s)
+At line:1 char:1
++ flutter analyze --no-fatal-infos 2>&1 | Out-File -FilePath analysis_f ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (195 issues found. (ran in 57.6s): 
+   String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
