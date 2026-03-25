@@ -131,9 +131,8 @@ All error-level issues resolved:
 ```bash
 flutter pub get                                    # ✅ Success
 flutter analyze                                   # ✅ Zero errors (190 warnings)
-flutter build apk                                 # ✅ Ready
-flutter build aab                                 # ✅ Ready (Google Play)
-flutter build web                                 # ✅ Ready
+flutter build web                                 # ✅ Ready (Firebase Hosting)
+flutter build apk                                 # ✅ Ready (Shorebird OTA)
 flutter run -t lib/main_customer.dart            # ✅ Ready
 flutter run -t lib/main_admin.dart               # ✅ Ready
 ```
@@ -227,8 +226,8 @@ All services registered in providers.dart:
 ### Immediate (Before Release)
 1. ✅ **Code review** - All changes committed and ready
 2. ⏳ **Final testing** - Run on actual Android/iOS devices
-3. ⏳ **Shorebird release** - Deploy with OTA capability
-4. ⏳ **Play Store submission** - APK/AAB ready
+3. ⏳ **Shorebird release** - Deploy iOS & Android with OTA capability
+4. ⏳ **Firebase Hosting deployment** - Deploy web app
 
 ### Post-Launch
 1. Monitor OTA updates in production
@@ -240,25 +239,24 @@ All services registered in providers.dart:
 
 ## Deployment Commands
 
-### Build Customer App
+### Deploy Web App (Firebase Hosting)
 ```bash
-flutter build apk -t lib/main_customer.dart --release
-# Output: build/app/outputs/apk/release/app-release.apk
+flutter build web --release
+# Output: build/web/
 
-flutter build aab -t lib/main_customer.dart --release
-# Output: build/app/outputs/bundle/release/app-release.aab
+firebase deploy --only hosting
+# Deploys to Firebase Hosting (customer and admin apps)
 ```
 
-### Build Admin App
+### Deploy Mobile with OTA (Shorebird)
 ```bash
-flutter build apk -t lib/main_admin.dart --release
-# Output: Android admin APK
-```
+# Customer App
+shorebird release ios -t lib/main_customer.dart
+shorebird release android -t lib/main_customer.dart
 
-### Deploy with OTA (Shorebird)
-```bash
-shorebird release ios           # iOS with OTA capability
-shorebird release android       # Android with OTA capability
+# Admin App
+shorebird release ios -t lib/main_admin.dart
+shorebird release android -t lib/main_admin.dart
 ```
 
 ---
@@ -310,7 +308,7 @@ The project has evolved from a broken state (35+ errors) to a fully functional, 
 - 📊 **Real-time analytics** - Firebase integration + audit logging
 - 🚀 **Production-ready** - All compilation errors fixed
 
-**Ready to deploy to Google Play Store and iOS App Store.**
+**Ready to deploy to Firebase Hosting (web) and via Shorebird (mobile with OTA).**
 
 ---
 
