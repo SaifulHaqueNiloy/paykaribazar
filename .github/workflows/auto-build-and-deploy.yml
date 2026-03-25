@@ -56,6 +56,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
           cache: true
           cache-key: flutter-${{ hashFiles('**/pubspec.lock') }}
 
@@ -213,7 +214,7 @@ jobs:
         run: |
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
-        if: secrets.KEYSTORE_BASE64 != ''
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
 
       - name: Build ${{ matrix.build-type }} (Customer)
         run: |
@@ -279,7 +280,7 @@ jobs:
         run: |
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
-        if: secrets.KEYSTORE_BASE64 != ''
+        if: ${{ secrets.KEYSTORE_BASE64 != '' }}
 
       - name: Build ${{ matrix.build-type }} (Admin)
         run: |
@@ -455,7 +456,7 @@ jobs:
         run: |
           mkdir -p ~/.shorebird
           echo "${{ secrets.SHOREBIRD_AUTH_TOKEN }}" > ~/.shorebird/credentials.json
-        if: secrets.SHOREBIRD_AUTH_TOKEN != ''
+        if: ${{ secrets.SHOREBIRD_AUTH_TOKEN != '' }}
 
       - name: Release Customer via Shorebird
         run: |
@@ -534,7 +535,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: success() && secrets.SLACK_WEBHOOK != ''
+        if: ${{ success() && secrets.SLACK_WEBHOOK != '' }}
         continue-on-error: true
 
   # Handle Failures
@@ -572,5 +573,5 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-        if: secrets.SLACK_WEBHOOK != ''
+        if: ${{ secrets.SLACK_WEBHOOK != '' }}
         continue-on-error: true
