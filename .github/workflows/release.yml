@@ -349,7 +349,7 @@ jobs:
       - name: Send Slack notification
         uses: slackapi/slack-github-action@v1
         with:
-          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
           payload: |
             {
               "text": "🚀 Paykari Bazar Release ${{ github.ref_name }}",
