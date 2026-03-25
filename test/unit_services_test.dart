@@ -1,12 +1,25 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/core/firebase/firestore_paginator.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_cache_service.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'dart:io';
 
-@GenerateMocks([FirebaseFirestore, CollectionReference, Query, QuerySnapshot, QueryDocumentSnapshot])
+// ============================================================================
+// MOCK CLASSES (Mocktail-based, replacing Mockito)
+// ============================================================================
+
+class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
+
+class MockCollectionReference extends Mock implements CollectionReference {}
+
+class MockQuery extends Mock implements Query {}
+
+class MockQuerySnapshot extends Mock implements QuerySnapshot {}
+
+class MockQueryDocumentSnapshot extends Mock implements QueryDocumentSnapshot {}
+
 void main() {
   group('AICacheService Unit Tests', () {
     late AICacheService cacheService;
@@ -78,6 +91,18 @@ void main() {
     });
 
     test('paginator refresh resets state', () {
+      final paginator = FirestorePaginator<String>(
+        collectionPath: 'test',
+        fromFirestore: (doc) => doc.id,
+      );
+
+      paginator.refresh();
+      
+      expect(paginator.items, isEmpty);
+      expect(paginator.hasMore, isTrue);
+    });
+  });
+}
       final paginator = FirestorePaginator<String>(
         collectionPath: 'test',
         fromFirestore: (doc) => doc.id,
