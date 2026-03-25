@@ -103,15 +103,3 @@ void main() {
     });
   });
 }
-      final paginator = FirestorePaginator<String>(
-        collectionPath: 'test',
-        fromFirestore: (doc) => doc.id,
-      );
-
-      paginator.refresh();
-      
-      expect(paginator.items, isEmpty);
-      expect(paginator.hasMore, isTrue);
-    });
-  });
-}
