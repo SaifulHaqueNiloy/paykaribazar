@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../core/constants/paths.dart';
+import '../../../models/product_model.dart';
 
 class CartService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -10,6 +11,17 @@ class CartService {
 
   Future<void> initialize() async {
     // Initial setup if needed
+  }
+
+  /// Add item to cart (local stub or direct to cloud if desired)
+  Future<bool> addItem(Product product, int quantity) async {
+    // Implementation for local or remote cart
+    return true; 
+  }
+
+  /// Get total of items in cart
+  Future<double> getCartTotal() async {
+    return 0.0;
   }
 
   /// Syncs local cart to Firestore for persistence across devices

@@ -10,6 +10,14 @@ class ProductService {
       (snap) => snap.docs.map((doc) => Product.fromMap(doc.data(), doc.id)).toList());
   }
 
+  Future<Product?> getProductById(String id) async {
+    final doc = await _firestore.collection(HubPaths.products).doc(id).get();
+    if (doc.exists) {
+      return Product.fromMap(doc.data()!, doc.id);
+    }
+    return null;
+  }
+
   Stream<List<Product>> searchProducts(String query) {
     // Basic implementation, usually filtered in UI or via Algolia/Elasticsearch for scale
     return getProducts().map((products) => 
