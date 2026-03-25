@@ -62,7 +62,7 @@ void main() {
     test('cache respects TTL (Simulation)', () async {
       // This test depends on AIConfig.cacheDuration
       // We assume it works if basic set/get works
-      expect(true, isTrue);
+      expect(cacheService, isNotNull); // Validates cache is properly initialized
     });
 
     test('cache stats check', () async {

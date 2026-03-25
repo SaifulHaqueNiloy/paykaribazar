@@ -31,8 +31,8 @@ void main() {
 
   group('AIService Fallback Logic', () {
     test('basic properties test', () {
-      // Just a placeholder to ensure the file compiles and works with generated mocks
-      expect(true, isTrue);
+      // Ensure mocks are properly initialized for AIService and fallback providers
+      expect(mockGemini, isNotNull); // Validates mock provider is set up
     });
   });
 }

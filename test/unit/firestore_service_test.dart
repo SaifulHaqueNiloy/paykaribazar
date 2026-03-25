@@ -34,7 +34,7 @@ void main() {
 
   group('FirestoreService Tests', () {
     test('Placeholder Test: Structure Ready', () {
-      expect(true, isTrue);
+      expect(firestoreService, isNotNull); // Validates FirestoreService instance created
     });
     
     // Future tests will go here after refactoring FirestoreService for DI

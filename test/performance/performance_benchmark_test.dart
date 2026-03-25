@@ -4,7 +4,7 @@
 /// Runs benchmarks for critical operations and asserts performance thresholds.
 
 import 'package:flutter_test/flutter_test.dart';
-import '../helpers/base_test.dart';
+import '../helpers/base.dart';
 import '../helpers/performance_tracker.dart';
 
 void main() {
