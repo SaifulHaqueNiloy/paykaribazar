@@ -48,6 +48,7 @@ import '../services/notice_service.dart';
 import '../services/auto_translation_service.dart';
 import '../services/chat_service.dart';
 import '../features/qibla/services/compass_service.dart';
+import '../features/ota/services/ota_service.dart';
 
 // --- PROVIDERS ---
 final firestoreService = Provider((ref) => getIt<FirestoreService>());
@@ -72,6 +73,7 @@ final noticeServiceProvider = Provider((ref) => getIt<NoticeService>());
 final autoTranslationProvider = Provider((ref) => getIt<AutoTranslationService>());
 final chatServiceProvider = Provider((ref) => getIt<ChatService>());
 final compassServiceProvider = Provider((ref) => getIt<CompassService>());
+final otaServiceProvider = Provider((ref) => OTAService());
 
 // --- WISHLIST ---
 final wishlistProvider = StateNotifierProvider<WishlistNotifier, List<String>>((ref) => WishlistNotifier());

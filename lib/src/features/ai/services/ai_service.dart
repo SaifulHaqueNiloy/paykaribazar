@@ -12,7 +12,6 @@ import '../../../shared/services/notification_service.dart';
 import '../config/ai_config.dart';
 import 'ai_cache_service.dart';
 import 'ai_rate_limiter.dart';
-import 'ai_error_handler.dart';
 import 'ai_request_logger.dart';
 import 'ai_provider.dart';
 import 'gemini_provider.dart';
@@ -28,7 +27,7 @@ final aiServiceProvider = Provider((ref) => getIt<AIService>());
 class AIService {
   final SecretsService _secrets;
   late final AICacheService _cache;
-  late final AIErrorHandler _errorHandler;
+  late final AIRateLimiter _rateLimiter;
   late final AIRequestLogger _logger;
   late final AIProviderManager _providerManager;
   late final ApiQuotaService _quotaService;
@@ -54,7 +53,6 @@ class AIService {
     _currentUserId = userId;
     _cache = AICacheService();
     _rateLimiter = AIRateLimiter();
-    _errorHandler = AIErrorHandler();
     _logger = AIRequestLogger();
     _quotaService = getIt.isRegistered<ApiQuotaService>()
         ? getIt<ApiQuotaService>()

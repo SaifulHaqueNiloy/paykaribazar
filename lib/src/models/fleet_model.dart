@@ -61,10 +61,14 @@ class ShorebirdStatus {
   final String currentVersion;
   final bool patchInstalled;
   final DateTime? lastPatchTime;
+  final bool shorebirdAvailable;
+  final bool hasUpdateAvailable;
 
   ShorebirdStatus({
     required this.currentVersion,
     required this.patchInstalled,
     this.lastPatchTime,
+    this.shorebirdAvailable = false,
+    this.hasUpdateAvailable = false,
   });
 }

@@ -43,6 +43,8 @@ import '../services/chat_service.dart';
 import '../services/sync_service.dart';
 import '../services/notice_service.dart';
 import '../services/auto_translation_service.dart';
+import '../services/fleet_service.dart';
+import '../features/ota/services/ota_service.dart';
 
 class ServiceInitializer {
   static Future<void> initialize() async {
@@ -96,6 +98,11 @@ class ServiceInitializer {
     getIt.registerLazySingleton<BackgroundTaskService>(
         () => BackgroundTaskService());
     getIt.registerLazySingleton<PaymentService>(() => PaymentServiceImpl());
+    getIt.registerLazySingleton<FleetService>(() => FleetService());
+    
+    // Initialize OTA Service
+    final otaService = OTAService();
+    await otaService.initialize();
 
     // Phase 4: Feature Services
     getIt.registerLazySingleton<AuthService>(() => AuthService(

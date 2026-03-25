@@ -79,7 +79,6 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
 
       // Initialize Multimodal AI Service
       final multimodalAi = MultimodalAIService(
-        aiService: ref.read(aiServiceProvider),
         secrets: ref.read(secretsServiceProvider),
       );
 

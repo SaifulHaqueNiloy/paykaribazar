@@ -25,6 +25,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       _rememberMe = false;
   bool _isAdminApp = false;
   bool _biometricAvailable = false; // ⭐ NEW: Track biometric availability
+  bool _biometricInitializing = false; // ⭐ NEW: Track biometric init state
 
   @override
   void initState() {
