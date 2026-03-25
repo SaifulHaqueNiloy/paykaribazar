@@ -27,7 +27,7 @@ on:
         default: false
 
 env:
-  FLUTTER_VERSION: '3.5.0'
+  FLUTTER_VERSION: '3.41.4'
   JAVA_VERSION: '17'
 
 jobs:
@@ -56,9 +56,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: 'stable'
           cache: true
-          cache-key: flutter-${{ hashFiles('**/pubspec.lock') }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
