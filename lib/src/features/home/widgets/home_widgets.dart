@@ -80,8 +80,9 @@ class _BannerSliderState extends State<BannerSlider> {
               margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 3.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
-                color: AppStyles.primaryColor,
-                opacity: _current == entry.key ? 1.0 : 0.2,
+                color: AppStyles.primaryColor.withValues(
+                  alpha: _current == entry.key ? 1.0 : 0.2,
+                ),
               ),
             );
           }).toList(),
@@ -368,4 +369,5 @@ class StickyHeader extends StatelessWidget {
     );
   }
 }
+
 

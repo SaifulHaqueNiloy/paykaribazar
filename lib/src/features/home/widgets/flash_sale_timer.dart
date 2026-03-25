@@ -41,7 +41,7 @@ class _FlashSaleTimerState extends State<FlashSaleTimer> {
 
   @override
   Widget build(BuildContext context) {
-    if (_timeLeft.isZero) return const SizedBox.shrink();
+    if (_timeLeft == Duration.zero) return const SizedBox.shrink();
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
