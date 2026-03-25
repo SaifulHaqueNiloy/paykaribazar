@@ -294,7 +294,7 @@ void main() {
           updatedAt: DateTime(2024, 3, 20),
         );
         final map = order.toMap();
-        expect(map['status'], 'Confirmed');
+        expect(map['status'], 'confirmed');
       });
 
       test('2. Order fromMap with timestamp', () {
