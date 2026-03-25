@@ -28,7 +28,6 @@ final aiServiceProvider = Provider((ref) => getIt<AIService>());
 class AIService {
   final SecretsService _secrets;
   late final AICacheService _cache;
-  late final AIRateLimiter _rateLimiter;
   late final AIErrorHandler _errorHandler;
   late final AIRequestLogger _logger;
   late final AIProviderManager _providerManager;

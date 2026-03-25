@@ -163,8 +163,6 @@ class CompassService {
   /// would use a prayer times API
   Future<Map<String, String>> getPrayerTimes() async {
     try {
-      final position = await getCurrentLocation();
-
       // Placeholder: In production, integrate with PrayerTimes API
       // For now, return fixed times (these should be calculated based on location)
       return {

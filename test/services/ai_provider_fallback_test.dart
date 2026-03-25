@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_provider.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_provider_manager.dart';
-import 'package:paykari_bazar/src/features/ai/domain/ai_work_type.dart';
 
 // Mock AI Provider
 class MockAIProvider extends Mock implements AIProvider {

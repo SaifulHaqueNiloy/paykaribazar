@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../models/fleet_model.dart';
 
 class FleetService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

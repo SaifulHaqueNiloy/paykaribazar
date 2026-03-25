@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../di/service_locator.dart';
-import '../../../di/providers.dart';
 import 'ai_service.dart';
 
 class VoiceCommerceService {

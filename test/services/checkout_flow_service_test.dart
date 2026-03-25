@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:paykari_bazar/src/features/commerce/services/cart_service.dart';
 import 'package:paykari_bazar/src/features/commerce/services/order_service.dart';
-import 'package:paykari_bazar/src/models/order_model.dart';
 
 class MockCartService extends Mock implements CartService {}
 class MockOrderService extends Mock implements OrderService {}

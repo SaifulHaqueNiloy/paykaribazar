@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../core/constants/paths.dart';
 import '../../ai/services/ai_service.dart';
 import '../../../di/service_locator.dart';
 

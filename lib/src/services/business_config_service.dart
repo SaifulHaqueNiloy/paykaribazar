@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../core/constants/paths.dart';
 
 class BusinessConfigService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;

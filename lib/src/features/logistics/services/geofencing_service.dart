@@ -5,7 +5,6 @@ import 'dart:math';
 
 class GeofencingService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final Geolocator _geolocator = Geolocator();
 
   GeofencingService();
 

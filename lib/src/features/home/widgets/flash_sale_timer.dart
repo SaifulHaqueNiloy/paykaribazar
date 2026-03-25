@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../../../utils/styles.dart';
 
 class FlashSaleTimer extends StatefulWidget {
   final DateTime endTime;
