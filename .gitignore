@@ -1,0 +1,88 @@
+# Flutter/Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+
+# Android
+.gradle/
+local.properties
+*.keystore
+*.jks
+*.hprof
+android/keystore.properties
+# *.properties
+/android/app/key.properties
+/android/app/debug/
+/android/app/profile/
+/android/app/release/
+
+# iOS
+.generated/
+Flutter/App.framework
+Flutter/Flutter.framework
+Flutter/Generated.xcconfig
+Flutter/flutter_export_environment.sh
+ServiceDefinitions.json
+Runner/GeneratedPluginRegistrant.h
+Runner/GeneratedPluginRegistrant.m
+Pods/
+DerivedData/
+*.moved-aside
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+!default.pbxuser
+!default.mode1v3
+!default.mode2v3
+!default.perspectivev3
+xcuserdata/
+*.xccheckout
+*.xcscmblueprint
+*.xcuserstate
+**/.DS_Store
+**/DerivedData
+build/
+Index/
+Logs/
+TestResults/
+DerivedData/
+/ios/Flutter/.last_build_id
+/ios/Pods/
+/ios/Runner.xcworkspace/xcuserdata/
+
+# IntelliJ/Android Studio
+.idea/
+*.iml
+*.iws
+*.ipr
+cmake-build-*/
+
+# VS Code
+.vscode/
+
+# Firebase & Secrets (DNA ENFORCED)
+lib/firebase_options.dart
+android/app/google-services.json
+ios/Runner/GoogleService-Info.plist
+scripts/scraper/serviceAccountKey.json
+service-account.json
+
+# Backup & Binaries
+paykari_bazar_backup/
+*.exe
+*.enc
+
+# Miscellaneous
+*.log
+doc/api/
+/metadata
+node_modules/
+
+# Security Fix: Ignore sensitive credentials
+.env
+keystore.properties
+key.properties

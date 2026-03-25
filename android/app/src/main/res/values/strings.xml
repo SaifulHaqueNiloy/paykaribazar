@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Paykari Bazar</string>
+    <string name="facebook_app_id">YOUR_FB_ID</string>
+    <string name="fb_login_protocol_scheme">fbYOUR_FB_ID</string>
+    <string name="facebook_client_token">YOUR_CLIENT_TOKEN</string>
+
+    <!-- Profile Screen Strings -->
+    <string name="personal_hub">Personal Hub</string>
+    <string name="join_earn">Join &amp; Earn</string>
+    <string name="team_partners">Team &amp; Partners</string>
+    <string name="support_help">Support &amp; Help</string>
+    <string name="information_hub">Information Hub</string>
+    <string name="hub_action_orders">My Orders</string>
+    <string name="hub_action_wishlist">My Wishlist</string>
+    <string name="hub_action_wallet">My Wallet</string>
+    <string name="hub_action_edit">Edit Profile</string>
+    <string name="hub_action_reseller">Reseller</string>
+    <string name="hub_action_rider">Rider</string>
+    <string name="hub_action_staff">Staff</string>
+    <string name="our_partner">Our Partner</string>
+    <string name="our_staff">Our Staff</string>
+    <string name="live_chat">Live Chat</string>
+    <string name="whatsapp">WhatsApp</string>
+    <string name="call_now">Call Now</string>
+    <string name="how_to_use">How to Use</string>
+    <string name="faqs">FAQs</string>
+    <string name="terms">Terms</string>
+    <string name="terms_conditions">Terms &amp; Conditions</string>
+    <string name="about">About</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="pts_available">Pts Available</string>
+    <string name="language">Language</string>
+    <string name="theme">Theme</string>
+    <string name="your_invite_code">Your Invite Code</string>
+    <string name="copied">Copied!</string>
+    <string name="crafted_with">CRAFTED WITH ❤️ BY</string>
+    <string name="permissions_missing">Permissions missing</string>
+    <string name="enable_now">ENABLE NOW</string>
+    <string name="login_to_see_orders">Login to see your orders</string>
+    <string name="login_now">Login Now</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="create_one">Create One</string>
+    <string name="updating">Updating...</string>
+    <string name="update_complete">Update Complete!</string>
+    <string name="admin_control_panel">ADMIN CONTROL PANEL</string>
+    <string name="error">Error</string>
+    <string name="auth_error">Auth Error</string>
+
+    <!-- Admin Settings Strings -->
+    <string name="live_ai_status">LIVE AI STATUS</string>
+    <string name="one_click_optimizer">One Click Optimizer</string>
+    <string name="run_maintenance">Run Maintenance</string>
+    <string name="data_management">DATA MANAGEMENT</string>
+    <string name="export_csv">EXPORT CSV</string>
+    <string name="import_csv">IMPORT CSV</string>
+    <string name="data_maintenance">DATA MAINTENANCE</string>
+    <string name="sync_loyalty_stats">Sync Loyalty Stats</string>
+    <string name="migrate_cloudinary">Migrate Images to Cloudinary</string>
+    <string name="system_configuration">SYSTEM CONFIGURATION</string>
+    <string name="app_mode">App Mode</string>
+    <string name="auto_translation">Auto-Translation</string>
+    <string name="auto_seo">Auto-SEO</string>
+    <string name="bg_removal">Background Removal</string>
+    <string name="show_ai_assistant">Show AI Assistant</string>
+    <string name="dynamic_offers">Enable Dynamic Offers</string>
+    <string name="app_updates_versioning">APP UPDATES &amp; VERSIONING</string>
+    <string name="api_secrets_config">API &amp; SECRETS CONFIGURATION</string>
+</resources>

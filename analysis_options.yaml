@@ -1,0 +1,30 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    unused_import: warning
+    unused_local_variable: warning
+    unused_element: warning
+    dead_code: warning
+    deprecated_member_use: info
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+
+linter:
+  rules:
+    - avoid_print
+    - prefer_single_quotes
+    - curly_braces_in_flow_control_structures
+    - always_declare_return_types
+    - cancel_subscriptions
+    - close_sinks
+    - prefer_const_constructors
+    - prefer_const_declarations
+    - prefer_const_literals_to_create_immutables
+    - avoid_redundant_argument_values
+    - avoid_unnecessary_containers
+    - prefer_final_fields
+    - prefer_final_locals
+    - sized_box_for_whitespace
+    - use_key_in_widget_constructors

@@ -1,0 +1,96 @@
+plugins {
+    id "com.android.application"
+    id 'com.google.gms.google-services'
+    id "org.jetbrains.kotlin.android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+def pubspecVersionName = flutter.versionName
+def pubspecVersionCode = flutter.versionCode.toInteger()
+
+android {
+    namespace "com.paykaribazar.app"
+    compileSdk 36 // Blueprint: 36
+    ndkVersion = "28.2.13676358" // Required for plugins
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+        // Blueprint: Native Core Kotlin 2.1.0
+        // We use language-version 1.9 to bypass the K2 internal compiler bug
+        // while remaining on the 2.1.0 infrastructure.
+        freeCompilerArgs += [
+            "-P", "plugin:org.jetbrains.kotlin.android:enabled=false",
+            "-language-version", "1.9",
+            "-api-version", "1.9",
+            "-Xskip-metadata-version-check"
+        ]
+    }
+
+    signingConfigs {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile rootProject.file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    }
+
+    defaultConfig {
+        applicationId "com.paykaribazar.app"
+        minSdkVersion flutter.minSdkVersion // Blueprint: 21
+        targetSdk 35 // Blueprint: 35
+        versionCode pubspecVersionCode
+        versionName pubspecVersionName
+        
+        def mapsKey = keystoreProperties['MAPS_API_KEY'] ?: "YOUR_API_KEY_HERE"
+        manifestPlaceholders["MAPS_API_KEY"] = mapsKey
+    }
+
+    buildTypes {
+        release {
+            if (keystorePropertiesFile.exists()) {
+                signingConfig signingConfigs.release
+            } else {
+                signingConfig signingConfigs.debug
+            }
+
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+// Blueprint alignment: Force all Kotlin deps to 2.1.0
+// This is the "wise" upgrade to match your modern dependencies while fixing the crash
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == 'org.jetbrains.kotlin') {
+            details.useVersion "2.1.0"
+        }
+    }
+}
+
+flutter {
+    source "../../"
+}
+
+dependencies {
+    implementation "androidx.appcompat:appcompat:1.7.0"
+    implementation "com.google.android.material:material:1.12.0"
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.1.4"
+}

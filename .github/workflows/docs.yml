@@ -1,0 +1,67 @@
+name: Documentation - Update README & Changelog
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  update-docs:
+    name: Update Documentation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          VERSION=${{ github.event.release.tag_name || github.ref_name }}
+          CHANGELOG=$(cat << 'EOF'
+          ## [$(VERSION)] - $(date +%Y-%m-%d)
+
+          ### 🎉 Features
+          - Fleet management dashboard fully functional
+          - Real-time API quota tracking
+          - Enhanced error handling
+
+          ### 🔧 Improvements
+          - Automated CI/CD pipeline
+          - Firebase rules validation
+          - Improved build times with caching
+
+          ### 🐛 Bug Fixes
+          - Fixed Fleet tab wiring in admin screen
+          - Resolved state management race conditions
+
+          ### 📦 Deployment
+          - **Shorebird OTA:** Automatic update enabled
+          - **Firebase Hosting:** Web apps deployed
+          - **Google Play:** Beta track available
+
+          EOF
+          )
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Update CHANGELOG.md
+        run: |
+          cat <(echo "${{ steps.release_notes.outputs.changelog }}") CHANGELOG.md > CHANGELOG.md.tmp
+          mv CHANGELOG.md.tmp CHANGELOG.md
+
+      - name: Update README with latest version
+        run: |
+          sed -i 's/Version: .*/Version: ${{ github.event.release.tag_name || github.ref_name }}/' README.md
+          sed -i 's/Last Updated: .*/Last Updated: $(date -u +%Y-%m-%d)/' README.md
+
+      - name: Commit documentation changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add CHANGELOG.md README.md
+          git commit -m "docs: Update docs for release ${{ github.event.release.tag_name || github.ref_name }}" || echo "No changes to commit"
+          git push

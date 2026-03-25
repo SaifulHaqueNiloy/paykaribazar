@@ -1,0 +1,7 @@
+appId: com.paykaribazar.app
+---
+- launchApp
+- tapOn: "Login"
+- inputText: "01700000000"
+- tapOn: "Submit"
+- assertVisible: "Welcome"

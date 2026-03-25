@@ -1,0 +1,77 @@
+name: Security - Firebase Rules & Secrets
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'firestore.rules'
+      - 'storage.rules'
+      - 'firebase.json'
+  pull_request:
+    paths:
+      - 'firestore.rules'
+      - 'storage.rules'
+  workflow_dispatch:
+
+jobs:
+  validate-rules:
+    name: Validate Firebase Rules
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Validate Firestore Rules
+        run: firebase validate --project=${{ secrets.FIREBASE_PROJECT_ID }}
+
+  deploy-rules:
+    name: Deploy Firebase Rules
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    needs: validate-rules
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy Firestore Rules
+        run: firebase deploy --only firestore:rules --project=${{ secrets.FIREBASE_PROJECT_ID }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy Storage Rules
+        run: firebase deploy --only storage --project=${{ secrets.FIREBASE_PROJECT_ID }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+  secret-scan:
+    name: Scan for Secrets
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: TruffleHog Secret Scan
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ github.event.repository.default_branch }}
+          head: HEAD
+          extra_args: --debug --only-verified

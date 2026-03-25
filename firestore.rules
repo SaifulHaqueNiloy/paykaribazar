@@ -1,0 +1,91 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ==================== HELPERS ====================
+    function isAuth() { return request.auth != null; }
+    function isOwner(userId) { return isAuth() && request.auth.uid == userId; }
+    
+    function isAdmin() {
+      return isAuth() &&
+        (request.auth.token.admin == true ||
+         exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    function isReseller() {
+      return isAuth() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'reseller';
+    }
+
+    function isValidPhone(phone) { return phone.matches('^01[3-9][0-9]{8}$'); }
+
+    // ==================== USERS & WISHLIST ====================
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'isBanned']);
+      
+      // Wishlist sub-collection tracking
+      match /wishlist/{productId} {
+        allow read, write: if isOwner(userId);
+      }
+    }
+
+    // ==================== ORDERS ====================
+    match /orders/{orderId} {
+      allow read: if isAuth() && (resource.data.customerUid == request.auth.uid || resource.data.resellerUid == request.auth.uid || isAdmin());
+      allow create: if isAuth() && request.resource.data.customerUid == request.auth.uid;
+      allow update: if isAdmin() || (isOwner(resource.data.customerUid) && request.resource.data.status == 'cancelled');
+    }
+
+    // ==================== PRODUCTS (DNA PATH) ====================
+    match /hub/data/products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin() || isReseller();
+      
+      match /reviews/{reviewId} {
+        allow read: if true;
+        allow create: if isAuth();
+      }
+    }
+
+    // ==================== CATEGORIES (DNA PATH) ====================
+    match /hub/data/categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== CHATS (DNA PATH) ====================
+    match /private_chats/{chatId} {
+      allow read, write: if isAuth() && request.auth.uid in resource.data.participantIds;
+      
+      match /messages/{msgId} {
+        allow read: if isAuth();
+        allow create: if isAuth();
+      }
+    }
+
+    // ==================== API QUOTA & LOGS ====================
+    match /api_quota/{provider} {
+      allow read: if isAdmin();
+      allow update: if isAuth();
+    }
+
+    match /api_usage_logs/{logId} {
+      allow create: if isAuth();
+      allow read: if isAdmin();
+    }
+
+    // ==================== SYSTEM SETTINGS ====================
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== DEFAULT DENY ====================
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

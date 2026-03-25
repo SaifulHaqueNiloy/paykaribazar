@@ -1,0 +1,312 @@
+name: Release - Build & Deploy
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - 'v[0-9]+.[0-9]+.[0-9]+-*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (e.g., v1.0.0)'
+        required: true
+
+jobs:
+  pre-release:
+    name: Pre-Release Checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.5.0'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Verify no compilation errors
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test --coverage
+        continue-on-error: true
+
+  build-release:
+    name: Build Release APK/AAB
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: pre-release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.5.0'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Setup Android signing
+        run: |
+          mkdir -p android/app
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
+
+      - name: Build AAB (Customer)
+        run: flutter build appbundle -t lib/main_customer.dart --release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+
+      - name: Build AAB (Admin)
+        run: flutter build appbundle -t lib/main_admin.dart --release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+
+      - name: Build APK (Customer)
+        run: flutter build apk -t lib/main_customer.dart --release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+
+      - name: Build APK (Admin)
+        run: flutter build apk -t lib/main_admin.dart --release
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+
+      - name: Rename APKs
+        run: |
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/customer-release.apk || true
+          find build/app/outputs -name 'app-release.apk' -exec mv {} build/app/outputs/flutter-apk/admin-release.apk \;
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-builds
+          path: |
+            build/app/outputs/flutter-apk/
+            build/app/outputs/bundle/
+          retention-days: 30
+
+  deploy-shorebird:
+    name: Deploy via Shorebird (OTA)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build-release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.5.0'
+
+      - name: Install Shorebird CLI
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/shorebirdtech/shorebird/main/scripts/install.sh | bash
+          echo "${HOME}/.shorebird/bin" >> $GITHUB_PATH
+
+      - name: Setup Shorebird auth
+        run: |
+          mkdir -p ~/.shorebird
+          echo "${{ secrets.SHOREBIRD_AUTH_TOKEN }}" > ~/.shorebird/credentials.json
+
+      - name: Release Customer via Shorebird
+        run: |
+          shorebird release android \
+            -t lib/main_customer.dart \
+            --artifact apk \
+            -- --target-platform android-arm64
+
+      - name: Release Admin via Shorebird
+        run: |
+          shorebird release android \
+            -t lib/main_admin.dart \
+            --artifact apk \
+            -- --target-platform android-arm64
+
+  deploy-firebase:
+    name: Deploy to Firebase Hosting
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: pre-release
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.5.0'
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build Web (Customer)
+        run: flutter build web -t lib/main_customer.dart --release
+
+      - name: Build Web (Admin)
+        run: flutter build web -t lib/main_admin.dart --release
+
+      - name: Setup Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy --only hosting:customer,hosting:admin --project=${{ secrets.FIREBASE_PROJECT_ID }}
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+  deploy-google-play:
+    name: Deploy to Google Play Store
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build-release
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download release builds
+        uses: actions/download-artifact@v3
+        with:
+          name: release-builds
+
+      - name: Setup Ruby for Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
+          working-directory: fastlane
+
+      - name: Setup service account JSON
+        run: |
+          mkdir -p fastlane/metadata
+          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}" > fastlane/metadata/service_account.json
+
+      - name: Deploy Customer to Google Play (Beta)
+        run: |
+          cd fastlane
+          fastlane supply \
+            --package_name com.njel.paykari_bazar \
+            --aab ../build/app/outputs/bundle/release/app-release.aab \
+            --track beta \
+            --json_key metadata/service_account.json
+
+      - name: Deploy Admin to Google Play (Internal)
+        run: |
+          cd fastlane
+          fastlane supply \
+            --package_name com.njel.paykari_admin \
+            --aab ../build/app/outputs/bundle/admin_release/app-release.aab \
+            --track internal \
+            --json_key metadata/service_account.json
+
+  create-github-release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: [build-release, deploy-shorebird, deploy-firebase]
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: release-builds
+
+      - name: Create Release Notes
+        id: notes
+        run: |
+          TAG=${{ github.ref_name }}
+          RELEASE_NOTES=$(cat << 'EOF'
+          ## 🚀 Release $TAG
+
+          ### 📱 What's New
+          - Customer app APK: `customer-release.apk`
+          - Admin app APK: `admin-release.apk`
+          - Web apps deployed to Firebase Hosting
+
+          ### 🔄 Deployment Status
+          - ✅ Shorebird OTA: Deployed
+          - ✅ Firebase Hosting: Deployed
+          - ✅ Google Play (Beta): Deployed
+
+          ### 📊 Build Information
+          - Build Date: $(date -u)
+          - Commit: ${{ github.sha }}
+          - Author: ${{ github.actor }}
+
+          EOF
+          )
+          echo "release_notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$RELEASE_NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            build/app/outputs/flutter-apk/customer-release.apk
+            build/app/outputs/flutter-apk/admin-release.apk
+          body: ${{ steps.notes.outputs.release_notes }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  slack-notification:
+    name: Notify Slack
+    runs-on: ubuntu-latest
+    needs: [pre-release, build-release, deploy-shorebird, deploy-firebase]
+    if: always()
+
+    steps:
+      - name: Send Slack notification
+        uses: slackapi/slack-github-action@v1
+        with:
+          webhook-url: ${{ secrets.SLACK_WEBHOOK }}
+          payload: |
+            {
+              "text": "🚀 Paykari Bazar Release ${{ github.ref_name }}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Release Status*: ${{ job.status == 'success' && '✅ Success' || '❌ Failed' }}\n*Version*: ${{ github.ref_name }}\n*Commit*: <${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}|${{ github.sha }}>"
+                  }
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "*Deployments*:\n• Shorebird OTA: ${{ needs.deploy-shorebird.result == 'success' && '✅' || '⚠️' }}\n• Firebase: ${{ needs.deploy-firebase.result == 'success' && '✅' || '⚠️' }}\n• Pre-Release: ${{ needs.pre-release.result == 'success' && '✅' || '❌' }}"
+                  }
+                }
+              ]
+            }

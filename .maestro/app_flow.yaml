@@ -1,0 +1,7 @@
+appId: com.paykaribazar.app
+---
+- launchApp
+- assertVisible: "পাইকারী বাজার"
+- takeScreenshot: startup_screen
+- tapOn: "অনুমতি" # Assuming a permission dialog or button
+- stopApp

@@ -1,0 +1,13 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "powershell -Command \"$java = java -version 2>&1; if ($java -like '*version*17*') { exit 0 } else { Write-Host 'ERROR: Java 17 required. Found:'; java -version; exit 2 }\"",
+        "windows": "powershell -Command \"$java = java -version 2>&1; if ($java -like '*version*17*') { exit 0 } else { Write-Host 'ERROR: Java 17 required. Found:'; java -version; exit 2 }\"",
+        "timeout": 10,
+        "description": "Validate Java 17 is installed before running build commands"
+      }
+    ]
+  }
+}

@@ -1,0 +1,289 @@
+default_platform(:android)
+
+platform :android do
+  # ============================================================================
+  # ANDROID BUILD & RELEASE LANES
+  # ============================================================================
+
+  desc "Build signed APK for internal testing"
+  lane :build_apk_debug do
+    build_app_command = "flutter build apk -t lib/main_customer.dart --debug"
+    sh(build_app_command)
+    
+    puts "✅ APK built successfully at: build/app/outputs/apk/debug/app-debug.apk"
+  end
+
+  desc "Build signed APK for release"
+  lane :build_apk_release do
+    build_app_command = "flutter build apk -t lib/main_customer.dart --release"
+    sh(build_app_command)
+    
+    puts "✅ Release APK built successfully"
+    lane_context[SharedValues::APK_PATH] = "build/app/outputs/flutter-apk/app-release.apk"
+  end
+
+  desc "Build signed AAB (App Bundle) for Play Store"
+  lane :build_bundle_release do |options|
+    target = options[:target] || "lib/main_customer.dart"
+    
+    build_app_command = "flutter build appbundle -t #{target} --release"
+    sh(build_app_command)
+    
+    puts "✅ App Bundle built successfully"
+  end
+
+  desc "Deploy to Firebase App Distribution (Internal Testing)"
+  lane :deploy_firebase_internal do |options|
+    apk_path = options[:apk_path] || "build/app/outputs/flutter-apk/app-release.apk"
+    release_notes = options[:notes] || "Automated release from CI/CD"
+    groups = options[:groups] || "testers"
+
+    firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      apk_path: apk_path,
+      release_notes: release_notes,
+      groups: groups,
+      firebase_cli_token: ENV["FIREBASE_TOKEN"]
+    )
+
+    puts "✅ Deployed to Firebase App Distribution"
+  end
+
+  desc "Deploy to Google Play Store (Internal Testing Track)"
+  lane :deploy_play_store_internal do |options|
+    bundle_path = options[:bundle_path] || "build/app/outputs/bundle/release/app.aab"
+    version_name = options[:version] || "1.0.0"
+
+    upload_to_play_store(
+      package_name: ENV["ANDROID_PACKAGE_NAME"],
+      json_key_data: ENV["ANDROID_JSON_KEY_DATA"],
+      aab: bundle_path,
+      track: "internal",
+      release_status: "draft",
+      version_name: version_name,
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true,
+      skip_upload_changelogs: true
+    )
+
+    puts "✅ Uploaded to Play Store (Internal Track)"
+  end
+
+  desc "Deploy to Google Play Store (Beta Track)"
+  lane :deploy_play_store_beta do |options|
+    bundle_path = options[:bundle_path] || "build/app/outputs/bundle/release/app.aab"
+    version_name = options[:version] || "1.0.0"
+    release_notes = options[:notes] || "Beta release from CI/CD"
+
+    upload_to_play_store(
+      package_name: ENV["ANDROID_PACKAGE_NAME"],
+      json_key_data: ENV["ANDROID_JSON_KEY_DATA"],
+      aab: bundle_path,
+      track: "beta",
+      release_status: "completed",
+      version_name: version_name,
+      release_notes: { "en-US": release_notes },
+      skip_upload_metadata: true,
+      skip_upload_images: true,
+      skip_upload_screenshots: true
+    )
+
+    puts "✅ Uploaded to Play Store (Beta Track)"
+  end
+
+  desc "Deploy to Google Play Store (Production)"
+  lane :deploy_play_store_production do |options|
+    bundle_path = options[:bundle_path] || "build/app/outputs/bundle/release/app.aab"
+    version_name = options[:version] || "1.0.0"
+    release_notes = options[:notes] || "Production release"
+
+    upload_to_play_store(
+      package_name: ENV["ANDROID_PACKAGE_NAME"],
+      json_key_data: ENV["ANDROID_JSON_KEY_DATA"],
+      aab: bundle_path,
+      track: "production",
+      release_status: "completed",
+      version_name: version_name,
+      release_notes: { "en-US": release_notes }
+    )
+
+    puts "✅ Deployed to Play Store (Production)"
+  end
+
+  desc "Generate release notes from git commits"
+  lane :generate_release_notes do |options|
+    since_last_tag = options[:since_last_tag] || true
+
+    # Get commits since last tag
+    last_tag = sh("git describe --tags --abbrev=0 2>/dev/null || echo ''").to_s.strip
+    
+    if last_tag.empty?
+      commits = sh("git log --oneline --all").to_s.strip
+    else
+      commits = sh("git log #{last_tag}..HEAD --oneline").to_s.strip
+    end
+
+    release_notes = "Release Notes:\n\n#{commits}\n\nAutomated release"
+    
+    puts "📝 Release notes generated:"
+    puts release_notes
+
+    lane_context[SharedValues::RELEASE_NOTES] = release_notes
+  end
+
+  desc "Bump version in pubspec.yaml"
+  lane :bump_version do |options|
+    version_type = options[:type] || "patch" # patch, minor, major
+    
+    # Read current version
+    pubspec_path = "pubspec.yaml"
+    pubspec_content = File.read(pubspec_path)
+    current_version = pubspec_content.match(/^version: (.+)$/)[1].strip
+    
+    # Parse version
+    parts = current_version.split('+')
+    version = parts[0]
+    build_number = parts[1].to_i
+    
+    major, minor, patch = version.split('.').map(&:to_i)
+
+    case version_type
+    when "major"
+      major += 1
+      minor = 0
+      patch = 0
+    when "minor"
+      minor += 1
+      patch = 0
+    when "patch"
+      patch += 1
+    end
+
+    new_version = "#{major}.#{minor}.#{patch}"
+    new_build_number = build_number + 1
+    new_full_version = "#{new_version}+#{new_build_number}"
+
+    # Update pubspec.yaml
+    new_content = pubspec_content.gsub(/^version: .+$/, "version: #{new_full_version}")
+    File.write(pubspec_path, new_content)
+
+    puts "✅ Version bumped: #{current_version} → #{new_full_version}"
+
+    lane_context[SharedValues::NEW_VERSION] = new_full_version
+  end
+
+  desc "Complete release workflow: build, version bump, deploy"
+  lane :release do |options|
+    track = options[:track] || "internal" # internal, beta, production
+    version_type = options[:version] || "patch"
+
+    # Step 1: Bump version
+    bump_version(type: version_type)
+    new_version = lane_context[SharedValues::NEW_VERSION]
+
+    # Step 2: Build
+    build_bundle_release
+
+    # Step 3: Generate release notes
+    generate_release_notes
+
+    # Step 4: Deploy
+    case track
+    when "beta"
+      deploy_play_store_beta(
+        bundle_path: "build/app/outputs/bundle/release/app.aab",
+        version: new_version,
+        notes: lane_context[SharedValues::RELEASE_NOTES]
+      )
+    when "production"
+      deploy_play_store_production(
+        bundle_path: "build/app/outputs/bundle/release/app.aab",
+        version: new_version,
+        notes: lane_context[SharedValues::RELEASE_NOTES]
+      )
+    else # internal
+      deploy_firebase_internal(
+        apk_path: "build/app/outputs/flutter-apk/app-release.apk",
+        notes: lane_context[SharedValues::RELEASE_NOTES],
+        groups: "testers"
+      )
+    end
+
+    puts "✨ Release complete!"
+  end
+
+  desc "Hotfix (patch only)"
+  lane :hotfix do |options|
+    release(track: "beta", version: "patch")
+  end
+
+end
+
+platform :ios do
+  # ============================================================================
+  # iOS BUILD & RELEASE LANES
+  # ============================================================================
+
+  desc "Build iOS app (Ad-hoc)"
+  lane :build_ios_adhoc do
+    build_app_command = "flutter build ios -t lib/main_customer.dart --release --no-codesign"
+    sh(build_app_command)
+    
+    puts "✅ iOS app built successfully"
+  end
+
+  desc "Build iOS app for App Store"
+  lane :build_ios_appstore do
+    build_app_command = "flutter build ios -t lib/main_customer.dart --release"
+    sh(build_app_command)
+    
+    puts "✅ iOS app built for App Store"
+  end
+
+  desc "Deploy to TestFlight (iOS Beta)"
+  lane :deploy_testflight do |options|
+    puts "⚠️ TestFlight deployment requires Xcode build"
+    puts "Run: fastlane ios build_ios_appstore first"
+  end
+
+end
+
+# ============================================================================
+# SHARED LANES (Both iOS & Android)
+# ============================================================================
+
+desc "Get current version from pubspec.yaml"
+lane :get_version do
+  pubspec_path = "pubspec.yaml"
+  pubspec_content = File.read(pubspec_path)
+  version = pubspec_content.match(/^version: (.+)$/)[1].strip
+  
+  puts "📌 Current version: #{version}"
+  
+  lane_context[SharedValues::CURRENT_VERSION] = version
+  version
+end
+
+desc "Run all pre-release checks"
+lane :pre_release_checks do
+  sh("flutter pub get")
+  sh("flutter analyze")
+  sh("flutter format --set-exit-if-changed lib")
+  sh("flutter test --coverage")
+  
+  puts "✅ Pre-release checks passed"
+end
+
+desc "Generate changelog"
+lane :generate_changelog do
+  # Requires git history
+  changelog_path = "CHANGELOG.md"
+  
+  sh("git log --oneline --all > /tmp/changelog.txt")
+  
+  content = File.read("/tmp/changelog.txt")
+  File.write(changelog_path, content)
+  
+  puts "📝 Changelog generated at: #{changelog_path}"
+end

@@ -1,0 +1,17 @@
+appId: com.paykaribazar.app
+---
+- launchApp
+- assertVisible: "পাইকারী বাজার"
+- takeScreenshot: 01_Startup
+- tapOn: "সব পণ্য"
+- takeScreenshot: 02_ProductGrid
+- tapOn: " Organic Honey"
+- tapOn: "কার্টে যোগ করুন"
+- assertVisible: "কার্ট"
+- takeScreenshot: 03_CartFlow
+- tapOn: "অ্যাডমিন"
+- assertVisible: "Admin Dashboard"
+- takeScreenshot: 04_AdminPanel
+- tapOn: "AI MASTER"
+- assertVisible: "QUOTA"
+- takeScreenshot: 05_AIStats

@@ -1,0 +1,15 @@
+{
+  "name": "paykari_bazar",
+  "version": "1.0.0",
+  "description": "Paykari Bazar Build & Deploy System",
+  "main": "server.js",
+  "scripts": {
+    "release-admin": "shorebird release android -t lib/main_admin.dart --artifact apk -- --target-platform android-arm64 && mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/admin-release.apk",
+    "release-customer": "shorebird release android -t lib/main_customer.dart --artifact apk -- --target-platform android-arm64 && mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/customer-release.apk",
+    "deploy-apps": "node server.js",
+    "build-and-deploy": "npm run release-admin && npm run release-customer && npm run deploy-apps"
+  },
+  "dependencies": {
+    "firebase": "^12.10.0"
+  }
+}
