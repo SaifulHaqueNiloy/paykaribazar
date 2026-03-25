@@ -623,7 +623,7 @@ void main() {
       when(() => mockProvider.query(testAiQuery))
           .thenAnswer((_) async => testAiResponse);
       when(() => mockCache.set(any(), any()))
-          .thenAnswer((_) async => void);
+          .thenAnswer((_) async {});
 
       // Act
       final response = await mockProvider.query(testAiQuery);
@@ -735,7 +735,7 @@ void main() {
     test('12. Rate limiter counter resets at minute boundary', () async {
       // Arrange
       when(() => mockRateLimiter.resetMinuteCounter())
-          .thenAnswer((_) async => void);
+          .thenAnswer((_) async {});
 
       // Act
       await mockRateLimiter.resetMinuteCounter();
@@ -790,7 +790,7 @@ void main() {
             provider: 'gemini',
             latency: any(named: 'latency'),
             tokensUsed: any(named: 'tokensUsed'),
-          )).thenAnswer((_) async => void);
+          )).thenAnswer((_) async {});
 
       // Act
       await mockAudit.logRequest(
