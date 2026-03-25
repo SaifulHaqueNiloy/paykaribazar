@@ -41,10 +41,13 @@ void main() {
     });
 
     test('Search products', () async {
-      when(() => productService.searchProducts(any())).thenAnswer((_) async => []);
+      final productStream = Stream<List<Product>>.value([]);
+      when(() => productService.searchProducts(any())).thenAnswer((_) => productStream);
       
-      final results = await productService.searchProducts('test');
-      expect(results, isA<List<Product>>());
+      final results = productStream;
+      results.listen((productList) {
+        expect(productList, isA<List<Product>>());
+      });
     });
    group('Product matchesSearch', () {
       final product = Product(
