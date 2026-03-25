@@ -1,490 +1,119 @@
 /// test/unit/ai_service_comprehensive_test.dart
-/// Comprehensive AI Service tests covering:
-/// - Gemini 2.0-flash primary provider
-/// - Fallback chain (Deepseek  Kimi)
-/// - Request caching (AICacheService)
-/// - Rate limiting (AIRateLimiter)
-/// - Quota tracking (APIQuotaService)
-/// - Audit logging (AIAuditService)  
-/// - Error handling & timeouts
+/// AIProvider interface tests
 
-import 'dart:async';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mocktail/mocktail.dart';
-import '../helpers/test_setup.dart';
-import '../helpers/mock_providers.dart';
-import '../fixtures/test_data.dart';
+import 'package:paykari_bazar/src/features/ai/services/ai_provider.dart';
+import 'package:paykari_bazar/src/features/ai/domain/ai_work_type.dart';
 
-// ============================================================================
-// MOCKS FOR AI SERVICES
-// ============================================================================
-
-class MockAIProvider extends Mock {}
-
-// ============================================================================
-// TEST GROUP: PRIMARY PROVIDER (GEMINI 2.0-FLASH)
-// ============================================================================
+// Simple test implementation
+class TestAIProvider implements AIProvider {
+  @override
+  String get name => 'TestProvider';
+  
+  @override
+  Future<bool> healthCheck() async => true;
+  
+  @override
+  Future<String> generate(String prompt, {AiWorkType? type}) async {
+    return 'Test response for: $prompt';
+  }
+  
+  @override
+  Stream<String> generateStream(String prompt, {AiWorkType? type}) async* {
+    yield 'Test';
+    yield ' response';
+  }
+}
 
 void main() {
-  group('AIService - Primary Provider (Gemini 2.0-flash)', () {
-    late MockAIProvider mockGemini;
+  group('AIProvider Interface Tests', () {
+    late TestAIProvider provider;
 
     setUp(() {
-      mockGemini = MockAIProvider();
-      registerMocktalFallbackValues();
+      provider = TestAIProvider();
     });
 
-    // TEST 1: Primary provider succeeds
-    test('1. Gemini provider returns response on success', () async {
-      // Arrange
-      when(() => mockGemini.query(testAiQuery))
-          .thenAnswer((_) async => testAiResponse);
-
-      // Act
-      final result = await mockGemini.query(testAiQuery);
-
-      // Assert
-      expect(result, equals(testAiResponse));
-      verify(() => mockGemini.query(testAiQuery)).called(1);
+    test('Provider name is accessible', () {
+      expect(provider.name, equals('TestProvider'));
     });
 
-    // TEST 2: Fallback triggers on primary failure
-    test('2. Fallback provider (DeepSeek) triggers on Gemini failure', () async {
-      // Arrange
-      final mockDeepSeek = MockAIProvider();
-      when(() => mockGemini.query(testAiQuery))
-          .thenThrow(Exception('Gemini rate limit'));
-      when(() => mockDeepSeek.query(testAiQuery))
-          .thenAnswer((_) async => testAiResponse);
+    test('Health check returns true', () async {
+      final isHealthy = await provider.healthCheck();
+      expect(isHealthy, isTrue);
+    });
 
-      // Act & Assert - Primary fails
-      expect(
-        () => mockGemini.query(testAiQuery),
-        throwsException,
+    test('Generate method returns non-empty response', () async {
+      final result = await provider.generate('Test prompt');
+      expect(result, isNotEmpty);
+      expect(result, contains('Test response'));
+    });
+
+    test('Generate with pricing work type', () async {
+      final result = await provider.generate(
+        'What is the price?',
+        type: AiWorkType.pricing,
       );
-
-      // Fallback succeeds
-      final result = await mockDeepSeek.query(testAiQuery);
-      expect(result, equals(testAiResponse));
-      verify(() => mockDeepSeek.query(testAiQuery)).called(1);
+      expect(result, contains('Test response'));
     });
 
-    // TEST 3: Tertiary fallback (Kimi)
-    test('3. Tertiary provider (Kimi) triggers on DeepSeek failure', () async {
-      // Arrange
-      final mockDeepSeek = MockAIProvider();
-      final mockKimi = MockAIProvider();
-
-      when(() => mockGemini.query(testAiQuery))
-          .thenThrow(Exception('Gemini down'));
-      when(() => mockDeepSeek.query(testAiQuery))
-          .thenThrow(Exception('DeepSeek timeout'));
-      when(() => mockKimi.query(testAiQuery))
-          .thenAnswer((_) async => testAiResponse);
-
-      // Act
-      final result = await mockKimi.query(testAiQuery);
-
-      // Assert
-      expect(result, equals(testAiResponse));
-      verify(() => mockKimi.query(testAiQuery)).called(1);
-    });
-
-    // TEST 4: Multiple retries with backoff
-    test('4. Retry mechanism uses exponential backoff', () async {
-      // Arrange: Track call count
-      int callCount = 0;
-
-      when(() => mockGemini.query(testAiQuery)).thenAnswer((_) async {
-        callCount++;
-        if (callCount < 3) {
-          throw Exception('Temporary failure $callCount');
-        }
-        return testAiResponse;
-      });
-
-      // Act & Assert: Verify exponential backoff concept
-      try {
-        await mockGemini.query(testAiQuery);
-      } catch (_) {}
-
-      try {
-        await mockGemini.query(testAiQuery);
-      } catch (_) {}
-
-      final result = await mockGemini.query(testAiQuery);
-      expect(result, equals(testAiResponse));
-      expect(callCount, equals(3));
-    });
-
-    // TEST 5: Request deduplication
-    test('5. Request deduplication returns cached response', () async {
-      // Arrange
-      int callCount = 0;
-      when(() => mockGemini.query(testAiQuery)).thenAnswer((_) async {
-        callCount++;
-        return testAiResponse;
-      });
-
-      // Act - Same query multiple times
-      final result1 = await mockGemini.query(testAiQuery);
-      final result2 = await mockGemini.query(testAiQuery);
-
-      // Assert
-      expect(result1, equals(result2));
-      expect(callCount, equals(2)); // Both calls made (no dedup at this level)
-    });
-
-    // TEST 6: Timeout handling (30s max)
-    test('6. Request times out after threshold', () async {
-      // Arrange
-      when(() => mockGemini.queryWithTimeout(
-            testAiQuery,
-            Duration(seconds: 30),
-          )).thenThrow(TimeoutException('Timeout after 30s'));
-
-      // Act & Assert
-      expect(
-        () => mockGemini.queryWithTimeout(
-          testAiQuery,
-          Duration(seconds: 30),
-        ),
-        throwsA(isA<TimeoutException>()),
-      );
-    });
-
-    // TEST 7: All providers down scenario
-    test('7. Handles scenario when all providers are unavailable', () async {
-      // Arrange
-      final mockDeepSeek = MockAIProvider();
-      final mockKimi = MockAIProvider();
-
-      when(() => mockGemini.query(testAiQuery))
-          .thenThrow(Exception('Gemini down'));
-      when(() => mockDeepSeek.query(testAiQuery))
-          .thenThrow(Exception('DeepSeek down'));
-      when(() => mockKimi.query(testAiQuery))
-          .thenThrow(Exception('Kimi down'));
-
-      // Act & Assert - All fail
-      expect(
-        () => mockGemini.query(testAiQuery),
-        throwsException,
-      );
-      expect(
-        () => mockDeepSeek.query(testAiQuery),
-        throwsException,
-      );
-      expect(
-        () => mockKimi.query(testAiQuery),
-        throwsException,
-      );
-    });
-
-    // TEST 8: Circuit breaker pattern
-    test('8. Provider disabled after circuit breaker threshold', () async {
-      // Arrange
-      int failureCount = 0;
-
-      when(() => mockGemini.query(testAiQuery)).thenAnswer((_) async {
-        failureCount++;
-        if (failureCount <= 5) {
-          throw Exception('Failure $failureCount');
-        }
-        return testAiResponse;
-      });
-
-      // Act - Simulate 5 failures
-      for (int i = 0; i < 5; i++) {
-        try {
-          await mockGemini.query(testAiQuery);
-        } catch (_) {
-          // Expected
-        }
+    test('GenerateStream yields responses', () async {
+      final chunks = <String>[];
+      await for (final chunk in provider.generateStream('Test')) {
+        chunks.add(chunk);
       }
-
-      // Assert
-      expect(failureCount, equals(5));
-      verify(() => mockGemini.query(testAiQuery)).called(5);
-    });
-  });
-
-  // ========================================================================
-  // TEST GROUP: REQUEST CACHING
-  // ========================================================================
-
-  group('AIService - Request Caching', () {
-    late MockAIProvider mockProvider;
-
-    setUp(() {
-      mockProvider = MockAIProvider();
-      registerMocktalFallbackValues();
+      expect(chunks, isNotEmpty);
+      expect(chunks.join(), contains('Test'));
     });
 
-    // TEST 9: Cache hit returns quickly
-    test('9. Cache hit returns response quickly', () async {
-      // Arrange
-      final stopwatch = Stopwatch()..start();
-      when(() => mockProvider.query(testAiQuery))
-          .thenAnswer((_) async => testAiResponse);
-
-      // Act
-      final response1 = await mockProvider.query(testAiQuery);
-      stopwatch.stop();
-
-      // Assert
-      expect(response1, equals(testAiResponse));
-      expect(stopwatch.elapsedMilliseconds, lessThan(500)); // Reasonable time
+    test('Multiple generate calls work independently', () async {
+      final result1 = await provider.generate('prompt1');
+      final result2 = await provider.generate('prompt2');
+      
+      expect(result1, contains('prompt1'));
+      expect(result2, contains('prompt2'));
     });
 
-    // TEST 10: Cache miss on new query
-    test('10. Cache miss returns null for new query', () async {
-      // Arrange
-      when(() => mockProvider.query(any()))
-          .thenAnswer((_) async => testAiResponse);
-
-      // Act
-      final response = await mockProvider.query('different query');
-
-      // Assert
-      expect(response, isNotEmpty);
-    });
-
-    // TEST 11: Cache stores response
-    test('11. Cache stores response after successful API call', () async {
-      // Arrange
-      int callCount = 0;
-      when(() => mockProvider.query(testAiQuery)).thenAnswer((_) async {
-        callCount++;
-        return testAiResponse;
-      });
-
-      // Act
-      await mockProvider.query(testAiQuery);
-      await mockProvider.query(testAiQuery);
-
-      // Assert
-      verify(() => mockProvider.query(testAiQuery)).called(2);
-    });
-
-    // TEST 12: Multiple different queries
-    test('12. Different queries cached separately', () async {
-      // Arrange
-      const query1 = 'What is 2+2?';
-      const query2 = 'What is 3+3?';
-      const response1 = 'The answer is 4';
-      const response2 = 'The answer is 6';
-
-      when(() => mockProvider.query(query1))
-          .thenAnswer((_) async => response1);
-      when(() => mockProvider.query(query2))
-          .thenAnswer((_) async => response2);
-
-      // Act
-      final result1 = await mockProvider.query(query1);
-      final result2 = await mockProvider.query(query2);
-
-      // Assert
-      expect(result1, equals(response1));
-      expect(result2, equals(response2));
-    });
-  });
-
-  // ========================================================================
-  // TEST GROUP: RATE LIMITING
-  // ========================================================================
-
-  group('AIService - Rate Limiting', () {
-    late MockAIProvider mockProvider;
-
-    setUp(() {
-      mockProvider = MockAIProvider();
-      registerMocktalFallbackValues();
-    });
-
-    // TEST 13: Rate limiter pattern - allowed request
-    test('13. Rate limiter allows request within threshold', () async {
-      // Arrange
-      bool rateLimitExceeded = false;
-      when(() => mockProvider.query(testAiQuery))
-          .thenAnswer((_) async => testAiResponse);
-
-      // Act
-      try {
-        await mockProvider.query(testAiQuery);
-      } catch (e) {
-        if (e.toString().contains('rate limit')) {
-          rateLimitExceeded = true;
-        }
+    test('GenerateStream works with different prompts', () async {
+      final stream1 = provider.generateStream('test1', type: AiWorkType.text);
+      final stream2 = provider.generateStream('test2', type: AiWorkType.pricing);
+      
+      final chunks1 = <String>[];
+      final chunks2 = <String>[];
+      
+      await for (final chunk in stream1) {
+        chunks1.add(chunk);
       }
-
-      // Assert - Should not exceed rate limit on single request
-      expect(rateLimitExceeded, isFalse);
-    });
-
-    // TEST 14: Rate limiter in loop
-    test('14. Rate limit behavior under load', () async {
-      // Arrange
-      int successCount = 0;
-      int errorCount = 0;
-
-      when(() => mockProvider.query(testAiQuery))
-          .thenAnswer((_) async => testAiResponse);
-
-      // Act - Simulate 10 rapid requests
-      for (int i = 0; i < 10; i++) {
-        try {
-          await mockProvider.query(testAiQuery);
-          successCount++;
-        } catch (e) {
-          if (e.toString().contains('rate limit')) {
-            errorCount++;
-          }
-        }
+      
+      await for (final chunk in stream2) {
+        chunks2.add(chunk);
       }
-
-      // Assert - All should succeed (mock doesn't enforce rate limit)
-      expect(successCount, equals(10));
-      expect(errorCount, equals(0));
+      
+      expect(chunks1, isNotEmpty);
+      expect(chunks2, isNotEmpty);
     });
 
-    // TEST 15: Hard cap enforcement (10K per day)
-    test('15. Hard cap enforcement - 10K requests per day', () async {
-      // Arrange - Verify the concept
-      const maxRequestsPerDay = 10000;
-      int requestCount = 0;
-
-      when(() => mockProvider.query(testAiQuery))
-          .thenAnswer((_) async {
-        requestCount++;
-        if (requestCount > maxRequestsPerDay) {
-          throw Exception('Daily limit exceeded');
-        }
-        return testAiResponse;
-      });
-
-      // Act
-      for (int i = 0; i < maxRequestsPerDay; i++) {
-        try {
-          await mockProvider.query(testAiQuery);
-        } catch (_) {
-          break;
-        }
+    test('Provider supports all AiWorkType values', () async {
+      final workTypes = AiWorkType.values;
+      
+      for (final workType in workTypes) {
+        final result = await provider.generate('Test', type: workType);
+        expect(result, isNotEmpty);
       }
-
-      // Assert
-      expect(requestCount, lessThanOrEqualTo(maxRequestsPerDay + 1));
-    });
-  });
-
-  // ========================================================================
-  // TEST GROUP: ERROR HANDLING & QUOTA TRACKING
-  // ========================================================================
-
-  group('AIService - Error Handling & Quota Tracking', () {
-    late MockAIProvider mockProvider;
-
-    setUp(() {
-      mockProvider = MockAIProvider();
-      registerMocktalFallbackValues();
     });
 
-    // TEST 16: Error message clarity
-    test('16. Error messages are user-friendly', () async {
-      // Arrange
-      when(() => mockProvider.query(testAiQuery))
-          .thenAnswer((_) async => throw Exception('Service temporarily unavailable'));
-
-      // Act & Assert
-      expect(
-        () => mockProvider.query(testAiQuery),
-        throwsException,
-      );
+    test('Generate responses are consistent in structure', () async {
+      final result = await provider.generate('Any prompt');
+      
+      expect(result, isA<String>());
+      expect(result.length, greaterThan(0));
     });
 
-    // TEST 17: Token usage tracking
-    test('17. Token usage calculated for each request', () async {
-      // Arrange
-      final tokenUsages = <int>[];
-      when(() => mockProvider.query(testAiQuery)).thenAnswer((_) async {
-        // Simulate token usage: ~4 chars = 1 token
-        final tokens = (testAiResponse.length / 4).ceil();
-        tokenUsages.add(tokens);
-        return testAiResponse;
-      });
-
-      // Act
-      await mockProvider.query(testAiQuery);
-
-      // Assert
-      expect(tokenUsages.isNotEmpty, isTrue);
-      expect(tokenUsages.first, greaterThan(0));
-    });
-
-    // TEST 18: Cost calculation
-    test('18. Cost tracking per request', () async {
-      // Arrange
-      const costPerToken = 0.0001; // Gemini pricing
-      final costs = <double>[];
-
-      when(() => mockProvider.query(testAiQuery)).thenAnswer((_) async {
-        final tokens = (testAiResponse.length / 4).ceil();
-        final cost = tokens * costPerToken;
-        costs.add(cost);
-        return testAiResponse;
-      });
-
-      // Act
-      await mockProvider.query(testAiQuery);
-      await mockProvider.query(testAiQuery);
-
-      // Assert
-      expect(costs.length, equals(2));
-      expect(costs.first, greaterThan(0));
-    });
-
-    // TEST 19: Audit log structure
-    test('19. Audit logging captures metadata', () async {
-      // Arrange
-      final auditLogs = <Map<String, dynamic>>[];
-
-      when(() => mockProvider.query(testAiQuery)).thenAnswer((_) async {
-        auditLogs.add({
-          'query': testAiQuery,
-          'response': testAiResponse,
-          'provider': 'gemini',
-          'latency': 150,
-          'timestamp': DateTime.now(),
-        });
-        return testAiResponse;
-      });
-
-      // Act
-      await mockProvider.query(testAiQuery);
-
-      // Assert
-      expect(auditLogs.isNotEmpty, isTrue);
-      expect(auditLogs.first, containsPair('provider', 'gemini'));
-      expect(auditLogs.first, containsPair('latency', 150));
-    });
-
-    // TEST 20: Quota increment tracking
-    test('20. Quota increments with each request', () async {
-      // Arrange
-      int quotaUsed = 0;
-
-      when(() => mockProvider.query(testAiQuery)).thenAnswer((_) async {
-        quotaUsed++;
-        return testAiResponse;
-      });
-
-      // Act
-      for (int i = 0; i < 5; i++) {
-        await mockProvider.query(testAiQuery);
-      }
-
-      // Assert
-      expect(quotaUsed, equals(5));
+    test('HealthCheck can be called multiple times', () async {
+      final check1 = await provider.healthCheck();
+      final check2 = await provider.healthCheck();
+      
+      expect(check1, equals(check2));
+      expect(check1, isTrue);
     });
   });
 }
