@@ -145,12 +145,12 @@ QuerySnapshot<Map<String, dynamic>> mockQuerySnapshot(
   List<Map<String, dynamic>> documents, {
   List<String>? ids,
 }) {
-  final docs = <DocumentSnapshot>[];
+  final docs = <QueryDocumentSnapshot>[];
   for (int i = 0; i < documents.length; i++) {
     docs.add(MockDocumentSnapshot(
       id: ids?[i] ?? 'doc-$i',
       data: documents[i],
-    ));
+    ) as QueryDocumentSnapshot<Map<String, dynamic>>);
   }
   return MockQuerySnapshot(docs: docs)
       as QuerySnapshot<Map<String, dynamic>>;

@@ -166,13 +166,28 @@ class Order {
       status: OrderStatusExtension.fromString(map['status'] ?? 'pending'),
       riderUid: map['riderUid'],
       isEmergency: map['isEmergency'] ?? false,
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      updatedAt: (map['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: _parseDateTime(map['createdAt']),
+      updatedAt: _parseDateTime(map['updatedAt']),
       trackingId: map['trackingId'],
       cancellationReason: map['cancellationReason'],
-      deliveredAt:
-          (map['deliveredAt'] as Timestamp?)?.toDate(),
+      deliveredAt: _parseDateTimeNullable(map['deliveredAt']),
     );
+  }
+
+  /// Helper to parse DateTime from both Timestamp and DateTime objects
+  static DateTime _parseDateTime(dynamic value) {
+    if (value == null) return DateTime.now();
+    if (value is Timestamp) return value.toDate();
+    if (value is DateTime) return value;
+    return DateTime.now();
+  }
+
+  /// Helper to parse nullable DateTime
+  static DateTime? _parseDateTimeNullable(dynamic value) {
+    if (value == null) return null;
+    if (value is Timestamp) return value.toDate();
+    if (value is DateTime) return value;
+    return null;
   }
 
   /// Convert Order to Firestore-compatible map
