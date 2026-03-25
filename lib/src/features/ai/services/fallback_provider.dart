@@ -21,28 +21,28 @@ class FallbackProvider implements AIProvider {
       
       final promptLower = prompt.toLowerCase();
       
-      // Category: PRICING
-      if (type?.name == 'PRICING' || promptLower.contains('price')) {
+      // Category: pricing
+      if (type == AiWorkType.pricing || promptLower.contains('price') || promptLower.contains('discount')) {
         return _generatePricingResponse(prompt);
       }
       
-      // Category: PRODUCT_DESCRIPTION
-      if (type?.name == 'PRODUCT_DESCRIPTION' || promptLower.contains('describe') || promptLower.contains('description')) {
+      // Category: productDescription
+      if (type == AiWorkType.productDescription || promptLower.contains('describe') || promptLower.contains('description')) {
         return _generateProductDescription(prompt);
       }
       
-      // Category: THEME
-      if (type?.name == 'THEME' || promptLower.contains('theme') || promptLower.contains('design')) {
+      // Category: theme
+      if (type == AiWorkType.theme || promptLower.contains('theme') || promptLower.contains('design')) {
         return _generateThemeResponse(prompt);
       }
       
-      // Category: NOTIFICATION
-      if (type?.name == 'NOTIFICATION' || promptLower.contains('notify') || promptLower.contains('message')) {
+      // Category: notification
+      if (type == AiWorkType.notification || promptLower.contains('notify') || promptLower.contains('message')) {
         return _generateNotificationResponse(prompt);
       }
       
-      // Category: DASHBOARD_INSIGHT
-      if (type?.name == 'DASHBOARD_INSIGHT' || promptLower.contains('insight') || promptLower.contains('analytics')) {
+      // Category: dashboardInsight
+      if (type == AiWorkType.dashboardInsight || promptLower.contains('insight') || promptLower.contains('analytics')) {
         return _generateDashboardInsight(prompt);
       }
       
