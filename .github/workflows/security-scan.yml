@@ -85,7 +85,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.25.0'
+          flutter-version: '3.22.0'
           cache: true
 
       - name: Check pub.dev packages
@@ -116,7 +116,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.25.0'
+          flutter-version: '3.22.0'
 
       - name: Install syft for SBOM generation
         run: |
@@ -146,7 +146,7 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.25.0'
+          flutter-version: '3.22.0'
           cache: true
 
       - name: Install dependencies
