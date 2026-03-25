@@ -167,13 +167,13 @@ class SystemHealthTab extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
-        side: BorderSide(color: color.withOpacity(0.1))
+        side: BorderSide(color: color.withValues(alpha: 0.1))
       ),
       child: ListTile(
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             shape: BoxShape.circle
           ),
           child: Icon(icon, color: color, size: 20),
@@ -182,7 +182,7 @@ class SystemHealthTab extends ConsumerWidget {
         trailing: Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
           decoration: BoxDecoration(
-            color: color.withOpacity(0.1), 
+            color: color.withValues(alpha: 0.1), 
             borderRadius: BorderRadius.circular(8)
           ),
           child: Text(
@@ -198,9 +198,9 @@ class SystemHealthTab extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppStyles.primaryColor.withOpacity(0.05),
+        color: AppStyles.primaryColor.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppStyles.primaryColor.withOpacity(0.1))
+        border: Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.1))
       ),
       child: const Column(
         children: [
@@ -230,7 +230,7 @@ class SystemHealthTab extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
-        side: BorderSide(color: color.withOpacity(0.1)),
+        side: BorderSide(color: color.withValues(alpha: 0.1)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -262,7 +262,7 @@ class SystemHealthTab extends ConsumerWidget {
               value: progress,
               minHeight: 8,
               color: color,
-              backgroundColor: color.withOpacity(0.12),
+              backgroundColor: color.withValues(alpha: 0.12),
             ),
             const SizedBox(height: 12),
             Row(
@@ -294,7 +294,7 @@ class SystemHealthTab extends ConsumerWidget {
       margin: const EdgeInsets.only(bottom: 12),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15),
-        side: BorderSide(color: Colors.grey.withOpacity(0.15)),
+        side: BorderSide(color: Colors.grey.withValues(alpha: 0.15)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -321,7 +321,7 @@ class SystemHealthTab extends ConsumerWidget {
                 contentPadding: EdgeInsets.zero,
                 leading: CircleAvatar(
                   radius: 16,
-                  backgroundColor: AppStyles.primaryColor.withOpacity(0.08),
+                  backgroundColor: AppStyles.primaryColor.withValues(alpha: 0.08),
                   child: const Icon(
                     Icons.bolt_rounded,
                     size: 16,
@@ -351,7 +351,7 @@ class SystemHealthTab extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: AppStyles.primaryColor.withOpacity(0.06),
+        color: AppStyles.primaryColor.withValues(alpha: 0.06),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -369,3 +369,4 @@ class SystemHealthTab extends ConsumerWidget {
     );
   }
 }
+

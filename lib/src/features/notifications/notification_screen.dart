@@ -69,7 +69,7 @@ class NotificationScreen extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.notifications_none_rounded, size: 80, color: Colors.grey.withOpacity(0.5)),
+          Icon(Icons.notifications_none_rounded, size: 80, color: Colors.grey.withValues(alpha: 0.5)),
           const SizedBox(height: 16),
           const Text('আপনার কোনো নোটিফিকেশন নেই', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
         ],
@@ -89,9 +89,9 @@ class NotificationScreen extends ConsumerWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? (isRead ? const Color(0xFF1E293B) : const Color(0xFF334155)) : (isRead ? Colors.white : Colors.indigo.withOpacity(0.05)),
+          color: isDark ? (isRead ? const Color(0xFF1E293B) : const Color(0xFF334155)) : (isRead ? Colors.white : Colors.indigo.withValues(alpha: 0.05)),
           borderRadius: BorderRadius.circular(15),
-          border: isRead ? null : Border.all(color: AppStyles.primaryColor.withOpacity(0.3)),
+          border: isRead ? null : Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.3)),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,7 +156,7 @@ class NotificationScreen extends ConsumerWidget {
 
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
       child: Icon(iconData, color: color, size: 20),
     );
   }
@@ -180,3 +180,4 @@ class NotificationScreen extends ConsumerWidget {
     await batch.commit();
   }
 }
+

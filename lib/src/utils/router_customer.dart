@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'globals.dart';
 import '../features/main_screen.dart';
 import '../features/auth/login_screen.dart';
@@ -27,9 +29,25 @@ import '../features/search/search_screen.dart';
 import '../features/orders/order_tracking_screen.dart';
 import '../di/providers.dart';
 
+class GoRouterRefreshStream extends ChangeNotifier {
+  GoRouterRefreshStream(Stream<dynamic> stream) {
+    notifyListeners();
+    _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
+  }
+
+  late final StreamSubscription<dynamic> _subscription;
+
+  @override
+  void dispose() {
+    _subscription.cancel();
+    super.dispose();
+  }
+}
+
 final customerRouter = GoRouter(
   navigatorKey: navigatorKey,
   initialLocation: '/',
+  refreshListenable: GoRouterRefreshStream(FirebaseAuth.instance.authStateChanges()),
   redirect: (context, state) {
     final auth = FirebaseAuth.instance;
     final loggedIn = auth.currentUser != null;
@@ -45,7 +63,7 @@ final customerRouter = GoRouter(
       
       if (userData != null) {
         final role = userData['role'] ?? 'customer';
-        if (role != 'admin' && role != 'customer' && role != 'reseller') {
+        if (role != 'admin' && role != 'customer' && role != 'reseller' && role != 'staff' && role != 'logistic') {
           auth.signOut();
           return '/login';
         }

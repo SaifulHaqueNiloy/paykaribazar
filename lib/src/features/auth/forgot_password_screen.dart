@@ -288,5 +288,6 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
     Text(q, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
   ]));
 
-  Widget _contactBtn(IconData i, String l, Color c, VoidCallback t) => InkWell(onTap: t, child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: c.withOpacity(0.1), borderRadius: BorderRadius.circular(15), border: Border.all(color: c.withOpacity(0.3))), child: Row(children: [Icon(i, color: c), const SizedBox(width: 16), Text(l, style: TextStyle(color: c, fontWeight: FontWeight.bold)), const Spacer(), const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey)])));
+  Widget _contactBtn(IconData i, String l, Color c, VoidCallback t) => InkWell(onTap: t, child: Container(padding: const EdgeInsets.all(16), decoration: BoxDecoration(color: c.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(15), border: Border.all(color: c.withValues(alpha: 0.3))), child: Row(children: [Icon(i, color: c), const SizedBox(width: 16), Text(l, style: TextStyle(color: c, fontWeight: FontWeight.bold)), const Spacer(), const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.grey)])));
 }
+

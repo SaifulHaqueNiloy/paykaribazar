@@ -180,7 +180,7 @@ class _EmergencyDetailsScreenState
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
         ],
       ),
       child: Column(
@@ -202,7 +202,7 @@ class _EmergencyDetailsScreenState
                   borderSide: BorderSide.none),
               filled: true,
               fillColor: isDark
-                  ? Colors.white.withOpacity(0.05)
+                  ? Colors.white.withValues(alpha: 0.05)
                   : Colors.grey.shade100,
             ),
           ),
@@ -238,7 +238,7 @@ class _EmergencyDetailsScreenState
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
         ],
       ),
       child: Column(
@@ -310,7 +310,7 @@ class _EmergencyDetailsScreenState
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(10),
       ),
       child: DropdownButtonHideUnderline(
@@ -338,7 +338,7 @@ class _EmergencyDetailsScreenState
         height: 60,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade50,
+          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey.shade300),
         ),
@@ -461,9 +461,9 @@ class _EmergencyDetailsScreenState
       height: 45,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
       ),
       child: Opacity(
         opacity: enabled ? 1.0 : 0.5,
@@ -519,11 +519,11 @@ class _EmergencyDetailsScreenState
               elevation: 0,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: Colors.grey.withOpacity(0.1))),
+                  side: BorderSide(color: Colors.grey.withValues(alpha: 0.1))),
               margin: const EdgeInsets.only(bottom: 12),
               child: ListTile(
                 leading: CircleAvatar(
-                    backgroundColor: Colors.blue.withOpacity(0.1),
+                    backgroundColor: Colors.blue.withValues(alpha: 0.1),
                     child:
                         const Icon(Icons.person, color: Colors.blue, size: 20)),
                 title: Text(data['name'] ?? 'Doctor Name',
@@ -552,7 +552,7 @@ class _EmergencyDetailsScreenState
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-              color: Colors.deepPurple.withOpacity(0.3),
+              color: Colors.deepPurple.withValues(alpha: 0.3),
               blurRadius: 15,
               offset: const Offset(0, 5))
         ],
@@ -640,3 +640,4 @@ class _EmergencyDetailsScreenState
     }
   }
 }
+

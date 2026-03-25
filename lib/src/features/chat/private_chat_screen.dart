@@ -168,7 +168,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
           child: ActionChip(
             label: Text(_quickReplies[i], style: const TextStyle(fontSize: 12)),
             onPressed: () => _send(text: _quickReplies[i]),
-            backgroundColor: d ? Colors.indigo.withOpacity(0.2) : Colors.indigo.shade50,
+            backgroundColor: d ? Colors.indigo.withValues(alpha: 0.2) : Colors.indigo.shade50,
           ),
         ),
       ),
@@ -195,7 +195,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
                 bottomLeft: Radius.circular(isMe ? 16 : 4),
                 bottomRight: Radius.circular(isMe ? 4 : 16),
               ),
-              boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)],
+              boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5)],
             ),
             child: Column(
               crossAxisAlignment: isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
@@ -239,7 +239,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
       padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
       decoration: BoxDecoration(
         color: d ? AppStyles.darkSurfaceColor : Colors.white,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -5))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, -5))],
       ),
       child: Row(
         children: [
@@ -279,3 +279,4 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
     );
   }
 }
+

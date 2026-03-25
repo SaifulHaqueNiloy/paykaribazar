@@ -48,7 +48,7 @@ class CategoryTile extends ConsumerWidget {
           side: BorderSide(
               color: isPublished
                   ? (isDark ? Colors.white10 : Colors.grey[100]!)
-                  : Colors.red.withOpacity(0.3))),
+                  : Colors.red.withValues(alpha: 0.3))),
       child: ExpansionTile(
         key: PageStorageKey(category['id']),
         leading: Container(
@@ -78,7 +78,7 @@ class CategoryTile extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                    color: Colors.red.withOpacity(0.1),
+                    color: Colors.red.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(4)),
                 child: Text(t('unpublished'),
                     style: const TextStyle(
@@ -201,3 +201,4 @@ class CategoryTile extends ConsumerWidget {
     );
   }
 }
+

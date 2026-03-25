@@ -1,14 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
+
 import '../../../core/firebase/firestore_service.dart';
 import '../../../core/services/secrets_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../di/service_locator.dart';
 import '../domain/ai_work_type.dart';
-import '../../../models/product_model.dart';
+
 import '../../../shared/services/notification_service.dart';
 import '../config/ai_config.dart';
 import 'ai_cache_service.dart';

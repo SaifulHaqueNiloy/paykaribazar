@@ -70,7 +70,7 @@ class _ChatHistoryListScreenState extends ConsumerState<ChatHistoryListScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.chat_bubble_outline_rounded, size: 64, color: Colors.grey.withOpacity(0.3)),
+                  Icon(Icons.chat_bubble_outline_rounded, size: 64, color: Colors.grey.withValues(alpha: 0.3)),
                   const SizedBox(height: 16),
                   const Text('কোনো চ্যাট পাওয়া যায়নি', style: TextStyle(color: Colors.grey)),
                 ],
@@ -92,7 +92,7 @@ class _ChatHistoryListScreenState extends ConsumerState<ChatHistoryListScreen> {
 
               return ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: AppStyles.primaryColor.withOpacity(0.1),
+                  backgroundColor: AppStyles.primaryColor.withValues(alpha: 0.1),
                   child: Text(name[0].toUpperCase(), style: const TextStyle(color: AppStyles.primaryColor, fontWeight: FontWeight.bold)),
                 ),
                 title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -220,3 +220,4 @@ class _UserSearchSheetState extends ConsumerState<UserSearchSheet> {
     );
   }
 }
+

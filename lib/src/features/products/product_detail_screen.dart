@@ -145,7 +145,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-                color: Colors.teal.withOpacity(0.1),
+                color: Colors.teal.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20)),
             child: Text(p.unit,
                 style: const TextStyle(
@@ -200,7 +200,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
           color: Theme.of(context).scaffoldBackgroundColor,
           boxShadow: [
             BoxShadow(
-                color: Colors.black.withOpacity(0.05),
+                color: Colors.black.withValues(alpha: 0.05),
                 blurRadius: 10,
                 offset: const Offset(0, -5))
           ],
@@ -227,3 +227,4 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ),
       );
 }
+

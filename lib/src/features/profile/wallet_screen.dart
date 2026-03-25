@@ -50,7 +50,7 @@ class WalletScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(colors: [Colors.indigo, Colors.indigo.shade800]),
         borderRadius: BorderRadius.circular(20),
-        boxShadow: [BoxShadow(color: Colors.indigo.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8))],
+        boxShadow: [BoxShadow(color: Colors.indigo.withValues(alpha: 0.3), blurRadius: 15, offset: const Offset(0, 8))],
       ),
       child: Column(
         children: [
@@ -79,9 +79,9 @@ class WalletScreen extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 16),
         decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: color.withOpacity(0.3)),
+          border: Border.all(color: color.withValues(alpha: 0.3)),
         ),
         child: Column(
           children: [
@@ -103,7 +103,7 @@ class WalletScreen extends ConsumerWidget {
       itemBuilder: (context, index) => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
@@ -111,7 +111,7 @@ class WalletScreen extends ConsumerWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(backgroundColor: Colors.green.withOpacity(0.1), child: const Icon(Icons.add, color: Colors.green, size: 18)),
+                CircleAvatar(backgroundColor: Colors.green.withValues(alpha: 0.1), child: const Icon(Icons.add, color: Colors.green, size: 18)),
                 const SizedBox(width: 12),
                 const Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -129,3 +129,4 @@ class WalletScreen extends ConsumerWidget {
     );
   }
 }
+

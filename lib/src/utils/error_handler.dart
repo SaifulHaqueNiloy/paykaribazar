@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'globals.dart';
 
 class ErrorHandler {
-  /// [DNA-SYS-ERR-PROTOCOL]: Global error handler using local notifications
+  /// [DNA-SYS-ERR-PROTOCOL]: Global error handler using local notifications and SnackBars
   static void handleError(dynamic error, {String? title}) {
     final context = navigatorKey.currentContext;
     if (context == null) return;
@@ -13,6 +13,15 @@ class ErrorHandler {
     if (error is Exception) {
       message = error.toString().replaceFirst('Exception: ', '');
     }
+
+    // Also show a SnackBar for immediate visual feedback
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.redAccent,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
 
     try {
       final container = ProviderScope.containerOf(context);

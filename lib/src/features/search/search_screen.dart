@@ -217,7 +217,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Widget _buildVoiceOverlay() {
     return Container(
-      color: Colors.black.withOpacity(0.8),
+      color: Colors.black.withValues(alpha: 0.8),
       width: double.infinity,
       height: double.infinity,
       child: Column(
@@ -255,7 +255,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
   Widget _buildImageAnalysisOverlay() {
     return Container(
-      color: Colors.black.withOpacity(0.8),
+      color: Colors.black.withValues(alpha: 0.8),
       width: double.infinity,
       height: double.infinity,
       child: Column(
@@ -286,3 +286,4 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       const Center(child: Text('Type, use Voice or Image to search products'));
   Widget _buildNoResults() => const Center(child: Text('No products found'));
 }
+

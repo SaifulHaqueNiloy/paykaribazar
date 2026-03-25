@@ -150,7 +150,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               enabled: false,
               decoration: AppStyles.inputDecoration(t('mobileNumber'), isDark, prefix: const Icon(Icons.phone)).copyWith(
                 filled: true,
-                fillColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
+                fillColor: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
               ),
             ),
             const SizedBox(height: 16),
@@ -221,9 +221,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.withOpacity(0.1)),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
       ),
       child: Opacity(
         opacity: enabled ? 1.0 : 0.5,
@@ -244,3 +244,4 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     );
   }
 }
+

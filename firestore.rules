@@ -13,6 +13,11 @@ service cloud.firestore {
          get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
     }
 
+    function isStaff() {
+      return isAuth() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['admin', 'staff'];
+    }
+
     function isReseller() {
       return isAuth() &&
         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'reseller';
@@ -26,7 +31,6 @@ service cloud.firestore {
       allow create: if isOwner(userId);
       allow update: if isOwner(userId) && !request.resource.data.diff(resource.data).affectedKeys().hasAny(['role', 'isBanned']);
       
-      // Wishlist sub-collection tracking
       match /wishlist/{productId} {
         allow read, write: if isOwner(userId);
       }
@@ -34,9 +38,9 @@ service cloud.firestore {
 
     // ==================== ORDERS ====================
     match /orders/{orderId} {
-      allow read: if isAuth() && (resource.data.customerUid == request.auth.uid || resource.data.resellerUid == request.auth.uid || isAdmin());
+      allow read: if isAuth() && (resource.data.customerUid == request.auth.uid || resource.data.resellerUid == request.auth.uid || isStaff());
       allow create: if isAuth() && request.resource.data.customerUid == request.auth.uid;
-      allow update: if isAdmin() || (isOwner(resource.data.customerUid) && request.resource.data.status == 'cancelled');
+      allow update: if isStaff() || (isOwner(resource.data.customerUid) && request.resource.data.status == 'cancelled');
     }
 
     // ==================== PRODUCTS (DNA PATH) ====================
@@ -56,25 +60,150 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
-    // ==================== CHATS (DNA PATH) ====================
+    // ==================== STORES (DNA PATH) ====================
+    match /hub/data/stores/{storeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== LOCATIONS (DNA PATH) ====================
+    match /hub/data/locations/{locationId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== EMERGENCY - BLOOD DONORS ====================
+    match /hub/emergency/donors/{donorId} {
+      allow read: if isAuth();
+      allow create, update: if isOwner(resource.data.uid) || isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ==================== EMERGENCY - DOCTORS ====================
+    match /hub/emergency/doctors/{doctorId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== EMERGENCY - HELPLINES ====================
+    match /hub/emergency/helplines/{helplineId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== CHATS (Uses 'private_chats' collection) ====================
     match /private_chats/{chatId} {
       allow read, write: if isAuth() && request.auth.uid in resource.data.participantIds;
       
       match /messages/{msgId} {
-        allow read: if isAuth();
-        allow create: if isAuth();
+        allow read: if isAuth() && request.auth.uid in get(/databases/$(database)/documents/private_chats/$(chatId)).data.participantIds;
+        allow create: if isAuth() && request.auth.uid in get(/databases/$(database)/documents/private_chats/$(chatId)).data.participantIds;
       }
     }
 
+    // ==================== NOTIFICATIONS ====================
+    match /notifications/{notificationId} {
+      allow read: if isOwner(resource.data.userId);
+      allow create: if isAuth();
+      allow update, delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    // ==================== AI AUDIT LOGS ====================
+    match /ai_audit_logs/{logId} {
+      allow create: if isAuth();
+      allow read: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // ==================== COMMISSIONS ====================
+    match /commissions/{commissionId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create, update: if isAdmin();
+    }
+
+    // ==================== STAFF COMMISSIONS ====================
+    match /staff_commissions/{commissionId} {
+      allow read: if isOwner(resource.data.staffUid) || isAdmin();
+      allow create, update: if isAdmin();
+    }
+
+    // ==================== EXPENSES ====================
+    match /expenses/{expenseId} {
+      allow read: if isAdmin();
+      allow create, update: if isAdmin();
+    }
+
+    // ==================== PROMOS & DISCOUNTS ====================
+    match /promos/{promoId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== HERO RECORDS / LEADERBOARD ====================
+    match /hero_records/{heroId} {
+      allow read: if true;
+      allow create: if isAuth();
+      allow update: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    // ==================== AI SOVEREIGN RULES ====================
+    match /ai_sovereign_rules/{ruleId} {
+      allow read: if isAuth();
+      allow write: if isAdmin();
+    }
+
+    // ==================== SYSTEM NOTICES ====================
+    match /notices/{noticeId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // ==================== PASSWORD RESET REQUESTS ====================
+    match /password_reset_requests/{requestId} {
+      allow read, create: if true;
+      allow update: if isOwner(resource.data.userId);
+      allow delete: if isAdmin();
+    }
+
+    // ==================== RESELLER APPLICATIONS ====================
+    match /applications/{appId} {
+      allow read: if isOwner(resource.data.userId) || isAdmin();
+      allow create: if isAuth() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAdmin();
+    }
+
+    // ==================== MONTHLY STATS ====================
+    match /monthly_stats/{month} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+      
+      match /heroes/{heroId} {
+        allow read: if isAdmin();
+      }
+    }
+
+    // ==================== ANALYTICS ====================
+    match /analytics/{docId} {
+      allow read: if isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ==================== AI NOTIFICATION QUEUE ====================
+    match /ai_notifications_queue/{notifId} {
+      allow read: if isOwner(resource.data.userId);
+      allow create: if isAuth();
+      allow update, delete: if isOwner(resource.data.userId) || isAdmin();
+    }
+
     // ==================== API QUOTA & LOGS ====================
-    match /api_quota/{provider} {
+    match /settings/api_quota/{provider} {
       allow read: if isAdmin();
       allow update: if isAuth();
     }
 
-    match /api_usage_logs/{logId} {
-      allow create: if isAuth();
-      allow read: if isAdmin();
+    match /settings/app_config/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     // ==================== SYSTEM SETTINGS ====================

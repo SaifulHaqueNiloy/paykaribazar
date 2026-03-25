@@ -66,7 +66,7 @@ class StaffManagementTab extends ConsumerWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: _getCol(role).withOpacity(0.1),
+            backgroundColor: _getCol(role).withValues(alpha: 0.1),
             child: Icon(_getIcon(role), color: _getCol(role), size: 20),
           ),
           const SizedBox(width: 16),
@@ -343,3 +343,4 @@ class StaffManagementTab extends ConsumerWidget {
     }
   }
 }
+

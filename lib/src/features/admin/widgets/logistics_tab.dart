@@ -263,11 +263,11 @@ class _LogisticsTabState extends ConsumerState<LogisticsTab> {
   Widget _buildHiddenTile(Map<String, dynamic> loc, bool isDark) {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      color: isDark ? Colors.white.withOpacity(0.02) : Colors.grey.shade50,
+      color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.grey.shade50,
       elevation: 0,
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
-          side: BorderSide(color: Colors.grey.withOpacity(0.2))),
+          side: BorderSide(color: Colors.grey.withValues(alpha: 0.2))),
       child: ListTile(
         dense: true,
         leading: Icon(Icons.location_off_rounded,
@@ -533,3 +533,4 @@ class _LogisticsTabState extends ConsumerState<LogisticsTab> {
     }
   }
 }
+

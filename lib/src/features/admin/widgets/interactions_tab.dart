@@ -43,7 +43,7 @@ class _InteractionsTabState extends ConsumerState<InteractionsTab> with SingleTi
           Container(
             margin: const EdgeInsets.fromLTRB(16, 16, 16, 0),
             decoration: BoxDecoration(
-              color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[100],
+              color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[100],
               borderRadius: BorderRadius.circular(16),
             ),
             child: TabBar(
@@ -89,3 +89,4 @@ class _InteractionsTabState extends ConsumerState<InteractionsTab> with SingleTi
     );
   }
 }
+

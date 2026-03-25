@@ -154,7 +154,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: color, width: 3),
-                boxShadow: [BoxShadow(color: color.withOpacity(0.3), blurRadius: 10, spreadRadius: 2)],
+                boxShadow: [BoxShadow(color: color.withValues(alpha: 0.3), blurRadius: 10, spreadRadius: 2)],
               ),
               child: CircleAvatar(
                 radius: avatarSize / 2,
@@ -181,7 +181,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
         Container(
           margin: const EdgeInsets.only(top: 4),
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-          decoration: BoxDecoration(color: color.withOpacity(0.15), borderRadius: BorderRadius.circular(10)),
+          decoration: BoxDecoration(color: color.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(10)),
           child: Text(
             gift,
             style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 9, letterSpacing: -0.2),
@@ -195,7 +195,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topCenter, end: Alignment.bottomCenter,
-              colors: [color, color.withOpacity(0.7)],
+              colors: [color, color.withValues(alpha: 0.7)],
             ),
             borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
           ),
@@ -276,7 +276,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                 BarChartRodData(
                   toY: amount,
                   gradient: LinearGradient(
-                    colors: [AppStyles.primaryColor, AppStyles.primaryColor.withOpacity(0.6)],
+                    colors: [AppStyles.primaryColor, AppStyles.primaryColor.withValues(alpha: 0.6)],
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                   ),
@@ -312,9 +312,9 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: [color.withOpacity(0.2), color.withOpacity(0.05)]),
+                  gradient: LinearGradient(colors: [color.withValues(alpha: 0.2), color.withValues(alpha: 0.05)]),
                   borderRadius: BorderRadius.circular(25), 
-                  border: Border.all(color: color.withOpacity(0.3))
+                  border: Border.all(color: color.withValues(alpha: 0.3))
                 ),
                 child: Column(
                   children: [
@@ -333,9 +333,9 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
                     ]),
                     const Divider(height: 24),
                     Row(children: [
-                      Icon(Icons.card_giftcard_rounded, size: 16, color: color.withOpacity(0.7)),
+                      Icon(Icons.card_giftcard_rounded, size: 16, color: color.withValues(alpha: 0.7)),
                       const SizedBox(width: 8),
-                      Text('REWARD: ', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color.withOpacity(0.8))),
+                      Text('REWARD: ', style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: color.withValues(alpha: 0.8))),
                       Text(prize.toString(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: AppStyles.primaryColor)),
                       const Spacer(),
                       Text("${d['earnedPoints'] ?? 0} PTS", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: color)),
@@ -361,7 +361,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
       decoration: BoxDecoration(shape: BoxShape.circle, border: Border.all(color: color, width: 2)),
       child: CircleAvatar(
         radius: 24,
-        backgroundColor: color.withOpacity(0.1),
+        backgroundColor: color.withValues(alpha: 0.1),
         backgroundImage: (url != null && url.isNotEmpty && url.startsWith('http')) 
             ? CachedNetworkImageProvider(url) 
             : null,
@@ -404,10 +404,10 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
   Widget _buildHeroRow(String name, String points, Color color, {int? rank}) => Padding(
     padding: const EdgeInsets.symmetric(vertical: 8),
     child: Row(children: [
-      if (rank != null) Container(width: 24, height: 24, margin: const EdgeInsets.only(right: 12), decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle), child: Center(child: Text(rank.toString(), style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold)))),
+      if (rank != null) Container(width: 24, height: 24, margin: const EdgeInsets.only(right: 12), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle), child: Center(child: Text(rank.toString(), style: TextStyle(color: color, fontSize: 10, fontWeight: FontWeight.bold)))),
       Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
       const Spacer(),
-      Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(10)), child: Text(points, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 11))),
+      Container(padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4), decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(10)), child: Text(points, style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 11))),
     ]),
   );
 
@@ -431,11 +431,11 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
     final lightColors = [const Color(0xFFE3F2FD), const Color(0xFFF1F8E9), const Color(0xFFFFF3E0)];
     final discountValue = c['discount'] ?? 0;
     final discount = c['type'] == 'percentage' ? '$discountValue%' : '৳$discountValue';
-    final bgColor = isDark ? Colors.white.withOpacity(0.05) : lightColors[index % lightColors.length];
+    final bgColor = isDark ? Colors.white.withValues(alpha: 0.05) : lightColors[index % lightColors.length];
     
     return Container(
       width: 220, margin: const EdgeInsets.only(right: 15), padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: isDark ? Colors.white10 : Colors.white.withOpacity(0.5))),
+      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(20), border: Border.all(color: isDark ? Colors.white10 : Colors.white.withValues(alpha: 0.5))),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text('${_t('save')} $discount', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: isDark ? Colors.white : Colors.black87)),
         Text("${_t('onOrdersAbove_label')} ${c['minOrder']}", style: TextStyle(fontSize: 10, color: isDark ? Colors.white70 : Colors.grey)),
@@ -459,7 +459,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
       decoration: BoxDecoration(
         gradient: AppStyles.primaryGradient,
         borderRadius: BorderRadius.circular(25),
-        boxShadow: [BoxShadow(color: AppStyles.primaryColor.withOpacity(0.3), blurRadius: 15, offset: const Offset(0, 8))],
+        boxShadow: [BoxShadow(color: AppStyles.primaryColor.withValues(alpha: 0.3), blurRadius: 15, offset: const Offset(0, 8))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -486,7 +486,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
               const Spacer(),
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(color: Colors.white.withOpacity(0.2), borderRadius: BorderRadius.circular(10)),
+                decoration: BoxDecoration(color: Colors.white.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(10)),
                 child: Text(_t('megaDrawPool'), style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold)),
               ),
             ],
@@ -510,7 +510,7 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
   Widget _buildErrorWidget(dynamic error) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(color: Colors.red.withOpacity(0.05), borderRadius: BorderRadius.circular(15)),
+      decoration: BoxDecoration(color: Colors.red.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(15)),
       child: Row(
         children: [
           const Icon(Icons.error_outline_rounded, color: Colors.red, size: 20),
@@ -521,3 +521,4 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
     );
   }
 }
+

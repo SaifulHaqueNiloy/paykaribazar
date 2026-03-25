@@ -41,12 +41,13 @@ import '../features/ai/services/ai_automation_service.dart';
 import '../features/ai/services/api_quota_service.dart';
 import '../features/commerce/services/loyalty_service.dart';
 import '../features/logistics/services/delivery_service.dart';
-import '../features/logistics/services/fleet_service.dart';
+import '../services/fleet_service.dart';
 import '../features/ai/services/forecasting_service.dart';
 import '../services/sync_service.dart';
 import '../services/notice_service.dart';
 import '../services/auto_translation_service.dart';
 import '../services/chat_service.dart';
+import '../features/qibla/services/compass_service.dart';
 
 // --- PROVIDERS ---
 final firestoreService = Provider((ref) => getIt<FirestoreService>());
@@ -70,6 +71,7 @@ final syncServiceProvider = Provider((ref) => getIt<SyncService>());
 final noticeServiceProvider = Provider((ref) => getIt<NoticeService>());
 final autoTranslationProvider = Provider((ref) => getIt<AutoTranslationService>());
 final chatServiceProvider = Provider((ref) => getIt<ChatService>());
+final compassServiceProvider = Provider((ref) => getIt<CompassService>());
 
 // --- WISHLIST ---
 final wishlistProvider = StateNotifierProvider<WishlistNotifier, List<String>>((ref) => WishlistNotifier());

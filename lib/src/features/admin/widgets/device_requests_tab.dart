@@ -26,7 +26,7 @@ class DeviceRequestsTab extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.phonelink_lock_rounded, size: 64, color: Colors.grey.withOpacity(0.3)),
+                Icon(Icons.phonelink_lock_rounded, size: 64, color: Colors.grey.withValues(alpha: 0.3)),
                 const SizedBox(height: 16),
                 const Text('No pending device requests', style: TextStyle(color: Colors.grey, fontWeight: FontWeight.bold)),
               ],
@@ -62,8 +62,8 @@ class DeviceRequestsTab extends ConsumerWidget {
       decoration: BoxDecoration(
         color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.orange.withOpacity(0.2)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 4))],
+        border: Border.all(color: Colors.orange.withValues(alpha: 0.2)),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, 4))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +71,7 @@ class DeviceRequestsTab extends ConsumerWidget {
           Row(
             children: [
               CircleAvatar(
-                backgroundColor: Colors.orange.withOpacity(0.1),
+                backgroundColor: Colors.orange.withValues(alpha: 0.1),
                 child: const Icon(Icons.person_rounded, color: Colors.orange, size: 20),
               ),
               const SizedBox(width: 12),
@@ -137,3 +137,4 @@ class DeviceRequestsTab extends ConsumerWidget {
     await firestore.collection('device_approval_requests').doc(requestId).delete();
   }
 }
+

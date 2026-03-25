@@ -121,7 +121,8 @@ class AIErrorHandler {
         );
       }
     } catch (e) {
-      print('Failed to log error: $e');
+      // Silent fail for error logging - avoid infinite loops
+      // Error logging failure is non-critical
     }
   }
 

@@ -178,7 +178,7 @@ class _LocalizationTabState extends ConsumerState<LocalizationTab> {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.03) : Colors.white,
+        color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border:
             Border.all(color: isDark ? Colors.white10 : Colors.grey.shade100),
@@ -284,7 +284,7 @@ class _LocalizationTabState extends ConsumerState<LocalizationTab> {
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
       elevation: 0,
-      color: isDark ? Colors.white.withOpacity(0.02) : Colors.grey.shade50,
+      color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.grey.shade50,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
         padding: const EdgeInsets.all(10),
@@ -375,7 +375,7 @@ class _LocalizationTabState extends ConsumerState<LocalizationTab> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
         decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
+            color: color.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(6)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -417,3 +417,4 @@ class _LocalizationTabState extends ConsumerState<LocalizationTab> {
     ref.read(firestoreService).updateLocalization({key: updates});
   }
 }
+

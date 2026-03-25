@@ -44,7 +44,7 @@ class FleetTab extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('LIVE RIDERS', style: AppStyles.titleStyle.copyWith(fontSize: 14, color: Colors.grey)),
+                Text('LIVE RIDERS', style: AppStyles.titleStyle(null, isDark: isDark).copyWith(fontSize: 14, color: Colors.grey)),
                 const Icon(Icons.map_rounded, size: 18, color: Colors.grey),
               ],
             ),
@@ -60,9 +60,9 @@ class FleetTab extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.1),
+        color: Colors.blue.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.blue.withOpacity(0.3)),
+        border: Border.all(color: Colors.blue.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -104,14 +104,14 @@ class FleetTab extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16),
       decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
+        color: color.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [
           Text('$value', style: TextStyle(fontSize: 24, fontWeight: FontWeight.w900, color: color)),
-          Text(label, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color.withOpacity(0.8))),
+          Text(label, style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: color.withValues(alpha: 0.8))),
         ],
       ),
     );
@@ -139,7 +139,7 @@ class FleetTab extends ConsumerWidget {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: ListTile(
                 leading: CircleAvatar(
-                  backgroundColor: AppStyles.primaryColor.withOpacity(0.1),
+                  backgroundColor: AppStyles.primaryColor.withValues(alpha: 0.1),
                   child: const Icon(Icons.person_rounded, color: AppStyles.primaryColor),
                 ),
                 title: Text(rider.name, style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -147,7 +147,7 @@ class FleetTab extends ConsumerWidget {
                 trailing: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: BoxDecoration(
-                    color: rider.hasActiveOrder ? Colors.orange.withOpacity(0.1) : Colors.green.withOpacity(0.1),
+                    color: rider.hasActiveOrder ? Colors.orange.withValues(alpha: 0.1) : Colors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(rider.hasActiveOrder ? 'BUSY' : 'IDLE', 
@@ -163,3 +163,4 @@ class FleetTab extends ConsumerWidget {
     );
   }
 }
+

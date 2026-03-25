@@ -19,10 +19,10 @@ class InventoryForecastingWidget extends ConsumerWidget {
               : [Colors.indigo.shade50, Colors.white],
         ),
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.indigo.withOpacity(0.1)),
+        border: Border.all(color: Colors.indigo.withValues(alpha: 0.1)),
         boxShadow: [
           BoxShadow(
-            color: Colors.indigo.withOpacity(0.05),
+            color: Colors.indigo.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           )
@@ -36,7 +36,7 @@ class InventoryForecastingWidget extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.indigo.withOpacity(0.1),
+                  color: Colors.indigo.withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.auto_graph_rounded,
@@ -122,3 +122,4 @@ class InventoryForecastingWidget extends ConsumerWidget {
     );
   }
 }
+

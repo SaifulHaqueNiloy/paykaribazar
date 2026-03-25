@@ -146,7 +146,7 @@ jobs:
             -- --target-platform android-arm64
 
   deploy-firebase:
-    name: Deploy to Firebase Hosting
+    name: Deploy to Firebase (Hosting & Rules)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     needs: pre-release
@@ -172,7 +172,13 @@ jobs:
       - name: Build Web (Admin)
         run: flutter build web -t lib/main_admin.dart --release
 
-      - name: Setup Firebase
+      - name: Setup Firebase CLI
+        run: npm install -g firebase-tools
+
+      - name: Deploy Firestore Rules
+        run: firebase deploy --only firestore:rules --project=${{ secrets.FIREBASE_PROJECT_ID }} --token=${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy Firebase Hosting
         uses: w9jds/firebase-action@master
         with:
           args: deploy --only hosting:customer,hosting:admin --project=${{ secrets.FIREBASE_PROJECT_ID }}

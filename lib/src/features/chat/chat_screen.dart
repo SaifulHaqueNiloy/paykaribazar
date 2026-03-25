@@ -247,7 +247,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
             color: me
                 ? AppStyles.primaryColor
                 : (isAdmin
-                    ? Colors.orange.withOpacity(0.1)
+                    ? Colors.orange.withValues(alpha: 0.1)
                     : (d ? AppStyles.darkSurfaceColor : Colors.white)),
             borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(16),
@@ -255,9 +255,9 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 bottomLeft: Radius.circular(me ? 16 : 0),
                 bottomRight: Radius.circular(me ? 0 : 16)),
             border: isAdmin
-                ? Border.all(color: Colors.orange.withOpacity(0.3))
+                ? Border.all(color: Colors.orange.withValues(alpha: 0.3))
                 : (isAi
-                    ? Border.all(color: Colors.blueGrey.withOpacity(0.1))
+                    ? Border.all(color: Colors.blueGrey.withValues(alpha: 0.1))
                     : null),
           ),
           child: Column(
@@ -324,3 +324,4 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                     Icon(Icons.send_rounded, color: Colors.white, size: 20))),
       ]));
 }
+

@@ -15,13 +15,6 @@ class AnalyticsTab extends ConsumerStatefulWidget {
 
 class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
   bool _isAiBusy = false;
-  String _forecastMsg = 'Analyzing sales data...';
-
-  @override
-  void initState() {
-    super.initState();
-    _runAiForecast();
-  }
 
   String _t(String k) =>
       AppStrings.get(k, ref.watch(languageProvider).languageCode);
@@ -29,13 +22,17 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
   Future<void> _runAiForecast() async {
     setState(() => _isAiBusy = true);
     try {
-      final dynamic result = await ref.read(forecastingServiceProvider).predictRestockNeed();
-      if (mounted) {
-        setState(() => _forecastMsg = result.toString());
-      }
+      final String result = await ref.read(forecastingServiceProvider).predictRestockNeed();
+      // Update the database with the new forecast
+      await FirebaseFirestore.instance.collection('analytics').doc('daily_stats').set({
+        'ai_insight': result,
+        'last_ai_update': FieldValue.serverTimestamp(),
+      }, SetOptions(merge: true));
     } catch (e) {
       if (mounted) {
-        setState(() => _forecastMsg = 'Unable to generate forecast at this moment.');
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Unable to generate new forecast.')),
+        );
       }
     } finally {
       if (mounted) setState(() => _isAiBusy = false);
@@ -50,66 +47,76 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
       stream: FirebaseFirestore.instance.collection('analytics').doc('daily_stats').snapshots(),
       builder: (context, snapshot) {
         final data = snapshot.data?.data() as Map<String, dynamic>? ?? {};
+        final forecastMsg = data['ai_insight'] as String? ?? 'No insight available. Tap to analyze.';
         
-        return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildAiInsightCard(isDark),
-              const SizedBox(height: 20),
-              _buildStatGrid(data),
-              const SizedBox(height: 20),
-              Text(
-                _t('sales_overview'),
-                style: AppStyles.headingStyle.copyWith(color: isDark ? Colors.white : Colors.black87, fontSize: 20),
-              ),
-              const SizedBox(height: 12),
-              _buildSalesChart(isDark, data['weekly_sales'] as List? ?? []),
-            ],
+        return RefreshIndicator(
+          onRefresh: _runAiForecast,
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildAiInsightCard(isDark, forecastMsg),
+                const SizedBox(height: 20),
+                _buildStatGrid(data),
+                const SizedBox(height: 20),
+                Text(
+                  _t('sales_overview'),
+                  style: AppStyles.headingStyle.copyWith(color: isDark ? Colors.white : Colors.black87, fontSize: 20),
+                ),
+                const SizedBox(height: 12),
+                _buildSalesChart(isDark, data['weekly_sales'] as List? ?? []),
+              ],
+            ),
           ),
         );
       }
     );
   }
 
-  Widget _buildAiInsightCard(bool isDark) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isDark ? Colors.teal.withOpacity(0.1) : Colors.teal.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.teal.withOpacity(0.3)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.psychology, color: Colors.teal),
-              const SizedBox(width: 8),
-              Text(
-                'AI INSIGHT',
-                style: AppStyles.subheadingStyle.copyWith(color: Colors.teal, fontWeight: FontWeight.bold),
-              ),
-              const Spacer(),
-              if (_isAiBusy)
-                const SizedBox(
-                  width: 16,
-                  height: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.teal),
+  Widget _buildAiInsightCard(bool isDark, String message) {
+    return GestureDetector(
+      onTap: _isAiBusy ? null : _runAiForecast,
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isDark ? Colors.teal.withValues(alpha: 0.1) : Colors.teal.withValues(alpha: 0.05),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.teal.withValues(alpha: 0.3)),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(Icons.psychology, color: Colors.teal),
+                const SizedBox(width: 8),
+                Text(
+                  'AI INSIGHT',
+                  style: AppStyles.subheadingStyle.copyWith(color: Colors.teal, fontWeight: FontWeight.bold),
                 ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Text(
-            _forecastMsg,
-            style: AppStyles.bodyStyle.copyWith(
-              color: isDark ? Colors.white70 : Colors.black54,
-              fontStyle: FontStyle.italic,
+                const Spacer(),
+                if (_isAiBusy)
+                  const SizedBox(
+                    width: 16,
+                    height: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2, color: Colors.teal),
+                  )
+                else
+                  const Icon(Icons.refresh, size: 16, color: Colors.teal),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 12),
+            Text(
+              message,
+              style: AppStyles.bodyStyle.copyWith(
+                color: isDark ? Colors.white70 : Colors.black54,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -139,7 +146,7 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -183,7 +190,7 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
                   dotData: const FlDotData(show: false),
                   belowBarData: BarAreaData(
                     show: true,
-                    color: AppStyles.primaryColor.withOpacity(0.1),
+                    color: AppStyles.primaryColor.withValues(alpha: 0.1),
                   ),
                 ),
               ],
@@ -192,3 +199,4 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
     );
   }
 }
+

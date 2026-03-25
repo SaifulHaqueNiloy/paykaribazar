@@ -234,7 +234,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
-                        color: AppStyles.primaryColor.withOpacity(0.2),
+                        color: AppStyles.primaryColor.withValues(alpha: 0.2),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       )
@@ -333,9 +333,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: AppStyles.primaryColor.withOpacity(0.1)),
+          border: Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.1)),
         ),
         child: Row(
           children: [
@@ -356,7 +356,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-          color: AppStyles.primaryColor.withOpacity(0.05),
+          color: AppStyles.primaryColor.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(15)),
       child: Row(
         children: [
@@ -381,7 +381,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                        color: AppStyles.primaryColor.withOpacity(0.3),
+                        color: AppStyles.primaryColor.withValues(alpha: 0.3),
                         blurRadius: 8,
                         offset: const Offset(0, 4))
                   ]
@@ -411,12 +411,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-              color: Colors.black.withOpacity(isDark ? 0.2 : 0.03),
+              color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
               blurRadius: 10,
               offset: const Offset(0, 5))
         ],
         border:
-            isDark ? Border.all(color: Colors.white.withOpacity(0.05)) : null,
+            isDark ? Border.all(color: Colors.white.withValues(alpha: 0.05)) : null,
       ),
       child: TextField(
         controller: controller,
@@ -494,7 +494,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           borderRadius: BorderRadius.circular(15),
           boxShadow: [
             BoxShadow(
-                color: AppStyles.primaryColor.withOpacity(0.3),
+                color: AppStyles.primaryColor.withValues(alpha: 0.3),
                 blurRadius: 15,
                 offset: const Offset(0, 8))
           ],
@@ -547,7 +547,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
-                      AppStyles.primaryColor.withOpacity(0.8),
+                      AppStyles.primaryColor.withValues(alpha: 0.8),
                       AppStyles.primaryColor,
                     ],
                   ),
@@ -601,7 +601,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
               color: isDark
-                  ? Colors.white.withOpacity(0.05)
+                  ? Colors.white.withValues(alpha: 0.05)
                   : Colors.grey.shade200),
         ),
         child: Center(child: Icon(icon, color: color, size: size)),
@@ -616,10 +616,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
         decoration: BoxDecoration(
-          color: AppStyles.primaryColor.withOpacity(0.1),
+          color: AppStyles.primaryColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
-              color: AppStyles.primaryColor.withOpacity(0.3), width: 1.5),
+              color: AppStyles.primaryColor.withValues(alpha: 0.3), width: 1.5),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -641,3 +641,4 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 }
+

@@ -41,11 +41,11 @@ class InventoryItemTile extends ConsumerWidget {
               color: isSelected
                   ? AppStyles.primaryColor
                   : (isAlert
-                      ? Colors.red.withOpacity(0.2)
+                      ? Colors.red.withValues(alpha: 0.2)
                       : Colors.transparent),
               width: isSelected ? 2 : 1)),
       color: isSelected
-          ? AppStyles.primaryColor.withOpacity(0.05)
+          ? AppStyles.primaryColor.withValues(alpha: 0.05)
           : Theme.of(context).cardColor,
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -150,7 +150,7 @@ class InventoryItemTile extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
         decoration: BoxDecoration(
             color: isDone
-                ? Colors.green.withOpacity(0.1)
+                ? Colors.green.withValues(alpha: 0.1)
                 : (isDark ? Colors.white10 : Colors.grey[100]),
             borderRadius: BorderRadius.circular(4)),
         child: Text(label,
@@ -165,7 +165,7 @@ class InventoryItemTile extends ConsumerWidget {
   Widget _badge(String t, Color c) => Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-          color: c.withOpacity(0.1), borderRadius: BorderRadius.circular(4)),
+          color: c.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)),
       child: Text(t,
           style:
               TextStyle(color: c, fontSize: 8, fontWeight: FontWeight.bold)));
@@ -176,3 +176,4 @@ class InventoryItemTile extends ConsumerWidget {
       backgroundColor: Colors.transparent,
       builder: (c) => ProductFormSheet(product: p));
 }
+

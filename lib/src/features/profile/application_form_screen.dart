@@ -127,9 +127,9 @@ class _ApplicationFormScreenState extends State<ApplicationFormScreen> {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppStyles.primaryColor.withOpacity(0.1),
+        color: AppStyles.primaryColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppStyles.primaryColor.withOpacity(0.2)),
+        border: Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.2)),
       ),
       child: Row(
         children: [
@@ -225,3 +225,4 @@ class _ApplicationFormScreenState extends State<ApplicationFormScreen> {
     }
   }
 }
+

@@ -5,15 +5,15 @@ class AppStyles {
   static Map<String, dynamic> _runtimeConfig = const {};
 
   // --- Static Defaults ---
-  static const defaultPrimary = Color(0xFF6200EE);
+  static const defaultPrimary = Color(0xFF008080); // Teal per DNA
   static const defaultSecondary = Color(0xFF03DAC6);
-  static const defaultAccent = Color(0xFFFFC107);
+  static const defaultAccent = Color(0xFFFFC107); // Amber per DNA
   static const defaultBackground = Color(0xFFF0F2F5);
   static const defaultSurface = Colors.white;
 
   // --- Legacy / Constants ---
-  static const primaryColor = Color(0xFF6200EE);
-  static const darkPrimaryColor = Color(0xFFBB86FC);
+  static const primaryColor = Color(0xFF008080);
+  static const darkPrimaryColor = Color(0xFF00CBCB);
   static const darkBackgroundColor = Color(0xFF0F172A);
   static const darkSurfaceColor = Color(0xFF1E293B);
   static const textSecondary = Color(0xFF64748B);

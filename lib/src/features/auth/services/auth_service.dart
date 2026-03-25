@@ -21,8 +21,14 @@ class AuthService {
   })  : _storage = storage,
         _firestore = firestore;
 
-  Future<User?> login(String email, String password) async {
+  Future<User?> login(String emailOrPhone, String password) async {
     try {
+      String email = emailOrPhone.trim();
+      // If the input doesn't look like an email, assume it's a phone number and use the internal format
+      if (!email.contains('@')) {
+        email = '$email@paykaribazar.com';
+      }
+
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,

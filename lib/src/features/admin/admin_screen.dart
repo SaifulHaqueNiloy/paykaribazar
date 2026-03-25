@@ -383,7 +383,9 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab> with TickerProv
 
       setState(() => _result = result);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Synthesis Error: $e')));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Synthesis Error: $e')));
+      }
     } finally {
       setState(() => _isProcessing = false);
     }
@@ -423,12 +425,16 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab> with TickerProv
       }
       await batch.commit();
 
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text('Successfully committed ${items.length} records to $targetCol'),
-        backgroundColor: Colors.green
-      ));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Successfully committed ${items.length} records to $targetCol'),
+          backgroundColor: Colors.green
+        ));
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Commit Error: $e'), backgroundColor: Colors.red));
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Commit Error: $e'), backgroundColor: Colors.red));
+      }
     } finally {
       setState(() => _isProcessing = false);
     }

@@ -151,14 +151,14 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF1E293B) : Colors.white,
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)],
-          border: Border.all(color: color.withOpacity(0.1)),
+          boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)],
+          border: Border.all(color: color.withValues(alpha: 0.1)),
         ),
         child: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
+              decoration: BoxDecoration(color: color.withValues(alpha: 0.1), shape: BoxShape.circle),
               child: isLoading 
                   ? SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: color, strokeWidth: 2))
                   : Icon(icon, color: color, size: 24),
@@ -185,3 +185,4 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     );
   }
 }
+

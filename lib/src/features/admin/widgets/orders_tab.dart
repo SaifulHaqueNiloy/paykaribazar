@@ -84,7 +84,7 @@ class _OrdersTabState extends ConsumerState<OrdersTab>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.02) : Colors.grey.shade100,
+        color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.grey.shade100,
         border: Border(
             bottom: BorderSide(
                 color: isDark ? Colors.white10 : Colors.grey.shade200)),
@@ -133,7 +133,7 @@ class _OrdersTabState extends ConsumerState<OrdersTab>
               : Colors.transparent,
           borderRadius: BorderRadius.circular(8),
           boxShadow: sel && !isDark
-              ? [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 4)]
+              ? [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 4)]
               : null,
         ),
         child: Center(
@@ -272,7 +272,7 @@ class _OrdersTabState extends ConsumerState<OrdersTab>
                       color: isSelected
                           ? AppStyles.primaryColor
                           : (isDark
-                              ? Colors.white.withOpacity(0.05)
+                              ? Colors.white.withValues(alpha: 0.05)
                               : Colors.white),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
@@ -295,7 +295,7 @@ class _OrdersTabState extends ConsumerState<OrdersTab>
                               horizontal: 6, vertical: 2),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Colors.white.withOpacity(0.2)
+                                ? Colors.white.withValues(alpha: 0.2)
                                 : (isDark ? Colors.white10 : Colors.grey.shade100),
                             borderRadius: BorderRadius.circular(6),
                           ),
@@ -317,3 +317,4 @@ class _OrdersTabState extends ConsumerState<OrdersTab>
     );
   }
 }
+

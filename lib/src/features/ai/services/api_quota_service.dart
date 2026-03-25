@@ -93,19 +93,42 @@ class ApiQuotaService {
 // Keep existing data models for UI compatibility
 class QuotaData {
   final String provider;
+  final String keyId;
   final int dailyLimit;
   int usedToday;
+  final List<int> hourlyUsage;
   String status;
+  final DateTime lastReset;
 
-  QuotaData({required this.provider, required this.dailyLimit, required this.usedToday, required this.status});
+  QuotaData({
+    required this.provider,
+    required this.keyId,
+    required this.dailyLimit,
+    required this.usedToday,
+    required this.hourlyUsage,
+    required this.status,
+    required this.lastReset,
+  });
+
+  /// Check if API key has available quota
+  bool get hasAvailableQuota => status != 'exhausted' && usedToday < dailyLimit;
+
+  /// Get remaining calls available today
+  int get remaining => dailyLimit - usedToday;
+
+  /// Get usage percentage (0-100)
+  double get usagePercentage => (usedToday / dailyLimit * 100).clamp(0, 100);
 
   factory QuotaData.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return QuotaData(
       provider: data['provider'] ?? '',
-      dailyLimit: data['daily_limit'] ?? 0,
-      usedToday: data['used_today'] ?? 0,
+      keyId: data['keyId'] ?? data['key_id'] ?? '',
+      dailyLimit: data['daily_limit'] ?? data['dailyLimit'] ?? 0,
+      usedToday: data['used_today'] ?? data['usedToday'] ?? 0,
+      hourlyUsage: List<int>.from(data['hourly_usage'] ?? List.filled(24, 0)),
       status: data['status'] ?? 'active',
+      lastReset: (data['last_reset'] as Timestamp?)?.toDate() ?? DateTime.now(),
     );
   }
 }

@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:shorebird_code_push/shorebird_code_push.dart';
 import '../models/fleet_model.dart';
 
 class FleetService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  final _shorebirdCodePush = ShorebirdCodePush();
 
   // Live rider tracking
   Stream<List<Rider>> getActiveRiders() {
@@ -22,13 +20,22 @@ class FleetService {
   
   // Shorebird patch status
   Future<ShorebirdStatus> getShorebirdStatus() async {
-    final isPatchInstalled = await _shorebirdCodePush.isNewPatchInstalled();
-    final currentPatch = await _shorebirdCodePush.currentPatchNumber();
-    
+    try {
+      final doc = await _db.collection('settings').doc('shorebird').get();
+      if (doc.exists) {
+        final data = doc.data()!;
+        return ShorebirdStatus(
+          currentVersion: data['currentVersion'] ?? '1.0.0',
+          patchInstalled: data['patchInstalled'] ?? false,
+          lastPatchTime: (data['lastPatchTime'] as Timestamp?)?.toDate(),
+        );
+      }
+    } catch (e) {
+      // Fallback
+    }
     return ShorebirdStatus(
-      currentVersion: currentPatch?.toString() ?? '1.0.0',
-      patchInstalled: isPatchInstalled,
-      lastPatchTime: DateTime.now(), // Shorebird doesn't provide exact time easily
+      currentVersion: '1.0.0',
+      patchInstalled: false,
     );
   }
 }

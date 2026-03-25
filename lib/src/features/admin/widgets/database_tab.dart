@@ -133,7 +133,7 @@ class _DatabaseTabState extends State<DatabaseTab> {
                 hintText: 'Search in ${widget.collectionName.split('/').last}...',
                 prefixIcon: const Icon(Icons.search, size: 18),
                 filled: true,
-                fillColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+                fillColor: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                 contentPadding: const EdgeInsets.symmetric(),
               ),
@@ -315,7 +315,7 @@ class _DatabaseTabState extends State<DatabaseTab> {
           return Card(
             elevation: 0,
             margin: const EdgeInsets.only(bottom: 8),
-            color: isDark ? Colors.white.withOpacity(0.03) : Colors.white,
+            color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.white,
             shape: RoundedRectangleBorder(
               side: BorderSide(
                   color: isDark ? Colors.white10 : Colors.grey.shade200),
@@ -407,7 +407,7 @@ class _DatabaseTabState extends State<DatabaseTab> {
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.02),
+                  color: Colors.black.withValues(alpha: 0.02),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: SelectableText(displayValue, style: const TextStyle(fontSize: 10, fontFamily: 'monospace')),
@@ -426,9 +426,9 @@ class _DatabaseTabState extends State<DatabaseTab> {
       margin: const EdgeInsets.all(12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppStyles.primaryColor.withOpacity(0.05),
+        color: AppStyles.primaryColor.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppStyles.primaryColor.withOpacity(0.1)),
+        border: Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.1)),
       ),
       child: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection(widget.collectionName).limit(100).snapshots(),
@@ -642,3 +642,4 @@ class _DatabaseTabState extends State<DatabaseTab> {
     );
   }
 }
+

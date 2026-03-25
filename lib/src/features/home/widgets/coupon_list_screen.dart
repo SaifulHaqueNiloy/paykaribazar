@@ -50,7 +50,7 @@ class CouponListScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
         borderRadius: BorderRadius.circular(24),
-        boxShadow: isDark ? null : [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 15, offset: const Offset(0, 8))],
+        boxShadow: isDark ? null : [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 15, offset: const Offset(0, 8))],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),
@@ -59,7 +59,7 @@ class CouponListScreen extends ConsumerWidget {
             children: [
               Container(
                 width: 110,
-                color: themeColor.withOpacity(0.1),
+                color: themeColor.withValues(alpha: 0.1),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -79,7 +79,7 @@ class CouponListScreen extends ConsumerWidget {
                         children: [
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                            decoration: BoxDecoration(color: Colors.orange.withOpacity(0.15), borderRadius: BorderRadius.circular(6)),
+                            decoration: BoxDecoration(color: Colors.orange.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(6)),
                             child: Text(_getTargetLabel(target, isEn), style: const TextStyle(color: Colors.orange, fontWeight: FontWeight.w900, fontSize: 10)),
                           ),
                           Icon(Icons.new_releases_rounded, color: Colors.amber[700], size: 16),
@@ -102,7 +102,7 @@ class CouponListScreen extends ConsumerWidget {
                                 decoration: BoxDecoration(
                                   color: isDark ? Colors.white10 : Colors.grey[100], 
                                   borderRadius: BorderRadius.circular(12), 
-                                  border: Border.all(color: Colors.grey.withOpacity(0.1))
+                                  border: Border.all(color: Colors.grey.withValues(alpha: 0.1))
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(code, style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 14, letterSpacing: 2)),
@@ -114,7 +114,7 @@ class CouponListScreen extends ConsumerWidget {
                             onPressed: () => _copyCode(context, code, isEn),
                             icon: const Icon(Icons.copy_all_rounded, color: Colors.indigo),
                             style: IconButton.styleFrom(
-                              backgroundColor: themeColor.withOpacity(0.1), 
+                              backgroundColor: themeColor.withValues(alpha: 0.1), 
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))
                             ),
                           ),
@@ -162,7 +162,7 @@ class CouponListScreen extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.confirmation_number_outlined, size: 80, color: Colors.grey.withOpacity(0.2)),
+          Icon(Icons.confirmation_number_outlined, size: 80, color: Colors.grey.withValues(alpha: 0.2)),
           const SizedBox(height: 16),
           Text(isEn ? 'No Vouchers Found' : 'কোনো কুপন পাওয়া যায়নি', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey[400])),
         ],
@@ -170,3 +170,4 @@ class CouponListScreen extends ConsumerWidget {
     );
   }
 }
+

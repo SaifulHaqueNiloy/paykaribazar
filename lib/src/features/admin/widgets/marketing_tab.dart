@@ -251,7 +251,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
 
   Widget _buildMegaDrawDateTile(String date) {
     return Card(
-      color: Colors.amber.withOpacity(0.1),
+      color: Colors.amber.withValues(alpha: 0.1),
       child: ListTile(
         leading: const Icon(Icons.calendar_today_rounded, color: Colors.amber),
         title: Text(_t('nextMegaDrawDate'),
@@ -621,7 +621,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                   const Center(child: Icon(Icons.broken_image, size: 40))),
           Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1110,3 +1110,4 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
         .update({'megaDrawWinners': winners});
   }
 }
+

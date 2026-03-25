@@ -31,7 +31,7 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
 
   // Smoothing Factor
   double _currentSmoothHeading = 0;
-  final double _alpha = 0.2; 
+  final double _alpha = 0.15; 
 
   // Kaaba Coordinates
   static const double _kaabaLat = 21.4225;
@@ -49,33 +49,46 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
   }
 
   Future<void> _setupLocation() async {
-    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      if (mounted) setState(() => _statusMessage = 'লোকেশন সার্ভিস অফ');
-      return;
-    }
-
-    LocationPermission permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) {
-        if (mounted) setState(() => _statusMessage = 'পারমিশন প্রয়োজন');
+    try {
+      final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        if (mounted) setState(() => _statusMessage = 'লোকেশন সার্ভিস অফ');
         return;
       }
-    }
 
-    // Start real-time location stream for precision
-    _posSub = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10),
-    ).listen((Position position) {
+      LocationPermission permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          if (mounted) setState(() => _statusMessage = 'পারমিশন প্রয়োজন');
+          return;
+        }
+      }
+
+      // Initial position
+      Position position = await Geolocator.getCurrentPosition();
       if (mounted) {
         setState(() {
           _qiblaAngle = _calculateQiblaAngle(position.latitude, position.longitude);
           _distanceToKaaba = Geolocator.distanceBetween(position.latitude, position.longitude, _kaabaLat, _kaabaLng) / 1000;
-          _statusMessage = 'GPS সিগন্যাল অ্যাক্টিভ';
         });
       }
-    });
+
+      // Stream for updates
+      _posSub = Geolocator.getPositionStream(
+        locationSettings: const LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 10),
+      ).listen((Position position) {
+        if (mounted) {
+          setState(() {
+            _qiblaAngle = _calculateQiblaAngle(position.latitude, position.longitude);
+            _distanceToKaaba = Geolocator.distanceBetween(position.latitude, position.longitude, _kaabaLat, _kaabaLng) / 1000;
+            _statusMessage = 'GPS সিগন্যাল অ্যাক্টিভ';
+          });
+        }
+      });
+    } catch (e) {
+      if (mounted) setState(() => _statusMessage = 'ত্রুটি: $e');
+    }
   }
 
   double _calculateQiblaAngle(double lat, double lng) {
@@ -93,18 +106,15 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
   }
 
   void _startSensors() {
-    // Magnetometer for Heading
     _magSub = magnetometerEventStream().listen((MagnetometerEvent event) {
-      // Simplified Heading logic
       double heading = math.atan2(-event.x, event.y) * (180 / math.pi);
       heading = (heading + 360) % 360;
 
-      // Circular Interpolation for smooth wrap-around
       final double diff = (heading - _currentSmoothHeading + 180) % 360 - 180;
       _currentSmoothHeading = (_currentSmoothHeading + _alpha * diff + 360) % 360;
 
       final double relativeAngle = (_qiblaAngle - _currentSmoothHeading + 360) % 360;
-      final bool aligned = relativeAngle < 5 || relativeAngle > 355;
+      final bool aligned = relativeAngle < 8 || relativeAngle > 352;
 
       if (mounted) {
         setState(() {
@@ -117,7 +127,7 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
 
   void _startCalibration() {
     setState(() => _isCalibrating = true);
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       if (mounted) setState(() => _isCalibrating = false);
     });
   }
@@ -135,12 +145,30 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
     final double turns = -relativeAngle / 360;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        GestureDetector(
-          onTap: _startCalibration,
-          child: Stack(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.all(24),
+      decoration: AppStyles.cardDecoration(isDark),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('QIBLA FINDER', style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900, color: Colors.grey, letterSpacing: 1.5)),
+                  Text('দিক নির্ণয় করুন', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                ],
+              ),
+              IconButton(
+                onPressed: _startCalibration,
+                icon: Icon(Icons.refresh_rounded, color: isDark ? Colors.white38 : Colors.black26),
+              )
+            ],
+          ),
+          const SizedBox(height: 20),
+          Stack(
             alignment: Alignment.center,
             children: [
               // Compass Base
@@ -149,21 +177,14 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
                 height: widget.size,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: isDark 
-                      ? [Colors.white.withValues(alpha: 0.1), Colors.white.withValues(alpha: 0.02)]
-                      : [Colors.grey[100]!, Colors.grey[300]!],
-                  ),
+                  color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.grey[50],
                   border: Border.all(
-                    color: _isAligned ? Colors.green.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.2), 
+                    color: _isAligned ? Colors.teal.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.1), 
                     width: 2
                   ),
                   boxShadow: [
                     if (_isAligned) 
-                      BoxShadow(color: Colors.green.withValues(alpha: 0.3), blurRadius: 25, spreadRadius: 5),
-                    BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, 5)),
+                      BoxShadow(color: Colors.teal.withValues(alpha: 0.2), blurRadius: 20, spreadRadius: 5),
                   ],
                 ),
               ),
@@ -189,14 +210,14 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
                             Container(
                               padding: const EdgeInsets.all(8),
                               decoration: BoxDecoration(
-                                color: _isAligned ? Colors.green : (isDark ? Colors.amber : AppStyles.primaryColor),
+                                color: _isAligned ? Colors.teal : AppStyles.primaryColor,
                                 shape: BoxShape.circle,
                                 boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 8)],
                               ),
-                              child: Text('🕋', style: TextStyle(fontSize: widget.size * 0.12)),
+                              child: Text('🕋', style: TextStyle(fontSize: widget.size * 0.1)),
                             ),
                             Icon(Icons.arrow_drop_up_rounded, 
-                              color: _isAligned ? Colors.green : AppStyles.primaryColor, 
+                              color: _isAligned ? Colors.teal : AppStyles.primaryColor, 
                               size: 30
                             ),
                           ],
@@ -207,63 +228,42 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
                 ),
               ),
 
-              // Calibration Overlay
               if (_isCalibrating)
-                TweenAnimationBuilder<double>(
-                  tween: Tween(begin: 0, end: 2 * math.pi),
-                  duration: const Duration(seconds: 2),
-                  builder: (context, value, child) => Transform.rotate(
-                    angle: value,
-                    child: Icon(Icons.sync_problem_rounded, color: Colors.blue.withValues(alpha: 0.5), size: 60),
-                  ),
-                ),
+                const CircularProgressIndicator(strokeWidth: 2, color: Colors.teal),
                 
-              // Distance display
               if (_distanceToKaaba > 0)
                 Positioned(
                   bottom: widget.size * 0.25,
                   child: Text(
-                    '${_distanceToKaaba.toStringAsFixed(0)} KM',
+                    '${_distanceToKaaba.toStringAsFixed(0)} KM TO MECCA',
                     style: TextStyle(
-                      fontSize: 10, 
+                      fontSize: 8, 
                       fontWeight: FontWeight.w900, 
-                      color: isDark ? Colors.white38 : Colors.black38,
+                      color: isDark ? Colors.white24 : Colors.black26,
                       letterSpacing: 1
                     ),
                   ),
                 ),
             ],
           ),
-        ),
-        const SizedBox(height: 16),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-          decoration: BoxDecoration(
-            color: _isAligned ? Colors.green.withValues(alpha: 0.1) : Colors.transparent,
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                _isAligned ? Icons.gps_fixed_rounded : Icons.compass_calibration_rounded,
-                size: 14,
-                color: _isAligned ? Colors.green : (isDark ? Colors.white54 : Colors.grey),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            decoration: BoxDecoration(
+              color: _isAligned ? Colors.teal.withValues(alpha: 0.1) : Colors.transparent,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              _isAligned ? 'নিখুঁত কিবলা মুখী' : _statusMessage.toUpperCase(),
+              style: TextStyle(
+                fontSize: 11, 
+                fontWeight: FontWeight.bold, 
+                color: _isAligned ? Colors.teal : Colors.grey,
               ),
-              const SizedBox(width: 8),
-              Text(
-                _isAligned ? 'নিখুঁত কিবলা মুখী' : _statusMessage.toUpperCase(),
-                style: TextStyle(
-                  fontSize: 10, 
-                  fontWeight: FontWeight.w900, 
-                  letterSpacing: 0.5,
-                  color: _isAligned ? Colors.green : (isDark ? Colors.white54 : Colors.grey),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -276,7 +276,7 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
           width: 2,
           alignment: Alignment.topCenter,
           child: Container(
-            height: 6,
+            height: 8,
             width: 2,
             decoration: BoxDecoration(
               color: i == 0 ? Colors.red : (isDark ? Colors.white24 : Colors.black12),
@@ -288,3 +288,4 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
     });
   }
 }
+

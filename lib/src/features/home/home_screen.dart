@@ -8,6 +8,10 @@ import '../../utils/styles.dart';
 import 'widgets/greeting_widget.dart';
 import 'widgets/notice_slider.dart';
 import 'widgets/home_widgets.dart';
+import 'widgets/category_chips.dart';
+import 'widgets/flash_sale_timer.dart';
+import 'widgets/loyalty_status_card.dart';
+import 'widgets/qibla_indicator.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -59,12 +63,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(30),
-            gradient: LinearGradient(colors: [Colors.indigo.shade900, Colors.purple.shade900]),
+            gradient: const LinearGradient(colors: [AppStyles.primaryColor, AppStyles.accentColor]),
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.auto_awesome_rounded, color: Colors.amber, size: 50),
+              const Icon(Icons.auto_awesome_rounded, color: Colors.white, size: 50),
               const SizedBox(height: 16),
               const Text('অভিনন্দন! 🎁', style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.w900)),
               const SizedBox(height: 12),
@@ -77,8 +81,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ElevatedButton(
                 onPressed: () => Navigator.pop(context),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.amber,
-                  foregroundColor: Colors.black,
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppStyles.primaryColor,
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                 ),
@@ -140,21 +144,40 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             controller: _scroll,
             physics: const BouncingScrollPhysics(),
             slivers: [
+              SliverAppBar(
+                pinned: true,
+                floating: true,
+                expandedHeight: 0,
+                backgroundColor: isDark ? AppStyles.darkBackgroundColor : AppStyles.primaryColor,
+                title: Row(
+                  children: [
+                    const Icon(Icons.bolt_rounded, color: AppStyles.accentColor),
+                    const SizedBox(width: 8),
+                    Text(_t('appName'), style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18, color: Colors.white)),
+                    const Spacer(),
+                    IconButton(icon: const Icon(Icons.notifications_none_rounded, color: Colors.white), onPressed: () {}),
+                  ],
+                ),
+              ),
               const SliverToBoxAdapter(child: NoticeSlider()),
               SliverToBoxAdapter(
                 child: Column(
                   children: [
                     const GreetingWidget(),
-                    const SizedBox(height: 10),
+                    const LoyaltyStatusCard(),
+                    const CategoryChips(),
+                    if (flashDeals.isNotEmpty)
+                      FlashSaleTimer(endTime: DateTime.now().add(const Duration(hours: 4))),
+                    
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: StaticSearchBar(isDark: isDark, t: _t),
                     ),
+                    const QiblaIndicator(),
                     const SizedBox(height: 10),
                     promoAsync.when(
                       data: (promo) {
                         if (promo.isEmpty) return const SizedBox.shrink();
-                        // Handle multiple promos or find banners list
                         final firstPromo = promo.first;
                         final banners = firstPromo['banners'];
                         if (banners == null || banners is! List || banners.isEmpty) return const SizedBox.shrink();
@@ -201,8 +224,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ],
                 ),
               ),
-              const SliverToBoxAdapter(child: SizedBox(height: 100)),
+              const SliverToBoxAdapter(child: SizedBox(height: 120)),
             ],
+          ),
+          // DNA ENFORCED: Floating Cart Overlay
+          const Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: FloatingCartBar(),
           ),
           ValueListenableBuilder<bool>(
             valueListenable: _showStickyHeader,

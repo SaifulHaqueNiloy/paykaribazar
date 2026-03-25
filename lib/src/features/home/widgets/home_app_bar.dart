@@ -40,9 +40,9 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
                   color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
                   borderRadius: BorderRadius.circular(15),
                   boxShadow: isDark ? null : [
-                    BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4))
+                    BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 10, offset: const Offset(0, 4))
                   ],
-                  border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withOpacity(0.1)),
+                  border: Border.all(color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
                 ),
                 child: Row(
                   children: [
@@ -89,3 +89,4 @@ class HomeAppBar extends ConsumerWidget implements PreferredSizeWidget {
   @override
   Size get preferredSize => const Size.fromHeight(70);
 }
+

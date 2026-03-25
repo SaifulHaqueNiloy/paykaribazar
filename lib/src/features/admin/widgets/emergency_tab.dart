@@ -79,7 +79,7 @@ class _EmergencyTabState extends ConsumerState<EmergencyTab>
     return Card(
       child: ListTile(
         leading: CircleAvatar(
-            backgroundColor: Colors.red.withOpacity(0.1),
+            backgroundColor: Colors.red.withValues(alpha: 0.1),
             child: Text(data['group'] ?? '?',
                 style: const TextStyle(
                     color: Colors.red, fontWeight: FontWeight.bold))),
@@ -337,3 +337,4 @@ class _EmergencyTabState extends ConsumerState<EmergencyTab>
     );
   }
 }
+
