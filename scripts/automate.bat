@@ -44,6 +44,7 @@ if "%ACTION%"=="build-and-test" goto build_and_test
 if "%ACTION%"=="build" goto build
 if "%ACTION%"=="test" goto test
 if "%ACTION%"=="deploy" goto deploy
+if "%ACTION%"=="release" goto release
 if "%ACTION%"=="full-pipeline" goto full_pipeline
 if "%ACTION%"=="clean" goto clean
 if "%ACTION%"=="help" goto help
@@ -80,6 +81,22 @@ goto end
 :deploy
 echo Deploying to %MODE%...
 powershell -ExecutionPolicy Bypass -File scripts\deploy.ps1 -Environment %MODE%
+if errorlevel 1 goto error
+goto end
+
+:release
+echo.
+echo ╔══════════════════════════════════════════════════════╗
+echo ║  📦 GitHub Release & APK Export                      ║
+echo ╚══════════════════════════════════════════════════════╝
+echo.
+
+if "%MODE%"=="" (
+    echo ❌ Version required! Usage: automate.bat release 1.0.0
+    goto error
+)
+
+call scripts\release.bat %MODE%
 if errorlevel 1 goto error
 goto end
 
@@ -126,28 +143,31 @@ goto end
 
 :help
 echo.
-echo Usage: automate.bat [action] [mode]
+echo Usage: automate.bat [action] [parameter]
 echo.
 echo Actions:
 echo   build-and-test   - Run tests then build (default)
 echo   build            - Build all apps only
 echo   test             - Run test suite only
 echo   deploy           - Deploy to platform
+echo   release          - Create GitHub release and build APKs
 echo   full-pipeline    - Complete: test + build + deploy
 echo   clean            - Clean build artifacts
 echo   help             - Show this help
 echo.
-echo Modes:
+echo Modes/Parameters:
 echo   release          - Release build (default, optimized)
 echo   debug            - Debug build (faster)
 echo   production       - Deploy to production
 echo   staging          - Deploy to staging
+echo   [version]        - For release action: e.g., 1.0.0
 echo.
 echo Examples:
 echo   automate.bat build-and-test
 echo   automate.bat build debug
 echo   automate.bat deploy production
 echo   automate.bat full-pipeline
+echo   automate.bat release 1.0.0
 echo.
 goto end
 
