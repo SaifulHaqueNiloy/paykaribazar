@@ -5,7 +5,7 @@
 
 import 'dart:io';
 import 'package:hive/hive.dart';
-import 'base_test.dart';
+import 'base.dart';
 
 /// Initialize Hive for testing
 Future<void> setupHiveForTesting() async {

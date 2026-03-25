@@ -5,7 +5,7 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'base_test.dart';
+import 'base.dart';
 
 /// Base test class for snapshot-based tests
 ///

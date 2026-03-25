@@ -3,23 +3,23 @@
 ///
 /// This file provides backwards compatibility by re-exporting all modularized
 /// test utilities. New code should import from the specific modules instead:
-/// - base_test.dart: Core BaseTest class
-/// - firebase_test.dart: Firebase-specific testing
-/// - snapshot_test.dart: Async/AsyncValue testing
+/// - base.dart: Core BaseTest class
+/// - firebase.dart: Firebase-specific testing
+/// - snapshot.dart: Async/AsyncValue testing
 /// - test_builders.dart: Test data builders
 /// - performance_tracker.dart: Performance measurement
 ///
 /// Legacy imports using this file will continue to work.
 
 // Core test infrastructure
-export 'base_test.dart' show BaseTest, createTestProviderContainer;
+export 'base.dart' show BaseTest, createTestProviderContainer;
 
 // Firebase testing
-export 'firebase_test.dart'
+export 'firebase.dart'
     show BaseFirebaseTest, setupHiveForTesting, tearDownHiveForTesting;
 
 // Async/Snapshot testing
-export 'snapshot_test.dart' show BaseSnapshotTest;
+export 'snapshot.dart' show BaseSnapshotTest;
 
 // Test data builders
 export 'test_builders.dart'
