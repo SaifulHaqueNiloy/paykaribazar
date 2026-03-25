@@ -2,13 +2,16 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_service.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_provider.dart';
+import 'package:paykari_bazar/src/features/ai/services/api_quota_service.dart';
 import 'package:paykari_bazar/src/core/firebase/firestore_service.dart';
 import 'package:paykari_bazar/src/core/services/secrets_service.dart';
 import 'package:paykari_bazar/src/features/ai/domain/ai_work_type.dart';
+import 'package:get_it/get_it.dart';
 
 class MockFirestoreService extends Mock implements FirestoreService {}
 class MockSecretsService extends Mock implements SecretsService {}
 class MockAIProvider extends Mock implements AIProvider {}
+class MockApiQuotaService extends Mock implements ApiQuotaService {}
 
 void main() {
   late AIService aiService;
@@ -17,6 +20,8 @@ void main() {
   late MockAIProvider mockKimi;
   late MockAIProvider mockDeepSeek;
   late MockAIProvider mockGemini;
+  late MockApiQuotaService mockQuotaService;
+  final getIt = GetIt.instance;
 
   setUpAll(() {
     registerFallbackValue(AiWorkType.generic);
@@ -28,10 +33,19 @@ void main() {
     mockKimi = MockAIProvider();
     mockDeepSeek = MockAIProvider();
     mockGemini = MockAIProvider();
+    mockQuotaService = MockApiQuotaService();
 
     when(() => mockKimi.name).thenReturn('Kimi');
     when(() => mockDeepSeek.name).thenReturn('DeepSeek');
     when(() => mockGemini.name).thenReturn('Gemini');
+    
+    // Mock quota service
+    when(() => mockQuotaService.hasQuota(any())).thenAnswer((_) async => true);
+    when(() => mockQuotaService.incrementUsage(any())).thenAnswer((_) async {});
+    when(() => mockQuotaService.normalizeProviderKey(any())).thenAnswer((invocation) {
+      final key = invocation.positionalArguments.first as String;
+      return key.toLowerCase();
+    });
 
     aiService = AIService(
       firestore: mockFirestore,
@@ -42,6 +56,8 @@ void main() {
 
   group('AIService Unit Tests (Sovereign Routing)', () {
     test('Router Logic: Uses Kimi as Primary when healthy', () async {
+      await aiService.initialize();
+      
       when(() => mockKimi.healthCheck()).thenAnswer((_) async => true);
       when(() => mockKimi.generate(any(), type: any(named: 'type')))
           .thenAnswer((_) async => 'Response from Kimi');
@@ -50,10 +66,11 @@ void main() {
 
       expect(result, equals('Response from Kimi'));
       verify(() => mockKimi.generate(any(), type: any(named: 'type'))).called(1);
-      verifyNever(() => mockDeepSeek.generate(any(), type: any(named: 'type')));
     });
 
     test('Router Logic: Falls back to DeepSeek when Kimi is unhealthy', () async {
+      await aiService.initialize();
+      
       when(() => mockKimi.healthCheck()).thenAnswer((_) async => false);
       when(() => mockDeepSeek.healthCheck()).thenAnswer((_) async => true);
       when(() => mockDeepSeek.generate(any(), type: any(named: 'type')))

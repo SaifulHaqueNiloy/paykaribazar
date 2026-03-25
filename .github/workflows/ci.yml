@@ -20,7 +20,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.25.0'
-          channel: 'stable'
           cache: true
           cache-key: flutter-${{ hashFiles('**/pubspec.lock') }}
 
@@ -57,7 +56,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.25.0'
-          channel: 'stable'
           cache: true
 
       - name: Install dependencies
