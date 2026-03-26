@@ -203,6 +203,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  // ⭐ DEMO LOGIN: For testing purposes
+  Future<void> _handleDemoLogin() async {
+    // Pre-fill with test credentials
+    setState(() {
+      _idCtrl.text = 'demo@test.com';  // Test email
+      _passCtrl.text = 'Demo@1234';     // Test password
+      _isPhoneLogin = false;
+    });
+    
+    // Auto-submit login
+    await Future.delayed(const Duration(milliseconds: 300));
+    if (mounted) {
+      await _handleLogin();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -289,6 +305,29 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 _buildRememberForgot(),
                 const SizedBox(height: 40),
                 _buildLoginButton(),
+                const SizedBox(height: 12),
+                // ⭐ DEMO LOGIN BUTTON FOR TESTING
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: OutlinedButton(
+                    onPressed: _isLoading ? null : _handleDemoLogin,
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(color: Colors.orange, width: 2),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: const Text(
+                      '🔓 Demo Login',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 30),
                 _buildDivider(),
                 const SizedBox(height: 30),

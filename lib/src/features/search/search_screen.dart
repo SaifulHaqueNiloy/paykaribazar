@@ -31,6 +31,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     _query = widget.initialQuery?.toLowerCase() ?? '';
     _controller = TextEditingController(text: widget.initialQuery);
     _voiceService.initSpeech();
+    
+    // Auto-trigger voice or image search if action parameter is provided
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.initialAction == 'voice') {
+        _toggleListening();
+      } else if (widget.initialAction == 'image') {
+        _showImagePickerOptions();
+      }
+    });
   }
 
   void _onVoiceResult(String words) {

@@ -10,7 +10,7 @@ class FloatingCartBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final cart = ref.watch(cartProvider);
-    if (cart.items.isEmpty) return const SizedBox.shrink();
+    // ✅ ALWAYS SHOW: Even with empty cart (shows item count as 0)
 
     return GestureDetector(
       onTap: () {
@@ -21,7 +21,9 @@ class FloatingCartBar extends ConsumerWidget {
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
-          color: AppStyles.primaryColor,
+          color: cart.items.isEmpty
+              ? AppStyles.primaryColor.withValues(alpha: 0.6)
+              : AppStyles.primaryColor,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(

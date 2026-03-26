@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/styles.dart';
+import '../../services/home_providers.dart';
 import 'widgets/greeting_widget.dart';
 import 'widgets/notice_slider.dart';
 import 'widgets/home_widgets.dart';
@@ -117,24 +118,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final promoAsync = ref.watch(promoProvider);
-    final productsAsync = ref.watch(productsProvider);
-
-    // Filtered products for sections with safe type casting
-    final allProducts = productsAsync.value ?? [];
     
-    final flashDeals = allProducts.where((p) => (p['isFlashSale'] as bool? ?? false)).toList();
-    final newArrivals = allProducts.where((p) => (p['isNewArrival'] as bool? ?? false)).toList();
-    final hotSelling = allProducts.where((p) => (p['isHotSelling'] as bool? ?? false)).toList();
-    final comboPacks = allProducts.where((p) => (p['isComboPack'] as bool? ?? false)).toList();
-    
-    final priceDropped = allProducts.where((p) => (p['oldPrice'] != null && (p['oldPrice'] as num) > (p['price'] as num))).toList()
-      ..sort((a, b) {
-        final d1 = (a['oldPrice'] as num? ?? 0).toDouble() - (a['price'] as num? ?? 0).toDouble();
-        final d2 = (b['oldPrice'] as num? ?? 0).toDouble() - (b['price'] as num? ?? 0).toDouble();
-        return d2.compareTo(d1);
-      });
-      
-    final justForYou = List<Map<String, dynamic>>.from(allProducts)..shuffle();
+    // Use optimized providers instead of raw data filtering
+    final flashDealsAsync = ref.watch(flashDealsProvider);
+    final newArrivalsAsync = ref.watch(newArrivalsProvider);
+    final hotSellingAsync = ref.watch(hotSellingProvider);
+    final comboPacksAsync = ref.watch(comboPacksProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppStyles.darkBackgroundColor : AppStyles.backgroundColor,
@@ -166,8 +155,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const GreetingWidget(),
                     const LoyaltyStatusCard(),
                     const CategoryChips(),
-                    if (flashDeals.isNotEmpty)
-                      FlashSaleTimer(endTime: DateTime.now().add(const Duration(hours: 4))),
+                    flashDealsAsync.when(
+                      data: (deals) {
+                        if (deals.isEmpty) return const SizedBox.shrink();
+                        return FlashSaleTimer(endTime: DateTime.now().add(const Duration(hours: 4)));
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
                     
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -186,53 +181,93 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       loading: () => const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
                       error: (e, _) => const SizedBox.shrink(),
                     ),
-                    productsAsync.when(
-                      data: (_) {
+                    
+                    // Product Sections using optimized providers
+                    flashDealsAsync.when(
+                      data: (flashDeals) {
                         return Column(
                           children: [
                             if (flashDeals.isNotEmpty)
                               SectionHeader(title: _t('flashDeals'), onTap: _navigateToAllProducts),
                             if (flashDeals.isNotEmpty)
-                              ProductHorizontalList(products: flashDeals, emptyMessage: _t('noFlashSales')),
-                            
-                            if (comboPacks.isNotEmpty)
-                              SectionHeader(title: _t('comboPack'), onTap: _navigateToAllProducts),
-                            if (comboPacks.isNotEmpty)
-                              ProductHorizontalList(products: comboPacks, emptyMessage: _t('noProductsFound')),
-
-                            if (hotSelling.isNotEmpty) ...[
-                              SectionHeader(title: _t('topSellingProducts'), onTap: _navigateToAllProducts),
-                              ProductHorizontalList(products: hotSelling, emptyMessage: _t('noProductsFound')),
-                            ],
-
-                            if (priceDropped.isNotEmpty)
-                              SectionHeader(title: _t('priceDropTitle'), onTap: _navigateToAllProducts),
-                            if (priceDropped.isNotEmpty)
-                              ProductHorizontalList(products: priceDropped.take(10).toList(), emptyMessage: _t('noProductsFound')),
-
-                            SectionHeader(title: _t('newArrivals'), onTap: _navigateToAllProducts),
-                            ProductHorizontalList(products: newArrivals, emptyMessage: _t('noProductsFound')),
-
-                            SectionHeader(title: _t('justForYou'), onTap: _navigateToAllProducts),
-                            ProductHorizontalList(products: justForYou.take(10).toList(), emptyMessage: _t('noProductsFound')),
+                              ProductHorizontalList(
+                                products: flashDeals.map((p) => p.toMap()).toList(),
+                                emptyMessage: _t('noFlashSales'),
+                              ),
                           ],
                         );
                       },
-                      loading: () => const Center(child: Padding(padding: EdgeInsets.all(40), child: CircularProgressIndicator())),
-                      error: (e, _) => Center(child: Padding(padding: const EdgeInsets.all(20), child: Text('${_t('errorOccurred')}: $e', style: const TextStyle(color: Colors.red)))),
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
+                    
+                    // Combo Packs Section
+                    comboPacksAsync.when(
+                      data: (comboPacks) {
+                        if (comboPacks.isEmpty) return const SizedBox.shrink();
+                        return Column(
+                          children: [
+                            SectionHeader(
+                              title: _t('comboPack'),
+                              onTap: _navigateToAllProducts,
+                            ),
+                            ProductHorizontalList(
+                              products: comboPacks.map((p) => p.toMap()).toList(),
+                              emptyMessage: _t('noProductsFound'),
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
+                    
+                    // Top Selling Products Section
+                    hotSellingAsync.when(
+                      data: (hotSelling) {
+                        if (hotSelling.isEmpty) return const SizedBox.shrink();
+                        return Column(
+                          children: [
+                            SectionHeader(
+                              title: _t('topSellingProducts'),
+                              onTap: _navigateToAllProducts,
+                            ),
+                            ProductHorizontalList(
+                              products: hotSelling.map((p) => p.toMap()).toList(),
+                              emptyMessage: _t('noProductsFound'),
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
+                    
+                    // New Arrivals Section
+                    newArrivalsAsync.when(
+                      data: (newArrivals) {
+                        if (newArrivals.isEmpty) return const SizedBox.shrink();
+                        return Column(
+                          children: [
+                            SectionHeader(
+                              title: _t('newArrivals'),
+                              onTap: _navigateToAllProducts,
+                            ),
+                            ProductHorizontalList(
+                              products: newArrivals.map((p) => p.toMap()).toList(),
+                              emptyMessage: _t('noProductsFound'),
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
                     ),
                   ],
                 ),
               ),
               const SliverToBoxAdapter(child: SizedBox(height: 120)),
             ],
-          ),
-          // DNA ENFORCED: Floating Cart Overlay
-          const Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: FloatingCartBar(),
           ),
           ValueListenableBuilder<bool>(
             valueListenable: _showStickyHeader,

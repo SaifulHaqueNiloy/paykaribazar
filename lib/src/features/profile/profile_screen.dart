@@ -86,19 +86,19 @@ class ProfileScreen extends ConsumerWidget {
                         _buildXRow([
                           _gridItem(
                               Icons.storefront_rounded,
-                              'Apply for Reseller',
+                              'Become a Reseller',
                               () => context.push('/apply?role=reseller'),
                               Colors.purple,
                               isDark),
                           _gridItem(
                               Icons.delivery_dining_rounded,
-                              'Apply for Delivery Person',
+                              'Become a Rider',
                               () => context.push('/apply?role=rider'),
                               Colors.deepOrange,
                               isDark),
                           _gridItem(
                               Icons.badge_rounded,
-                              'Apply for Office Staff',
+                              'Join as Staff',
                               () => context.push('/apply?role=staff'),
                               Colors.indigo,
                               isDark),

@@ -327,29 +327,46 @@ class StaticSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.push('/search'),
-      child: Container(
-        height: 45,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(
-          color: const Color(0xFF1E293B),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
-        ),
-        child: Row(
-          children: [
-            const Icon(Icons.search, color: Colors.grey, size: 20),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Text(t('searchHint'),
-                  style: const TextStyle(color: Colors.grey, fontSize: 13)),
+    return Container(
+      height: 45,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1E293B),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () => context.push('/search'),
+              child: Row(
+                children: [
+                  const Icon(Icons.search, color: Colors.grey, size: 20),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(t('searchHint'),
+                        style: const TextStyle(color: Colors.grey, fontSize: 13)),
+                  ),
+                ],
+              ),
             ),
-            const Icon(Icons.mic_none_rounded, color: AppStyles.primaryColor, size: 20),
-            const SizedBox(width: 12),
-            const Icon(Icons.camera_alt_outlined, color: AppStyles.primaryColor, size: 20),
-          ],
-        ),
+          ),
+          GestureDetector(
+            onTap: () => context.push('/search?action=voice'),
+            child: const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8),
+              child: Icon(Icons.mic_none_rounded, color: AppStyles.primaryColor, size: 20),
+            ),
+          ),
+          GestureDetector(
+            onTap: () => context.push('/search?action=image'),
+            child: const Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: Icon(Icons.camera_alt_outlined, color: AppStyles.primaryColor, size: 20),
+            ),
+          ),
+        ],
       ),
     );
   }

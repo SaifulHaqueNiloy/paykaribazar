@@ -4,7 +4,8 @@
     "paykari-bazar-a19e7": {
       "hosting": {
         "customer": [
-          "paykari-bazar-a19e7"
+          "paykari-bazar-a19e7",
+          "paykari-bazar-app"
         ],
         "admin": [
           "paykari-bazar-admin"
