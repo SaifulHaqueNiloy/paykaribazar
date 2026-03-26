@@ -282,7 +282,9 @@ void main() {
       });
 
       test('20. Provider names accessible from AIService', () {
+        // ignore: unused_local_variable
         final mockFirestore = MockFirestoreService();
+        // ignore: unused_local_variable
         final mockSecrets = MockSecretsService();
         
         final providers = [mockKimi, mockDeepSeek, mockGemini];

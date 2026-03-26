@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/services/firebase_pagination_service.dart';
 import '../domain/product_model.dart';
 
 /// Products pagination state provider
@@ -21,7 +22,7 @@ class ProductsPaginationNotifier
     try {
       state = const AsyncValue.loading();
 
-      final pageState;
+      final PaginationState<ProductModel> pageState;
       if (category.isEmpty && !flashSaleOnly) {
         pageState = await paginationService.getFirstPage<ProductModel>(
           collectionPath: 'hub/data/products',
@@ -77,7 +78,7 @@ class ProductsPaginationNotifier
     try {
       state = AsyncValue.data(currentState.copyWith(isLoadingMore: true));
 
-      final pageState;
+      final PaginationState<ProductModel> pageState;
       if (currentState.category.isEmpty && !currentState.flashSaleOnly) {
         pageState = await paginationService.getNextPage<ProductModel>(
           collectionPath: 'hub/data/products',

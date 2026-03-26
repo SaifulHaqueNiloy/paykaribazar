@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/services/firebase_pagination_service.dart';
 import '../domain/order_model.dart';
 
 /// Orders pagination state provider
@@ -23,7 +24,7 @@ class OrdersPaginationNotifier
     try {
       state = const AsyncValue.loading();
 
-      final pageState;
+      final PaginationState<OrderModel> pageState;
       if (userOrdersOnly && userId != null) {
         pageState = await paginationService.getFilteredFirstPage<OrderModel>(
           collectionPath: 'orders',
@@ -85,7 +86,7 @@ class OrdersPaginationNotifier
     try {
       state = AsyncValue.data(currentState.copyWith(isLoadingMore: true));
 
-      final pageState;
+      final PaginationState<OrderModel> pageState;
       if (currentState.userOrdersOnly && userId != null) {
         pageState = await paginationService.getFilteredNextPage<OrderModel>(
           collectionPath: 'orders',

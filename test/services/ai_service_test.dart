@@ -10,10 +10,15 @@ import 'ai_service_test.mocks.dart';
 
 @GenerateMocks([FirestoreService, SecretsService, AIProvider])
 void main() {
+  // ignore: unused_local_variable
   late AIService aiService;
+  // ignore: unused_local_variable
   late MockFirestoreService mockFirestore;
+  // ignore: unused_local_variable
   late MockSecretsService mockSecrets;
+  // ignore: unused_local_variable
   late MockAIProvider mockKimi;
+  // ignore: unused_local_variable
   late MockAIProvider mockDeepSeek;
   late MockAIProvider mockGemini;
 

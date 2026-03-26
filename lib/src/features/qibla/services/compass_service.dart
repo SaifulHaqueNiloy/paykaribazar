@@ -4,8 +4,8 @@ import 'package:sensors_plus/sensors_plus.dart';
 import '../../../shared/services/location_service.dart';
 
 class CompassService {
-  static const double MECCA_LAT = 21.4225;
-  static const double MECCA_LNG = 39.8262;
+  static const double meccaLat = 21.4225;
+  static const double meccaLng = 39.8262;
 
   final LocationService locationService;
 
@@ -43,8 +43,8 @@ class CompassService {
       return _calculateBearing(
         position.latitude,
         position.longitude,
-        MECCA_LAT,
-        MECCA_LNG,
+        meccaLat,
+        meccaLng,
       );
     } catch (e) {
       rethrow;
@@ -128,8 +128,8 @@ class CompassService {
       return _calculateDistance(
         position.latitude,
         position.longitude,
-        MECCA_LAT,
-        MECCA_LNG,
+        meccaLat,
+        meccaLng,
       );
     } catch (e) {
       return 0.0;
@@ -210,7 +210,7 @@ class CompassService {
       // Note: Requires Google Maps Geocoding API or similar service
       // This is a placeholder implementation
       final distance =
-          _calculateDistance(latitude, longitude, MECCA_LAT, MECCA_LNG);
+          _calculateDistance(latitude, longitude, meccaLat, meccaLng);
       return '$distance km from Mecca';
     } catch (e) {
       return 'Unknown Location';

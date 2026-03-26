@@ -8,9 +8,13 @@ import 'quota_service_test.mocks.dart';
 
 void main() {
   late ApiQuotaService quotaService;
+  // ignore: unused_local_variable
   late MockFirebaseFirestore mockDb;
+  // ignore: unused_local_variable
   late MockCollectionReference<Map<String, dynamic>> mockCollection;
+  // ignore: unused_local_variable
   late MockDocumentReference<Map<String, dynamic>> mockDoc;
+  // ignore: unused_local_variable
   late MockDocumentSnapshot<Map<String, dynamic>> mockSnapshot;
 
   setUp(() {

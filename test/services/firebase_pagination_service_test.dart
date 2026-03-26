@@ -16,7 +16,9 @@ class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
 
 void main() {
   group('FirebasePaginationService Tests', () {
+    // ignore: unused_local_variable
     late MockFirebaseFirestore mockFirestore;
+    // ignore: unused_local_variable
     late FirebasePaginationService paginationService;
 
     setUp(() {

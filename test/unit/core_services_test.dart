@@ -23,8 +23,11 @@ class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
 void main() {
   // Mock instances
   late MockBackupService mockBackupService;
+  // ignore: unused_local_variable
   late MockFirebasePaginationService mockPaginationService;
+  // ignore: unused_local_variable
   late MockApiQuotaService mockQuotaService;
+  // ignore: unused_local_variable
   late MockEncryptionService mockEncryptionService;
   late MockSecureAuthService mockSecureAuthService;
 

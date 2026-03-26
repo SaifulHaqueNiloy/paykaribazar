@@ -70,9 +70,9 @@ class OrderDetailsScreen extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         width: double.infinity,
         decoration: BoxDecoration(
-          color: _getStatusColor(status).withOpacity(0.1),
+          color: _getStatusColor(status).withAlpha((255 * 0.1).round()),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: _getStatusColor(status).withOpacity(0.3)),
+          border: Border.all(color: _getStatusColor(status).withAlpha((255 * 0.3).round())),
         ),
         child: Row(
           children: [
