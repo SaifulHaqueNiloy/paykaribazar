@@ -201,7 +201,7 @@ void main() {
         'total': 110.0,
         'address': '123 Main St',
         'paymentMethod': 'COD',
-        'status': 'Pending',
+        'status': 'pending',
         'createdAt': ts,
         'updatedAt': ts,
       };
