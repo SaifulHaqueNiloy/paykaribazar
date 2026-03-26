@@ -134,7 +134,6 @@ void main() {
         total: 110.0,
         address: '123 Main St',
         paymentMethod: 'COD',
-        status: om.OrderStatus.pending,
         createdAt: now,
         updatedAt: now,
       );

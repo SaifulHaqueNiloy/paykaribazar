@@ -25,7 +25,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       _rememberMe = false;
   bool _isAdminApp = false;
   bool _biometricAvailable = false; // ⭐ NEW: Track biometric availability
-  bool _biometricInitializing = false; // ⭐ NEW: Track biometric init state
+  // bool _biometricInitializing = false; // ⭐ NEW: Track biometric init state (unused)
 
   @override
   void initState() {
@@ -38,21 +38,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   // ⭐ NEW: Initialize biometric authentication
   Future<void> _initBiometric() async {
     try {
-      _biometricInitializing = true;
+      // _biometricInitializing = true;
       final secureAuth = SecurityInitializer.secureAuth;
       final available = await secureAuth.isBiometricAvailable();
 
       if (mounted) {
         setState(() {
           _biometricAvailable = available;
-          _biometricInitializing = false;
+          // _biometricInitializing = false;
         });
       }
 
       debugPrint('Biometric available: $available');
     } catch (e) {
       if (mounted) {
-        setState(() => _biometricInitializing = false);
+        setState(() {
+          // _biometricInitializing = false;
+        });
       }
       debugPrint('Biometric init error: $e');
     }
@@ -123,14 +125,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       if (userCred != null && mounted) {
         // ⭐ SECURITY: Store token securely using SecureAuthService
         final secureAuth = SecurityInitializer.secureAuth;
-        if (userCred.uid != null) {
-          await secureAuth.storeSecureToken(
-            'access_token',
-            userCred.uid,
-          );
-          debugPrint('✅ User token stored securely');
-        }
-
+        await secureAuth.storeSecureToken(
+          'access_token',
+          userCred.uid,
+        );
+        debugPrint('✅ User token stored securely');
+      
         await _saveCredentials();
         if (mounted) {
           ref.read(navProvider.notifier).setIndex(4);

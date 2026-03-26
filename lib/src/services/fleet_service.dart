@@ -52,7 +52,6 @@ class FleetService {
           patchInstalled: data['patchInstalled'] ?? false,
           lastPatchTime: (data['lastPatchTime'] as Timestamp?)?.toDate(),
           shorebirdAvailable: data['shorebirdAvailable'] ?? true,
-          hasUpdateAvailable: false,
         );
       }
     } catch (e) {
@@ -63,8 +62,6 @@ class FleetService {
     return ShorebirdStatus(
       currentVersion: '1.0.0',
       patchInstalled: false,
-      shorebirdAvailable: false,
-      hasUpdateAvailable: false,
     );
   }
 }

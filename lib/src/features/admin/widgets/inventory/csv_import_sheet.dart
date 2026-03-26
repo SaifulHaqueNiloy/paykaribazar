@@ -155,7 +155,7 @@ class _CsvImportSheetState extends ConsumerState<CsvImportSheet> {
           data['aiOptimized'] = true;
         }
       } catch (e) {
-        print('AI Enhancement Error: $e');
+        debugPrint('AI Enhancement Error: $e');
       }
     }
   }

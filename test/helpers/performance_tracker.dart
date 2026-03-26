@@ -2,10 +2,11 @@
 ///
 /// Provides utilities for measuring and tracking performance metrics across test runs.
 /// Integrates with CI/CD for regression detection and historical trend analysis.
+library;
 
-import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 /// Performance measurement data for a single operation
@@ -273,19 +274,19 @@ class PerformanceTracker {
   void printReport() {
     final allStats = getAllStats();
     if (allStats.isEmpty) {
-      print('No performance metrics recorded');
+      debugPrint('No performance metrics recorded');
       return;
     }
 
-    print('\n' + '=' * 60);
-    print('PERFORMANCE REPORT');
-    print('=' * 60);
+    debugPrint('\n${'=' * 60}');
+    debugPrint('PERFORMANCE REPORT');
+    debugPrint('=' * 60);
 
     for (final entry in allStats.entries) {
-      print('\n${entry.value}');
+      debugPrint('\n${entry.value}');
     }
 
-    print('\n' + '=' * 60);
+    debugPrint('\n${'=' * 60}');
   }
 
   /// Clear all recorded metrics

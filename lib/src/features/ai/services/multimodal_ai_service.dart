@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:http/http.dart' as http;
 import '../../../core/services/secrets_service.dart';
-import 'ai_service.dart';
 
 /// Service for Multi-Modal AI operations (Image + Text)
 /// Uses Gemini 2.0 Flash to analyze Cloudinary images and generate content

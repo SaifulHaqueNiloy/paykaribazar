@@ -30,7 +30,7 @@ class BackupItem {
     'fileUrl': fileUrl,
     'fileSize': fileSize,
     'type': type.name,
-    'createdAt': FieldValue.serverTimestamp(),
+    'createdAt': createdAt.toIso8601String(),
     'isPublic': isPublic,
   };
 

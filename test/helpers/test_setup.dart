@@ -10,6 +10,7 @@
 /// - performance_tracker.dart: Performance measurement
 ///
 /// Legacy imports using this file will continue to work.
+library;
 
 // Core test infrastructure
 export 'base.dart' show BaseTest, createTestProviderContainer;

@@ -566,7 +566,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
           onChanged: (x) => ref
               .read(firestoreServiceProvider)
               .updateAppSettings('app_info', {k: x}),
-          activeColor: AppStyles.primaryColor);
+          activeThumbColor: AppStyles.primaryColor);
 
   Widget _sectionLabel(String t) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),

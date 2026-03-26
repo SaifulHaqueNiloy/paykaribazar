@@ -167,7 +167,7 @@ class GeofencingService {
       while (true) {
         final isInZone = await isWithinDeliveryZone(areaId);
         yield isInZone;
-        await Future.delayed(Duration(seconds: 10)); // Check every 10 seconds
+        await Future.delayed(const Duration(seconds: 10)); // Check every 10 seconds
       }
     } catch (e) {
       yield false;

@@ -2,6 +2,7 @@
 ///
 /// Provides utilities for testing async operations and AsyncValue states
 /// from Riverpod's AsyncValue pattern.
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -80,7 +81,7 @@ abstract class BaseSnapshotTest extends BaseTest {
     if (state is! AsyncData<T>) {
       throw StateError('Expected AsyncData<$T> but got $state');
     }
-    return (state as AsyncData<T>).value;
+    return (state).value;
   }
 
   /// Extract error from AsyncError state
@@ -91,6 +92,6 @@ abstract class BaseSnapshotTest extends BaseTest {
     if (state is! AsyncError) {
       throw StateError('Expected AsyncError but got $state');
     }
-    return (state as AsyncError).error;
+    return (state).error;
   }
 }

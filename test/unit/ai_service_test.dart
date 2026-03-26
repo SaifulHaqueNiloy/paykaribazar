@@ -286,11 +286,11 @@ void main() {
         final mockSecrets = MockSecretsService();
         
         final providers = [mockKimi, mockDeepSeek, mockGemini];
-        final aiService = AIService(
-          firestore: mockFirestore,
-          secrets: mockSecrets,
-          mockProviders: providers,
-        );
+        // final aiService = AIService(
+        //   firestore: mockFirestore,
+        //   secrets: mockSecrets,
+        //   mockProviders: providers,
+        // );
 
         expect(providers.map((p) => p.name).toList(), 
             equals(['Kimi', 'DeepSeek', 'Gemini']));

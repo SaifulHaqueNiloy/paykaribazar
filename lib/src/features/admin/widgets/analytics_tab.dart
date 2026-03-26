@@ -179,7 +179,6 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
         : LineChart(
             LineChartData(
               gridData: const FlGridData(show: false),
-              titlesData: const FlTitlesData(show: true),
               borderData: FlBorderData(show: false),
               lineBarsData: [
                 LineChartBarData(

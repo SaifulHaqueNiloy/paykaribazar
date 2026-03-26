@@ -60,7 +60,6 @@ class AuthStateNotifier extends StateNotifier<User?> {
       id: 'user_${DateTime.now().millisecondsSinceEpoch}',
       email: email,
       name: name,
-      isEmailVerified: false,
     );
   }
 

@@ -20,8 +20,8 @@ class ImageUtils {
       );
 
       if (compressedFile != null) {
-        final originalSize = await file.length();
-        final compressedSize = await File(compressedFile.path).length();
+        // final originalSize = await file.length();
+        // final compressedSize = await File(compressedFile.path).length();
         // Image compression size difference logged internally
         return File(compressedFile.path);
       }

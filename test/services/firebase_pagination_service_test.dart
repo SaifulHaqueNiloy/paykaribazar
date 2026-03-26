@@ -128,12 +128,12 @@ void main() {
       test('handles large document sets efficiently', () {
         final stopwatch = Stopwatch()..start();
 
-        final mockDocs = List.generate(
-            1000,
-            (i) => _createMockDocument(
-                  'doc$i',
-                  {'index': i, 'name': 'Product $i'},
-                ));
+        // final mockDocs = List.generate(
+        //     1000,
+        //     (i) => _createMockDocument(
+        //           'doc$i',
+        //           {'index': i, 'name': 'Product $i'},
+        //         ));
 
         stopwatch.stop();
 

@@ -32,7 +32,7 @@ class BloodDonor {
     'name': name,
     'bloodGroup': bloodGroup,
     'contactNumber': contactNumber ?? phone,
-    'lastDonated': lastDonated,
+    'lastDonated': lastDonated?.toIso8601String(),
     'userUid': userUid,
     'imageUrl': imageUrl,
     'district': district,

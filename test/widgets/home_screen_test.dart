@@ -13,9 +13,9 @@ void main() {
           MaterialApp(
             home: Scaffold(
               appBar: AppBar(title: const Text('Home')),
-              body: SingleChildScrollView(
+              body: const SingleChildScrollView(
                 child: Column(
-                  children: const [
+                  children: [
                     Text('Welcome'),
                     SizedBox(height: 16),
                     Text('Featured Products'),
@@ -36,8 +36,8 @@ void main() {
           MaterialApp(
             home: Scaffold(
               appBar: AppBar(
-                title: TextField(
-                  decoration: const InputDecoration(
+                title: const TextField(
+                  decoration: InputDecoration(
                     hintText: 'Search products',
                     border: InputBorder.none,
                   ),
@@ -330,21 +330,21 @@ void main() {
 
       testWidgets('4. Special offers visible', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: SingleChildScrollView(
                 child: Column(
                   children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(16),
                       child: Text('Special Offers', style: TextStyle(fontSize: 16)),
                     ),
                     Wrap(
                       spacing: 8,
                       children: [
-                        Chip(label: const Text('Save 20%')),
-                        Chip(label: const Text('Free Shipping')),
-                        Chip(label: const Text('Buy 1 Get 1')),
+                        Chip(label: Text('Save 20%')),
+                        Chip(label: Text('Free Shipping')),
+                        Chip(label: Text('Buy 1 Get 1')),
                       ],
                     ),
                   ],

@@ -93,12 +93,9 @@ class OTAService with ChangeNotifier {
 
     try {
       // Stub implementation - actual Shorebird calls on mobile would go here
-      bool updateAvailable = false;
+      const bool updateAvailable = false;
       
-      if (updateAvailable) {
-        _latestVersion = '1.0.1';
-        debugPrint('[OTA] Update available. New patch: $_latestVersion');
-      } else if (notifyIfNoUpdate) {
+      if (notifyIfNoUpdate) {
         debugPrint('[OTA] Already running latest version');
       }
       

@@ -95,7 +95,7 @@ void main() {
         expect(find.byType(Container), findsWidgets);
 
         // Fast forward past the end time
-        addTearDown(tester.binding.window.clearPhysicalSizeTestValue);
+        addTearDown(tester.view.resetPhysicalSize);
       });
     });
 
@@ -124,7 +124,7 @@ void main() {
           (WidgetTester tester) async {
         // Set time to exactly 0 hours, 5 minutes, 9 seconds in future
         final futureTime = DateTime.now().add(
-          Duration(
+          const Duration(
             seconds: 5 * 60 + 9,
           ),
         );

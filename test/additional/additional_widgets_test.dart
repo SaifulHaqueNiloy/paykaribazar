@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // ============================================================================
 // MOCK WIDGETS
@@ -8,7 +7,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchBar extends StatefulWidget {
   final Function(String) onSearch;
-  const SearchBar({required this.onSearch});
+  const SearchBar({super.key, required this.onSearch});
 
   @override
   State<SearchBar> createState() => _SearchBarState();
@@ -59,7 +58,7 @@ class FilterDialog extends StatefulWidget {
   final List<String> categories;
   final Function(String) onFilterSelect;
 
-  const FilterDialog({
+  const FilterDialog({super.key, 
     required this.categories,
     required this.onFilterSelect,
   });
@@ -116,7 +115,7 @@ class ProductCard extends StatelessWidget {
   final String image;
   final VoidCallback onTap;
 
-  const ProductCard({
+  const ProductCard({super.key, 
     required this.id,
     required this.name,
     required this.price,
@@ -163,7 +162,7 @@ class CheckoutButton extends StatefulWidget {
   final bool isLoading;
   final VoidCallback onPressed;
 
-  const CheckoutButton({
+  const CheckoutButton({super.key, 
     required this.isLoading,
     required this.onPressed,
   });
@@ -195,7 +194,7 @@ class RatingWidget extends StatelessWidget {
   final double rating;
   final int reviewCount;
 
-  const RatingWidget({
+  const RatingWidget({super.key, 
     required this.rating,
     required this.reviewCount,
   });
@@ -204,7 +203,7 @@ class RatingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.star, color: Colors.amber),
+        const Icon(Icons.star, color: Colors.amber),
         const SizedBox(width: 4),
         Text('$rating'),
         const SizedBox(width: 8),
@@ -539,7 +538,7 @@ void main() {
       testWidgets('1. RatingWidget displays rating value',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: RatingWidget(
                 rating: 4.5,
@@ -555,7 +554,7 @@ void main() {
       testWidgets('2. RatingWidget displays star icon',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: RatingWidget(
                 rating: 3.8,
@@ -571,7 +570,7 @@ void main() {
       testWidgets('3. RatingWidget displays review count',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: RatingWidget(
                 rating: 4.2,
@@ -587,7 +586,7 @@ void main() {
       testWidgets('4. RatingWidget displays full rating information',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: RatingWidget(
                 rating: 4.7,

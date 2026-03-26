@@ -2,9 +2,9 @@
 ///
 /// Tests to systematically measure and track performance metrics.
 /// Runs benchmarks for critical operations and asserts performance thresholds.
+library;
 
 import 'package:flutter_test/flutter_test.dart';
-import '../helpers/base.dart';
 import '../helpers/performance_tracker.dart';
 
 void main() {
@@ -278,7 +278,7 @@ void main() {
 
     test('json export is readable', () {
       tracker.measure('metric', () => 'value');
-      final json = tracker.exportAsJson(pretty: true);
+      final json = tracker.exportAsJson();
       
       expect(json.isNotEmpty, isTrue);
       expect(json.contains('timestamp'), isTrue);

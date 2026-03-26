@@ -111,7 +111,7 @@ class SecureAuthService {
 
   /// Get device biometric info for debugging
   Future<Map<String, dynamic>> getBiometricInfo() async {
-    bool canCheck = await isBiometricAvailable();
+    final bool canCheck = await isBiometricAvailable();
     return {
       'available': canCheck,
       'biometrics': await getAvailableBiometrics(),

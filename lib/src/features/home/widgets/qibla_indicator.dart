@@ -66,7 +66,7 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
       }
 
       // Initial position
-      Position position = await Geolocator.getCurrentPosition();
+      final Position position = await Geolocator.getCurrentPosition();
       if (mounted) {
         setState(() {
           _qiblaAngle = _calculateQiblaAngle(position.latitude, position.longitude);

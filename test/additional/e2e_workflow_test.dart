@@ -274,7 +274,7 @@ void main() {
           () async {
         final container = ProviderContainer();
         final authNotifier = container.read(authE2EProvider.notifier);
-        final orderNotifier = container.read(orderE2EProvider.notifier);
+        // final orderNotifier = container.read(orderE2EProvider.notifier);
 
         // Try to login with invalid credentials
         expect(

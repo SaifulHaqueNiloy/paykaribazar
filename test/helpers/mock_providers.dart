@@ -1,5 +1,6 @@
 /// test/helpers/mock_providers.dart
 /// Common mock implementations for Firebase, services, and providers
+library;
 
 import 'package:mocktail/mocktail.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

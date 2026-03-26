@@ -103,7 +103,7 @@ class BackupService {
 
   /// Helper to write documents in batches of 100 (Safe limit)
   Future<void> _restoreCollectionInBatches(String collectionName, List<dynamic> docs) async {
-    final int batchSize = 100;
+    const int batchSize = 100;
     
     for (var i = 0; i < docs.length; i += batchSize) {
       final batch = _db.batch();

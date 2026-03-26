@@ -82,7 +82,6 @@ class BiometricAuthService extends StateNotifier<BiometricCredential?> {
     state = BiometricCredential(
       userId: userId,
       type: type,
-      isEnabled: true,
     );
 
     // Store fallback PIN: last 4 digits of userId as fallback
@@ -154,7 +153,7 @@ class EncryptionService extends StateNotifier<Map<String, String>> {
 
   String _simpleXorEncrypt(String plaintext, String key) {
     // Simplified XOR encryption for testing (NOT for production)
-    StringBuffer encrypted = StringBuffer();
+    final StringBuffer encrypted = StringBuffer();
     for (int i = 0; i < plaintext.length; i++) {
       encrypted.writeCharCode(
         plaintext.codeUnitAt(i) ^ key[i % key.length].codeUnitAt(0),
@@ -166,7 +165,7 @@ class EncryptionService extends StateNotifier<Map<String, String>> {
   String _simpleXorDecrypt(String ciphertext, String key) {
     // Simplified XOR decryption for testing (NOT for production)
     final decoded = utf8.decode(base64Decode(ciphertext));
-    StringBuffer decrypted = StringBuffer();
+    final StringBuffer decrypted = StringBuffer();
     for (int i = 0; i < decoded.length; i++) {
       decrypted.writeCharCode(
         decoded.codeUnitAt(i) ^ key[i % key.length].codeUnitAt(0),
@@ -179,7 +178,7 @@ class EncryptionService extends StateNotifier<Map<String, String>> {
     final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
     // Ensure IV is 16 characters - pad with zeros if needed
     final iv = timestamp.padLeft(16, '0').substring(0, 16);
-    final salt = 'salt_' + timestamp;
+    final salt = 'salt_$timestamp';
 
     final encrypted = _simpleXorEncrypt(plaintext, _encryptionKey);
 
@@ -446,7 +445,7 @@ void main() {
         final container = ProviderContainer();
         final encNotifier = container.read(encryptionServiceProvider.notifier);
 
-        final plaintext = 'sensitive_ssn_123456789';
+        const plaintext = 'sensitive_ssn_123456789';
         final encrypted = encNotifier.encrypt(plaintext: plaintext);
 
         expect(encrypted.encrypted, isNotEmpty);
@@ -459,7 +458,7 @@ void main() {
         final container = ProviderContainer();
         final encNotifier = container.read(encryptionServiceProvider.notifier);
 
-        final plaintext = 'email@example.com';
+        const plaintext = 'email@example.com';
         final encrypted = encNotifier.encrypt(plaintext: plaintext);
         final decrypted = encNotifier.decrypt(encryptedData: encrypted);
 
@@ -504,9 +503,9 @@ void main() {
         final container = ProviderContainer();
         final apiNotifier = container.read(apiSecurityServiceProvider.notifier);
 
-        final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
-        final method = 'GET';
-        final url = '/api/orders';
+        // final timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+        const method = 'GET';
+        const url = '/api/orders';
 
         // Generate signature
         final request = apiNotifier.signRequest(

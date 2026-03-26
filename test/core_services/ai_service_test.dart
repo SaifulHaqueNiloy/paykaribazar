@@ -158,7 +158,7 @@ class AIService extends StateNotifier<AIProvider> {
     }
 
     // Step 3: Try providers with fallback
-    DateTime startTime = DateTime.now();
+    final DateTime startTime = DateTime.now();
     String finalProvider = '';
     String? response;
 
@@ -183,7 +183,7 @@ class AIService extends StateNotifier<AIProvider> {
     }
 
     // Step 4: Log audit + cache
-    Duration latency = DateTime.now().difference(startTime);
+    final Duration latency = DateTime.now().difference(startTime);
     await cacheService.set(cacheKey, response);
     await auditService.log(
       request: question,

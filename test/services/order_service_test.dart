@@ -48,7 +48,6 @@ void main() {
         total: 1050.0,
         address: '123 Street',
         paymentMethod: 'card',
-        status: OrderStatus.pending,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );

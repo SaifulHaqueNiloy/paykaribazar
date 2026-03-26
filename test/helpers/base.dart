@@ -2,6 +2,7 @@
 ///
 /// Provides the basic test setup with ProviderContainer management.
 /// This is the foundation for all other test base classes.
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

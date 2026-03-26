@@ -207,11 +207,11 @@ class Order {
       'status': status.name,
       'riderUid': riderUid,
       'isEmergency': isEmergency,
-      'createdAt': createdAt,
-      'updatedAt': updatedAt,
+      'createdAt': Timestamp.fromDate(createdAt),
+      'updatedAt': Timestamp.fromDate(updatedAt),
       'trackingId': trackingId,
       'cancellationReason': cancellationReason,
-      'deliveredAt': deliveredAt,
+      'deliveredAt': deliveredAt != null ? Timestamp.fromDate(deliveredAt!) : null,
     };
   }
 

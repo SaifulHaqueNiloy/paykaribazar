@@ -2,7 +2,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:paykari_bazar/src/features/commerce/providers/products_pagination_provider.dart';
-import 'package:paykari_bazar/src/features/commerce/domain/product_model.dart';
 
 // Mocks
 class MockProductService extends Mock {}
@@ -36,22 +35,22 @@ void main() {
         );
 
         // Mock pagination service response
-        final mockProducts = [
-          ProductModel(
-            id: '1',
-            sku: 'SKU001',
-            name: 'Product 1',
-            price: 100.0,
-            stock: 10,
-          ),
-          ProductModel(
-            id: '2',
-            sku: 'SKU002',
-            name: 'Product 2',
-            price: 200.0,
-            stock: 20,
-          ),
-        ];
+        // final mockProducts = [
+        //   ProductModel(
+        //     id: '1',
+        //     sku: 'SKU001',
+        //     name: 'Product 1',
+        //     price: 100.0,
+        //     stock: 10,
+        //   ),
+        //   ProductModel(
+        //     id: '2',
+        //     sku: 'SKU002',
+        //     name: 'Product 2',
+        //     price: 200.0,
+        //     stock: 20,
+        //   ),
+        // ];
 
         // In real scenario, mock the service call
         // For now, test the state management logic
@@ -81,10 +80,10 @@ void main() {
       });
 
       test('handles errors gracefully', () async {
-        final notifier = ProductsPaginationNotifier(
-          productService: mockProductService,
-          paginationService: mockPaginationService,
-        );
+        // final notifier = ProductsPaginationNotifier(
+        //   productService: mockProductService,
+        //   paginationService: mockPaginationService,
+        // );
 
         // Mock service error
         // notifier state should be error

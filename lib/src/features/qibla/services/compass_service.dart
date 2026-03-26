@@ -28,7 +28,7 @@ class CompassService {
   Future<Position> getCurrentLocation() async {
     try {
       return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
+        
       );
     } catch (e) {
       rethrow;

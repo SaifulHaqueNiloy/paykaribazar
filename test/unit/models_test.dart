@@ -1,5 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/models/user_model.dart';
 import 'package:paykari_bazar/src/models/product_model.dart';
 import 'package:paykari_bazar/src/models/order_model.dart' as order_model;
@@ -77,12 +76,10 @@ void main() {
           name: 'Ahmed Hassan',
           phone: '01712345678',
           email: 'ahmed@email.com',
-          role: UserRole.customer,
           addresses: [],
           profilePic: 'https://example.com/avatar.jpg',
           points: 1500,
           myReferralCode: 'REF-AHMED-001',
-          currentMode: 'shopping',
           q1: 'pet-name',
           a1: 'Fluffy',
           h1: 'f89d3',
@@ -144,7 +141,6 @@ void main() {
           areaId: 'area2',
           detailedAddress: 'Office Building',
           deliveryCharge: 75.0,
-          isDefault: false,
         );
 
         final userWithAddresses = UserModel(
@@ -154,10 +150,7 @@ void main() {
           email: 'test@email.com',
           role: UserRole.reseller,
           addresses: [addr1, addr2],
-          profilePic: null,
-          points: 0,
           myReferralCode: 'REF-TEST',
-          currentMode: 'shopping',
           q1: '',
           a1: '',
           h1: '',
@@ -167,9 +160,7 @@ void main() {
           q3: '',
           a3: '',
           h3: '',
-          storageUsed: 0,
           storageLimit: 1024,
-          isSubscribed: false,
         );
 
         final map = userWithAddresses.toMap();
@@ -239,7 +230,6 @@ void main() {
           unitBn: 'টুকরা',
           imageUrl: 'https://example.com/image.jpg',
           imageUrls: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'],
-          marketingBannerUrl: null,
           categoryId: 'cat-001',
           categoryName: 'Electronics',
           categoryNameBn: 'ইলেকট্রনিক্স',
@@ -250,12 +240,7 @@ void main() {
           addedBy: 'vendor-001',
           brand: 'AudioMax',
           tags: ['wireless', 'headphones', 'audio'],
-          isFlashSale: false,
-          isCombo: false,
-          isNewArrival: true,
           isFeatured: true,
-          isHotSelling: false,
-          isComboPack: false,
           comboProductIds: [],
           variants: [],
           rating: 4.5,
@@ -263,7 +248,6 @@ void main() {
           createdAt: DateTime(2024, 1, 15),
           updatedAt: DateTime(2024, 3, 20),
           aiOptimized: true,
-          aiAuditPending: false,
         );
       });
 
@@ -322,7 +306,6 @@ void main() {
           unitBn: 'টুকরা',
           imageUrl: 'https://example.com/tshirt.jpg',
           imageUrls: [],
-          marketingBannerUrl: null,
           categoryId: 'cat-002',
           categoryName: 'Clothing',
           categoryNameBn: 'পোশাক',
@@ -334,18 +317,14 @@ void main() {
           brand: 'StyleMax',
           tags: ['clothing', 'tshirt'],
           isFlashSale: true,
-          isCombo: false,
           isNewArrival: false,
-          isFeatured: false,
           isHotSelling: true,
-          isComboPack: false,
           comboProductIds: [],
           variants: [variant1, variant2],
           rating: 4.2,
           salesCount: 512,
-          createdAt: DateTime(2024, 2, 1),
+          createdAt: DateTime(2024, 2),
           updatedAt: DateTime(2024, 3, 19),
-          aiOptimized: false,
           aiAuditPending: true,
         );
 
@@ -387,7 +366,6 @@ void main() {
           imageUrl: 'https://example.com/tshirt.jpg',
           price: 299.99,
           oldPrice: 399.99,
-          quantity: 1,
           unit: 'piece',
         );
 
@@ -410,7 +388,6 @@ void main() {
           imageUrl: 'https://example.com/image.jpg',
           price: 2999.99,
           oldPrice: 3999.99,
-          quantity: 1,
           unit: 'piece',
         );
 
@@ -426,17 +403,14 @@ void main() {
 
         testCart = CartState(
           items: [item1, item2],
-          isLoading: false,
-          error: null,
           appliedCoupon: 'SAVE20',
           appliedCouponMap: {'discount': 500.0, 'type': 'fixed'},
-          selectedAddress: null,
         );
       });
 
       test('1. CartState totalAmount calculation', () {
         final total = testCart.totalAmount;
-        final expected = 2999.99 + (299.99 * 2); // 3599.97
+        const expected = 2999.99 + (299.99 * 2); // 3599.97
         expect(total, equals(expected));
       });
 
@@ -468,7 +442,6 @@ void main() {
           price: 2999.99,
           quantity: 1,
           subtotal: 2999.99,
-          variantId: null,
           imageUrl: 'https://example.com/image.jpg',
         );
 
@@ -526,13 +499,9 @@ void main() {
           address: 'Dhaka, Bangladesh',
           paymentMethod: 'bKash',
           status: order_model.OrderStatus.confirmed,
-          riderUid: null,
-          isEmergency: false,
           createdAt: DateTime(2024, 3, 20),
           updatedAt: DateTime(2024, 3, 20),
           trackingId: 'TRACK-001',
-          cancellationReason: null,
-          deliveredAt: null,
         );
       });
 
@@ -572,12 +541,9 @@ void main() {
           paymentMethod: 'Credit Card',
           status: order_model.OrderStatus.shipped,
           riderUid: 'rider-001',
-          isEmergency: false,
           createdAt: DateTime(2024, 3, 19),
           updatedAt: DateTime(2024, 3, 20),
           trackingId: 'TRACK-002',
-          cancellationReason: null,
-          deliveredAt: null,
         );
 
         expect(shippedOrder.status, equals(order_model.OrderStatus.shipped));
@@ -602,7 +568,6 @@ void main() {
           phone: '02-55555555',
           district: 'Dhaka',
           upazila: 'Mirpur',
-          isVisible: true,
         );
 
         final map = doctor.toMap();
@@ -652,7 +617,6 @@ void main() {
           imageUrl: 'https://example.com/donor.jpg',
           district: 'Dhaka',
           upazila: 'Mirpur',
-          isVisible: true,
         );
 
         final map = donor.toMap();
@@ -739,7 +703,6 @@ void main() {
           fileSize: 125.5,
           type: BackupType.document,
           createdAt: DateTime(2024, 3, 20),
-          isPublic: false,
         );
 
         final map = backup.toMap();
@@ -793,12 +756,9 @@ void main() {
           name: 'Test User',
           phone: '01700000000',
           email: 'test@example.com',
-          role: UserRole.customer,
           addresses: addresses,
-          profilePic: null,
           points: 500,
           myReferralCode: 'REF-TEST-003',
-          currentMode: 'shopping',
           q1: '',
           a1: '',
           h1: '',
@@ -808,7 +768,6 @@ void main() {
           q3: '',
           a3: '',
           h3: '',
-          storageUsed: 0,
           storageLimit: 1024,
           isSubscribed: true,
         );
@@ -853,7 +812,6 @@ void main() {
           unitBn: 'টুকরা',
           imageUrl: 'https://example.com/product.jpg',
           imageUrls: [],
-          marketingBannerUrl: null,
           categoryId: 'cat-003',
           categoryName: 'Fashion',
           categoryNameBn: 'ফ্যাশন',
@@ -864,20 +822,14 @@ void main() {
           addedBy: 'vendor-003',
           brand: 'StyleBrand',
           tags: ['fashion', 'clothing'],
-          isFlashSale: false,
           isCombo: true,
           isNewArrival: false,
-          isFeatured: false,
-          isHotSelling: false,
-          isComboPack: false,
           comboProductIds: [],
           variants: variants,
           rating: 4.5,
           salesCount: 300,
-          createdAt: DateTime(2024, 1, 1),
+          createdAt: DateTime(2024),
           updatedAt: DateTime(2024, 3, 20),
-          aiOptimized: false,
-          aiAuditPending: false,
         );
 
         expect(product.variants.length, equals(2));

@@ -1,4 +1,4 @@
-﻿import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
@@ -269,7 +269,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
       trailing: Switch(
         value: current,
         onChanged: (v) => _updateConfig(key, v),
-        activeColor: AppStyles.primaryColor,
+        activeThumbColor: AppStyles.primaryColor,
       ),
     );
   }
@@ -312,11 +312,13 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
       {key: value},
       SetOptions(merge: true),
     );
-    if (mounted) ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       content: Text('Business rule updated!'),
       backgroundColor: Colors.teal,
       duration: Duration(seconds: 1),
     ));
+    }
   }
 
   Widget _buildExpand(String title, IconData icon, Widget children) {

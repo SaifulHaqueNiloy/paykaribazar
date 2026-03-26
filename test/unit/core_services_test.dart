@@ -47,7 +47,7 @@ void main() {
       });
 
       test('2. Restores data from backup file', () {
-        final backupUrl = 'https://storage.googleapis.com/backup-2024-03-26.zip';
+        const backupUrl = 'https://storage.googleapis.com/backup-2024-03-26.zip';
         expect(backupUrl, isNotEmpty);
         expect(backupUrl, contains('googleapis'));
       });
@@ -79,14 +79,14 @@ void main() {
       });
 
       test('4. Tracks background backup for user', () {
-        final userId = 'user-456';
+        const userId = 'user-456';
         expect(userId, isNotEmpty);
         expect(userId, contains('user'));
       });
 
       test('5. Validates restore URL format', () {
-        final validUrl = 'https://storage.googleapis.com/backup-2024-03-26.zip';
-        final invalidUrl = 'invalid-url';
+        const validUrl = 'https://storage.googleapis.com/backup-2024-03-26.zip';
+        const invalidUrl = 'invalid-url';
         
         expect(validUrl, contains('https'));
         expect(validUrl, contains('.zip'));
@@ -305,8 +305,8 @@ void main() {
       });
 
       test('22. Biometric availability detection', () {
-        final biometricsAvailable = true;
-        final noBiometrics = false;
+        const biometricsAvailable = true;
+        const noBiometrics = false;
 
         expect(biometricsAvailable, true);
         expect(noBiometrics, false);
@@ -321,7 +321,7 @@ void main() {
       });
 
       test('24. Requires biometric for payment', () {
-        final paymentReason = 'Confirm payment of \$50';
+        const paymentReason = 'Confirm payment of \$50';
         
         expect(paymentReason, isNotEmpty);
         expect(paymentReason, contains('Confirm'));
@@ -329,8 +329,8 @@ void main() {
       });
 
       test('25. Stores tokens in secure storage', () {
-        final tokenKey = 'user_token';
-        final tokenValue = 'abc123xyz';
+        const tokenKey = 'user_token';
+        const tokenValue = 'abc123xyz';
         
         expect(tokenKey, isNotEmpty);
         expect(tokenValue, isNotEmpty);
@@ -372,8 +372,8 @@ void main() {
     // ========================================================================
     group('EncryptionService - AES-256 Encryption (5 tests)', () {
       test('29. Encrypts plaintext to base64 format', () {
-        final plaintext = 'sensitive data';
-        final encrypted = 'U2FsdGVkX1V1Vn8+ZHJ0N2lR==';
+        const plaintext = 'sensitive data';
+        const encrypted = 'U2FsdGVkX1V1Vn8+ZHJ0N2lR==';
         
         expect(plaintext, isNotEmpty);
         expect(encrypted, isNotEmpty);
@@ -381,8 +381,8 @@ void main() {
       });
 
       test('30. Decrypts base64 back to plaintext', () {
-        final encrypted = 'U2FsdGVkX1V1Vn8+ZHJ0N2lR==';
-        final decrypted = 'sensitive data';
+        const encrypted = 'U2FsdGVkX1V1Vn8+ZHJ0N2lR==';
+        const decrypted = 'sensitive data';
         
         expect(encrypted, isNotEmpty);
         expect(decrypted, isNotEmpty);

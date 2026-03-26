@@ -422,10 +422,10 @@ void main() {
         final container = ProviderContainer();
         final orderNotifier = container.read(adminOrderProvider.notifier);
 
-        var pending = orderNotifier.getOrdersByStatus('pending');
+        final pending = orderNotifier.getOrdersByStatus('pending');
         expect(pending.length, 1);
 
-        var shipped = orderNotifier.getOrdersByStatus('shipped');
+        final shipped = orderNotifier.getOrdersByStatus('shipped');
         expect(shipped.length, 1);
       });
 

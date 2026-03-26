@@ -104,6 +104,8 @@ dev_dependencies:
   build_runner: ^2.4.9
 
   cloud_firestore_platform_interface: any
+  path_provider_platform_interface: any
+  plugin_platform_interface: any
 flutter_launcher_icons:
   android: true
   ios: false

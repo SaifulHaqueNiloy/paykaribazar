@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 
 // Mock providers for testing
@@ -48,23 +47,23 @@ void main() {
 
       testWidgets('2. Login button is initially disabled', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Column(
                 children: [
                   TextField(
-                    key: const Key('email_field'),
-                    decoration: const InputDecoration(labelText: 'Email'),
+                    key: Key('email_field'),
+                    decoration: InputDecoration(labelText: 'Email'),
                   ),
                   TextField(
-                    key: const Key('password_field'),
-                    decoration: const InputDecoration(labelText: 'Password'),
+                    key: Key('password_field'),
+                    decoration: InputDecoration(labelText: 'Password'),
                     obscureText: true,
                   ),
                   ElevatedButton(
-                    key: const Key('login_button'),
+                    key: Key('login_button'),
                     onPressed: null,
-                    child: const Text('Login'),
+                    child: Text('Login'),
                   ),
                 ],
               ),
@@ -79,11 +78,11 @@ void main() {
 
       testWidgets('3. Password field obscures text', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: TextField(
-                key: const Key('password_field'),
-                decoration: const InputDecoration(labelText: 'Password'),
+                key: Key('password_field'),
+                decoration: InputDecoration(labelText: 'Password'),
                 obscureText: true,
               ),
             ),
@@ -98,7 +97,7 @@ void main() {
         expect(find.byWidgetPredicate(
           (widget) =>
               widget is TextField &&
-              (widget.obscureText ?? false) == true,
+              widget.obscureText == true,
         ), findsOneWidget);
       });
     });
@@ -222,13 +221,13 @@ void main() {
             home: Scaffold(
               body: Column(
                 children: [
-                  TextField(
-                    key: const Key('email_field'),
-                    decoration: const InputDecoration(labelText: 'Email'),
+                  const TextField(
+                    key: Key('email_field'),
+                    decoration: InputDecoration(labelText: 'Email'),
                   ),
-                  TextField(
-                    key: const Key('password_field'),
-                    decoration: const InputDecoration(labelText: 'Password'),
+                  const TextField(
+                    key: Key('password_field'),
+                    decoration: InputDecoration(labelText: 'Password'),
                   ),
                   ElevatedButton(
                     key: const Key('login_button'),
@@ -247,19 +246,19 @@ void main() {
 
       testWidgets('2. Loading indicator shows during login', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Column(
                 children: [
                   TextField(
-                    key: const Key('email_field'),
-                    decoration: const InputDecoration(labelText: 'Email'),
+                    key: Key('email_field'),
+                    decoration: InputDecoration(labelText: 'Email'),
                   ),
                   TextField(
-                    key: const Key('password_field'),
-                    decoration: const InputDecoration(labelText: 'Password'),
+                    key: Key('password_field'),
+                    decoration: InputDecoration(labelText: 'Password'),
                   ),
-                  const Center(child: CircularProgressIndicator()),
+                  Center(child: CircularProgressIndicator()),
                 ],
               ),
             ),
@@ -271,18 +270,18 @@ void main() {
 
       testWidgets('3. Error message displays on login failure', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Column(
                 children: [
-                  const Text('Invalid credentials'),
+                  Text('Invalid credentials'),
                   TextField(
-                    key: const Key('email_field'),
-                    decoration: const InputDecoration(labelText: 'Email'),
+                    key: Key('email_field'),
+                    decoration: InputDecoration(labelText: 'Email'),
                   ),
                   TextField(
-                    key: const Key('password_field'),
-                    decoration: const InputDecoration(labelText: 'Password'),
+                    key: Key('password_field'),
+                    decoration: InputDecoration(labelText: 'Password'),
                   ),
                 ],
               ),
@@ -299,13 +298,13 @@ void main() {
             home: Scaffold(
               body: Column(
                 children: [
-                  TextField(
-                    key: const Key('email_field'),
-                    decoration: const InputDecoration(labelText: 'Email'),
+                  const TextField(
+                    key: Key('email_field'),
+                    decoration: InputDecoration(labelText: 'Email'),
                   ),
-                  TextField(
-                    key: const Key('password_field'),
-                    decoration: const InputDecoration(labelText: 'Password'),
+                  const TextField(
+                    key: Key('password_field'),
+                    decoration: InputDecoration(labelText: 'Password'),
                   ),
                   TextButton(
                     onPressed: () {},
@@ -331,13 +330,13 @@ void main() {
             home: Scaffold(
               body: Column(
                 children: [
-                  TextField(
-                    key: const Key('email_field'),
-                    decoration: const InputDecoration(labelText: 'Email'),
+                  const TextField(
+                    key: Key('email_field'),
+                    decoration: InputDecoration(labelText: 'Email'),
                   ),
-                  TextField(
-                    key: const Key('password_field'),
-                    decoration: const InputDecoration(labelText: 'Password'),
+                  const TextField(
+                    key: Key('password_field'),
+                    decoration: InputDecoration(labelText: 'Password'),
                   ),
                   Row(
                     children: [

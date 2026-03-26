@@ -9,7 +9,7 @@ void main() {
       testWidgets('renders empty SizedBox when banners list is empty',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: BannerSlider(banners: []),
             ),
@@ -136,7 +136,7 @@ void main() {
       testWidgets('renders empty message when products list is empty',
           (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: ProductHorizontalList(
                 products: [],

@@ -228,7 +228,7 @@ class StaffManagementTab extends ConsumerWidget {
                   value: allowMultipleDevices,
                   onChanged: (v) =>
                       setModalState(() => allowMultipleDevices = v),
-                  activeColor: AppStyles.primaryColor,
+                  activeThumbColor: AppStyles.primaryColor,
                 ),
                 const SizedBox(height: 32),
                 SizedBox(

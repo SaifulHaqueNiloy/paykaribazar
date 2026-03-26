@@ -260,9 +260,9 @@ class ProductCard extends ConsumerWidget {
                   // Rating (DNA: Stars + count)
                   Row(
                     children: [
-                      ...List.generate(5, (i) => Icon(Icons.star_rounded, color: Colors.amber, size: 12)),
+                      ...List.generate(5, (i) => const Icon(Icons.star_rounded, color: Colors.amber, size: 12)),
                       const SizedBox(width: 4),
-                      Text('(5)', style: TextStyle(color: Colors.grey, fontSize: 10)),
+                      const Text('(5)', style: TextStyle(color: Colors.grey, fontSize: 10)),
                     ],
                   ),
                   const SizedBox(height: 8),

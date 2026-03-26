@@ -258,12 +258,12 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       color: Colors.black.withValues(alpha: 0.8),
       width: double.infinity,
       height: double.infinity,
-      child: Column(
+      child: const Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(color: AppStyles.primaryColor),
-          const SizedBox(height: 20),
-          const Text(
+          CircularProgressIndicator(color: AppStyles.primaryColor),
+          SizedBox(height: 20),
+          Text(
             'AI ছবি বিশ্লেষণ করছে...',
             style: TextStyle(
               color: Colors.white,
@@ -272,8 +272,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               fontFamily: 'HindSiliguri',
             ),
           ),
-          const SizedBox(height: 10),
-          const Text(
+          SizedBox(height: 10),
+          Text(
             'দয়া করে অপেক্ষা করুন',
             style: TextStyle(color: Colors.white70, fontSize: 14),
           ),

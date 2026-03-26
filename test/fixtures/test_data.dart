@@ -1,5 +1,6 @@
 /// test/fixtures/test_data.dart
 /// Common test data and fixtures used across all tests
+library;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -143,7 +144,7 @@ final testCouponMap = {
   'value': testCouponDiscount,
   'maxUses': 100,
   'currentUses': 10,
-  'expiryDate': Timestamp.fromDate(DateTime.now().add(Duration(days: 30))),
+  'expiryDate': Timestamp.fromDate(DateTime.now().add(const Duration(days: 30))),
   'status': 'active',
 };
 
@@ -159,7 +160,7 @@ final testAppointmentMap = {
   'userId': testUserId,
   'doctorId': testDoctorId,
   'status': 'scheduled',
-  'dateTime': Timestamp.fromDate(DateTime.now().add(Duration(days: 7))),
+  'dateTime': Timestamp.fromDate(DateTime.now().add(const Duration(days: 7))),
   'duration': 30,
   'notes': 'Test appointment notes',
   'createdAt': Timestamp.now(),
@@ -179,7 +180,7 @@ final testDeliveryMap = {
   'driverPhone': '+1234567890',
   'latitude': 37.7749,
   'longitude': -122.4194,
-  'estimatedArrival': Timestamp.fromDate(DateTime.now().add(Duration(hours: 2))),
+  'estimatedArrival': Timestamp.fromDate(DateTime.now().add(const Duration(hours: 2))),
   'createdAt': Timestamp.now(),
 };
 
@@ -212,7 +213,7 @@ final testBackupMap = {
   'fileCount': 25,
   'status': 'completed',
   'createdAt': Timestamp.now(),
-  'expiryDate': Timestamp.fromDate(DateTime.now().add(Duration(days: 90))),
+  'expiryDate': Timestamp.fromDate(DateTime.now().add(const Duration(days: 90))),
 };
 
 // ============================================================================

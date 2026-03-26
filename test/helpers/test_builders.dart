@@ -2,6 +2,7 @@
 ///
 /// Provides builder classes for creating complex test data with sensible defaults.
 /// Makes test data creation more readable and maintainable.
+library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';

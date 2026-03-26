@@ -53,8 +53,8 @@ class GroupBuyingService {
   }
 
   Future<double> _calculateAiDiscount(int memberCount) async {
-    final prompt = "Calculate a fair group discount percentage for $memberCount buyers in the same area. Logistics savings are shared. Return only a number.";
-    final res = await _ai.generateResponse(prompt, useCache: true);
+    final prompt = 'Calculate a fair group discount percentage for $memberCount buyers in the same area. Logistics savings are shared. Return only a number.';
+    final res = await _ai.generateResponse(prompt);
     return double.tryParse(res.replaceAll(RegExp(r'[^0-9.]'), '')) ?? (memberCount * 1.5).clamp(2.0, 15.0);
   }
 

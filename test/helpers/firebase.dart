@@ -2,6 +2,7 @@
 ///
 /// Provides Firebase initialization and cleanup for tests that depend on
 /// Firebase services (Firestore, Auth, Storage, etc.).
+library;
 
 import 'dart:io';
 import 'package:hive/hive.dart';
@@ -36,15 +37,5 @@ Future<void> tearDownHiveForTesting() async {
 /// }
 /// ```
 abstract class BaseFirebaseTest extends BaseTest {
-  @override
-  void setUp() {
-    super.setUp();
-    // Firebase-specific setup if needed
-  }
 
-  @override
-  void tearDown() {
-    super.tearDown();
-    // Firebase-specific cleanup if needed
-  }
 }

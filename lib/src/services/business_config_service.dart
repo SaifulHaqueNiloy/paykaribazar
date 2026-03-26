@@ -68,7 +68,7 @@ class BusinessConfigService {
 
   /// Fetches all business rules as a stream
   Stream<DocumentSnapshot<Map<String, dynamic>>> get rulesStream {
-    return _db.doc(_rulesDoc).snapshots() as Stream<DocumentSnapshot<Map<String, dynamic>>>;
+    return _db.doc(_rulesDoc).snapshots();
   }
 
   /// Gets a specific rule value with a fallback

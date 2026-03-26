@@ -39,7 +39,7 @@ void main() {
         final addr = AddressModel(
           id: 'a2', name: 'Office', district: 'Dhaka', upazila: 'Gulshan',
           station: 'PS', area: 'Multi', areaId: 'area2', 
-          detailedAddress: 'Office Bldg', deliveryCharge: 75.0, isDefault: false,
+          detailedAddress: 'Office Bldg', deliveryCharge: 75.0,
         );
         expect(addr.fullAddress, contains('Dhaka'));
         expect(addr.fullAddress, contains('Office Bldg'));
@@ -52,10 +52,9 @@ void main() {
     group('UserModel - User Profiles', () {
       test('1. User toMap', () {
         final user = UserModel(
-          id: 'u1', name: 'Ahmed', phone: '01700000000', email: 'a@test.com',
-          role: UserRole.customer, addresses: [], profilePic: null, points: 100,
-          myReferralCode: 'REF1', currentMode: 'shopping', q1: '', a1: '', h1: '',
-          q2: '', a2: '', h2: '', q3: '', a3: '', h3: '', storageUsed: 0,
+          id: 'u1', name: 'Ahmed', phone: '01700000000', email: 'a@test.com', addresses: [], points: 100,
+          myReferralCode: 'REF1', q1: '', a1: '', h1: '',
+          q2: '', a2: '', h2: '', q3: '', a3: '', h3: '',
           storageLimit: 1024, isSubscribed: true,
         );
         final map = user.toMap();
@@ -83,9 +82,9 @@ void main() {
         );
         final user = UserModel(
           id: 'u3', name: 'Test', phone: '01900000000', email: 't@test.com',
-          role: UserRole.admin, addresses: [addr], profilePic: null, points: 0,
-          myReferralCode: 'REF3', currentMode: 'shopping', q1: '', a1: '', h1: '',
-          q2: '', a2: '', h2: '', q3: '', a3: '', h3: '', storageUsed: 0,
+          role: UserRole.admin, addresses: [addr],
+          myReferralCode: 'REF3', q1: '', a1: '', h1: '',
+          q2: '', a2: '', h2: '', q3: '', a3: '', h3: '',
           storageLimit: 1024, isSubscribed: true,
         );
         expect(user.addresses.length, 1);
@@ -121,14 +120,12 @@ void main() {
           description: 'Good phone', descriptionBn: 'ভাল ফোন', price: 1000.0,
           oldPrice: 1200.0, purchasePrice: 800.0, wholesalePrice: 900.0,
           minWholesaleQty: 5, tieredPrices: {}, stock: 50, unit: 'piece', unitBn: 'টুকরা',
-          imageUrl: 'img.jpg', imageUrls: [], marketingBannerUrl: null,
+          imageUrl: 'img.jpg', imageUrls: [],
           categoryId: 'cat1', categoryName: 'Electronics', categoryNameBn: 'ইলেকট্রনিক্স',
           subCategoryId: 'scat1', subCategoryName: 'Mobile', subCategoryNameBn: 'মোবাইল',
-          shopName: 'Shop1', addedBy: 'v1', brand: 'Brand1', tags: [],
-          isFlashSale: false, isCombo: false, isNewArrival: true, isFeatured: false,
-          isHotSelling: false, isComboPack: false, comboProductIds: [], variants: [],
-          rating: 4.5, salesCount: 100, createdAt: DateTime(2024, 1, 1),
-          updatedAt: DateTime(2024, 3, 20), aiOptimized: false, aiAuditPending: false,
+          shopName: 'Shop1', addedBy: 'v1', brand: 'Brand1', tags: [], comboProductIds: [], variants: [],
+          rating: 4.5, salesCount: 100, createdAt: DateTime(2024),
+          updatedAt: DateTime(2024, 3, 20),
         );
         final map = p.toMap();
         expect(map['name'], 'Phone');
@@ -146,7 +143,7 @@ void main() {
           'shopName': 'Shop2', 'addedBy': 'v2', 'brand': 'Brand2', 'tags': [],
           'isFlashSale': false, 'isCombo': false, 'isNewArrival': false, 'isFeatured': true,
           'isHotSelling': true, 'isComboPack': false, 'comboProductIds': [], 'variants': [],
-          'rating': 4.8, 'salesCount': 200, 'createdAt': Timestamp.fromDate(DateTime(2024, 1, 1)),
+          'rating': 4.8, 'salesCount': 200, 'createdAt': Timestamp.fromDate(DateTime(2024)),
           'updatedAt': Timestamp.fromDate(DateTime(2024, 3, 20)), 'aiOptimized': true, 'aiAuditPending': false};
         final p = Product.fromMap(map, 'p2');
         expect(p.id, 'p2');
@@ -160,14 +157,13 @@ void main() {
           description: 'Cotton shirt', descriptionBn: 'কটন শার্ট', price: 200.0,
           oldPrice: 300.0, purchasePrice: 100.0, wholesalePrice: 150.0,
           minWholesaleQty: 10, tieredPrices: {}, stock: 100, unit: 'piece', unitBn: 'টুকরা',
-          imageUrl: 'shirt.jpg', imageUrls: [], marketingBannerUrl: null,
+          imageUrl: 'shirt.jpg', imageUrls: [],
           categoryId: 'cat3', categoryName: 'Clothing', categoryNameBn: 'পোশাক',
           subCategoryId: 'scat3', subCategoryName: 'Shirts', subCategoryNameBn: 'শার্টস',
           shopName: 'Shop3', addedBy: 'v3', brand: 'Brand3', tags: [],
-          isFlashSale: true, isCombo: false, isNewArrival: false, isFeatured: false,
-          isHotSelling: false, isComboPack: false, comboProductIds: [], variants: [v1],
-          rating: 4.2, salesCount: 300, createdAt: DateTime(2024, 2, 1),
-          updatedAt: DateTime(2024, 3, 19), aiOptimized: false, aiAuditPending: true,
+          isFlashSale: true, isNewArrival: false, comboProductIds: [], variants: [v1],
+          rating: 4.2, salesCount: 300, createdAt: DateTime(2024, 2),
+          updatedAt: DateTime(2024, 3, 19), aiAuditPending: true,
         );
         expect(p.variants.length, 1);
       });
@@ -178,15 +174,12 @@ void main() {
           description: 'Test', descriptionBn: 'পরীক্ষা', price: 50.0,
           oldPrice: 75.0, purchasePrice: 30.0, wholesalePrice: 40.0,
           minWholesaleQty: 20, tieredPrices: {'5': 45, '10': 40}, stock: 500, 
-          unit: 'piece', unitBn: 'টুকরা', imageUrl: 'w.jpg', imageUrls: [],
-          marketingBannerUrl: null, categoryId: 'cat4', categoryName: 'Goods',
+          unit: 'piece', unitBn: 'টুকরা', imageUrl: 'w.jpg', imageUrls: [], categoryId: 'cat4', categoryName: 'Goods',
           categoryNameBn: 'পণ্য', subCategoryId: 'scat4', subCategoryName: 'Items',
           subCategoryNameBn: 'আইটেম', shopName: 'Shop4', addedBy: 'v4', brand: 'B4',
-          tags: [], isFlashSale: false, isCombo: false, isNewArrival: false,
-          isFeatured: false, isHotSelling: false, isComboPack: false,
+          tags: [], isNewArrival: false,
           comboProductIds: [], variants: [], rating: 4.0, salesCount: 1000,
-          createdAt: DateTime(2024, 3, 1), updatedAt: DateTime(2024, 3, 20),
-          aiOptimized: false, aiAuditPending: false,
+          createdAt: DateTime(2024, 3), updatedAt: DateTime(2024, 3, 20),
         );
         final map = p.toMap();
         expect((map['tieredPrices'] as Map)['5'], 45);
@@ -208,7 +201,7 @@ void main() {
       test('2. CartItem quantity mutation', () {
         final item = CartItem(
           id: 'p2', name: 'Laptop', imageUrl: 'lap.jpg',
-          price: 5000.0, oldPrice: 6000.0, quantity: 1, unit: 'piece',
+          price: 5000.0, oldPrice: 6000.0, unit: 'piece',
         );
         item.quantity = 3;
         expect(item.subtotal, 15000.0);
@@ -222,15 +215,14 @@ void main() {
       test('1. CartState totalAmount', () {
         final item1 = CartItem(
           id: 'p1', name: 'Phone', imageUrl: 'img.jpg',
-          price: 1000.0, oldPrice: 1200.0, quantity: 1, unit: 'piece',
+          price: 1000.0, oldPrice: 1200.0, unit: 'piece',
         );
         final item2 = CartItem(
           id: 'p2', name: 'Shirt', imageUrl: 'shirt.jpg',
           price: 200.0, oldPrice: 300.0, quantity: 2, unit: 'piece',
         );
         final cart = CartState(
-          items: [item1, item2], isLoading: false, error: null,
-          appliedCoupon: null, appliedCouponMap: null, selectedAddress: null,
+          items: [item1, item2],
         );
         expect(cart.totalAmount, 1400.0);
       });
@@ -241,16 +233,14 @@ void main() {
           price: 1000.0, oldPrice: 1200.0, quantity: 2, unit: 'piece',
         );
         final cart = CartState(
-          items: [item], isLoading: false, error: null,
-          appliedCoupon: null, appliedCouponMap: null, selectedAddress: null,
+          items: [item],
         );
         expect(cart.itemCount, 1);
       });
 
       test('3. CartState copyWith', () {
         final cart = CartState(
-          items: [], isLoading: false, error: null,
-          appliedCoupon: null, appliedCouponMap: null, selectedAddress: null,
+          items: [],
         );
         final updated = cart.copyWith(isLoading: true);
         expect(updated.isLoading, true);
@@ -328,7 +318,7 @@ void main() {
           id: 'doc1', name: 'Dr. Ahmed', specialization: 'Cardiology',
           chamber: 'Heart Clinic', visitingDays: 'Mon-Fri', visitingHours: '9-5',
           visitFee: '500', contactNumber: '01712345678', imageUrl: 'doc.jpg',
-          district: 'Dhaka', upazila: 'Mirpur', phone: '02-1234567', isVisible: true,
+          district: 'Dhaka', upazila: 'Mirpur', phone: '02-1234567',
         );
         final map = doc.toMap();
         expect(map['name'], 'Dr. Ahmed');
@@ -355,7 +345,7 @@ void main() {
         final donor = BloodDonor(
           id: 'donor1', name: 'Hassan', bloodGroup: 'O+', contactNumber: '01712345678',
           phone: '02-1111111', lastDonated: DateTime(2024, 1, 15), userUid: 'u1',
-          imageUrl: 'donor.jpg', district: 'Dhaka', upazila: 'Mirpur', isVisible: true,
+          imageUrl: 'donor.jpg', district: 'Dhaka', upazila: 'Mirpur',
         );
         final map = donor.toMap();
         expect(map['name'], 'Hassan');
@@ -408,7 +398,7 @@ void main() {
         final backup = BackupItem(
           id: 'bak1', title: 'User Data', content: 'Backup content',
           fileUrl: 'backup.zip', fileSize: 125.5, type: BackupType.document,
-          createdAt: DateTime(2024, 3, 20), isPublic: false,
+          createdAt: DateTime(2024, 3, 20),
         );
         final map = backup.toMap();
         expect(map['title'], 'User Data');
@@ -436,10 +426,9 @@ void main() {
           detailedAddress: 'House 1', deliveryCharge: 50.0, isDefault: true,
         );
         final user = UserModel(
-          id: 'u1', name: 'Test', phone: '01700000000', email: 't@test.com',
-          role: UserRole.customer, addresses: [addr], profilePic: null, points: 0,
-          myReferralCode: 'REF1', currentMode: 'shopping', q1: '', a1: '', h1: '',
-          q2: '', a2: '', h2: '', q3: '', a3: '', h3: '', storageUsed: 0,
+          id: 'u1', name: 'Test', phone: '01700000000', email: 't@test.com', addresses: [addr],
+          myReferralCode: 'REF1', q1: '', a1: '', h1: '',
+          q2: '', a2: '', h2: '', q3: '', a3: '', h3: '',
           storageLimit: 1024, isSubscribed: true,
         );
         expect(user.addresses.length, 1);
@@ -453,14 +442,12 @@ void main() {
           description: 'Cotton', descriptionBn: 'কটন', price: 200.0, oldPrice: 300.0,
           purchasePrice: 100.0, wholesalePrice: 150.0, minWholesaleQty: 10,
           tieredPrices: {}, stock: 100, unit: 'piece', unitBn: 'টুকরা',
-          imageUrl: 'shirt.jpg', imageUrls: [], marketingBannerUrl: null,
+          imageUrl: 'shirt.jpg', imageUrls: [],
           categoryId: 'cat1', categoryName: 'Clothing', categoryNameBn: 'পোশাক',
           subCategoryId: 'sub1', subCategoryName: 'Shirts', subCategoryNameBn: 'শার্টস',
-          shopName: 'Shop1', addedBy: 'v1', brand: 'Brand1', tags: [],
-          isFlashSale: false, isCombo: false, isNewArrival: false, isFeatured: false,
-          isHotSelling: false, isComboPack: false, comboProductIds: [], variants: [v],
-          rating: 4.5, salesCount: 100, createdAt: DateTime(2024, 1, 1),
-          updatedAt: DateTime(2024, 3, 20), aiOptimized: false, aiAuditPending: false,
+          shopName: 'Shop1', addedBy: 'v1', brand: 'Brand1', tags: [], isNewArrival: false, comboProductIds: [], variants: [v],
+          rating: 4.5, salesCount: 100, createdAt: DateTime(2024),
+          updatedAt: DateTime(2024, 3, 20),
         );
         expect(p.variants.length, 1);
         expect(p.isCombo, false);

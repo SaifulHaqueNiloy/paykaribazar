@@ -537,7 +537,7 @@ void main() {
         orderNotifier.createOrder(userId: 'user1', items: [], total: 100);
         
         // Verify it's in pending
-        var pendingOrders = orderNotifier.getOrdersByStatus('pending');
+        final pendingOrders = orderNotifier.getOrdersByStatus('pending');
         expect(pendingOrders, hasLength(1));
         expect(pendingOrders[0].status, 'pending');
       });
@@ -697,7 +697,7 @@ void main() {
         ));
 
         final orderNotifier = container.read(orderServiceProvider.notifier);
-        final checkoutService = container.read(checkoutServiceProvider);
+        // final checkoutService = container.read(checkoutServiceProvider);
 
         // Create order directly to simulate payment failure
         final order = orderNotifier.createOrder(

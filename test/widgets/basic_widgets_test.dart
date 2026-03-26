@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:paykari_bazar/src/features/commerce/domain/cart_model.dart';
-import 'package:paykari_bazar/src/models/product_model.dart';
-import 'package:paykari_bazar/src/models/user_model.dart';
 
 // Mock Providers
 class MockCartProvider extends Mock {}
@@ -70,11 +66,11 @@ void main() {
           MaterialApp(
             home: Scaffold(
               body: ListView(
-                children: [
+                children: const [
                   ListTile(
-                    title: const Text('Item Title'),
-                    subtitle: const Text('Item Subtitle'),
-                    trailing: const Icon(Icons.arrow_forward),
+                    title: Text('Item Title'),
+                    subtitle: Text('Item Subtitle'),
+                    trailing: Icon(Icons.arrow_forward),
                   ),
                 ],
               ),
@@ -106,11 +102,11 @@ void main() {
 
       testWidgets('3. ListTile with leading icon', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: ListTile(
-                leading: const Icon(Icons.shopping_cart),
-                title: const Text('Cart'),
+                leading: Icon(Icons.shopping_cart),
+                title: Text('Cart'),
               ),
             ),
           ),
@@ -203,10 +199,10 @@ void main() {
 
       testWidgets('2. TextField with label', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: TextField(
-                decoration: const InputDecoration(labelText: 'Username'),
+                decoration: InputDecoration(labelText: 'Username'),
               ),
             ),
           ),
@@ -286,7 +282,7 @@ void main() {
               body: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 itemCount: 10,
-                itemBuilder: (context, index) => Container(
+                itemBuilder: (context, index) => SizedBox(
                   width: 100,
                   child: Text('Item $index'),
                 ),
@@ -305,13 +301,13 @@ void main() {
     group('Card - Content Cards', () {
       testWidgets('1. Card renders correctly', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Card(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: EdgeInsets.all(16),
                   child: Column(
-                    children: const [
+                    children: [
                       Text('Card Title'),
                       SizedBox(height: 8),
                       Text('Card Content'),
@@ -330,11 +326,11 @@ void main() {
 
       testWidgets('2. Card with elevation shadow', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Card(
                 elevation: 8,
-                child: const Text('Elevated Card'),
+                child: Text('Elevated Card'),
               ),
             ),
           ),
@@ -350,8 +346,8 @@ void main() {
             home: Scaffold(
               body: GestureDetector(
                 onTap: () => cardTapped = true,
-                child: Card(
-                  child: const Padding(
+                child: const Card(
+                  child: Padding(
                     padding: EdgeInsets.all(16),
                     child: Text('Tap Card'),
                   ),
@@ -738,10 +734,11 @@ void main() {
 
         await tester.pumpWidget(
           MaterialApp(
-            home: WillPopScope(
-              onWillPop: () async {
-                onWillPopCalled = true;
-                return true;
+            home: PopScope(
+              onPopInvoked: (didPop) {
+                if (didPop) {
+                  onWillPopCalled = true;
+                }
               },
               child: Scaffold(
                 appBar: AppBar(title: const Text('Test')),
@@ -764,15 +761,15 @@ void main() {
     group('Responsive Layout - Size Adaptation', () {
       testWidgets('1. Column layout renders children', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Column(
                 children: [
-                  const Text('Header'),
-                  const SizedBox(height: 16),
-                  const Text('Body'),
-                  const Spacer(),
-                  const Text('Footer'),
+                  Text('Header'),
+                  SizedBox(height: 16),
+                  Text('Body'),
+                  Spacer(),
+                  Text('Footer'),
                 ],
               ),
             ),

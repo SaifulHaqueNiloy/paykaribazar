@@ -31,7 +31,7 @@ class VoiceCommerceService {
       final clean = response.replaceAll('```json', '').replaceAll('```', '').trim();
       return jsonDecode(clean);
     } catch (e) {
-      return {"action": "UNKNOWN", "message": "দুঃখিত, আমি বুঝতে পারিনি। আবার বলুন।"};
+      return {'action': 'UNKNOWN', 'message': 'দুঃখিত, আমি বুঝতে পারিনি। আবার বলুন।'};
     }
   }
 
@@ -41,7 +41,7 @@ class VoiceCommerceService {
     
     switch (action) {
       case 'SEARCH':
-        final query = data['query'] ?? '';
+        // final query = data['query'] ?? '';
         // Navigate to search screen with query
         break;
       case 'ADD_TO_CART':
@@ -53,7 +53,7 @@ class VoiceCommerceService {
         // Show checkout bottom sheet
         break;
       case 'NAVIGATE':
-        final target = data['target'] ?? 'home';
+        // final target = data['target'] ?? 'home';
         // Navigate
         break;
       default:

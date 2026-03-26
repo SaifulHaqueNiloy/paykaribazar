@@ -39,7 +39,7 @@ void main() {
     test('Use primary provider when available', () async {
       // Arrange
       when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generate('test prompt', type: null))
+      when(primaryProvider.generate('test prompt'))
           .thenAnswer((_) async => 'Primary response');
 
       // Act
@@ -50,14 +50,14 @@ void main() {
       expect(result, 'Primary response');
       expect(providerManager.isPrimaryAvailable, true);
       expect(providerManager.isUsingFallback, false);
-      verify(primaryProvider.generate('test prompt', type: null)).called(1);
+      verify(primaryProvider.generate('test prompt')).called(1);
     });
 
     test('Switch to fallback when primary fails', () async {
       // Arrange
       when(primaryProvider.healthCheck()).thenAnswer((_) async => false);
       when(fallbackProvider.healthCheck()).thenAnswer((_) async => true);
-      when(fallbackProvider.generate('test prompt', type: null))
+      when(fallbackProvider.generate('test prompt'))
           .thenAnswer((_) async => 'Fallback response');
 
       // Act
@@ -73,10 +73,10 @@ void main() {
     test('Handle timeout and fallback', () async {
       // Arrange
       when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generate('test prompt', type: null))
+      when(primaryProvider.generate('test prompt'))
           .thenThrow(Exception('Timeout'));
       when(fallbackProvider.healthCheck()).thenAnswer((_) async => true);
-      when(fallbackProvider.generate('test prompt', type: null))
+      when(fallbackProvider.generate('test prompt'))
           .thenAnswer((_) async => 'Fallback response');
 
       // Act
@@ -114,7 +114,7 @@ void main() {
     test('Stream generation with fallback', () async* {
       // Arrange
       when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generateStream('test', type: null))
+      when(primaryProvider.generateStream('test'))
           .thenAnswer((_) async* {
         yield 'Primary ';
         yield 'response';
@@ -150,7 +150,7 @@ void main() {
     test('Reset providers to retry', () async {
       // Arrange
       when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generate('test', type: null))
+      when(primaryProvider.generate('test'))
           .thenAnswer((_) async => 'Primary response');
 
       // Act

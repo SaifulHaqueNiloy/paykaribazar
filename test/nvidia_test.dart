@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:io';
 
 void main() {
@@ -12,12 +13,12 @@ void main() {
       // In local dev, it validates the key is set
       if (apiKey == null || apiKey.isEmpty) {
         // Skip this test in CI where .env is not available
-        print('⚠️ SKIPPING: NVIDIA_API_KEY not found in environment');
+        debugPrint('⚠️ SKIPPING: NVIDIA_API_KEY not found in environment');
         return;
       }
 
       expect(apiKey, isNotEmpty, reason: 'NVIDIA_API_KEY environment variable is empty');
-      expect(apiKey!.length, greaterThan(10), reason: 'NVIDIA_API_KEY appears to be invalid (too short)');
+      expect(apiKey.length, greaterThan(10), reason: 'NVIDIA_API_KEY appears to be invalid (too short)');
     });
 
     test('NVIDIA API configuration validates format', () {

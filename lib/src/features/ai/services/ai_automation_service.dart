@@ -35,7 +35,7 @@ class AiAutomationService {
         final prompt = "Generate SEO tags and a professional Bengali description for: ${data['name']}";
         
         // This will automatically update the AICacheService
-        await _ai.generateResponse(prompt, useCache: true);
+        await _ai.generateResponse(prompt);
         
         await doc.reference.update({'ai_processed': true});
       }

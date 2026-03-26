@@ -29,7 +29,7 @@ class _CategoryFormSheetState extends ConsumerState<CategoryFormSheet> {
   final _orderController = TextEditingController(text: '0');
 
   File? _imageFile;
-  bool _isProcessing = false;
+  final bool _isProcessing = false;
   Map<String, dynamic>? selectedShop;
 
   @override
@@ -111,7 +111,7 @@ class _CategoryFormSheetState extends ConsumerState<CategoryFormSheet> {
             ),
             const SizedBox(height: 20),
             DropdownButtonFormField<String>(
-              value: selectedShop?['id'],
+              initialValue: selectedShop?['id'],
               hint: const Text('Select Shop/Store'),
               items: shops.map((s) {
                 return DropdownMenuItem<String>(

@@ -45,9 +45,6 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
   void _initPaginator() {
     _paginator = FirestorePaginator<Map<String, dynamic>>(
       collectionPath: HubPaths.products,
-      pageSize: 20,
-      orderByField: 'createdAt',
-      descending: true,
       fromFirestore: (doc) {
         final data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;

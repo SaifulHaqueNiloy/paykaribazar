@@ -49,8 +49,9 @@ class _ApplicationFormScreenState extends State<ApplicationFormScreen> {
     final isD = Theme.of(context).brightness == Brightness.dark;
     
     String title = 'Apply for ';
-    if (widget.role == 'reseller') title += 'Reseller';
-    else if (widget.role == 'rider') title += 'Delivery Person';
+    if (widget.role == 'reseller') {
+      title += 'Reseller';
+    } else if (widget.role == 'rider') title += 'Delivery Person';
     else title += 'Office Staff';
 
     return Scaffold(

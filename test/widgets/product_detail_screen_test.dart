@@ -90,17 +90,17 @@ void main() {
 
       testWidgets('3. Product detail shows description', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(16),
                       child: Text('Description', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                     ),
-                    const Padding(
+                    Padding(
                       padding: EdgeInsets.all(16),
                       child: Text(
                         'High-quality wireless headphones with active noise cancellation, 30-hour battery life, and premium sound quality.',
@@ -302,9 +302,9 @@ void main() {
             home: Scaffold(
               body: Stack(
                 children: [
-                  SingleChildScrollView(
+                  const SingleChildScrollView(
                     child: Column(
-                      children: const [
+                      children: [
                         SizedBox(height: 400),
                         Text('Product content'),
                       ],
@@ -483,18 +483,18 @@ void main() {
                         border: Border.all(color: Colors.grey[300]!),
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Column(
+                      child: const Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             children: [
-                              const CircleAvatar(child: Text('JD')),
-                              const SizedBox(width: 8),
+                              CircleAvatar(child: Text('JD')),
+                              SizedBox(width: 8),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('John Doe', style: TextStyle(fontWeight: FontWeight.bold)),
-                                  const Row(
+                                  Text('John Doe', style: TextStyle(fontWeight: FontWeight.bold)),
+                                  Row(
                                     children: [
                                       Icon(Icons.star, size: 16, color: Colors.amber),
                                       Icon(Icons.star, size: 16, color: Colors.amber),
@@ -507,8 +507,8 @@ void main() {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 8),
-                          const Text('Great product, highly recommend!'),
+                          SizedBox(height: 8),
+                          Text('Great product, highly recommend!'),
                         ],
                       ),
                     ),

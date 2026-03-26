@@ -1,5 +1,6 @@
 /// test/unit/ai_service_comprehensive_test.dart
 /// AIProvider interface tests
+library;
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_provider.dart';
@@ -93,7 +94,7 @@ void main() {
     });
 
     test('Provider supports all AiWorkType values', () async {
-      final workTypes = AiWorkType.values;
+      const workTypes = AiWorkType.values;
       
       for (final workType in workTypes) {
         final result = await provider.generate('Test', type: workType);

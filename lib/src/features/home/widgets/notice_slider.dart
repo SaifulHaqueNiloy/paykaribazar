@@ -22,7 +22,6 @@ class NoticeSlider extends ConsumerWidget {
               autoPlay: true,
               viewportFraction: 1.0,
               scrollDirection: Axis.vertical,
-              autoPlayInterval: const Duration(seconds: 4),
             ),
             items: notices.map((doc) {
               final data = doc.data() as Map<String, dynamic>;

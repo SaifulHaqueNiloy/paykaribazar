@@ -96,7 +96,7 @@ void main() {
         expect(find.text('Widget 1: Shared'), findsOneWidget);
         expect(find.text('Widget 2: Shared'), findsOneWidget);
       });
-    });;
+    });
 
     // ========================================================================
     // GROUP 2: Mock Cart Provider Tests (4 tests)
@@ -233,7 +233,7 @@ void main() {
         await tester.pumpAndSettle();
         expect(find.text('Item 1'), findsNothing);
       });
-    });;
+    });
 
     // ========================================================================
     // GROUP 3: Product Display Tests (4 tests)
@@ -305,15 +305,15 @@ void main() {
 
       testWidgets('3. Product filter chips', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Wrap(
                 spacing: 8,
                 children: [
-                  Chip(label: const Text('All')),
-                  Chip(label: const Text('Electronics')),
-                  Chip(label: const Text('Clothing')),
-                  Chip(label: const Text('Books')),
+                  Chip(label: Text('All')),
+                  Chip(label: Text('Electronics')),
+                  Chip(label: Text('Clothing')),
+                  Chip(label: Text('Books')),
                 ],
               ),
             ),
@@ -430,12 +430,12 @@ void main() {
 
       testWidgets('3. OrdersScreen empty state', (WidgetTester tester) async {
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Icon(
                       Icons.shopping_bag_outlined,
                       size: 64,
@@ -484,13 +484,13 @@ void main() {
       });
 
       testWidgets('2. Payment method selection', (WidgetTester tester) async {
-        var selectedPayment = 'Credit Card';
+        // const selectedPayment = 'Credit Card';
 
         await tester.pumpWidget(
-          MaterialApp(
+          const MaterialApp(
             home: Scaffold(
               body: Column(
-                children: const [
+                children: [
                   ListTile(title: Text('Credit Card')),
                   ListTile(title: Text('Debit Card')),
                   ListTile(title: Text('Paypal')),

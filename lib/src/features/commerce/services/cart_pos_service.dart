@@ -88,7 +88,7 @@ class CartPosService {
       }
     }
 
-    double discountAmount = (totalPrice * discountPercent) / 100;
+    final double discountAmount = (totalPrice * discountPercent) / 100;
 
     return {
       'totalQuantity': totalQuantity,

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../config/ai_config.dart';
 
@@ -96,7 +97,7 @@ class AIRateLimiter {
       return (AIConfig.dailyQuotaLimit - usedCount)
           .clamp(0, AIConfig.dailyQuotaLimit);
     } catch (e) {
-      print('Error getting remaining quota: $e');
+      debugPrint('Error getting remaining quota: $e');
       return AIConfig.dailyQuotaLimit; // Return max if error
     }
   }

@@ -64,11 +64,8 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
     final discount = ref.watch(cartDiscountProvider);
     final pointsDiscount = ref.watch(cartPointsDiscountProvider);
     final total = ref.watch(cartTotalProvider);
-    final minOrderValue = ref.watch(cartMinimumOrderValueProvider);
-    final orderShortfall = ref.watch(cartShortfallProvider);
 
     final isAddressMissing = userModel == null || userModel.addresses.isEmpty;
-    final isBelowMinimumOrder = orderShortfall > 0;
 
     AddressModel? selectedAddress;
     if (userModel != null && _selectedAddressId != null) {
@@ -128,17 +125,10 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
                       size: 18, color: AppStyles.primaryColor))),
           const SizedBox(height: 24),
           _summary(
-              subtotal,
-              deliveryFee,
-              isDark,
-              discount,
-              pointsDiscount,
-              total,
-              minOrderValue,
-              orderShortfall),
+              subtotal, deliveryFee, isDark, discount, pointsDiscount, total),
           const SizedBox(height: 32),
           ElevatedButton(
-            onPressed: (selectedAddress == null || _loading || isBelowMinimumOrder)
+            onPressed: (selectedAddress == null || _loading)
                 ? null
                 : () => _placeOrder(cartNotifier, ref.read(cartProvider),
                     userModel, selectedAddress!),
@@ -191,7 +181,7 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
   }
 
   Widget _summary(double sub, double del, bool d, double discount,
-      double ptsDiscount, double total, double minOrderValue, double orderShortfall) {
+      double ptsDiscount, double total) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -206,27 +196,9 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
           _row('Points Discount', '- ৳${ptsDiscount.toInt()}',
               c: Colors.orange),
         _row(_t('deliveryFee'), '+ ৳${del.toInt()}'),
-        if (orderShortfall > 0)
-          _row(
-            'Minimum Order',
-            'Need ৳${orderShortfall.toInt()} more',
-            c: Colors.orange,
-          ),
         const Padding(
             padding: EdgeInsets.symmetric(vertical: 8), child: Divider()),
-        _row(_t('totalPayable'), '৳${total.toInt()}', b: true),
-        if (orderShortfall > 0) ...[
-          const SizedBox(height: 10),
-          Text(
-            'Minimum order is ৳${minOrderValue.toInt()}. Add a bit more to place this order.',
-            style: const TextStyle(
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              color: Colors.orange,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+        _row(_t('totalPayable'), '৳${total.toInt()}', b: true)
       ]),
     );
   }
@@ -254,20 +226,6 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
     final double discount = ref.read(cartDiscountProvider);
     final double pointsDiscount = ref.read(cartPointsDiscountProvider);
     final double finalTotal = ref.read(cartTotalProvider);
-    final double orderShortfall = ref.read(cartShortfallProvider);
-
-    if (orderShortfall > 0) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Add ৳${orderShortfall.toInt()} more to meet the minimum order.'),
-            backgroundColor: Colors.orange,
-          ),
-        );
-      }
-      setState(() => _loading = false);
-      return;
-    }
 
     try {
       final items = state.items
