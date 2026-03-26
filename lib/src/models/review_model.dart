@@ -30,12 +30,21 @@ class Review {
       productId: map['productId'] ?? '',
       comment: map['comment'] ?? '',
       rating: (map['rating'] ?? 0.0).toDouble(),
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: _parseDateTime(map['createdAt']),
     );
+  }
+
+  /// Helper to parse DateTime from both Timestamp and DateTime objects
+  static DateTime _parseDateTime(dynamic value) {
+    if (value == null) return DateTime.now();
+    if (value is Timestamp) return value.toDate();
+    if (value is DateTime) return value;
+    return DateTime.now();
   }
 
   Map<String, dynamic> toMap() {
     return {
+      'id': id,
       'userId': userId,
       'userName': userName,
       'userImageUrl': userImageUrl,

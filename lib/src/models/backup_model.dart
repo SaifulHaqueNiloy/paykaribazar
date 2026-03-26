@@ -42,8 +42,16 @@ class BackupItem {
       fileUrl: map['fileUrl'],
       fileSize: (map['fileSize'] ?? 0.5).toDouble(),
       type: BackupType.values.firstWhere((e) => e.name == map['type'], orElse: () => BackupType.note),
-      createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
+      createdAt: _parseDateTimeNullable(map['createdAt']) ?? DateTime.now(),
       isPublic: map['isPublic'] ?? false,
     );
+  }
+
+  /// Helper to parse nullable DateTime from both Timestamp and DateTime objects
+  static DateTime? _parseDateTimeNullable(dynamic value) {
+    if (value == null) return null;
+    if (value is Timestamp) return value.toDate();
+    if (value is DateTime) return value;
+    return null;
   }
 }

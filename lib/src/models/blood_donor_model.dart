@@ -28,6 +28,7 @@ class BloodDonor {
   });
 
   Map<String, dynamic> toMap() => {
+    'id': id,
     'name': name,
     'bloodGroup': bloodGroup,
     'contactNumber': contactNumber ?? phone,
@@ -45,7 +46,7 @@ class BloodDonor {
     name: map['name'] ?? '',
     bloodGroup: map['bloodGroup'] ?? '',
     contactNumber: map['contactNumber'] ?? map['phone'] ?? '',
-    lastDonated: map['lastDonated'] != null ? (map['lastDonated'] as Timestamp).toDate() : null,
+    lastDonated: _parseDateTimeNullable(map['lastDonated']),
     userUid: map['userUid'],
     imageUrl: map['imageUrl'],
     district: map['district'] ?? '',
@@ -53,4 +54,12 @@ class BloodDonor {
     phone: map['phone'] ?? map['contactNumber'] ?? '',
     isVisible: map['isVisible'] ?? true,
   );
+
+  /// Helper to parse nullable DateTime from both Timestamp and DateTime objects
+  static DateTime? _parseDateTimeNullable(dynamic value) {
+    if (value == null) return null;
+    if (value is Timestamp) return value.toDate();
+    if (value is DateTime) return value;
+    return null;
+  }
 }
