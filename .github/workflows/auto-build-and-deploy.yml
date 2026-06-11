@@ -133,10 +133,11 @@ jobs:
         run: flutter pub get
 
       - name: Generate code
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Run Flutter Analyze
         run: flutter analyze --no-fatal-infos
+        run: flutter analyze lib test --no-fatal-infos
 
       - name: Run unit tests
         run: flutter test --coverage
@@ -152,6 +153,7 @@ jobs:
       - name: Check for security issues
         run: |
           flutter analyze
+          flutter analyze lib test
           echo "✅ Analysis and security check complete"
 
   # Stage 4: Build Mobile Apps (Unified)
@@ -200,7 +202,7 @@ jobs:
         run: flutter pub get
 
       - name: Generate code
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Configure signing
         run: |
@@ -265,7 +267,7 @@ jobs:
         run: flutter pub get
 
       - name: Generate code
-        run: flutter pub run build_runner build --delete-conflicting-outputs
+        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Web (Customer)
         run: flutter build web -t lib/main_customer.dart --release -v
@@ -333,8 +335,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [setup, build-mobile]
-    # Disabled for now because Google Play Console setup is incomplete
-    if: false
+    if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'play-store-only')
 
     steps:
       - uses: actions/checkout@v4.2.0
