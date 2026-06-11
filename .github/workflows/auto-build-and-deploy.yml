@@ -157,7 +157,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     needs: [setup, test-and-analyze]
-    if: always() && needs.setup.result == 'success'
+    if: needs.setup.result == 'success' && (needs.test-and-analyze.result == 'success' || needs.test-and-analyze.result == 'skipped')
 
     env:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -422,7 +422,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     needs: [setup, build-mobile, build-web]
-    if: always() && needs.setup.result == 'success'
+    if: needs.setup.result == 'success' && needs.build-mobile.result == 'success' && needs.build-web.result == 'success'
 
     env:
       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
