@@ -37,7 +37,7 @@ class SimpleFloatingCart extends ConsumerWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: AppStyles.primaryColor.withValues(alpha: 0.4),
+                  color: AppStyles.primaryColor.withOpacity(0.4),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -80,7 +80,7 @@ class SimpleFloatingCart extends ConsumerWidget {
                 color: AppStyles.primaryColor,
                 boxShadow: [
                   BoxShadow(
-                    color: AppStyles.primaryColor.withValues(alpha: 0.5),
+                    color: AppStyles.primaryColor.withOpacity(0.5),
                     blurRadius: 16,
                     offset: const Offset(0, 6),
                   ),
@@ -134,7 +134,7 @@ class SimpleFloatingCart extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.green.withValues(alpha: 0.35),
+                    color: Colors.green.withOpacity(0.35),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),

@@ -54,10 +54,10 @@ class _TeamsTabState extends ConsumerState<TeamsTab> {
                   final users = groups[role]!;
                   return Container(
                     margin: const EdgeInsets.only(bottom: 16),
-                    decoration: BoxDecoration(color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.grey[50], borderRadius: BorderRadius.circular(20), border: Border.all(color: isDark ? Colors.white10 : Colors.grey[200]!)),
+                    decoration: BoxDecoration(color: isDark ? Colors.white.withOpacity(0.02) : Colors.grey[50], borderRadius: BorderRadius.circular(20), border: Border.all(color: isDark ? Colors.white10 : Colors.grey[200]!)),
                     child: ExpansionTile(
                       initiallyExpanded: role != 'customer',
-                      leading: CircleAvatar(backgroundColor: _getCol(role).withValues(alpha: 0.1), child: Icon(_getIcon(role), color: _getCol(role), size: 20)),
+                      leading: CircleAvatar(backgroundColor: _getCol(role).withOpacity(0.1), child: Icon(_getIcon(role), color: _getCol(role), size: 20)),
                       title: Text(role.toUpperCase(), style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13, letterSpacing: 1)),
                       children: users.map((u) => _buildUserTile(u, shops, isDark)).toList(),
                     ),
@@ -94,9 +94,9 @@ class _TeamsTabState extends ConsumerState<TeamsTab> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text("${user['phone'] ?? ''} • Points: $points", style: const TextStyle(fontSize: 11, color: Colors.grey)),
-          Text('Last Login: $lastLoginStr', style: TextStyle(fontSize: 10, color: Colors.blueGrey.withValues(alpha: 0.7), fontWeight: FontWeight.bold)),
+          Text('Last Login: $lastLoginStr', style: TextStyle(fontSize: 10, color: Colors.blueGrey.withOpacity(0.7), fontWeight: FontWeight.bold)),
           if (role == 'reseller' && approvedShops.isNotEmpty)
-            Padding(padding: const EdgeInsets.only(top: 4), child: Wrap(spacing: 4, children: approvedShops.map((s) => Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: Colors.teal.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(4)), child: Text(s.toString(), style: const TextStyle(color: Colors.teal, fontSize: 9, fontWeight: FontWeight.bold)))).toList())),
+            Padding(padding: const EdgeInsets.only(top: 4), child: Wrap(spacing: 4, children: approvedShops.map((s) => Container(padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2), decoration: BoxDecoration(color: Colors.teal.withOpacity(0.1), borderRadius: BorderRadius.circular(4)), child: Text(s.toString(), style: const TextStyle(color: Colors.teal, fontSize: 9, fontWeight: FontWeight.bold)))).toList())),
         ],
       ),
       trailing: ElevatedButton(

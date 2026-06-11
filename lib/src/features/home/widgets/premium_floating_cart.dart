@@ -170,7 +170,7 @@ class _PremiumFloatingCartState extends ConsumerState<PremiumFloatingCart>
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: AppStyles.primaryColor.withValues(alpha: 0.25),
+              color: AppStyles.primaryColor.withOpacity(0.25),
               blurRadius: 15,
               offset: const Offset(0, 8),
             ),
@@ -285,7 +285,7 @@ class _PremiumFloatingCartState extends ConsumerState<PremiumFloatingCart>
               height: 36,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.white.withValues(alpha: 0.9),
+                color: Colors.white.withOpacity(0.9),
                 border: Border.all(
                   color: AppStyles.accentColor,
                   width: 1.5,

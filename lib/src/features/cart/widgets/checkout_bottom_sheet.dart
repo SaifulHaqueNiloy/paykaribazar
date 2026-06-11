@@ -139,7 +139,7 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18)),
                 elevation: 8,
-                shadowColor: AppStyles.primaryColor.withValues(alpha: 0.4)),
+                shadowColor: AppStyles.primaryColor.withOpacity(0.4)),
             child: _loading
                 ? const SizedBox(
                     height: 20,
@@ -185,9 +185,9 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-          color: AppStyles.primaryColor.withValues(alpha: 0.05),
+          color: AppStyles.primaryColor.withOpacity(0.05),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.1))),
+          border: Border.all(color: AppStyles.primaryColor.withOpacity(0.1))),
       child: Column(children: [
         _row(_t('subtotal'), '৳${sub.toInt()}'),
         if (discount > 0)

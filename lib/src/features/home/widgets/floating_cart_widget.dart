@@ -24,7 +24,7 @@ class FloatingCartWidget extends ConsumerWidget {
             color: AppStyles.primaryColor,
             boxShadow: [
               BoxShadow(
-                color: AppStyles.primaryColor.withValues(alpha: 0.5),
+                color: AppStyles.primaryColor.withOpacity(0.5),
                 blurRadius: 16,
                 offset: const Offset(0, 6),
               ),

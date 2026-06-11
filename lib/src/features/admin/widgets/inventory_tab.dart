@@ -118,7 +118,7 @@ class _InventoryTabState extends ConsumerState<InventoryTab> {
                 borderRadius: BorderRadius.circular(24),
                 boxShadow: [
                   BoxShadow(
-                      color: Colors.indigo.withValues(alpha: 0.3),
+                      color: Colors.indigo.withOpacity(0.3),
                       blurRadius: 15,
                       offset: const Offset(0, 8))
                 ]),
@@ -143,14 +143,14 @@ class _InventoryTabState extends ConsumerState<InventoryTab> {
   Widget _buildStatItem(String label, String value, IconData icon,
       {Color color = Colors.white}) {
     return Column(children: [
-      Icon(icon, color: color.withValues(alpha: 0.7), size: 20),
+      Icon(icon, color: color.withOpacity(0.7), size: 20),
       const SizedBox(height: 4),
       Text(value,
           style: const TextStyle(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w900)),
       Text(label,
           style: TextStyle(
-              color: Colors.white.withValues(alpha: 0.5),
+              color: Colors.white.withOpacity(0.5),
               fontSize: 9,
               fontWeight: FontWeight.bold,
               letterSpacing: 1)),
@@ -227,7 +227,7 @@ class _InventoryTabState extends ConsumerState<InventoryTab> {
               showCheckmark: false,
               elevation: 0,
               backgroundColor:
-                  isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
+                  isDark ? Colors.white.withOpacity(0.05) : Colors.white,
             ),
           );
         },
@@ -297,9 +297,9 @@ class _InventoryTabState extends ConsumerState<InventoryTab> {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
             color: isOut
-                ? Colors.red.withValues(alpha: 0.3)
+                ? Colors.red.withOpacity(0.3)
                 : (isLow
-                    ? Colors.orange.withValues(alpha: 0.3)
+                    ? Colors.orange.withOpacity(0.3)
                     : Colors.transparent)),
         boxShadow: AppStyles.softShadow,
       ),

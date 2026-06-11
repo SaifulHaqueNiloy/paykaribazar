@@ -89,7 +89,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
                         letterSpacing: 1)),
                 Text('v$_version',
                     style: TextStyle(
-                        color: Colors.white.withValues(alpha: 0.7),
+                        color: Colors.white.withOpacity(0.7),
                         fontSize: 8,
                         fontWeight: FontWeight.bold)),
               ],
@@ -104,7 +104,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
           indicatorColor: AppStyles.accentColor,
           indicatorWeight: 4,
           labelColor: Colors.white,
-          unselectedLabelColor: Colors.white.withValues(alpha: 0.6),
+          unselectedLabelColor: Colors.white.withOpacity(0.6),
           labelStyle:
               const TextStyle(fontWeight: FontWeight.w900, fontSize: 12),
           tabs: const [
@@ -152,7 +152,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
           style: const TextStyle(
               color: Colors.white, fontSize: 10, fontWeight: FontWeight.w900)),
       style: TextButton.styleFrom(
-          backgroundColor: Colors.white.withValues(alpha: 0.1),
+          backgroundColor: Colors.white.withOpacity(0.1),
           padding: const EdgeInsets.symmetric(horizontal: 12)),
     );
   }
@@ -233,7 +233,7 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       child: Column(
         children: [
           Container(
-            color: Colors.white.withValues(alpha: 0.05),
+            color: Colors.white.withOpacity(0.05),
             child: TabBar(
               indicatorColor: AppStyles.primaryColor,
               labelColor: AppStyles.primaryColor,
@@ -279,10 +279,10 @@ class _AdminScreenState extends ConsumerState<AdminScreen>
       String title, IconData icon, Color color, VoidCallback onTap) {
     return Card(
       elevation: 0,
-      color: color.withValues(alpha: 0.1),
+      color: color.withOpacity(0.1),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(color: color.withValues(alpha: 0.2))),
+          side: BorderSide(color: color.withOpacity(0.2))),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(20),
@@ -529,7 +529,7 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab> with TickerProv
       const SizedBox(height: 8),
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
-        decoration: BoxDecoration(color: Colors.blueGrey.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12)),
+        decoration: BoxDecoration(color: Colors.blueGrey.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
             value: value,
@@ -551,7 +551,7 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab> with TickerProv
           hintText: hint,
           hintStyle: const TextStyle(fontSize: 12),
           filled: true,
-          fillColor: Colors.blueGrey.withValues(alpha: 0.05),
+          fillColor: Colors.blueGrey.withOpacity(0.05),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none)
         ),
         onChanged: onChange,
@@ -565,9 +565,9 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab> with TickerProv
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.white,
+        color: isDark ? Colors.white.withOpacity(0.03) : Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: Colors.indigo.withValues(alpha: 0.2))
+        border: Border.all(color: Colors.indigo.withOpacity(0.2))
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -583,7 +583,7 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab> with TickerProv
           ...items.map((item) => ListTile(
             contentPadding: EdgeInsets.zero,
             leading: CircleAvatar(
-              backgroundColor: Colors.indigo.withValues(alpha: 0.1),
+              backgroundColor: Colors.indigo.withOpacity(0.1),
               child: const Icon(Icons.auto_awesome_rounded, size: 18, color: Colors.indigo)
             ),
             title: Text(item['title'] ?? 'Record', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
@@ -641,9 +641,9 @@ class DesignControlTab extends ConsumerWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isSelected ? themeColor.withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.05),
+          color: isSelected ? themeColor.withOpacity(0.1) : Colors.white.withOpacity(0.05),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: isSelected ? themeColor : Colors.grey.withValues(alpha: 0.1), width: 2),
+          border: Border.all(color: isSelected ? themeColor : Colors.grey.withOpacity(0.1), width: 2),
         ),
         child: Row(
           children: [
@@ -745,7 +745,7 @@ class CustomUiLabTab extends ConsumerWidget {
         const SizedBox(height: 8),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(color: Colors.blueGrey.withValues(alpha: 0.05), borderRadius: BorderRadius.circular(12)),
+          decoration: BoxDecoration(color: Colors.blueGrey.withOpacity(0.05), borderRadius: BorderRadius.circular(12)),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
               value: value,

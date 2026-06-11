@@ -10,6 +10,9 @@ analyzer:
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - "flutter/**"
+    - "paykari_bazar/**"
+    - "paykari_bazar_admin/**"
 
 linter:
   rules:

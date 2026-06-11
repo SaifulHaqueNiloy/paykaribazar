@@ -81,9 +81,9 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDark ? Colors.teal.withValues(alpha: 0.1) : Colors.teal.withValues(alpha: 0.05),
+          color: isDark ? Colors.teal.withOpacity(0.1) : Colors.teal.withOpacity(0.05),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.teal.withValues(alpha: 0.3)),
+          border: Border.all(color: Colors.teal.withOpacity(0.3)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +146,7 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 4,
             offset: const Offset(0, 2),
           ),
@@ -189,7 +189,7 @@ class _AnalyticsTabState extends ConsumerState<AnalyticsTab> {
                   dotData: const FlDotData(show: false),
                   belowBarData: BarAreaData(
                     show: true,
-                    color: AppStyles.primaryColor.withValues(alpha: 0.1),
+                    color: AppStyles.primaryColor.withOpacity(0.1),
                   ),
                 ),
               ],

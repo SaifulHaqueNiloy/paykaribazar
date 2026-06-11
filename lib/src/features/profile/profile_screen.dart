@@ -485,7 +485,7 @@ class ProfileScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withValues(alpha: 0.05),
+                  color: Colors.amber.withOpacity(0.05),
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       bottomLeft: Radius.circular(15)),
@@ -517,12 +517,12 @@ class ProfileScreen extends ConsumerWidget {
             ),
             Container(
                 width: 1,
-                color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
+                color: isDark ? Colors.white10 : Colors.grey.withOpacity(0.1)),
             Expanded(
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.blueAccent.withValues(alpha: 0.05),
+                  color: Colors.blueAccent.withOpacity(0.05),
                   borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(15),
                       bottomRight: Radius.circular(15)),

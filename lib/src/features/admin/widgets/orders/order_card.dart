@@ -77,7 +77,7 @@ class _OrderCardState extends ConsumerState<OrderCard> {
                 : "৳${widget.order['totalAmount']} • $status • $area",
             style: TextStyle(fontSize: 11, color: Colors.grey[600])),
         leading: CircleAvatar(
-            backgroundColor: statusColor.withValues(alpha: 0.1),
+            backgroundColor: statusColor.withOpacity(0.1),
             child: Icon(
                 isBlood
                     ? Icons.bloodtype_rounded

@@ -75,7 +75,7 @@ class _AiAuditTabState extends ConsumerState<AiAuditTab> {
       height: 260,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
+        color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
         borderRadius: BorderRadius.circular(24),
         border:
             Border.all(color: isDark ? Colors.white10 : Colors.grey.shade200),
@@ -266,7 +266,7 @@ class _AiAuditTabState extends ConsumerState<AiAuditTab> {
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
                     color: (isApproved ? Colors.green : Colors.orange)
-                        .withValues(alpha: 0.1),
+                        .withOpacity(0.1),
                     shape: BoxShape.circle),
                 child: Icon(isApproved ? Icons.check_circle : Icons.pending,
                     color: isApproved ? Colors.green : Colors.orange, size: 16),
@@ -304,7 +304,7 @@ class _AiAuditTabState extends ConsumerState<AiAuditTab> {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withValues(alpha: 0.6)
+                          Colors.black.withOpacity(0.6)
                         ]),
                   ),
                   padding: const EdgeInsets.all(8),

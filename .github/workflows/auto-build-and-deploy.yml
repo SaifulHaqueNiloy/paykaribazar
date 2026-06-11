@@ -27,6 +27,7 @@ on:
         default: false
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Proactively address Node.js 20 deprecation warnings
   FLUTTER_VERSION: '3.24.3'
   JAVA_VERSION: '17'
 
@@ -111,12 +112,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0 # Ensure full history for analysis and testing
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
+
+      - name: Cache build_runner outputs
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-runner-
 
       - name: Install dependencies
         run: flutter pub get
@@ -162,6 +173,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0 # Ensure full history for build process
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -174,6 +187,14 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
+
+      - name: Cache build_runner outputs
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-runner-
 
       - name: Install dependencies
         run: flutter pub get
@@ -223,12 +244,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0 # Ensure full history for web build
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
+
+      - name: Cache build_runner outputs
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-runner-
 
       - name: Install dependencies
         run: flutter pub get
@@ -259,6 +290,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0 # Ensure full history for deployment
 
       - name: Setup Node.js & Firebase CLI
         uses: actions/setup-node@v4
@@ -300,10 +333,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [setup, build-mobile]
-    if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'play-store-only')
+    # Disabled for now because Google Play Console setup is incomplete
+    if: false
 
     steps:
       - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0 # Ensure full history for deployment
 
       - name: Download AAB artifacts
         uses: actions/download-artifact@v4
@@ -349,6 +385,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0 # Ensure full history for deployment
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -395,6 +433,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0 # Ensure full history for release notes
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4

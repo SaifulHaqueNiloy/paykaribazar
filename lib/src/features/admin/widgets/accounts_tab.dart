@@ -138,7 +138,7 @@ class _AccountsUserSubTabState extends ConsumerState<_AccountsUserSubTab> {
                     contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     leading: CircleAvatar(
                       radius: 22,
-                      backgroundColor: AppStyles.primaryColor.withValues(alpha: 0.1),
+                      backgroundColor: AppStyles.primaryColor.withOpacity(0.1),
                       child: Text((data['name'] ?? 'U')[0].toUpperCase(), style: const TextStyle(color: AppStyles.primaryColor, fontWeight: FontWeight.bold)),
                     ),
                     title: Row(
@@ -201,7 +201,7 @@ class _AccountsUserSubTabState extends ConsumerState<_AccountsUserSubTab> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(color: color.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: color.withValues(alpha: 0.2))),
+      decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(6), border: Border.all(color: color.withOpacity(0.2))),
       child: Text(role.toUpperCase(), style: TextStyle(color: color, fontSize: 8, fontWeight: FontWeight.w900)),
     );
   }

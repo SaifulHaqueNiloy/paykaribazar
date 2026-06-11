@@ -17,12 +17,12 @@ class FloatingCartBar extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         decoration: BoxDecoration(
           color: cart.items.isEmpty
-              ? AppStyles.primaryColor.withValues(alpha: 0.6)
+              ? AppStyles.primaryColor.withOpacity(0.6)
               : AppStyles.primaryColor,
           borderRadius: BorderRadius.circular(30),
           boxShadow: [
             BoxShadow(
-              color: AppStyles.primaryColor.withValues(alpha: 0.3),
+              color: AppStyles.primaryColor.withOpacity(0.3),
               blurRadius: 10,
               offset: const Offset(0, 5),
             ),

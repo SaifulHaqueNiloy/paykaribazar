@@ -156,7 +156,7 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
                 label: const Text('GENERATE DETAILS WITH AI', 
                   style: TextStyle(fontWeight: FontWeight.bold, color: AppStyles.primaryColor)),
                 style: TextButton.styleFrom(
-                  backgroundColor: AppStyles.primaryColor.withValues(alpha: 0.1),
+                  backgroundColor: AppStyles.primaryColor.withOpacity(0.1),
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                 ),
@@ -233,7 +233,7 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
           selected: s,
           onSelected: o,
           selectedColor: c,
-          backgroundColor: c.withValues(alpha: 0.1),
+          backgroundColor: c.withOpacity(0.1),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)));
 
@@ -253,7 +253,7 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
           decoration: BoxDecoration(
               color: isDark ? Colors.white10 : Colors.grey[100],
               borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.grey.withValues(alpha: 0.2))),
+              border: Border.all(color: Colors.grey.withOpacity(0.2))),
           child: _image != null
               ? ClipRRect(
                   borderRadius: BorderRadius.circular(15),

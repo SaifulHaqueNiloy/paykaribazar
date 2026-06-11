@@ -79,7 +79,7 @@ class _ShopsTabState extends ConsumerState<ShopsTab> {
       child: ListTile(
         contentPadding: const EdgeInsets.all(16),
         leading: CircleAvatar(
-            backgroundColor: color.withValues(alpha: 0.1),
+            backgroundColor: color.withOpacity(0.1),
             child: Icon(_icons[s['icon']] ?? Icons.storefront_rounded,
                 color: color)),
         title: Text(s['name'] ?? '',

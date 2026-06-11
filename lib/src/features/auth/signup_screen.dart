@@ -253,11 +253,11 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
                           color: isDark
-                              ? Colors.white.withValues(alpha: 0.05)
-                              : AppStyles.primaryColor.withValues(alpha: 0.05),
+                              ? Colors.white.withOpacity(0.05)
+                              : AppStyles.primaryColor.withOpacity(0.05),
                           borderRadius: BorderRadius.circular(15),
                           border: Border.all(
-                              color: AppStyles.primaryColor.withValues(alpha: 0.1)),
+                              color: AppStyles.primaryColor.withOpacity(0.1)),
                         ),
                         child: Column(
                           children: [
@@ -321,7 +321,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
+        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -376,7 +376,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
+        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Opacity(
@@ -416,7 +416,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
           style: IconButton.styleFrom(
-              backgroundColor: AppStyles.primaryColor.withValues(alpha: 0.1)),
+              backgroundColor: AppStyles.primaryColor.withOpacity(0.1)),
         ),
       ),
     );
@@ -426,7 +426,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     return Container(
       padding: const EdgeInsets.all(5),
       decoration: BoxDecoration(
-          color: AppStyles.primaryColor.withValues(alpha: 0.05),
+          color: AppStyles.primaryColor.withOpacity(0.05),
           borderRadius: BorderRadius.circular(15)),
       child: Row(
         children: [
@@ -471,7 +471,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             elevation: 5,
-            shadowColor: AppStyles.primaryColor.withValues(alpha: 0.3)),
+            shadowColor: AppStyles.primaryColor.withOpacity(0.3)),
         child: _isLoading
             ? const SizedBox(
                 height: 25,

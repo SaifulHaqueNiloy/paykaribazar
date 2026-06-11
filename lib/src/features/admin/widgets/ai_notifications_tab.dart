@@ -26,7 +26,7 @@ class AiNotificationsTab extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.auto_awesome_motion_rounded, size: 64, color: Colors.grey.withValues(alpha: 0.5)),
+                Icon(Icons.auto_awesome_motion_rounded, size: 64, color: Colors.grey.withOpacity(0.5)),
                 const SizedBox(height: 16),
                 const Text('No AI notifications awaiting approval', style: TextStyle(color: Colors.grey)),
                 const Text('All items expire after 24 hours', style: TextStyle(color: Colors.grey, fontSize: 10)),
@@ -51,7 +51,7 @@ class AiNotificationsTab extends ConsumerWidget {
               margin: const EdgeInsets.only(bottom: 16),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
-                side: BorderSide(color: status == 'approved' ? Colors.green.withValues(alpha: 0.3) : AppStyles.primaryColor.withValues(alpha: 0.2)),
+                side: BorderSide(color: status == 'approved' ? Colors.green.withOpacity(0.3) : AppStyles.primaryColor.withOpacity(0.2)),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -74,7 +74,7 @@ class AiNotificationsTab extends ConsumerWidget {
                         const Spacer(),
                         Text(
                           'Expires in: ${hoursLeft}h ${minsLeft}m',
-                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.red.withValues(alpha: 0.7)),
+                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Colors.red.withOpacity(0.7)),
                         ),
                       ],
                     ),

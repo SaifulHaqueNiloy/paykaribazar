@@ -11,30 +11,19 @@ class RobustFloatingCart extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     try {
       // Safely watch cart provider with error handling
-      final cartAsyncValue = ref.watch(cartProvider);
+      final cartState = ref.watch(cartProvider);
 
-      return cartAsyncValue.maybeWhen(
-        data: (cartState) {
-          if (cartState.items.isEmpty) {
-            return const SizedBox.shrink();
-          }
+      if (cartState.items.isEmpty) {
+        return const SizedBox.shrink();
+      }
 
-          final itemCount = cartState.items.length;
-          final totalPrice = cartState.items.fold<num>(
-            0,
-            (sum, item) => sum + (item.price * item.quantity),
-          );
-
-          return _buildCartUI(context, itemCount, totalPrice);
-        },
-        error: (err, stack) {
-          // Silently hide cart on error
-          debugPrint('Floating cart error: $err');
-          return const SizedBox.shrink();
-        },
-        loading: () => const SizedBox.shrink(),
-        orElse: () => const SizedBox.shrink(),
+      final itemCount = cartState.items.length;
+      final totalPrice = cartState.items.fold<num>(
+        0,
+        (sum, item) => sum + (item.price * item.quantity),
       );
+
+      return _buildCartUI(context, itemCount, totalPrice);
     } catch (e) {
       debugPrint('Floating cart exception: $e');
       return const SizedBox.shrink();
@@ -57,7 +46,7 @@ class RobustFloatingCart extends ConsumerWidget {
               borderRadius: BorderRadius.circular(10),
               boxShadow: [
                 BoxShadow(
-                  color: AppStyles.primaryColor.withValues(alpha: 0.4),
+                  color: AppStyles.primaryColor.withOpacity(0.4),
                   blurRadius: 12,
                   offset: const Offset(0, 4),
                 ),
@@ -100,7 +89,7 @@ class RobustFloatingCart extends ConsumerWidget {
                 color: AppStyles.primaryColor,
                 boxShadow: [
                   BoxShadow(
-                    color: AppStyles.primaryColor.withValues(alpha: 0.5),
+                    color: AppStyles.primaryColor.withOpacity(0.5),
                     blurRadius: 16,
                     offset: const Offset(0, 6),
                   ),
@@ -154,7 +143,7 @@ class RobustFloatingCart extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(8),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.green.withValues(alpha: 0.35),
+                    color: Colors.green.withOpacity(0.35),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),

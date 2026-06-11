@@ -113,9 +113,9 @@ class _MedicineOrderScreenState extends ConsumerState<MedicineOrderScreen> {
   Widget _buildHeader() => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.redAccent.withValues(alpha: 0.1),
+          color: Colors.redAccent.withOpacity(0.1),
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.redAccent.withValues(alpha: 0.3)),
+          border: Border.all(color: Colors.redAccent.withOpacity(0.3)),
         ),
         child: const Row(
           children: [
@@ -143,7 +143,7 @@ class _MedicineOrderScreenState extends ConsumerState<MedicineOrderScreen> {
   Widget _buildLocationDropdown(
           List<Map<String, dynamic>> locations, bool isDark) =>
       DropdownButtonFormField<String>(
-        initialValue: _selectedLocation,
+        value: _selectedLocation,
         decoration: AppStyles.inputDecoration('Select Area', isDark,
             prefix: const Icon(Icons.map_outlined)),
         items: locations
@@ -159,7 +159,7 @@ class _MedicineOrderScreenState extends ConsumerState<MedicineOrderScreen> {
             style: TextStyle(fontWeight: FontWeight.bold)),
         subtitle: const Text('Additional charges may apply for speed delivery'),
         value: _isEmergency,
-        activeThumbColor: Colors.redAccent,
+        activeColor: Colors.redAccent,
         onChanged: (val) => setState(() => _isEmergency = val),
       );
 

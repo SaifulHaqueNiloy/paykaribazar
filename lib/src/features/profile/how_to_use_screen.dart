@@ -133,7 +133,7 @@ class _HowToUseScreenState extends State<HowToUseScreen> {
       height: 8,
       width: active ? 24 : 8,
       decoration: BoxDecoration(
-        color: active ? AppStyles.primaryColor : Colors.grey.withValues(alpha: 0.3),
+        color: active ? AppStyles.primaryColor : Colors.grey.withOpacity(0.3),
         borderRadius: BorderRadius.circular(4),
       ),
     );
