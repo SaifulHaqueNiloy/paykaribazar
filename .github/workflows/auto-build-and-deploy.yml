@@ -7,7 +7,6 @@ on:
       - '**.md'
       - '**.txt'
       - 'dna/**'
-      - 'test/**'
   workflow_dispatch:
     inputs:
       deploy_to:
@@ -136,22 +135,20 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Run Flutter Analyze
-        run: flutter analyze lib test integration_test --no-fatal-infos
+        run: |
+          # Only analyze directories that exist to prevent command failure
+          DIRS_TO_ANALYZE="lib"
+          [ -d "test" ] && DIRS_TO_ANALYZE="$DIRS_TO_ANALYZE test"
+          [ -d "integration_test" ] && DIRS_TO_ANALYZE="$DIRS_TO_ANALYZE integration_test"
+          flutter analyze $DIRS_TO_ANALYZE --no-fatal-infos
 
       - name: Run unit tests
         run: flutter test --coverage
         continue-on-error: true
 
-      - name: Upload coverage
-        uses: codecov/codecov-action@v4
-        with:
-          files: ./coverage/lcov.info
-          flags: unittests
-          fail_ci_if_error: false
-
-      - name: Check for security issues
+      - name: Check for dependency security issues
         run: |
-          flutter analyze lib test integration_test
+          dart pub audit
           echo "✅ Analysis and security check complete"
 
   # Stage 4: Build Mobile Apps (Unified)
@@ -443,7 +440,14 @@ jobs:
       - name: Create Release Notes
         id: notes
         run: |
-          COMMIT_LOG=$(git log --oneline -10)
+          # Get the log between the last tag and current HEAD
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -z "$LATEST_TAG" ]; then
+            COMMIT_LOG=$(git log --oneline -10)
+          else
+            COMMIT_LOG=$(git log ${LATEST_TAG}..HEAD --oneline)
+          fi
+          
           echo "release_notes<<EOF" >> $GITHUB_OUTPUT
           echo "## Build #${{ needs.setup.outputs.build_number }}" >> $GITHUB_OUTPUT
           echo "### Version: ${{ needs.setup.outputs.version }}" >> $GITHUB_OUTPUT
