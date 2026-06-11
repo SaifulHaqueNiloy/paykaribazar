@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.6.0 <4.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -17,7 +17,7 @@ dependencies:
   go_router: ^14.2.0
   flutter_riverpod: ^2.5.1
   get_it: ^8.0.2
-  intl: ^0.20.2
+  intl: ^0.19.0
 
   # Firebase
   firebase_core: ^3.2.0
@@ -34,7 +34,7 @@ dependencies:
   flutter_facebook_auth: ^7.1.1
 
   # UI & UX
-  google_fonts: ^7.0.0
+  google_fonts: ^6.3.0
   cached_network_image: ^3.3.1
   shimmer: ^3.0.0
   lottie: ^3.1.2
@@ -82,14 +82,14 @@ dependencies:
   flutter_local_notifications: ^17.2.2
   firebase_remote_config: ^5.5.0
   package_info_plus: ^9.0.0
-  shorebird_code_push: ^2.0.5
+  # shorebird_code_push: ^2.0.5
 
   path: ^1.9.0
   uuid: ^4.5.1
   rxdart: ^0.28.0
   http: ^1.2.0
   record: ^6.2.0
-  audioplayers: ^6.6.0
+  audioplayers: ^6.0.0
   speech_to_text: ^7.3.0
 dev_dependencies:
   flutter_test:
