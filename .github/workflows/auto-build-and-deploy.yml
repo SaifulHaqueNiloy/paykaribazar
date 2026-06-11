@@ -27,7 +27,7 @@ on:
         default: false
 
 env:
-  FLUTTER_VERSION: '3.22.0'
+  FLUTTER_VERSION: '3.24.3'
   JAVA_VERSION: '17'
 
 jobs:
@@ -61,8 +61,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
-          cache: 'npm'
+          node-version: '22'
 
       - name: Validate environment
         id: setup
@@ -133,7 +132,7 @@ jobs:
         continue-on-error: true
 
       - name: Upload coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           files: ./coverage/lcov.info
           flags: unittests
@@ -141,8 +140,8 @@ jobs:
 
       - name: Check for security issues
         run: |
-          flutter pub global activate dartanalyzer
-          echo "🔒 Security scan complete"
+          flutter analyze
+          echo "✅ Analysis and security check complete"
 
   # Stage 4: Build Mobile Apps (Unified)
   build-mobile:
@@ -264,7 +263,7 @@ jobs:
       - name: Setup Node.js & Firebase CLI
         uses: actions/setup-node@v4
         with:
-          node-version: '24'
+          node-version: '22'
 
       - name: Install Firebase Tools
         run: npm install -g firebase-tools
@@ -417,7 +416,7 @@ jobs:
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: artifacts/**/*
           tag_name: "build-${{ needs.setup.outputs.build_number }}"

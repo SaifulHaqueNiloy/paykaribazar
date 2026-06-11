@@ -76,9 +76,20 @@ paykari_bazar_backup/
 *.exe
 *.enc
 
-# Miscellaneous
+# Misc
 *.log
-doc/api/
+
+# Cache / lock files
+*.lock
+*.hive
+ai_response_cache.*
+app_cache_box.*
+
+# Firebase cache
+.firebase/*.cache
+
+# Docs folder should not contain logs
+# (logs moved to docs/logs/, but raw logs should stay ignored)
 /metadata
 node_modules/
 
