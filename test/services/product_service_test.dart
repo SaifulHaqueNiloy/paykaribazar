@@ -32,7 +32,7 @@ void main() {
         updatedAt: DateTime.now(),
       );
 
-      when(() => productService.getProductById(any())).thenAnswer((_) async => product);
+      when(() => productService.getProductById(any<String>())).thenAnswer((_) async => product);
       
       final result = await productService.getProductById('prod1');
       
@@ -41,8 +41,8 @@ void main() {
     });
 
     test('Search products', () async {
-      final productStream = Stream<List<Product>>.value([]);
-      when(() => productService.searchProducts(any())).thenAnswer((_) => productStream);
+      final productStream = Stream<List<Product>>.value(<Product>[]);
+      when(() => productService.searchProducts(any<String>())).thenAnswer((_) => productStream);
       
       final results = productStream;
       results.listen((productList) {
@@ -57,7 +57,7 @@ void main() {
         nameBn: 'চাল',
         description: 'Quality rice',
         descriptionBn: 'ভালো চাল',
-        price: 50,
+        price: 50.0,
         stock: 100,
         unit: 'kg',
         unitBn: 'কেজি',
