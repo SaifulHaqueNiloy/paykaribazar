@@ -33,23 +33,91 @@ void main() {
       );
 
       when(() => productService.getProductById(any<String>())).thenAnswer((_) async => product);
-      
+
       final result = await productService.getProductById('prod1');
-      
+
       expect(result?.id, 'prod1');
       expect(result?.name, 'Test Product');
+    });
+
+    test('Get products stream', () async {
+      final products = <Product>[
+        Product(
+          id: 'p1',
+          sku: 'SKU1',
+          name: 'A',
+          nameBn: 'আ',
+          description: 'd',
+          descriptionBn: 'ডি',
+          price: 10.0,
+          stock: 1,
+          unit: 'pc',
+          unitBn: 'পিস',
+          imageUrl: '',
+          categoryId: 'c1',
+          categoryName: 'Cat',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+      ];
+      final productStream = Stream<List<Product>>.value(products);
+      when(() => productService.getProducts()).thenAnswer((_) => productStream);
+
+      final result = productService.getProducts();
+      final first = await result.first;
+      expect(first.length, 1);
+      expect(first.first.id, 'p1');
+    });
+
+    test('Filter products by category', () async {
+      final products = <Product>[
+        Product(
+          id: 'p1',
+          sku: 'SKU1',
+          name: 'A',
+          nameBn: 'আ',
+          description: 'd',
+          descriptionBn: 'ডি',
+          price: 10.0,
+          stock: 1,
+          unit: 'pc',
+          unitBn: 'পিস',
+          imageUrl: '',
+          categoryId: 'cat1',
+          categoryName: 'Cat',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        ),
+      ];
+      final productStream = Stream<List<Product>>.value(products);
+      when(() => productService.filterByCategory('cat1'))
+          .thenAnswer((_) => productStream);
+
+      final result = productService.filterByCategory('cat1');
+      final first = await result.first;
+      expect(first.length, 1);
+      expect(first.first.categoryId, 'cat1');
+    });
+
+    test('Update product stock', () async {
+      when(() => productService.updateProductStock('prod1', 50))
+          .thenAnswer((_) async => Future.value());
+
+      await productService.updateProductStock('prod1', 50);
+      verify(() => productService.updateProductStock('prod1', 50)).called(1);
     });
 
     test('Search products', () async {
       final productStream = Stream<List<Product>>.value(<Product>[]);
       when(() => productService.searchProducts(any<String>())).thenAnswer((_) => productStream);
-      
+
       final results = productStream;
       results.listen((productList) {
         expect(productList, isA<List<Product>>());
       });
     });
-   group('Product matchesSearch', () {
+
+    group('Product matchesSearch', () {
       final product = Product(
         id: '1',
         sku: 'SKU123',
@@ -80,8 +148,103 @@ void main() {
         expect(product.matchesSearch('SKU123'), isTrue);
       });
 
+      test('matches by category', () {
+        expect(product.matchesSearch('grocery'), isTrue);
+      });
+
       test('does not match unrelated query', () {
         expect(product.matchesSearch('mobile'), isFalse);
+      });
+    });
+
+    group('Product helpers', () {
+      test('getPriceForQuantity without tieredPrices', () {
+        final product = Product(
+          id: 'p1',
+          sku: 'SKU1',
+          name: 'A',
+          nameBn: 'আ',
+          description: 'd',
+          descriptionBn: 'ডি',
+          price: 100.0,
+          stock: 10,
+          unit: 'pc',
+          unitBn: 'পিস',
+          imageUrl: '',
+          categoryId: 'c1',
+          categoryName: 'Cat',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        expect(product.getPriceForQuantity(5), equals(100.0));
+      });
+
+      test('hasDiscount true when oldPrice > price', () {
+        final product = Product(
+          id: 'p1',
+          sku: 'SKU1',
+          name: 'A',
+          nameBn: 'আ',
+          description: 'd',
+          descriptionBn: 'ডি',
+          price: 80.0,
+          oldPrice: 100.0,
+          stock: 10,
+          unit: 'pc',
+          unitBn: 'পিস',
+          imageUrl: '',
+          categoryId: 'c1',
+          categoryName: 'Cat',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        expect(product.hasDiscount, isTrue);
+        expect(product.discountPercentage, equals(20));
+      });
+
+      test('getName returns Bangla when lang is bn', () {
+        final product = Product(
+          id: 'p1',
+          sku: 'SKU1',
+          name: 'Rice',
+          nameBn: 'চাল',
+          description: 'd',
+          descriptionBn: 'ডি',
+          price: 100.0,
+          stock: 10,
+          unit: 'pc',
+          unitBn: 'পিস',
+          imageUrl: '',
+          categoryId: 'c1',
+          categoryName: 'Cat',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        expect(product.getName('bn'), equals('চাল'));
+        expect(product.getName('en'), equals('Rice'));
+      });
+
+      test('getCategory returns Bangla category when available', () {
+        final product = Product(
+          id: 'p1',
+          sku: 'SKU1',
+          name: 'A',
+          nameBn: 'আ',
+          description: 'd',
+          descriptionBn: 'ডি',
+          price: 100.0,
+          stock: 10,
+          unit: 'pc',
+          unitBn: 'পিস',
+          imageUrl: '',
+          categoryId: 'c1',
+          categoryName: 'Grocery',
+          categoryNameBn: 'মুদ征',
+          createdAt: DateTime.now(),
+          updatedAt: DateTime.now(),
+        );
+        expect(product.getCategory('bn'), equals('মুদ征'));
+        expect(product.getCategory('en'), equals('Grocery'));
       });
     });
   });

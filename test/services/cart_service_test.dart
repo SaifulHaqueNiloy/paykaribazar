@@ -32,16 +32,53 @@ void main() {
         updatedAt: DateTime.now(),
       );
 
-      when(() => cartService.addItem(any(), any())).thenAnswer((_) async => true);
-      
+      when(() => cartService.addItem(any<Product>(), any<int>()))
+          .thenAnswer((_) async => true);
+
       final result = await cartService.addItem(product, 2);
-      expect(result, true);
+      expect(result, isTrue);
     });
 
     test('Get cart total', () async {
       when(() => cartService.getCartTotal()).thenAnswer((_) async => 1000.0);
       final result = await cartService.getCartTotal();
       expect(result, 1000.0);
+    });
+
+    test('Sync cart to cloud', () async {
+      final items = [
+        {'productId': '1', 'quantity': 2},
+      ];
+      when(() => cartService.syncCartToCloud(any<List<Map<String, dynamic>>>()))
+          .thenAnswer((_) async => Future.value());
+
+      await cartService.syncCartToCloud(items);
+      verify(() => cartService.syncCartToCloud(any<List<Map<String, dynamic>>>())).called(1);
+    });
+
+    test('Fetch saved cart returns data', () async {
+      final items = [
+        {'productId': '1', 'quantity': 2},
+      ];
+      when(() => cartService.fetchSavedCart()).thenAnswer((_) async => items);
+
+      final result = await cartService.fetchSavedCart();
+      expect(result, isNotNull);
+      expect(result!.length, 1);
+    });
+
+    test('Fetch saved cart returns null when no cart', () async {
+      when(() => cartService.fetchSavedCart()).thenAnswer((_) async => null);
+
+      final result = await cartService.fetchSavedCart();
+      expect(result, isNull);
+    });
+
+    test('Clear cloud cart', () async {
+      when(() => cartService.clearCloudCart()).thenAnswer((_) async => Future.value());
+
+      await cartService.clearCloudCart();
+      verify(() => cartService.clearCloudCart()).called(1);
     });
   });
 }

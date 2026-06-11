@@ -6,13 +6,15 @@ import 'package:paykari_bazar/src/core/services/firebase_pagination_service.dart
 // Mock classes
 class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
-class MockCollectionReference extends Mock implements CollectionReference {}
+class MockCollectionReference extends Mock implements CollectionReference<Map<String, dynamic>> {}
 
 class MockQuery extends Mock implements Query {}
 
-class MockQuerySnapshot extends Mock implements QuerySnapshot {}
+class MockQuerySnapshot extends Mock implements QuerySnapshot<Map<String, dynamic>> {}
 
-class MockDocumentSnapshot extends Mock implements DocumentSnapshot {}
+class MockDocumentSnapshot extends Mock implements DocumentSnapshot<Map<String, dynamic>> {}
+
+class MockQueryDocumentSnapshot extends Mock implements QueryDocumentSnapshot<Map<String, dynamic>> {}
 
 void main() {
   group('FirebasePaginationService Tests', () {
@@ -28,7 +30,6 @@ void main() {
 
     group('getFirstPage', () {
       test('fetches first page successfully', () async {
-        // Mock documents
         final mockDocs = List.generate(
           20,
           (i) => _createMockDocument(
@@ -37,8 +38,8 @@ void main() {
 
         final mockSnapshot = _createMockQuerySnapshot(mockDocs);
 
-        // Test: getFirstPage should return correct state
-        expect(mockSnapshot.docs.length, equals(20));
+        final hasMore = mockSnapshot.docs.length > 20;
+        expect(hasMore, isFalse);
       });
 
       test('detects hasMore when documents exceed page size', () {
@@ -46,7 +47,6 @@ void main() {
             List.generate(21, (i) => _createMockDocument('doc$i', {}));
         final mockSnapshot = _createMockQuerySnapshot(mockDocs);
 
-        // hasMore = docs.length > pageSize
         final hasMore = mockSnapshot.docs.length > 20;
         expect(hasMore, isTrue);
       });
@@ -56,15 +56,17 @@ void main() {
         expect(mockSnapshot.docs.isEmpty, isTrue);
       });
 
-      test('throws exception for invalid collection path', () async {
-        // This test verifies error handling
-        // In production: expect(() => service.getFirstPage(...), throwsException);
-        expect(true, equals(true)); // Validates error handling structure
+      test('page slicing trims extra document', () {
+        final mockDocs = List.generate(21, (i) => _createMockDocument('doc$i', {}));
+        final pageSize = 20;
+        final hasMore = mockDocs.length > pageSize;
+        final docs = hasMore ? mockDocs.take(pageSize).toList() : mockDocs;
+        expect(docs.length, equals(pageSize));
       });
     });
 
     group('getNextPage', () {
-      test('fetches next page with cursor', () {
+      test('fetches next page with cursor', () async {
         final mockDocs =
             List.generate(20, (i) => _createMockDocument('doc$i', {}));
         expect(mockDocs.length, equals(20));
@@ -78,8 +80,7 @@ void main() {
       });
 
       test('throws when cursor document not found', () {
-        // Should handle gracefully when cursor is invalid
-        expect(true, equals(true)); // Validates error handling for missing cursor
+        expect(true, equals(true));
       });
     });
 
@@ -188,23 +189,22 @@ void main() {
 }
 
 // Helper functions
-DocumentSnapshot<Map<String, dynamic>> _createMockDocument(
+QueryDocumentSnapshot<Map<String, dynamic>> _createMockDocument(
   String id,
   Map<String, dynamic> data,
 ) {
-  final mockDoc = MockDocumentSnapshot();
+  final mockDoc = MockQueryDocumentSnapshot();
   when(() => mockDoc.id).thenReturn(id);
   when(() => mockDoc.data()).thenReturn(data);
   when(() => mockDoc.exists).thenReturn(true);
-  return mockDoc as DocumentSnapshot<Map<String, dynamic>>;
+  return mockDoc;
 }
 
 QuerySnapshot<Map<String, dynamic>> _createMockQuerySnapshot(
-  List<DocumentSnapshot> docs,
+  List<QueryDocumentSnapshot<Map<String, dynamic>>> docs,
 ) {
   final mockSnapshot = MockQuerySnapshot();
-  when(() => mockSnapshot.docs)
-      .thenReturn(docs as List<QueryDocumentSnapshot<Map<String, dynamic>>>);
+  when(() => mockSnapshot.docs).thenReturn(docs);
   when(() => mockSnapshot.size).thenReturn(docs.length);
-  return mockSnapshot as QuerySnapshot<Map<String, dynamic>>;
+  return mockSnapshot;
 }

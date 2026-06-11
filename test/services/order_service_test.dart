@@ -41,21 +41,19 @@ void main() {
 
     test('Get customer orders stream', () async {
       final orders = [
-        Order(
-          id: 'order1',
-          customerUid: 'user1',
-          customerName: 'Test',
-          customerPhone: '01700000000',
-          items: [],
-          subtotal: 100.0,
-          deliveryFee: 10.0,
-          discount: 0.0,
-          total: 110.0,
-          address: 'Addr',
-          paymentMethod: 'COD',
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-        ),
+        {
+          'id': 'order1',
+          'customerUid': 'user1',
+          'customerName': 'Test',
+          'customerPhone': '01700000000',
+          'items': <Map<String, dynamic>>[],
+          'subtotal': 100.0,
+          'deliveryFee': 10.0,
+          'discount': 0.0,
+          'total': 110.0,
+          'address': 'Addr',
+          'paymentMethod': 'COD',
+        },
       ];
       when(() => orderService.getCustomerOrders('user1'))
           .thenAnswer((_) => Stream.value(orders));
@@ -63,7 +61,7 @@ void main() {
       final stream = orderService.getCustomerOrders('user1');
       final result = await stream.first;
       expect(result.length, 1);
-      expect(result.first.id, 'order1');
+      expect(result.first['id'], 'order1');
     });
 
     test('Create order from model', () async {
