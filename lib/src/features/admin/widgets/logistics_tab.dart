@@ -125,7 +125,7 @@ class _LogisticsTabState extends ConsumerState<LogisticsTab> {
                 onChanged: (v) => ref
                     .read(firestoreService)
                     .updateLocation(dist['id'], {'isVisible': v}),
-                activeThumbColor: AppStyles.primaryColor,
+                activeColor: AppStyles.primaryColor,
               ),
             ),
             IconButton(
@@ -169,7 +169,7 @@ class _LogisticsTabState extends ConsumerState<LogisticsTab> {
                     onChanged: (v) => ref
                         .read(firestoreService)
                         .updateLocation(upa['id'], {'isVisible': v}),
-                    activeThumbColor: Colors.blueGrey)),
+                    activeColor: Colors.blueGrey)),
             IconButton(
                 icon: const Icon(Icons.add_circle_outline, size: 18),
                 onPressed: () => _showLocationForm(
@@ -215,7 +215,7 @@ class _LogisticsTabState extends ConsumerState<LogisticsTab> {
                     onChanged: (v) => ref
                         .read(firestoreService)
                         .updateLocation(sta['id'], {'isVisible': v}),
-                    activeThumbColor: Colors.teal)),
+                    activeColor: Colors.teal)),
             IconButton(
                 icon: const Icon(Icons.add_circle_outline, size: 18),
                 onPressed: () => _showLocationForm(
@@ -250,7 +250,7 @@ class _LogisticsTabState extends ConsumerState<LogisticsTab> {
                               onChanged: (v) => ref
                                   .read(firestoreService)
                                   .updateLocation(area['id'], {'isVisible': v}),
-                              activeThumbColor: Colors.orange)),
+                              activeColor: Colors.orange)),
                       _buildActionMenu(area),
                     ],
                   ),

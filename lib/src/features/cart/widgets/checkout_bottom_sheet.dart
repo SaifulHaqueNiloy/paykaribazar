@@ -99,7 +99,7 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
           _buildAddressCompletionPrompt(),
         ] else ...[
           DropdownButtonFormField<String>(
-            initialValue: _selectedAddressId,
+            value: _selectedAddressId,
             items: userModel.addresses
                 .map((addr) => DropdownMenuItem(
                     value: addr.id,

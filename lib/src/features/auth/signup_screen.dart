@@ -275,7 +275,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                               subtitle: Text(_t('donorSearchNote'),
                                   style: const TextStyle(
                                       fontSize: 10, color: Colors.grey)),
-                              activeThumbColor: AppStyles.primaryColor,
+                              activeColor: AppStyles.primaryColor,
                               contentPadding: EdgeInsets.zero,
                             ),
                             if (_isBloodDonor) ...[

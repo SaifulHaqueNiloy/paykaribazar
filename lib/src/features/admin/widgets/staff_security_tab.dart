@@ -113,7 +113,7 @@ class _StaffSecurityTabState extends ConsumerState<StaffSecurityTab> {
               controller: passCtrl,
               decoration: const InputDecoration(labelText: 'Password')),
           DropdownButtonFormField<String>(
-              initialValue: role,
+              value: role,
               items: [
                 'admin',
                 'staff',

@@ -88,7 +88,7 @@ class _DeliveryZoneTabState extends State<DeliveryZoneTab> {
             children: [
               Expanded(
                 child: DropdownButtonFormField<String>(
-                  initialValue: _selectedType,
+                  value: _selectedType,
                   items: ['division', 'district', 'upazila', 'area']
                       .map((t) => DropdownMenuItem(value: t, child: Text(t.toUpperCase(), style: const TextStyle(fontSize: 11)))).toList(),
                   onChanged: (v) => setState(() { _selectedType = v!; _parentId = null; }),
@@ -104,7 +104,7 @@ class _DeliveryZoneTabState extends State<DeliveryZoneTab> {
                       if (!snap.hasData) return const LinearProgressIndicator();
                       final List<DropdownMenuItem<String>> items = snap.data!.docs.map((p) => DropdownMenuItem(value: p.id, child: Text((p.data() as Map)['name'], style: const TextStyle(fontSize: 10)))).toList();
                       return DropdownButtonFormField<String>(
-                        initialValue: items.any((i) => i.value == _parentId) ? _parentId : null,
+                        value: items.any((i) => i.value == _parentId) ? _parentId : null,
                         items: items,
                         onChanged: (v) => setState(() => _parentId = v),
                         decoration: AppStyles.inputDecoration('Parent', isDark),

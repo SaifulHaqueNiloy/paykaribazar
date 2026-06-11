@@ -123,7 +123,7 @@ class _TeamsTabState extends ConsumerState<TeamsTab> {
     showDialog(context: context, builder: (c) => StatefulBuilder(builder: (context, setDialogState) => AlertDialog(
       title: const Text('Edit User Role & Shops', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
       content: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [
-        DropdownButtonFormField<String>(initialValue: selectedRole, items: ['admin', 'staff', 'logistic', 'reseller', 'marketing', 'accountsFinance', 'customer'].map((r) => DropdownMenuItem(value: r, child: Text(r.toUpperCase()))).toList(), onChanged: (v) => setDialogState(() => selectedRole = v!), decoration: const InputDecoration(labelText: 'User Role')),
+        DropdownButtonFormField<String>(value: selectedRole, items: ['admin', 'staff', 'logistic', 'reseller', 'marketing', 'accountsFinance', 'customer'].map((r) => DropdownMenuItem(value: r, child: Text(r.toUpperCase()))).toList(), onChanged: (v) => setDialogState(() => selectedRole = v!), decoration: const InputDecoration(labelText: 'User Role')),
         if (selectedRole == 'reseller') ...[const SizedBox(height: 20), const Align(alignment: Alignment.centerLeft, child: Text('Assign Approved Shops:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))), const SizedBox(height: 8), ...allShops.map((shop) { final String name = shop['name']; return CheckboxListTile(title: Text(name, style: const TextStyle(fontSize: 13)), value: selectedShops.contains(name), onChanged: (val) { setDialogState(() { if (val == true) {
           selectedShops.add(name);
         } else {

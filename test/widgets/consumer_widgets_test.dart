@@ -284,6 +284,7 @@ void main() {
                           const Text('Product'),
                           IconButton(
                             icon: Icon(
+                              // ignore: dead_code
                               isFavorite ? Icons.favorite : Icons.favorite_border,
                             ),
                             onPressed: () => isFavorite = !isFavorite,

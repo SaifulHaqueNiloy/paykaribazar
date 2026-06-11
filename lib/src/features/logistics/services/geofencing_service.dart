@@ -42,7 +42,7 @@ class GeofencingService {
       final centerLng = zoneData['centerLongitude'] as double;
       final radiusKm = zoneData['radiusKm'] as double;
 
-      final distance = _calculateDistance(
+      final distance = calculateDistance(
         currentPosition.latitude,
         currentPosition.longitude,
         centerLat,
@@ -56,7 +56,7 @@ class GeofencingService {
   }
 
   /// Calculates distance between two coordinates using Haversine formula
-  double _calculateDistance(
+  double calculateDistance(
     double lat1,
     double lon1,
     double lat2,
@@ -102,7 +102,7 @@ class GeofencingService {
         final centerLat = zoneData['centerLatitude'] as double;
         final centerLng = zoneData['centerLongitude'] as double;
 
-        final distance = _calculateDistance(
+        final distance = calculateDistance(
           currentPosition.latitude,
           currentPosition.longitude,
           centerLat,
@@ -139,7 +139,7 @@ class GeofencingService {
         final centerLat = zoneData['centerLatitude'] as double;
         final centerLng = zoneData['centerLongitude'] as double;
 
-        final distance = _calculateDistance(
+        final distance = calculateDistance(
           currentPosition.latitude,
           currentPosition.longitude,
           centerLat,
@@ -231,7 +231,7 @@ class GeofencingService {
         final centerLng = zoneData['centerLongitude'] as double;
         final radiusKm = zoneData['radiusKm'] as double;
 
-        final distance = _calculateDistance(latitude, longitude, centerLat, centerLng);
+        final distance = calculateDistance(latitude, longitude, centerLat, centerLng);
 
         if (distance <= radiusKm) {
           return {

@@ -196,7 +196,7 @@ class StaffManagementTab extends ConsumerWidget {
                         color: Colors.grey)),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<String>(
-                  initialValue: role,
+                  value: role,
                   items: [
                     'admin',
                     'staff',
@@ -228,7 +228,7 @@ class StaffManagementTab extends ConsumerWidget {
                   value: allowMultipleDevices,
                   onChanged: (v) =>
                       setModalState(() => allowMultipleDevices = v),
-                  activeThumbColor: AppStyles.primaryColor,
+                  activeColor: AppStyles.primaryColor,
                 ),
                 const SizedBox(height: 32),
                 SizedBox(

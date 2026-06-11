@@ -269,7 +269,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
       trailing: Switch(
         value: current,
         onChanged: (v) => _updateConfig(key, v),
-        activeThumbColor: AppStyles.primaryColor,
+        activeColor: AppStyles.primaryColor,
       ),
     );
   }

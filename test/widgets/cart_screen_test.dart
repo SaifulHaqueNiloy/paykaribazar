@@ -3,10 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:paykari_bazar/src/features/cart/cart_screen.dart';
-import 'package:paykari_bazar/src/features/commerce/domain/cart_model.dart';
 import 'package:paykari_bazar/src/features/commerce/services/cart_service.dart';
 import 'package:paykari_bazar/src/features/commerce/providers/cart_provider.dart';
-import 'package:paykari_bazar/src/di/providers.dart';
 
 class MockCartService extends Mock implements CartService {}
 

@@ -566,7 +566,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
           onChanged: (x) => ref
               .read(firestoreServiceProvider)
               .updateAppSettings('app_info', {k: x}),
-          activeThumbColor: AppStyles.primaryColor);
+          activeColor: AppStyles.primaryColor);
 
   Widget _sectionLabel(String t) => Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
@@ -925,7 +925,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                         child:
                             Column(mainAxisSize: MainAxisSize.min, children: [
                       DropdownButtonFormField<String>(
-                          initialValue: type,
+                          value: type,
                           items: [
                             DropdownMenuItem(
                                 value: 'fixed', child: Text(_t('fixedAmount'))),
@@ -966,7 +966,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                           decoration: InputDecoration(labelText: _t('content')),
                           maxLines: 2),
                       DropdownButtonFormField<String>(
-                          initialValue: target,
+                          value: target,
                           items: [
                             'All Users',
                             'New Users',

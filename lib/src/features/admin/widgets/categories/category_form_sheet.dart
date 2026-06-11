@@ -111,7 +111,7 @@ class _CategoryFormSheetState extends ConsumerState<CategoryFormSheet> {
             ),
             const SizedBox(height: 20),
             DropdownButtonFormField<String>(
-              initialValue: selectedShop?['id'],
+              value: selectedShop?['id'],
               hint: const Text('Select Shop/Store'),
               items: shops.map((s) {
                 return DropdownMenuItem<String>(

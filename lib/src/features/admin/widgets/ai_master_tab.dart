@@ -622,7 +622,7 @@ class SovereignRulesLab extends ConsumerWidget {
         trailing: Switch(
           value: enabled,
           onChanged: (v) => doc.reference.update({'isEnabled': v}),
-          activeThumbColor: Colors.green,
+          activeColor: Colors.green,
         ),
       ),
     );
@@ -671,8 +671,8 @@ class _AddRuleFormState extends State<AddRuleForm> {
                   labelText: 'Rule Name', border: OutlineInputBorder())),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            initialValue: _type,
-            items: [
+          value: _type,
+          items: [
               'inventory_audit',
               'abandoned_cart',
               'price_drop_alert',
@@ -684,8 +684,8 @@ class _AddRuleFormState extends State<AddRuleForm> {
           ),
           const SizedBox(height: 16),
           DropdownButtonFormField<String>(
-            initialValue: _freq,
-            items: ['hourly', 'daily', 'weekly']
+          value: _freq,
+          items: ['hourly', 'daily', 'weekly']
                 .map((e) => DropdownMenuItem(value: e, child: Text(e)))
                 .toList(),
             onChanged: (v) => setState(() => _freq = v!),
