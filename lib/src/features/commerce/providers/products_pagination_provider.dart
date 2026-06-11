@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/firebase_pagination_service.dart';
-import '../domain/product_model.dart';
+import '../../../models/product_model.dart';
 
 /// Products pagination state provider
 class ProductsPaginationNotifier
@@ -22,11 +22,11 @@ class ProductsPaginationNotifier
     try {
       state = const AsyncValue.loading();
 
-      final PaginationState<ProductModel> pageState;
+      final PaginationState<Product> pageState;
       if (category.isEmpty && !flashSaleOnly) {
-        pageState = await paginationService.getFirstPage<ProductModel>(
+        pageState = await paginationService.getFirstPage<Product>(
           collectionPath: 'hub/data/products',
-          converter: (doc) => ProductModel.fromMap(
+          converter: (doc) => Product.fromMap(
             doc.data() as Map<String, dynamic>,
             doc.id,
           ),
@@ -35,7 +35,7 @@ class ProductsPaginationNotifier
           descending: true,
         );
       } else {
-        pageState = await paginationService.getFilteredFirstPage<ProductModel>(
+        pageState = await paginationService.getFilteredFirstPage<Product>(
           collectionPath: 'hub/data/products',
           whereClause: (query) {
             var q = query;
@@ -47,7 +47,7 @@ class ProductsPaginationNotifier
             }
             return q;
           },
-          converter: (doc) => ProductModel.fromMap(
+          converter: (doc) => Product.fromMap(
             doc.data() as Map<String, dynamic>,
             doc.id,
           ),
@@ -78,19 +78,19 @@ class ProductsPaginationNotifier
     try {
       state = AsyncValue.data(currentState.copyWith(isLoadingMore: true));
 
-      final PaginationState<ProductModel> pageState;
+      final PaginationState<Product> pageState;
       if (currentState.category.isEmpty && !currentState.flashSaleOnly) {
-        pageState = await paginationService.getNextPage<ProductModel>(
+        pageState = await paginationService.getNextPage<Product>(
           collectionPath: 'hub/data/products',
           cursor: currentState.cursor!,
-          converter: (doc) => ProductModel.fromMap(
+          converter: (doc) => Product.fromMap(
             doc.data() as Map<String, dynamic>,
             doc.id,
           ),
           pageSize: currentState.pageSize,
         );
       } else {
-        pageState = await paginationService.getFilteredNextPage<ProductModel>(
+        pageState = await paginationService.getFilteredNextPage<Product>(
           collectionPath: 'hub/data/products',
           cursor: currentState.cursor!,
           whereClause: (query) {
@@ -103,7 +103,7 @@ class ProductsPaginationNotifier
             }
             return q;
           },
-          converter: (doc) => ProductModel.fromMap(
+          converter: (doc) => Product.fromMap(
             doc.data() as Map<String, dynamic>,
             doc.id,
           ),
@@ -134,7 +134,7 @@ class ProductsPaginationNotifier
 }
 
 class ProductsPaginationState {
-  final List<ProductModel> items;
+  final List<Product> items;
   final String? cursor;
   final bool hasMore;
   final int currentPage;
@@ -155,7 +155,7 @@ class ProductsPaginationState {
   });
 
   ProductsPaginationState copyWith({
-    List<ProductModel>? items,
+    List<Product>? items,
     String? cursor,
     bool? hasMore,
     int? currentPage,

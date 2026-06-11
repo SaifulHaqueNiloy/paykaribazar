@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/services/firebase_pagination_service.dart';
-import '../domain/order_model.dart';
+import '../../../models/order_model.dart';
 
 /// Orders pagination state provider
 class OrdersPaginationNotifier
@@ -24,9 +24,9 @@ class OrdersPaginationNotifier
     try {
       state = const AsyncValue.loading();
 
-      final PaginationState<OrderModel> pageState;
+      final PaginationState<Order> pageState;
       if (userOrdersOnly && userId != null) {
-        pageState = await paginationService.getFilteredFirstPage<OrderModel>(
+        pageState = await paginationService.getFilteredFirstPage<Order>(
           collectionPath: 'orders',
           whereClause: (query) {
             var q = query.where('customerUid', isEqualTo: userId);
@@ -35,16 +35,16 @@ class OrdersPaginationNotifier
             }
             return q;
           },
-          converter: (doc) => OrderModel.fromMap(
-            doc.data() as Map<String, dynamic>,
-            doc.id,
-          ),
+          converter: (doc) => Order.fromMap({
+            'id': doc.id,
+            ...doc.data() as Map<String, dynamic>,
+          }),
           pageSize: pageSize,
           orderBy: 'createdAt',
           descending: true,
         );
       } else {
-        pageState = await paginationService.getFilteredFirstPage<OrderModel>(
+        pageState = await paginationService.getFilteredFirstPage<Order>(
           collectionPath: 'orders',
           whereClause: (query) {
             var q = query;
@@ -53,10 +53,10 @@ class OrdersPaginationNotifier
             }
             return q;
           },
-          converter: (doc) => OrderModel.fromMap(
-            doc.data() as Map<String, dynamic>,
-            doc.id,
-          ),
+          converter: (doc) => Order.fromMap({
+            'id': doc.id,
+            ...doc.data() as Map<String, dynamic>,
+          }),
           pageSize: pageSize,
           orderBy: 'createdAt',
           descending: true,
@@ -86,9 +86,9 @@ class OrdersPaginationNotifier
     try {
       state = AsyncValue.data(currentState.copyWith(isLoadingMore: true));
 
-      final PaginationState<OrderModel> pageState;
+      final PaginationState<Order> pageState;
       if (currentState.userOrdersOnly && userId != null) {
-        pageState = await paginationService.getFilteredNextPage<OrderModel>(
+        pageState = await paginationService.getFilteredNextPage<Order>(
           collectionPath: 'orders',
           cursor: currentState.cursor!,
           whereClause: (query) {
@@ -98,16 +98,16 @@ class OrdersPaginationNotifier
             }
             return q;
           },
-          converter: (doc) => OrderModel.fromMap(
-            doc.data() as Map<String, dynamic>,
-            doc.id,
-          ),
+          converter: (doc) => Order.fromMap({
+            'id': doc.id,
+            ...doc.data() as Map<String, dynamic>,
+          }),
           pageSize: currentState.pageSize,
           orderBy: 'createdAt',
           descending: true,
         );
       } else {
-        pageState = await paginationService.getFilteredNextPage<OrderModel>(
+        pageState = await paginationService.getFilteredNextPage<Order>(
           collectionPath: 'orders',
           cursor: currentState.cursor!,
           whereClause: (query) {
@@ -117,10 +117,10 @@ class OrdersPaginationNotifier
             }
             return q;
           },
-          converter: (doc) => OrderModel.fromMap(
-            doc.data() as Map<String, dynamic>,
-            doc.id,
-          ),
+          converter: (doc) => Order.fromMap({
+            'id': doc.id,
+            ...doc.data() as Map<String, dynamic>,
+          }),
           pageSize: currentState.pageSize,
           orderBy: 'createdAt',
           descending: true,
@@ -145,7 +145,7 @@ class OrdersPaginationNotifier
 }
 
 class OrdersPaginationState {
-  final List<OrderModel> items;
+  final List<Order> items;
   final String? cursor;
   final bool hasMore;
   final int currentPage;
@@ -166,7 +166,7 @@ class OrdersPaginationState {
   });
 
   OrdersPaginationState copyWith({
-    List<OrderModel>? items,
+    List<Order>? items,
     String? cursor,
     bool? hasMore,
     int? currentPage,
