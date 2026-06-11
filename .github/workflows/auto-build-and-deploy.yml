@@ -212,7 +212,7 @@ jobs:
         run: |
           mkdir -p android/app
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/upload-keystore.jks
-        if: ${{ secrets.KEYSTORE_BASE64 }}
+        if: secrets.KEYSTORE_BASE64
 
       - name: Build ${{ matrix.build-type }} (Customer)
         run: |
