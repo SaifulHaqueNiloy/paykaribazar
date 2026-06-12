@@ -1,13 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_provider.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_provider_manager.dart';
-
-// Mock AI Provider
-class MockAIProvider extends Mock implements AIProvider {
-  @override
-  String get name => 'Mock Provider';
-}
+import 'package:paykari_bazar/src/features/ai/domain/ai_work_type.dart';
 
 // Mock Primary Provider
 class MockPrimaryProvider extends Mock implements AIProvider {
@@ -22,6 +17,10 @@ class MockFallbackProvider extends Mock implements AIProvider {
 }
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(AiWorkType.text);
+  });
+
   group('AI Provider Fallback Tests', () {
     late MockPrimaryProvider primaryProvider;
     late MockFallbackProvider fallbackProvider;
@@ -30,6 +29,15 @@ void main() {
     setUp(() {
       primaryProvider = MockPrimaryProvider();
       fallbackProvider = MockFallbackProvider();
+      
+      // Default stubs to prevent unstubbed calls from throwing type 'Null' errors
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => fallbackProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => primaryProvider.generate(any(), type: any(named: 'type')))
+          .thenAnswer((_) async => 'Primary response');
+      when(() => fallbackProvider.generate(any(), type: any(named: 'type')))
+          .thenAnswer((_) async => 'Fallback response');
+
       providerManager = AIProviderManager(
         primaryProvider: primaryProvider,
         fallbackProvider: fallbackProvider,
@@ -38,9 +46,7 @@ void main() {
 
     test('Use primary provider when available', () async {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generate('test prompt'))
-          .thenAnswer((_) async => 'Primary response');
+      // Already stubbed in setUp
 
       // Act
       await providerManager.healthCheck();
@@ -50,14 +56,14 @@ void main() {
       expect(result, 'Primary response');
       expect(providerManager.isPrimaryAvailable, true);
       expect(providerManager.isUsingFallback, false);
-      verify(primaryProvider.generate('test prompt')).called(1);
+      verify(() => primaryProvider.generate('test prompt')).called(1);
     });
 
     test('Switch to fallback when primary fails', () async {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => false);
-      when(fallbackProvider.healthCheck()).thenAnswer((_) async => true);
-      when(fallbackProvider.generate('test prompt'))
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => false);
+      when(() => fallbackProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => fallbackProvider.generate('test prompt'))
           .thenAnswer((_) async => 'Fallback response');
 
       // Act
@@ -72,11 +78,11 @@ void main() {
 
     test('Handle timeout and fallback', () async {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generate('test prompt'))
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => primaryProvider.generate('test prompt'))
           .thenThrow(Exception('Timeout'));
-      when(fallbackProvider.healthCheck()).thenAnswer((_) async => true);
-      when(fallbackProvider.generate('test prompt'))
+      when(() => fallbackProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => fallbackProvider.generate('test prompt'))
           .thenAnswer((_) async => 'Fallback response');
 
       // Act
@@ -90,7 +96,7 @@ void main() {
 
     test('Get active provider name', () async {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => true);
 
       // Act
       await providerManager.healthCheck();
@@ -101,8 +107,8 @@ void main() {
 
     test('Get fallback provider name when primary down', () async {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => false);
-      when(fallbackProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => false);
+      when(() => fallbackProvider.healthCheck()).thenAnswer((_) async => true);
 
       // Act
       await providerManager.healthCheck();
@@ -113,12 +119,9 @@ void main() {
 
     test('Stream generation with fallback', () async* {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generateStream('test'))
-          .thenAnswer((_) async* {
-        yield 'Primary ';
-        yield 'response';
-      });
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => primaryProvider.generateStream('test'))
+          .thenAnswer((_) => Stream.fromIterable(['Primary ', 'response']));
 
       // Act
       await providerManager.healthCheck();
@@ -134,7 +137,7 @@ void main() {
 
     test('Get provider statistics', () async {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => true);
 
       // Act
       await providerManager.healthCheck();
@@ -149,8 +152,8 @@ void main() {
 
     test('Reset providers to retry', () async {
       // Arrange
-      when(primaryProvider.healthCheck()).thenAnswer((_) async => true);
-      when(primaryProvider.generate('test'))
+      when(() => primaryProvider.healthCheck()).thenAnswer((_) async => true);
+      when(() => primaryProvider.generate('test'))
           .thenAnswer((_) async => 'Primary response');
 
       // Act

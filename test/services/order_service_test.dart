@@ -4,8 +4,13 @@ import 'package:paykari_bazar/src/features/commerce/services/order_service.dart'
 import 'package:paykari_bazar/src/models/order_model.dart';
 
 class MockOrderService extends Mock implements OrderService {}
+class FakeOrder extends Fake implements Order {}
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(FakeOrder());
+  });
+
   group('OrderService Tests', () {
     late MockOrderService orderService;
 

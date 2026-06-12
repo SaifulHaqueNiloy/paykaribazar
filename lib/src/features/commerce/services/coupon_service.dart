@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../core/constants/paths.dart';
 
 class CouponService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db;
 
-  CouponService();
+  CouponService({FirebaseFirestore? db}) : _db = db ?? FirebaseFirestore.instance;
 
   Future<void> initialize() async {
     // Initialization logic if needed

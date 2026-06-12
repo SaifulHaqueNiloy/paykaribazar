@@ -4,8 +4,13 @@ import 'package:paykari_bazar/src/features/commerce/services/cart_service.dart';
 import 'package:paykari_bazar/src/models/product_model.dart';
 
 class MockCartService extends Mock implements CartService {}
+class FakeProduct extends Fake implements Product {}
 
 void main() {
+  setUpAll(() {
+    registerFallbackValue(FakeProduct());
+  });
+
   group('CartService Tests', () {
     late MockCartService cartService;
 

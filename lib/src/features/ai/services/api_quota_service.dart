@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class ApiQuotaService {
-  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseFirestore _db;
   final Map<String, int> _localCache = {};
+
+  ApiQuotaService({FirebaseFirestore? db}) : _db = db ?? FirebaseFirestore.instance;
 
   String normalizeProviderKey(String raw) {
     final value = raw.toLowerCase();

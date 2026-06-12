@@ -1,12 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mocktail/mocktail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/features/commerce/services/coupon_service.dart';
+
+class MockFirebaseFirestore extends Mock implements FirebaseFirestore {}
 
 void main() {
   group('CouponService Tests', () {
     late CouponService couponService;
+    late MockFirebaseFirestore mockDb;
 
     setUp(() {
-      couponService = CouponService();
+      mockDb = MockFirebaseFirestore();
+      couponService = CouponService(db: mockDb);
     });
 
     group('calculateDiscount', () {

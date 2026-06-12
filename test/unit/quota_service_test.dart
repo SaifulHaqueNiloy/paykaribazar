@@ -26,7 +26,7 @@ void main() {
     // We can't easily mock the internal instance since it's hardcoded in ApiQuotaService.
     // In a real project, we should inject Firestore via constructor for testability.
     // For now, we'll test the non-firebase logic.
-    quotaService = ApiQuotaService();
+    quotaService = ApiQuotaService(db: mockDb);
   });
 
   group('ApiQuotaService Unit Tests', () {
