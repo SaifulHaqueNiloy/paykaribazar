@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:go_router/go_router.dart';
 import 'package:paykari_bazar/src/features/cart/cart_screen.dart';
 import 'package:paykari_bazar/src/features/commerce/services/cart_service.dart';
 import 'package:paykari_bazar/src/features/commerce/providers/cart_provider.dart';
@@ -33,6 +34,16 @@ void main() {
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
             cartDiscountProvider.overrideWith((ref) => 0.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -40,7 +51,8 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('My Cart'), findsOneWidget);
       expect(find.text('Your cart is empty'), findsOneWidget);
@@ -64,6 +76,16 @@ void main() {
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
             cartDiscountProvider.overrideWith((ref) => 0.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -71,7 +93,8 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Test Product'), findsOneWidget);
       expect(find.text('2'), findsOneWidget);
@@ -95,6 +118,16 @@ void main() {
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
             cartDiscountProvider.overrideWith((ref) => 0.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -102,12 +135,14 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('1'), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.add));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('2'), findsOneWidget);
     });
@@ -130,6 +165,16 @@ void main() {
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
             cartDiscountProvider.overrideWith((ref) => 0.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -137,12 +182,14 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('2'), findsOneWidget);
 
       await tester.tap(find.byIcon(Icons.remove));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('1'), findsOneWidget);
     });
@@ -166,6 +213,16 @@ void main() {
             cartDeliveryFeeProvider.overrideWith((ref) => 20.0),
             cartDiscountProvider.overrideWith((ref) => 0.0),
             cartTotalProvider.overrideWith((ref) => 220.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -173,7 +230,8 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Checkout'), findsOneWidget);
       expect(find.text('৳220.0'), findsOneWidget);
@@ -198,6 +256,16 @@ void main() {
             cartDeliveryFeeProvider.overrideWith((ref) => 10.0),
             cartDiscountProvider.overrideWith((ref) => 20.0),
             cartTotalProvider.overrideWith((ref) => 90.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -205,7 +273,8 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('-৳20.0'), findsOneWidget);
     });
@@ -227,6 +296,16 @@ void main() {
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
             cartDiscountProvider.overrideWith((ref) => 0.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -234,10 +313,12 @@ void main() {
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       await tester.tap(find.text('Checkout'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Proceeding to Checkout...'), findsOneWidget);
     });
@@ -257,18 +338,41 @@ void main() {
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
             cartDiscountProvider.overrideWith((ref) => 0.0),
+            actualUserDataProvider.overrideWith((ref) => Stream.value({
+              'districtId': 'd1',
+              'upazilaId': 'u1',
+              'stationId': 's1',
+            })),
+            businessRulesProvider.overrideWith((ref) => Stream.value({
+              'min_order_value': 0.0,
+              'free_delivery_threshold': 99999.0,
+              'delivery_fee_base': 0.0,
+            })),
           ],
-          child: MaterialApp(
-            home: const CartScreen(),
-            routes: {'/': (context) => const Scaffold(body: Text('Home'))},
+          child: MaterialApp.router(
+            routerConfig: GoRouter(
+              initialLocation: '/cart',
+              routes: [
+                GoRoute(
+                  path: '/cart',
+                  builder: (context, state) => const CartScreen(),
+                ),
+                GoRoute(
+                  path: '/',
+                  builder: (context, state) => const Scaffold(body: Text('Home')),
+                ),
+              ],
+            ),
           ),
         ),
       );
 
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       await tester.tap(find.text('Start Shopping'));
-      await tester.pumpAndSettle();
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Home'), findsOneWidget);
     });

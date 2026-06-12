@@ -37,6 +37,14 @@ class AppStrings {
 
   // --- Bangla Translations ---
   static const Map<String, String> _bangla = {
+    'myCart': 'আমার কার্ট',
+    'emptyCart': 'আপনার কার্ট খালি',
+    'shopNow': 'কেনাকাটা শুরু করুন',
+    'subtotal': 'উপমোট',
+    'deliveryFee': 'ডেলিভারি চার্জ',
+    'discount': 'ছাড়',
+    'total': 'সর্বমোট',
+    'checkout': 'চেকআউট',
     'appName': 'পাইকারী বাজার',
     'appNameAdmin': 'পাইকারী বাজার (অ্যাডমিন)',
     'rewardsRankings': 'রিওয়ার্ড ও র‍্যাঙ্কিং',
@@ -346,6 +354,14 @@ class AppStrings {
 
   // --- English Translations ---
   static const Map<String, String> _english = {
+    'myCart': 'My Cart',
+    'emptyCart': 'Your cart is empty',
+    'shopNow': 'Start Shopping',
+    'subtotal': 'Subtotal',
+    'deliveryFee': 'Delivery Fee',
+    'discount': 'Discount',
+    'total': 'Total',
+    'checkout': 'Checkout',
     'appName': 'Paykari Bazar',
     'appNameAdmin': 'Paykari Bazar (Admin)',
     'rewardsRankings': 'Rewards & Rankings',
