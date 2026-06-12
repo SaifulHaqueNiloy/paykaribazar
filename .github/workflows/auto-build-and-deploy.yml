@@ -499,7 +499,7 @@ jobs:
 
       - name: Release Customer via Shorebird
         run: |
-          ~/.shorebird/bin/shorebird release android \
+          /home/runner/.shorebird/bin/shorebird release android \
             -t lib/main_customer.dart \
             --artifact apk \
             -r production
@@ -507,7 +507,7 @@ jobs:
 
       - name: Release Admin via Shorebird
         run: |
-          ~/.shorebird/bin/shorebird release android \
+          /home/runner/.shorebird/bin/shorebird release android \
             -t lib/main_admin.dart \
             --artifact apk \
             -r production
