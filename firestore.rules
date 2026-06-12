@@ -212,6 +212,20 @@ service cloud.firestore {
       allow write: if isAdmin();
     }
 
+    // ==================== SYSTEM DYNAMIC CONFIGS ====================
+    match /_system/admin/featureFlags/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /_system/admin/uiControls/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    match /_system/admin/branding/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
     // ==================== DEFAULT DENY ====================
     match /{document=**} {
       allow read, write: if false;

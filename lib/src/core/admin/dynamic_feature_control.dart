@@ -46,7 +46,7 @@ class DynamicFeatureControl {
       debugPrint('✅ [DynamicFeatureControl] Initialized successfully');
     } catch (e) {
       debugPrint('❌ [DynamicFeatureControl] Initialization failed: $e');
-      rethrow;
+      // Do not rethrow to avoid blocking the main app initialization
     }
   }
 
@@ -115,6 +115,8 @@ class DynamicFeatureControl {
             }
           });
         }
+      }, onError: (e) {
+        debugPrint('⚠️ [DynamicFeatureControl] Error in feature flag stream: $e');
       });
     } catch (e) {
       debugPrint('⚠️ [DynamicFeatureControl] Error subscribing to flag updates: $e');
@@ -133,6 +135,8 @@ class DynamicFeatureControl {
             }
           });
         }
+      }, onError: (e) {
+        debugPrint('⚠️ [DynamicFeatureControl] Error in UI control stream: $e');
       });
     } catch (e) {
       debugPrint('⚠️ [DynamicFeatureControl] Error subscribing to UI updates: $e');
@@ -146,6 +150,8 @@ class DynamicFeatureControl {
         if (doc.exists) {
           _branding = BrandingConfig.fromMap({...doc.data() ?? {}});
         }
+      }, onError: (e) {
+        debugPrint('⚠️ [DynamicFeatureControl] Error in branding stream: $e');
       });
     } catch (e) {
       debugPrint('⚠️ [DynamicFeatureControl] Error subscribing to branding updates: $e');
