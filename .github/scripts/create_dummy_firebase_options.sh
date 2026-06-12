@@ -21,33 +21,37 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'dummy',
-    appId: 'dummy',
-    messagingSenderId: 'dummy',
-    projectId: 'dummy',
-    storageBucket: 'dummy',
+    apiKey: 'AIzaSyBoOeByDeSXM9HJAQm4JQw23GEs0wHgXac',
+    appId: '1:1081673908768:android:004d7251718ac85f547245',
+    messagingSenderId: '1081673908768',
+    projectId: 'paykari-bazar-a19e7',
+    databaseURL: 'https://paykari-bazar-a19e7-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'paykari-bazar-a19e7.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'dummy',
-    appId: 'dummy',
-    messagingSenderId: 'dummy',
-    projectId: 'dummy',
-    storageBucket: 'dummy',
-    iosBundleId: 'dummy',
+    apiKey: 'AIzaSyAYR4YdX3eWGZMvce7mPYasD_BNrEwNi4E',
+    appId: '1:1081673908768:ios:fdb0e402954656e3547245',
+    messagingSenderId: '1081673908768',
+    projectId: 'paykari-bazar-a19e7',
+    databaseURL: 'https://paykari-bazar-a19e7-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'paykari-bazar-a19e7.firebasestorage.app',
+    iosBundleId: 'com.example.paykariBazar',
   );
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'dummy',
-    appId: 'dummy',
-    messagingSenderId: 'dummy',
-    projectId: 'dummy',
-    authDomain: 'dummy',
-    storageBucket: 'dummy',
+    apiKey: 'AIzaSyApWFRK_CbOvvCgdrlQnWmrxo6Hc_hfoq4',
+    appId: '1:1081673908768:web:a9f00e4ae6d3ca3e547245',
+    messagingSenderId: '1081673908768',
+    projectId: 'paykari-bazar-a19e7',
+    authDomain: 'paykari-bazar-a19e7.firebaseapp.com',
+    databaseURL: 'https://paykari-bazar-a19e7-default-rtdb.asia-southeast1.firebasedatabase.app',
+    storageBucket: 'paykari-bazar-a19e7.firebasestorage.app',
+    measurementId: 'G-5GGBFKE191',
   );
 }
 EOF
-  echo "Dummy firebase_options.dart created successfully."
+  echo "Real firebase_options.dart created successfully."
 else
   echo "firebase_options.dart already exists. Skipping."
 fi
