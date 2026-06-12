@@ -135,6 +135,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Create dummy Firebase options
+        run: bash .github/scripts/create_dummy_firebase_options.sh
+
       - name: Generate code
         run: dart run build_runner build --delete-conflicting-outputs
 
@@ -200,6 +203,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Create dummy Firebase options
+        run: bash .github/scripts/create_dummy_firebase_options.sh
+
       - name: Generate code
         run: dart run build_runner build --delete-conflicting-outputs
 
@@ -264,6 +270,9 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Create dummy Firebase options
+        run: bash .github/scripts/create_dummy_firebase_options.sh
 
       - name: Generate code
         run: dart run build_runner build --delete-conflicting-outputs
