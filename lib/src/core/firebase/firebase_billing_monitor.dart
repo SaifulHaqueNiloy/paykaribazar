@@ -44,7 +44,7 @@ class FirebaseBillingMonitor {
       debugPrint('✅ [FirebaseBillingMonitor] Initialized successfully');
     } catch (e) {
       debugPrint('❌ [FirebaseBillingMonitor] Initialization failed: $e');
-      rethrow;
+      // Do not rethrow to avoid blocking the main app initialization
     }
   }
 
