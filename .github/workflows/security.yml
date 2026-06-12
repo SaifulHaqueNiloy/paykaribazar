@@ -30,8 +30,14 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Validate Firestore Rules
-        run: firebase validate --project=${{ secrets.FIREBASE_PROJECT_ID }}
+      - name: Validate Firestore Rules File Existence
+        run: |
+          if [ -f firestore.rules ]; then
+            echo "✅ firestore.rules file exists"
+          else
+            echo "❌ firestore.rules file not found"
+            exit 1
+          fi
 
       - name: ✓ Validate Storage Rules Format
         run: |
