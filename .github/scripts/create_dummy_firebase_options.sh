@@ -94,3 +94,42 @@ EOF
 else
   echo ".env already exists. Skipping."
 fi
+
+# 3. Create dummy google-services.json
+TARGET_JSON_FILE="android/app/google-services.json"
+if [ ! -f "$TARGET_JSON_FILE" ]; then
+  echo "Generating dummy google-services.json for CI..."
+  mkdir -p android/app
+  cat << 'EOF' > "$TARGET_JSON_FILE"
+{
+  "project_info": {
+    "project_number": "1234567890",
+    "project_id": "dummy-project"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1234567890:android:abc123xyz",
+        "android_client_info": {
+          "package_name": "com.paykaribazar.app"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "dummy_key"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
+EOF
+  echo "Dummy google-services.json created successfully."
+else
+  echo "google-services.json already exists. Skipping."
+fi

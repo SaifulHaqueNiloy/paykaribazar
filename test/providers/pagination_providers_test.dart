@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 import 'package:paykari_bazar/src/features/commerce/providers/products_pagination_provider.dart';
 import 'package:paykari_bazar/src/features/commerce/providers/orders_pagination_provider.dart';
 import 'package:paykari_bazar/src/core/services/firebase_pagination_service.dart';
@@ -230,7 +231,7 @@ void main() {
 
         when(() => mockPagination.getFilteredFirstPage<Order>(
           collectionPath: any(named: 'collectionPath'),
-          whereClause: any(named: 'whereClause'),
+          whereClause: any<Query Function(Query)>(named: 'whereClause'),
           converter: any(named: 'converter'),
           pageSize: any(named: 'pageSize'),
           orderBy: any(named: 'orderBy'),
@@ -262,7 +263,7 @@ void main() {
 
         when(() => mockPagination.getFilteredFirstPage<Order>(
           collectionPath: any(named: 'collectionPath'),
-          whereClause: any(named: 'whereClause'),
+          whereClause: any<Query Function(Query)>(named: 'whereClause'),
           converter: any(named: 'converter'),
           pageSize: any(named: 'pageSize'),
           orderBy: any(named: 'orderBy'),

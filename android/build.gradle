@@ -1,7 +1,7 @@
 ext.flutter = [
-    compileSdkVersion: 35,
+    compileSdkVersion: 36,
     minSdkVersion: 23,
-    targetSdkVersion: 35,
+    targetSdkVersion: 36,
     ndkVersion: "25.1.8937393",
 ]
 

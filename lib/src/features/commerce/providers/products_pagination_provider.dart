@@ -6,7 +6,7 @@ import '../../../models/product_model.dart';
 class ProductsPaginationNotifier
     extends StateNotifier<AsyncValue<ProductsPaginationState>> {
   final dynamic productService;
-  final dynamic paginationService;
+  final FirebasePaginationService paginationService;
 
   ProductsPaginationNotifier({
     required this.productService,

@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 import '../../../core/services/firebase_pagination_service.dart';
 import '../../../models/order_model.dart';
 
@@ -6,7 +7,7 @@ import '../../../models/order_model.dart';
 class OrdersPaginationNotifier
     extends StateNotifier<AsyncValue<OrdersPaginationState>> {
   final dynamic orderService;
-  final dynamic paginationService;
+  final FirebasePaginationService paginationService;
   final String? userId; // For filtering user's orders
 
   OrdersPaginationNotifier({
