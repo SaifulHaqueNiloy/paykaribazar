@@ -1,3 +1,10 @@
+ext.flutter = [
+    compileSdkVersion: 36,
+    minSdkVersion: 23,
+    targetSdkVersion: 36,
+    ndkVersion: "25.1.8937393",
+]
+
 allprojects {
     repositories {
         google()
@@ -28,16 +35,30 @@ tasks.register("clean", Delete) {
 
 // Global Java 17 Enforcement for ALL modules and tasks
 subprojects {
-    project.plugins.withType(com.android.build.gradle.BasePlugin) {
-        project.android {
-            compileOptions {
-                sourceCompatibility JavaVersion.VERSION_17
-                targetCompatibility JavaVersion.VERSION_17
+    def configBlock = { proj ->
+        if (proj.hasProperty('android')) {
+            proj.android {
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+        proj.tasks.withType(JavaCompile) {
+            sourceCompatibility = "17"
+            targetCompatibility = "17"
+        }
+        proj.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+            kotlinOptions {
+                jvmTarget = "17"
             }
         }
     }
-    tasks.withType(JavaCompile) {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+    if (project.state.executed) {
+        configBlock(project)
+    } else {
+        project.afterEvaluate {
+            configBlock(project)
+        }
     }
 }

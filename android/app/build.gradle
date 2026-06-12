@@ -16,7 +16,7 @@ def pubspecVersionCode = flutter.versionCode.toInteger()
 
 android {
     namespace "com.paykaribazar.app"
-    compileSdk 35 // Changed from 36 to 35 for CI compatibility
+    compileSdk 36 // Updated for compatibility with plugins requiring SDK 36
     // ndkVersion = "28.2.13676358" // Commented out to use default Flutter-provided NDK
 
     compileOptions {
@@ -31,7 +31,6 @@ android {
         // We use language-version 1.9 to bypass the K2 internal compiler bug
         // while remaining on the 2.1.0 infrastructure.
         freeCompilerArgs += [
-            "-P", "plugin:org.jetbrains.kotlin.android:enabled=false",
             "-language-version", "1.9",
             "-api-version", "1.9",
             "-Xskip-metadata-version-check"
@@ -51,8 +50,8 @@ android {
 
     defaultConfig {
         applicationId "com.paykaribazar.app"
-        minSdkVersion flutter.minSdkVersion // Blueprint: 21
-        targetSdk 35 // Blueprint: 35
+        minSdkVersion 23 // Updated to 23 as required by plugins (e.g., record_android, geolocator_android)
+        targetSdk 36 // Updated for compatibility with plugins requiring SDK 36
         versionCode pubspecVersionCode
         versionName pubspecVersionName
         
