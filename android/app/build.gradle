@@ -16,8 +16,8 @@ def pubspecVersionCode = flutter.versionCode.toInteger()
 
 android {
     namespace "com.paykaribazar.app"
-    compileSdk 36 // Blueprint: 36
-    ndkVersion = "28.2.13676358" // Required for plugins
+    compileSdk 35 // Changed from 36 to 35 for CI compatibility
+    // ndkVersion = "28.2.13676358" // Commented out to use default Flutter-provided NDK
 
     compileOptions {
         coreLibraryDesugaringEnabled true
