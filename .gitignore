@@ -5,6 +5,8 @@
 .pub-cache/
 .pub/
 /build/
+/flutter/
+
 
 # Android
 .gradle/
