@@ -30,6 +30,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   FLUTTER_VERSION: '3.24.3'
   JAVA_VERSION: '17'
 
@@ -474,6 +475,7 @@ jobs:
     if: needs.setup.outputs.should_deploy == 'true' && (github.event_name == 'push' || github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'shorebird-only')
 
     env:
+      SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
       SHOREBIRD_AUTH_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
 
     steps:
@@ -486,20 +488,12 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
 
-      - name: Install Shorebird CLI
-        run: |
-          curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/shorebirdtech/shorebird/main/scripts/install.sh | bash
-          echo "${HOME}/.shorebird/bin" >> $GITHUB_PATH
-
-      - name: Setup Shorebird auth
-        run: |
-          mkdir -p ~/.shorebird
-          echo "${{ secrets.SHOREBIRD_AUTH_TOKEN }}" > ~/.shorebird/credentials.json
-        if: env.SHOREBIRD_AUTH_TOKEN != ''
+      - name: Setup Shorebird
+        uses: shorebirdtech/setup-shorebird@v1
 
       - name: Release Customer via Shorebird
         run: |
-          /home/runner/.shorebird/bin/shorebird release android \
+          shorebird release android \
             -t lib/main_customer.dart \
             --artifact apk \
             -r production
@@ -507,7 +501,7 @@ jobs:
 
       - name: Release Admin via Shorebird
         run: |
-          /home/runner/.shorebird/bin/shorebird release android \
+          shorebird release android \
             -t lib/main_admin.dart \
             --artifact apk \
             -r production
