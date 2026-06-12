@@ -499,7 +499,7 @@ jobs:
 
       - name: Release Customer via Shorebird
         run: |
-          shorebird release android \
+          ~/.shorebird/bin/shorebird release android \
             -t lib/main_customer.dart \
             --artifact apk \
             -r production
@@ -507,7 +507,7 @@ jobs:
 
       - name: Release Admin via Shorebird
         run: |
-          shorebird release android \
+          ~/.shorebird/bin/shorebird release android \
             -t lib/main_admin.dart \
             --artifact apk \
             -r production
@@ -558,7 +558,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: artifacts/**/*
+          files: |
+            artifacts/**/*.apk
+            artifacts/**/*.aab
           tag_name: "build-${{ needs.setup.outputs.build_number }}"
           body: ${{ steps.notes.outputs.release_notes }}
           draft: false
