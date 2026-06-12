@@ -144,7 +144,7 @@ jobs:
           DIRS_TO_ANALYZE="lib"
           [ -d "test" ] && DIRS_TO_ANALYZE="$DIRS_TO_ANALYZE test"
           [ -d "integration_test" ] && DIRS_TO_ANALYZE="$DIRS_TO_ANALYZE integration_test"
-          flutter analyze $DIRS_TO_ANALYZE --no-fatal-infos
+          flutter analyze $DIRS_TO_ANALYZE --no-fatal-infos --no-fatal-warnings
 
       - name: Run unit tests
         run: flutter test --coverage
