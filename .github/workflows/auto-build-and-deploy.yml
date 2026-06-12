@@ -55,6 +55,7 @@ jobs:
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
+          cache: 'gradle' # Enable Gradle caching to speed up Android builds
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -62,6 +63,13 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
+      - name: Cache Flutter SDK
+        uses: actions/cache@v4
+        with:
+          path: /opt/hostedtoolcache/flutter # Path where subosito/flutter-action installs Flutter
+          key: ${{ runner.os }}-flutter-${{ env.FLUTTER_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -115,8 +123,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
-        with:
-          fetch-depth: 0 # Ensure full history for analysis and testing
+        with: # Full history is not needed for analysis and testing
+          fetch-depth: 1
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -177,14 +185,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
-        with:
-          fetch-depth: 0 # Ensure full history for build process
+        with: # Full history is not needed for build process
+          fetch-depth: 1
 
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: ${{ env.JAVA_VERSION }}
           distribution: 'temurin'
+          cache: 'gradle' # Crucial for build-mobile job speed
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -199,6 +208,15 @@ jobs:
           key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
           restore-keys: |
             ${{ runner.os }}-build-runner-
+
+      - name: Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
 
       - name: Install dependencies
         run: flutter pub get
@@ -218,7 +236,7 @@ jobs:
       - name: Build ${{ matrix.app }} (${{ matrix.build-type }})
         run: |
           if [ "${{ matrix.build-type }}" == "apk" ]; then
-            flutter build apk -t lib/main_${{ matrix.app }}.dart --release \
+            flutter build apk -t lib/main_${{ matrix.app }}.dart --release --target-platform android-arm64 \
               --build-number=${{ needs.setup.outputs.build_number }}
             mv build/app/outputs/flutter-apk/app-release.apk \
                build/app/outputs/flutter-apk/${{ matrix.app }}-${{ needs.setup.outputs.version }}-arm64-v8a.apk || true
@@ -251,8 +269,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
-        with:
-          fetch-depth: 0 # Ensure full history for web build
+        with: # Full history is not needed for web build
+          fetch-depth: 1
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
@@ -300,8 +318,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
-        with:
-          fetch-depth: 0 # Ensure full history for deployment
+        with: # Full history is not needed for deployment
+          fetch-depth: 1
 
       - name: Setup Node.js & Firebase CLI
         uses: actions/setup-node@v4
@@ -348,8 +366,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4.2.0
-        with:
-          fetch-depth: 0 # Ensure full history for deployment
+        with: # Full history is not needed for deployment
+          fetch-depth: 1
 
       - name: Download AAB artifacts
         uses: actions/download-artifact@v4
@@ -388,15 +406,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [setup, build-mobile]
-    if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'shorebird-only')
+    if: needs.setup.outputs.should_deploy == 'true' && (github.event_name == 'push' || github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'shorebird-only')
 
     env:
       SHOREBIRD_AUTH_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4.2.0
-        with:
-          fetch-depth: 0 # Ensure full history for deployment
+        with: # Full history is not needed for deployment
+          fetch-depth: 1
 
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
