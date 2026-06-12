@@ -173,7 +173,7 @@ jobs:
       fail-fast: false
       matrix:
         app: [customer, admin]
-        build-type: [apk, aab]
+        build-type: [apk] # Disabled aab since Play Console is not ready yet
 
     steps:
       - uses: actions/checkout@v4.2.0
@@ -343,7 +343,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [setup, build-mobile]
-    if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'play-store-only')
+    # Disabled - Google Play Console is not ready yet
+    if: false
 
     steps:
       - uses: actions/checkout@v4.2.0
