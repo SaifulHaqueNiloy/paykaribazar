@@ -34,6 +34,9 @@ env:
   FLUTTER_VERSION: '3.24.3'
   JAVA_VERSION: '17'
 
+permissions:
+  contents: write
+
 jobs:
   # Stage 1: Setup & Validation
   setup:
