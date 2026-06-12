@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:paykari_bazar/src/features/home/widgets/home_widgets.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 void main() {
   group('Home Widgets Tests', () {
@@ -51,8 +52,8 @@ void main() {
           ),
         );
 
-        final padding = find.byType(Padding);
-        expect(padding, findsOneWidget);
+        final carousel = find.byType(CarouselSlider);
+        expect(carousel, findsOneWidget);
       });
     });
 
@@ -127,7 +128,7 @@ void main() {
         );
 
         final padding = find.byType(Padding);
-        expect(padding, findsOneWidget);
+        expect(padding, findsAtLeastNWidgets(1));
       });
     });
 

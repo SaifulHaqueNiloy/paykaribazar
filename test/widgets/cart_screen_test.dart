@@ -5,6 +5,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:paykari_bazar/src/features/cart/cart_screen.dart';
 import 'package:paykari_bazar/src/features/commerce/services/cart_service.dart';
 import 'package:paykari_bazar/src/features/commerce/providers/cart_provider.dart';
+import 'package:paykari_bazar/src/di/providers.dart';
+import 'package:paykari_bazar/src/services/language_provider.dart';
 
 class MockCartService extends Mock implements CartService {}
 
@@ -22,8 +24,15 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
+            cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
+            cartDiscountProvider.overrideWith((ref) => 0.0),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -34,8 +43,8 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('My Cart'), findsOneWidget);
-      expect(find.text('emptyCart'), findsOneWidget);
-      expect(find.text('Shop Now'), findsOneWidget);
+      expect(find.text('Your cart is empty'), findsOneWidget);
+      expect(find.text('Start Shopping'), findsOneWidget);
     });
 
     testWidgets('renders cart items with quantities and prices', (WidgetTester tester) async {
@@ -46,8 +55,15 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
+            cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
+            cartDiscountProvider.overrideWith((ref) => 0.0),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -70,8 +86,15 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
+            cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
+            cartDiscountProvider.overrideWith((ref) => 0.0),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -98,8 +121,15 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
+            cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
+            cartDiscountProvider.overrideWith((ref) => 0.0),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -125,6 +155,11 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartSubtotalProvider.overrideWith((ref) => 200.0),
@@ -152,6 +187,11 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
             cartSubtotalProvider.overrideWith((ref) => 100.0),
@@ -178,8 +218,15 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
+            cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
+            cartDiscountProvider.overrideWith((ref) => 0.0),
           ],
           child: const MaterialApp(
             home: CartScreen(),
@@ -201,8 +248,15 @@ void main() {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
+            languageProvider.overrideWith((ref) {
+              final notifier = LanguageNotifier();
+              notifier.setLanguage('en');
+              return notifier;
+            }),
             cartServiceProvider.overrideWithValue(mockCartService),
             cartProvider.overrideWith((ref) => CartNotifier(mockCartService)),
+            cartDeliveryFeeProvider.overrideWith((ref) => 0.0),
+            cartDiscountProvider.overrideWith((ref) => 0.0),
           ],
           child: MaterialApp(
             home: const CartScreen(),
@@ -213,7 +267,7 @@ void main() {
 
       await tester.pumpAndSettle();
 
-      await tester.tap(find.text('Shop Now'));
+      await tester.tap(find.text('Start Shopping'));
       await tester.pumpAndSettle();
 
       expect(find.text('Home'), findsOneWidget);
