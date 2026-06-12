@@ -30,7 +30,6 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true # Proactively address Node.js 20 deprecation warnings
   FLUTTER_VERSION: '3.24.3'
   JAVA_VERSION: '17'
 
@@ -47,6 +46,7 @@ jobs:
       build_number: ${{ steps.versioning.outputs.build_number }}
       version: ${{ steps.versioning.outputs.version }}
       should_deploy: ${{ steps.setup.outputs.should_deploy }}
+      apps: ${{ steps.determine_apps.outputs.apps }}
 
     steps:
       - uses: actions/checkout@v4.2.0
@@ -66,13 +66,6 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
-      - name: Cache Flutter SDK
-        uses: actions/cache@v4
-        with:
-          path: /opt/hostedtoolcache/flutter # Path where subosito/flutter-action installs Flutter
-          key: ${{ runner.os }}-flutter-${{ env.FLUTTER_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-flutter-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -115,6 +108,69 @@ jobs:
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           
           echo "📦 Build #$BUILD_NUMBER | Version: $VERSION"
+
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            admin:
+              - 'lib/main_admin.dart'
+              - 'lib/src/features/admin/**'
+              - 'shorebird_admin.yaml'
+            customer:
+              - 'lib/main_customer.dart'
+              - 'lib/src/features/customer/**'
+              - 'shorebird_customer.yaml'
+            shared:
+              - 'lib/src/features/!(admin|customer)/**'
+              - 'lib/src/models/**'
+              - 'lib/src/core/**'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+              - 'android/**'
+              - '.github/workflows/**'
+
+      - name: Determine apps to build
+        id: determine_apps
+        run: |
+          BUILD_CUSTOMER=false
+          BUILD_ADMIN=false
+          
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            BUILD_CUSTOMER=true
+            BUILD_ADMIN=true
+          elif [[ "${{ steps.changes.outputs.shared }}" == "true" ]]; then
+            BUILD_CUSTOMER=true
+            BUILD_ADMIN=true
+          else
+            if [[ "${{ steps.changes.outputs.customer }}" == "true" ]]; then
+              BUILD_CUSTOMER=true
+            fi
+            if [[ "${{ steps.changes.outputs.admin }}" == "true" ]]; then
+              BUILD_ADMIN=true
+            fi
+          fi
+          
+          # If nothing was matched, default to building both to be safe
+          if [[ "$BUILD_CUSTOMER" == "false" && "$BUILD_ADMIN" == "false" ]]; then
+            BUILD_CUSTOMER=true
+            BUILD_ADMIN=true
+          fi
+          
+          APPS="["
+          if [[ "$BUILD_CUSTOMER" == "true" ]]; then
+            APPS="$APPS\"customer\""
+          fi
+          if [[ "$BUILD_ADMIN" == "true" ]]; then
+            if [[ "$BUILD_CUSTOMER" == "true" ]]; then
+              APPS="$APPS,"
+            fi
+            APPS="$APPS\"admin\""
+          fi
+          APPS="$APPS]"
+          
+          echo "apps=$APPS" >> $GITHUB_OUTPUT
+          echo "Determined apps to build: $APPS"
 
   # Stage 3: Testing & Analysis
   test-and-analyze:
@@ -183,7 +239,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        app: [customer, admin]
+        app: ${{ fromJSON(needs.setup.outputs.apps) }}
         build-type: [apk] # Disabled aab since Play Console is not ready yet
 
     steps:
@@ -299,16 +355,22 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Web (Customer)
-        run: flutter build web -t lib/main_customer.dart --release -v
+        run: |
+          flutter build web -t lib/main_customer.dart --release -v
+          mv build/web build/web_customer
 
       - name: Build Web (Admin)
-        run: flutter build web -t lib/main_admin.dart --release -v
+        run: |
+          flutter build web -t lib/main_admin.dart --release -v
+          mv build/web build/web_admin
 
       - name: Upload web artifacts
         uses: actions/upload-artifact@v4
         with:
           name: web-builds
-          path: build/web/
+          path: |
+            build/web_customer/
+            build/web_admin/
           retention-days: 30
 
   # Stage 6: Deploy to Firebase
@@ -316,7 +378,7 @@ jobs:
     name: 🔥 Deploy to Firebase
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [setup, build-web, build-mobile]
+    needs: [setup, build-web]
     if: needs.setup.outputs.should_deploy == 'true' && (github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'firebase-only' || github.event_name == 'push')
 
     steps:
@@ -336,7 +398,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: web-builds
-          path: build/web/
+          path: build/
 
       - name: Deploy Firestore Rules
         run: |
@@ -347,7 +409,7 @@ jobs:
 
       - name: Deploy Storage Rules
         run: |
-          firebase deploy --only storage:rules \
+          firebase deploy --only storage \
             --project=${{ secrets.FIREBASE_PROJECT_ID }} \
             --token=${{ secrets.FIREBASE_TOKEN }}
         continue-on-error: true
