@@ -21,22 +21,21 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   String? _selectedDistrict, _selectedUpazila;
   File? _imageFile;
   bool _isLoading = false;
+  bool _initialized = false;
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
   }
 
-  void _loadUserData() {
-    final userData = ref.read(currentUserDataProvider).value;
-    if (userData != null) {
-      _nameCtrl.text = userData['name'] ?? '';
-      _phoneCtrl.text = userData['phone'] ?? '';
-      _emailCtrl.text = userData['email'] ?? '';
-      _selectedDistrict = userData['districtId'];
-      _selectedUpazila = userData['upazilaId'];
-    }
+  void _loadUserData(Map<String, dynamic>? userData) {
+    if (_initialized || userData == null) return;
+    _nameCtrl.text = userData['name'] ?? '';
+    _phoneCtrl.text = userData['phone'] ?? '';
+    _emailCtrl.text = userData['email'] ?? '';
+    _selectedDistrict = userData['districtId'];
+    _selectedUpazila = userData['upazilaId'];
+    _initialized = true;
   }
 
   @override
@@ -98,6 +97,9 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final lang = ref.watch(languageProvider).languageCode;
     final userData = ref.watch(currentUserDataProvider).value;
+    if (!_initialized && userData != null) {
+      _loadUserData(userData);
+    }
     String t(String k) => AppStrings.get(k, lang);
 
     return Scaffold(
@@ -168,8 +170,47 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 final locationsAsync = ref.watch(visibleLocationsProvider);
                 return locationsAsync.when(
                   data: (locations) {
-                    final districts = locations.where((l) => l['type'] == 'district').toList();
-                    final upazilas = locations.where((l) => l['type'] == 'upazila' && l['parentId'] == _selectedDistrict).toList();
+                    final districts = locations.where((l) => 
+                      l['type']?.toString().toLowerCase() == 'district'
+                    ).toList();
+
+                    // SMART MATCHING: Resolve Name to ID if needed
+                    // বাংলা: নাম থেকে আইডি কনভার্ট করে সঠিক অপশন সিলেক্ট করা হচ্ছে
+                    if (_selectedDistrict != null && !districts.any((d) => d['id'] == _selectedDistrict)) {
+                      final match = districts.firstWhere(
+                        (d) => d['name'] == _selectedDistrict, 
+                        orElse: () => <String, dynamic>{}
+                      );
+                      if (match.isNotEmpty) {
+                        _selectedDistrict = match['id'];
+                      }
+                    }
+                    
+                    final upazilas = locations.where((l) {
+                      final isUpazila = l['type']?.toString().toLowerCase() == 'upazila';
+                      final matchesParentId = l['parentId'] == _selectedDistrict;
+                      
+                      bool matchesParentName = false;
+                      if (!matchesParentId && _selectedDistrict != null) {
+                        final parentDist = districts.firstWhere(
+                          (d) => d['id'] == _selectedDistrict, 
+                          orElse: () => <String, dynamic>{}
+                        );
+                        matchesParentName = l['parentId'] == parentDist['name'];
+                      }
+                      return isUpazila && (matchesParentId || matchesParentName);
+                    }).toList();
+
+                    // SMART MATCHING for Upazila
+                    if (_selectedUpazila != null && !upazilas.any((u) => u['id'] == _selectedUpazila)) {
+                      final match = upazilas.firstWhere(
+                        (u) => u['name'] == _selectedUpazila, 
+                        orElse: () => <String, dynamic>{}
+                      );
+                      if (match.isNotEmpty) {
+                        _selectedUpazila = match['id'];
+                      }
+                    }
 
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,

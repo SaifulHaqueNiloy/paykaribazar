@@ -164,81 +164,61 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                             keyboardType: TextInputType.phone,
                             hint: 'e.g. 01700000000'),
                       
-                      // Optimized StreamBuilder for Locations using HubPaths
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance.collection(HubPaths.locations)
-                            .where('isVisible', isEqualTo: true)
-                            .where('type', isEqualTo: 'district')
-                            .snapshots(),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.red, fontSize: 10)),
-                            );
-                          }
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return _buildDropdownLoading(_t('selectDistrict'));
-                          }
+                      // Unified Location Selection using global provider
+                      // বাংলা: ইউনিফাইড প্রোভাইডার ব্যবহার করে জেলা ও উপজেলা নির্বাচন
+                      Consumer(
+                        builder: (context, ref, child) {
+                          final locationsAsync = ref.watch(visibleLocationsProvider);
                           
-                          final districts = snapshot.data?.docs.map((doc) {
-                            final data = doc.data() as Map<String, dynamic>;
-                            return {
-                              'id': doc.id,
-                              'name': data.containsKey('name') ? data['name'].toString() : 'Unknown',
-                            };
-                          }).toList() ?? [];
+                          return locationsAsync.when(
+                            data: (allLocs) {
+                              final districts = allLocs.where((l) => 
+                                (l['type']?.toString().toLowerCase() == 'district')
+                              ).map((l) => {
+                                'id': l['id']?.toString() ?? '',
+                                'name': l['name']?.toString() ?? 'Unknown',
+                              }).toList();
 
-                          return Column(children: [
-                            _buildDropdown(
-                                _t('selectDistrict'),
-                                _selectedDistrict,
-                                districts,
-                                (v) => setState(() {
-                                      _selectedDistrict = v;
-                                      _selectedUpazila = null;
-                                    })),
-                            const SizedBox(height: 12),
-                            
-                            if (_selectedDistrict != null)
-                              StreamBuilder<QuerySnapshot>(
-                                stream: FirebaseFirestore.instance.collection(HubPaths.locations)
-                                    .where('isVisible', isEqualTo: true)
-                                    .where('type', isEqualTo: 'upazila')
-                                    .where('parentId', isEqualTo: _selectedDistrict)
-                                    .snapshots(),
-                                builder: (context, upSnap) {
-                                  if (upSnap.hasError) return const SizedBox();
-                                  if (upSnap.connectionState == ConnectionState.waiting) {
-                                    return _buildDropdownLoading(_t('selectUpazila'));
-                                  }
-                                  
-                                  final upazilas = upSnap.data?.docs.map((doc) {
-                                    final data = doc.data() as Map<String, dynamic>;
-                                    return {
-                                      'id': doc.id,
-                                      'name': data.containsKey('name') ? data['name'].toString() : 'Unknown',
-                                    };
-                                  }).toList() ?? [];
+                              final upazilas = allLocs.where((l) => 
+                                (l['type']?.toString().toLowerCase() == 'upazila') && 
+                                l['parentId'] == _selectedDistrict
+                              ).map((l) => {
+                                'id': l['id']?.toString() ?? '',
+                                'name': l['name']?.toString() ?? 'Unknown',
+                              }).toList();
 
-                                  return _buildDropdown(
-                                      _t('selectUpazila'),
-                                      _selectedUpazila,
-                                      upazilas,
-                                      (v) => setState(() => _selectedUpazila = v));
-                                },
-                              )
-                            else
-                              _buildDropdown(
-                                _t('selectUpazila'),
-                                null,
-                                [],
-                                (v) {},
-                                enabled: false),
-                            
-                            const SizedBox(height: 20),
-                          ]);
-                        }
+                              return Column(children: [
+                                _buildDropdown(
+                                    _t('selectDistrict'),
+                                    _selectedDistrict,
+                                    districts,
+                                    (v) => setState(() {
+                                          _selectedDistrict = v;
+                                          _selectedUpazila = null;
+                                        })),
+                                const SizedBox(height: 12),
+                                _buildDropdown(
+                                    _t('selectUpazila'),
+                                    _selectedUpazila,
+                                    upazilas,
+                                    (v) => setState(() => _selectedUpazila = v),
+                                    enabled: _selectedDistrict != null),
+                                if (allLocs.isEmpty)
+                                  const Text('No locations found in database', style: TextStyle(color: Colors.orange, fontSize: 10)),
+                                const SizedBox(height: 20),
+                              ]);
+                            },
+                            loading: () => Column(children: [
+                              _buildDropdownLoading(_t('selectDistrict')),
+                              const SizedBox(height: 12),
+                              _buildDropdownLoading(_t('selectUpazila')),
+                            ]),
+                            error: (e, _) => Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text('Error: $e', style: const TextStyle(color: Colors.red, fontSize: 10)),
+                            ),
+                          );
+                        },
                       ),
 
                       _buildDropdown(

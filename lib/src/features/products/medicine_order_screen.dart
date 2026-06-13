@@ -29,7 +29,7 @@ class _MedicineOrderScreenState extends ConsumerState<MedicineOrderScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final locationsAsync = ref.watch(locationsProvider);
+    final locationsAsync = ref.watch(visibleLocationsProvider);
     final userAsync = ref.watch(actualUserDataProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
@@ -171,4 +171,3 @@ class _MedicineOrderScreenState extends ConsumerState<MedicineOrderScreen> {
     }
   }
 }
-

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paykari_bazar/src/features/home/home_screen.dart';
-import 'package:paykari_bazar/src/features/home/widgets/robust_floating_cart.dart';
+import 'package:paykari_bazar/src/features/home/widgets/premium_floating_cart.dart';
 import 'package:paykari_bazar/src/features/orders/emergency_details_screen.dart';
 import 'package:paykari_bazar/src/features/products/grouped_products_screen.dart';
 import 'package:paykari_bazar/src/features/home/rewards_screen.dart';
@@ -44,8 +44,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                   ProfileScreen(),
                 ],
               ),
-              // Floating cart with error handling
-              const RobustFloatingCart(),
+              // Floating cart with Qibla integrated
+              const PremiumFloatingCart(),
             ],
           ),
         ),

@@ -28,17 +28,17 @@ class _AddressFormSheetState extends ConsumerState<AddressFormSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final locs = ref.watch(locationsProvider).value ?? [];
+    final locs = ref.watch(visibleLocationsProvider).value ?? [];
 
-    final districts = locs.where((l) => l['type'] == 'district').toList();
+    final districts = locs.where((l) => l['type']?.toString().toLowerCase() == 'district').toList();
     final upazilas = locs
-        .where((l) => l['type'] == 'upazila' && l['parentId'] == _distId)
+        .where((l) => l['type']?.toString().toLowerCase() == 'upazila' && l['parentId'] == _distId)
         .toList();
     final stations = locs
-        .where((l) => l['type'] == 'station' && l['parentId'] == _upaId)
+        .where((l) => l['type']?.toString().toLowerCase() == 'station' && l['parentId'] == _upaId)
         .toList();
     final areas = locs
-        .where((l) => l['type'] == 'area' && l['parentId'] == _stationId)
+        .where((l) => l['type']?.toString().toLowerCase() == 'area' && l['parentId'] == _stationId)
         .toList();
 
     return Container(

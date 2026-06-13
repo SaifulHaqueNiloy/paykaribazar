@@ -304,10 +304,25 @@ class _RewardsScreenState extends ConsumerState<RewardsScreen> {
     return Column(
       children: [
         StreamBuilder<QuerySnapshot>(
-          stream: FirebaseFirestore.instance.collection('monthly_stats').doc(monthKey).collection('heroes').where('type', isEqualTo: type).orderBy('earnedPoints', descending: true).limit(1).snapshots(),
+          stream: FirebaseFirestore.instance.collection('monthly_stats').doc(monthKey).collection('heroes').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-              final d = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+              // Filter and Sort In-Memory to avoid index requirement
+              // বাংলা: ইনডেক্স এরর এড়াতে অ্যাপের ভেতরেই ফিল্টার এবং সর্ট করা হচ্ছে
+              final filteredDocs = snapshot.data!.docs.where((doc) {
+                final data = doc.data() as Map<String, dynamic>;
+                return data['type'] == type;
+              }).toList();
+
+              if (filteredDocs.isEmpty) return const SizedBox();
+
+              filteredDocs.sort((a, b) {
+                final aPoints = (a.data() as Map<String, dynamic>)['earnedPoints'] ?? 0;
+                final bPoints = (b.data() as Map<String, dynamic>)['earnedPoints'] ?? 0;
+                return bPoints.compareTo(aPoints);
+              });
+
+              final d = filteredDocs.first.data() as Map<String, dynamic>;
               return Container(
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(16),

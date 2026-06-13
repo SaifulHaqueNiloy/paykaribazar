@@ -1,18 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../core/constants/paths.dart';
 
 class LanguageNotifier extends StateNotifier<Locale> {
-  LanguageNotifier() : super(const Locale('bn', ''));
-
-  void setLanguage(String code) {
-    state = Locale(code, '');
+  LanguageNotifier() : super(const Locale('bn', '')) {
+    _loadFromPrefs();
   }
 
-  void toggleLanguage() {
-    if (state.languageCode == 'bn') {
-      state = const Locale('en', '');
-    } else {
-      state = const Locale('bn', '');
+  Future<void> _loadFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final code = prefs.getString('language_code');
+    if (code != null) {
+      state = Locale(code, '');
+    }
+  }
+
+  Future<void> setLanguage(String code) async {
+    state = Locale(code, '');
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('language_code', code);
+    _syncToDatabase(code);
+  }
+
+  Future<void> toggleLanguage() async {
+    final newCode = state.languageCode == 'bn' ? 'en' : 'bn';
+    await setLanguage(newCode);
+  }
+
+  void _syncToDatabase(String code) {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      FirebaseFirestore.instance
+          .collection(HubPaths.users)
+          .doc(user.uid)
+          .update({'preferredLanguage': code}).catchError((_) {});
     }
   }
 
@@ -30,5 +54,5 @@ class TranslatorService {
     return key;
   }
 
-  String call(String key) => key; // Support for translatorProvider(key)
+  String call(String key) => key;
 }

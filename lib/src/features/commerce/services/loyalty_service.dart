@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import '../../../core/constants/paths.dart';
 
 class LoyaltyService {
@@ -10,30 +11,38 @@ class LoyaltyService {
   }
 
   Future<void> addPoints(String uid, String type, {String? reason}) async {
-    int earned = 0;
+    int earned = 10;
     String description = '';
-    
-    if (type == 'signupPoints' || type == 'signup') {
-      earned = 100;
-      description = reason ?? 'স্বাগতম বোনাস (Welcome Bonus)';
-    } else if (type == 'purchase') {
-      earned = 50;
-      description = reason ?? 'কেনাকাটার রিওয়ার্ড (Purchase Reward)';
-    } else if (type == 'referral_bonus') {
-      earned = 50;
-      description = reason ?? 'রেফারেল বোনাস (Referral Bonus)';
-    } else if (type == 'login') {
-      earned = 10;
-      description = reason ?? 'দৈনিক লগইন বোনাস (Daily Login Bonus)';
-    } else {
-      earned = 10;
-      description = reason ?? 'বোনাস পয়েন্ট (Bonus Points)';
+
+    // Fetch dynamic values from database settings
+    // বাংলা: ডাটাবেস থেকে পয়েন্টের মান নিয়ে আসা হচ্ছে
+    try {
+      final settings = await _db.doc(HubPaths.loyaltyDoc).get();
+      final data = settings.data();
+      
+      if (type == 'signupPoints' || type == 'signup') {
+        earned = (data?['signupPoints'] ?? data?['signup_bonus'] ?? 100).toInt();
+        description = reason ?? 'স্বাগতম বোনাস (Welcome Bonus)';
+      } else if (type == 'purchase') {
+        earned = (data?['purchasePoints'] ?? 50).toInt();
+        description = reason ?? 'কেনাকাটার রিওয়ার্ড (Purchase Reward)';
+      } else if (type == 'referral_bonus') {
+        earned = (data?['referralPoints'] ?? 50).toInt();
+        description = reason ?? 'রেফারেল বোনাস (Referral Bonus)';
+      } else if (type == 'login') {
+        earned = (data?['loginPoints'] ?? 10).toInt();
+        description = reason ?? 'দৈনিক লগইন বোনাস (Daily Login Bonus)';
+      }
+    } catch (e) {
+      debugPrint('Error fetching loyalty settings: $e');
+      // Fallback defaults if database fails
+      if (type == 'signupPoints' || type == 'signup') earned = 100;
     }
 
-    await _db.collection(HubPaths.users).doc(uid).update({
+    await _db.collection(HubPaths.users).doc(uid).set({
       'points': FieldValue.increment(earned),
       'lastPointUpdate': FieldValue.serverTimestamp(),
-    });
+    }, SetOptions(merge: true));
 
     try {
       await _db.collection(HubPaths.users).doc(uid).collection('transactions').add({

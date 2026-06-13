@@ -151,9 +151,12 @@ final locationsProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
 
 final visibleLocationsProvider =
     Provider<AsyncValue<List<Map<String, dynamic>>>>((ref) {
-  return ref
-      .watch(locationsProvider)
-      .whenData((locs) => locs.where((l) => l['isVisible'] == true).toList());
+  return ref.watch(locationsProvider).whenData((locs) {
+    return locs.where((l) {
+      final isVisible = l['isVisible'];
+      return isVisible == true || isVisible == null;
+    }).toList();
+  });
 });
 
 // --- ADMIN & MISC ---

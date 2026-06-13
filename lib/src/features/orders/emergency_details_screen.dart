@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:go_router/go_router.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_strings.dart';
 import '../../di/providers.dart';
@@ -94,11 +95,11 @@ class _EmergencyDetailsScreenState
               ],
             ),
           ),
-          Positioned(
-            bottom: 25,
-            right: 20,
-            child: _buildFloatingCart(),
-          ),
+          // Positioned(
+          //   bottom: 25,
+          //   right: 20,
+          //   child: _buildFloatingCart(),
+          // ),
         ],
       ),
     );
@@ -412,12 +413,14 @@ class _EmergencyDetailsScreenState
 
     return locationsAsync.when(
       data: (locations) {
-        final districts =
-            locations.where((l) => l['type'] == 'district').toList();
-        final upazilas = locations
-            .where((l) =>
-                l['type'] == 'upazila' && l['parentId'] == _selectedDistrict)
-            .toList();
+        final districts = locations.where((l) => 
+          l['type']?.toString().toLowerCase() == 'district'
+        ).toList();
+        
+        final upazilas = locations.where((l) =>
+          l['type']?.toString().toLowerCase() == 'upazila' && 
+          l['parentId'] == _selectedDistrict
+        ).toList();
 
         return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -431,16 +434,15 @@ class _EmergencyDetailsScreenState
                 });
               }, isDark),
               const SizedBox(height: 8),
-              Row(
-                children: [
-                  Expanded(
-                    child: _filterDropdown(
-                        _t('selectUpazila'), _selectedUpazila, upazilas, (v) {
-                      setState(() => _selectedUpazila = v);
-                    }, isDark, enabled: _selectedDistrict != null),
-                  ),
-                ],
-              ),
+              _filterDropdown(
+                  _t('selectUpazila'), _selectedUpazila, upazilas, (v) {
+                setState(() => _selectedUpazila = v);
+              }, isDark, enabled: _selectedDistrict != null),
+              if (locations.isEmpty)
+                const Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Text('No locations available', style: TextStyle(color: Colors.orange, fontSize: 10)),
+                ),
             ],
           ),
         );
@@ -544,29 +546,39 @@ class _EmergencyDetailsScreenState
   }
 
   Widget _buildFloatingCart() {
-    return Container(
-      height: 65,
-      width: 75,
-      decoration: BoxDecoration(
-        color: const Color(0xFF6200EE),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.deepPurple.withOpacity(0.3),
-              blurRadius: 15,
-              offset: const Offset(0, 5))
-        ],
-      ),
-      child: const Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text('1 items', style: TextStyle(color: Colors.white70, fontSize: 9)),
-          Text('৳ 1450',
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w900)),
-        ],
+    final cart = ref.watch(cartProvider);
+    final total = ref.watch(cartTotalProvider);
+    
+    if (cart.items.isEmpty) return const SizedBox.shrink();
+
+    return GestureDetector(
+      onTap: () => context.push('/cart'),
+      child: Container(
+        height: 65,
+        width: 85,
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+        decoration: BoxDecoration(
+          color: const Color(0xFF6200EE),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.deepPurple.withOpacity(0.3),
+                blurRadius: 15,
+                offset: const Offset(0, 5))
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('${cart.items.length} ${_t('items')}', 
+                style: const TextStyle(color: Colors.white70, fontSize: 9)),
+            Text('৳ ${total.toInt()}',
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w900)),
+          ],
+        ),
       ),
     );
   }

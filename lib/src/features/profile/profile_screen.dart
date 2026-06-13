@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 import '../../di/providers.dart';
 import '../../utils/app_strings.dart';
@@ -51,6 +52,7 @@ class ProfileScreen extends ConsumerWidget {
           final String phone = data['phone'] ?? '';
           final String? profilePic = data['profilePic'];
           final String roleStr = data['role'] ?? 'customer';
+          final String referralCode = data['myReferralCode'] ?? uid.substring(uid.length - 6).toUpperCase();
 
           final bool isReseller = roleStr == 'reseller';
           final bool isRider = roleStr == 'logistic';
@@ -66,7 +68,7 @@ class ProfileScreen extends ConsumerWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 12),
-                      _buildUnifiedTopCard(points, isDark),
+                      _buildUnifiedTopCard(points, isDark, referralCode, context),
                       _buildSectionHeader(t('personalHub'), isDark),
                       _buildXRow([
                         _gridItem(
@@ -95,92 +97,92 @@ class ProfileScreen extends ConsumerWidget {
                             isDark),
                       ]),
                       if (roleStr == 'customer') ...[
-                        _buildSectionHeader('আয় করুন ও আমাদের সাথে যুক্ত হন', isDark),
+                        _buildSectionHeader(t('joinEarn'), isDark),
                         _buildXRow([
                           _gridItem(
                               Icons.storefront_rounded,
-                              'Become a Reseller',
+                              t('hubActionReseller'),
                               () => context.push('/apply?role=reseller'),
                               Colors.purple,
                               isDark),
                           _gridItem(
                               Icons.delivery_dining_rounded,
-                              'Become a Rider',
+                              t('hubActionRider'),
                               () => context.push('/apply?role=rider'),
                               Colors.deepOrange,
                               isDark),
                           _gridItem(
                               Icons.badge_rounded,
-                              'Join as Staff',
+                              t('hubActionStaff'),
                               () => context.push('/apply?role=staff'),
                               Colors.indigo,
                               isDark),
                         ]),
                       ],
                       if (isReseller) ...[
-                        _buildSectionHeader('RESELLER PANEL', isDark),
+                        _buildSectionHeader(t('reseller').toUpperCase() + ' PANEL', isDark),
                         _buildXRow([
                           _gridItem(
                               Icons.dashboard_rounded,
-                              'ড্যাশবোর্ড',
+                              t('adminDashboard'),
                               () => context.push('/reseller'),
                               Colors.purple,
                               isDark),
                           _gridItem(
                               Icons.add_shopping_cart_rounded,
-                              'অর্ডার করুন',
+                              t('order'),
                               () => context.push('/'),
                               Colors.orange,
                               isDark),
                           _gridItem(
                               Icons.history_edu_rounded,
-                              'সেলস হিস্ট্রি',
+                              t('downloadHistory'),
                               () => context.push('/orders'),
                               Colors.blue,
                               isDark),
                           _gridItem(
                               Icons.payments_rounded,
-                              'পেমেন্ট রিকোয়েস্ট',
+                              t('hubActionWallet'),
                               () => context.push('/wallet'),
                               Colors.green,
                               isDark),
                         ]),
                       ],
                       if (isRider) ...[
-                        _buildSectionHeader('DELIVERY PANEL', isDark),
+                        _buildSectionHeader(t('rider').toUpperCase() + ' PANEL', isDark),
                         _buildXRow([
                           _gridItem(
                               Icons.moped_rounded,
-                              'ডেলিভারি টাস্ক',
+                              t('deliveryTasks'),
                               () => context.push('/rider'),
                               Colors.deepOrange,
                               isDark),
                           _gridItem(
                               Icons.map_rounded,
-                              'লাইভ ম্যাপ',
+                              t('liveTracking'),
                               () => context.push('/rider'),
                               Colors.blue,
                               isDark),
                           _gridItem(
                               Icons.fact_check_rounded,
-                              'সম্পন্ন টাস্ক',
+                              t('Delivered'),
                               () => context.push('/orders'),
                               Colors.teal,
                               isDark),
                         ]),
                       ],
                       if (isStaff) ...[
-                        _buildSectionHeader('STAFF PANEL', isDark),
+                        _buildSectionHeader(t('staff').toUpperCase() + ' PANEL', isDark),
                         _buildXRow([
                           _gridItem(
                               Icons.admin_panel_settings_rounded,
-                              'স্টাফ ড্যাশবোর্ড',
+                              t('staff'),
                               () => context.push('/staff'),
                               Colors.indigo,
                               isDark),
                           _gridItem(
                               Icons.chat_bubble_rounded,
-                              'কাস্টমার সাপোর্ট',
+                              t('helpSupport'),
                               () => context.push('/chat-history'),
                               Colors.blue,
                               isDark),
@@ -209,11 +211,11 @@ class ProfileScreen extends ConsumerWidget {
                             Colors.blueGrey,
                             isDark),
                       ]),
-                      _buildSectionHeader('DOWNLOADS & LINKS', isDark),
+                      _buildSectionHeader(t('downloadsLinks'), isDark),
                       _buildXRow([
                         _gridItem(
                             Icons.cloud_download_rounded,
-                            'DOWNLOAD',
+                            t('download'),
                             () => _showDownloadPicker(
                                 context, configAsync.value ?? {}, isDark),
                             Colors.blue,
@@ -237,13 +239,13 @@ class ProfileScreen extends ConsumerWidget {
                       ]),
                       _buildSectionHeader(t('supportHelp'), isDark),
                       _buildXRow([
-                        _gridItem(Icons.support_agent_rounded, 'লতিক চ্যাট',
+                        _gridItem(Icons.support_agent_rounded, t('liveChat'),
                             () => context.push('/chat'), Colors.indigo, isDark),
-                        _gridItem(Icons.chat_bubble_rounded, 'whatsapp',
+                        _gridItem(Icons.chat_bubble_rounded, t('whatsappSupport'),
                             () => _launchWhatsApp(), Colors.green, isDark),
                         _gridItem(
                             Icons.phone_forwarded_rounded,
-                            'callNow',
+                            t('directCall'),
                             () => _launchPhone('0123456789'),
                             Colors.redAccent,
                             isDark),
@@ -252,28 +254,28 @@ class ProfileScreen extends ConsumerWidget {
                       _buildXRow([
                         _gridItem(
                             Icons.menu_book_rounded,
-                            'কিভাবে ব্যব...',
-                            () => _navToInfo(context, 'কিভাবে ব্যবহার করবেন', HubPaths.howToUse),
+                            t('howToUse'),
+                            () => _navToInfo(context, t('howToUse'), HubPaths.howToUse),
                             Colors.purple,
                             isDark),
                         _gridItem(
                             Icons.quiz_rounded,
-                            'সাধারণ জিজ্ঞাসা',
-                            () => _navToInfo(context, 'FAQs', HubPaths.faqs),
+                            t('faqs'),
+                            () => _navToInfo(context, t('faqs'), HubPaths.faqs),
                             Colors.blue,
                             isDark),
                         _gridItem(
                             Icons.gavel_rounded,
-                            'শর্তাবলী',
+                            t('terms'),
                             () => _navToInfo(
-                                context, 'শর্তাবলী', HubPaths.termsConditions),
+                                context, t('terms'), HubPaths.termsConditions),
                             Colors.blueGrey,
                             isDark),
                         _gridItem(
                             Icons.info_rounded,
-                            'আমাদের সম্পর্কে',
+                            t('about'),
                             () => _navToInfo(
-                                context, 'আমাদের সম্পর্কে', HubPaths.aboutUs),
+                                context, t('about'), HubPaths.aboutUs),
                             Colors.orange,
                             isDark),
                       ]),
@@ -443,10 +445,10 @@ class ProfileScreen extends ConsumerWidget {
             const Icon(Icons.work_outline, color: Colors.white, size: 10),
             const SizedBox(width: 6),
             Text(
-              currentMode == 'work' ? 'SWITCH TO SHOPPING' : 'SWITCH TO WORK',
+              currentMode == 'work' ? t('switchToShopping').toUpperCase() : t('switchToWork').toUpperCase(),
               style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 8,
+                  fontSize: 10,
                   fontWeight: FontWeight.w900,
                   letterSpacing: 0.5),
             ),
@@ -483,7 +485,7 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildUnifiedTopCard(int points, bool isDark) {
+  Widget _buildUnifiedTopCard(int points, bool isDark, String referralCode, BuildContext context) {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -532,42 +534,53 @@ class ProfileScreen extends ConsumerWidget {
                 width: 1,
                 color: isDark ? Colors.white10 : Colors.grey.withOpacity(0.1)),
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blueAccent.withOpacity(0.05),
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(15),
-                      bottomRight: Radius.circular(15)),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.qr_code_2_rounded,
-                        color: Colors.blueAccent, size: 24),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text('ইনভাইট কোড',
-                              style: TextStyle(
-                                  color:
-                                      isDark ? Colors.white60 : Colors.black54,
-                                  fontSize: 8,
-                                  fontWeight: FontWeight.bold)),
-                          const Text('MASTER',
-                              style: TextStyle(
-                                  color: Colors.blueAccent,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w900)),
-                        ],
+              child: InkWell(
+                onTap: () {
+                  Clipboard.setData(ClipboardData(text: referralCode));
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('ইনভাইট কোড কপি করা হয়েছে')),
+                  );
+                },
+                borderRadius: const BorderRadius.only(
+                    topRight: Radius.circular(15),
+                    bottomRight: Radius.circular(15)),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent.withOpacity(0.05),
+                    borderRadius: const BorderRadius.only(
+                        topRight: Radius.circular(15),
+                        bottomRight: Radius.circular(15)),
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.qr_code_2_rounded,
+                          color: Colors.blueAccent, size: 24),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('ইনভাইট কোড',
+                                style: TextStyle(
+                                    color:
+                                        isDark ? Colors.white60 : Colors.black54,
+                                    fontSize: 8,
+                                    fontWeight: FontWeight.bold)),
+                            Text(referralCode,
+                                style: const TextStyle(
+                                    color: Colors.blueAccent,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w900)),
+                          ],
+                        ),
                       ),
-                    ),
-                    Icon(Icons.copy_rounded,
-                        color: isDark ? Colors.white24 : Colors.black26,
-                        size: 14),
-                  ],
+                      Icon(Icons.copy_rounded,
+                          color: isDark ? Colors.white24 : Colors.black26,
+                          size: 14),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -591,7 +604,7 @@ class ProfileScreen extends ConsumerWidget {
           const SizedBox(width: 8),
           Text(title.toUpperCase(),
               style: TextStyle(
-                  fontSize: 10,
+                  fontSize: 12,
                   fontWeight: FontWeight.w900,
                   color: isDark ? Colors.white60 : Colors.black45,
                   letterSpacing: 0.5)),
@@ -614,27 +627,28 @@ class ProfileScreen extends ConsumerWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(12),
       child: SizedBox(
-        width: 75,
+        width: 85, // Slightly wider for better text fit
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(12), // Larger padding
               decoration: BoxDecoration(
                 color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
                 borderRadius: BorderRadius.circular(12),
                 boxShadow: !isDark ? AppStyles.softShadow : null,
               ),
-              child: Icon(icon, color: color, size: 22),
+              child: Icon(icon, color: color, size: 26), // Larger icon
             ),
             const SizedBox(height: 8),
             Text(label,
                 textAlign: TextAlign.center,
-                maxLines: 1,
+                maxLines: 2, // Allow 2 lines
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                    fontSize: 8,
+                    fontSize: 10, // Larger text
                     fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white70 : Colors.black87)),
+                    color: isDark ? Colors.white70 : Colors.black87,
+                    height: 1.2)),
           ],
         ),
       ),

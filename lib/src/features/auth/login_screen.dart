@@ -75,10 +75,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     final isRemembered = prefs.getBool('remember_me') ?? false;
 
     if (isRemembered && mounted) {
+      // বাংলা: সিকিউর স্টোরেজ থেকে পাসওয়ার্ড রিড করা হচ্ছে
+      final secureAuth = SecurityInitializer.secureAuth;
+      final savedPass = await secureAuth.getSecureToken('saved_login_pass') ?? '';
       setState(() {
         _idCtrl.text = savedId;
-        // ⭐ SECURITY: NO LONGER load password from SharedPreferences
-        // Use biometric or manual password entry instead
+        _passCtrl.text = savedPass;
         _rememberMe = true;
         _isPhoneLogin = !savedId.contains('@');
       });
@@ -87,16 +89,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Future<void> _saveCredentials() async {
     final prefs = await SharedPreferences.getInstance();
+    // বাংলা: সিকিউর স্টোরেজে পাসওয়ার্ড সেভ বা ডিলিট করার জন্য secureAuth ব্যবহার করা হচ্ছে
+    final secureAuth = SecurityInitializer.secureAuth;
     if (_rememberMe) {
-      // ⭐ SECURITY: Only save username, NOT password
       await prefs.setString('saved_login_id', _idCtrl.text.trim());
-      // ⭐ SECURITY: Remove old stored password if exists
-      await prefs.remove('saved_login_pass');
       await prefs.setBool('remember_me', true);
+      await secureAuth.storeSecureToken('saved_login_pass', _passCtrl.text);
     } else {
       await prefs.remove('saved_login_id');
-      await prefs.remove('saved_login_pass');
       await prefs.setBool('remember_me', false);
+      await secureAuth.deleteSecureData('saved_login_pass');
     }
   }
 
@@ -305,29 +307,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 _buildRememberForgot(),
                 const SizedBox(height: 40),
                 _buildLoginButton(),
-                const SizedBox(height: 12),
-                // ⭐ DEMO LOGIN BUTTON FOR TESTING
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: OutlinedButton(
-                    onPressed: _isLoading ? null : _handleDemoLogin,
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.orange, width: 2),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    child: const Text(
-                      '🔓 Demo Login',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.orange,
-                      ),
-                    ),
-                  ),
-                ),
                 const SizedBox(height: 30),
                 _buildDivider(),
                 const SizedBox(height: 30),
