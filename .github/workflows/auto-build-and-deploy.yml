@@ -491,17 +491,25 @@ jobs:
       - name: Release Customer via Shorebird
         run: |
           cp shorebird_customer.yaml shorebird.yaml
+          shorebird patch android \
+            -t lib/main_customer.dart \
+            -- --build-number=${{ needs.setup.outputs.build_number }} || \
           shorebird release android \
             -t lib/main_customer.dart \
-            --artifact apk
+            --artifact apk \
+            -- --build-number=${{ needs.setup.outputs.build_number }}
         continue-on-error: true
 
       - name: Release Admin via Shorebird
         run: |
           cp shorebird_admin.yaml shorebird.yaml
+          shorebird patch android \
+            -t lib/main_admin.dart \
+            -- --build-number=${{ needs.setup.outputs.build_number }} || \
           shorebird release android \
             -t lib/main_admin.dart \
-            --artifact apk
+            --artifact apk \
+            -- --build-number=${{ needs.setup.outputs.build_number }}
         continue-on-error: true
 
   # Stage 9: Create Release & Notifications
