@@ -187,6 +187,9 @@ jobs:
           cache: true
       - name: Install dependencies
         run: flutter pub get
+      - name: Create dummy Firebase options
+        run: bash .github/scripts/create_dummy_firebase_options.sh
+
       - name: Generate code
         run: dart run build_runner build --delete-conflicting-outputs
       - name: Cache generated files
@@ -363,6 +366,9 @@ jobs:
           path: .dart_tool
           key: ${{ runner.os }}-build-gen-${{ github.sha }}
       
+      - name: Create dummy Firebase options
+        run: bash .github/scripts/create_dummy_firebase_options.sh
+
       - name: Configure signing
         run: |
           mkdir -p android/app
@@ -432,6 +438,9 @@ jobs:
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Create dummy Firebase options
+        run: bash .github/scripts/create_dummy_firebase_options.sh
 
       - name: Generate code
         run: dart run build_runner build --delete-conflicting-outputs
