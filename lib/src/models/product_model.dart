@@ -46,6 +46,8 @@ class Product {
   final String nameBn;
   final String description;
   final String descriptionBn;
+  final String? aiGeneratedDescription;
+  final List<String> aiTags;
   final double price;
   final double oldPrice;
   final double purchasePrice;
@@ -84,6 +86,7 @@ class Product {
   // AI DNA FIELDS
   final bool aiOptimized;
   final bool aiAuditPending;
+  final bool aiDescriptionBnEnriched;
 
   Product({
     required this.id,
@@ -92,6 +95,8 @@ class Product {
     required this.nameBn,
     required this.description,
     required this.descriptionBn,
+    this.aiGeneratedDescription,
+    this.aiTags = const [],
     required this.price,
     this.oldPrice = 0,
     this.purchasePrice = 0,
@@ -118,8 +123,8 @@ class Product {
     this.isCombo = false,
     this.isNewArrival = true,
     this.isFeatured = false,
-    this.isHotSelling = false, // ADDED
-    this.isComboPack = false, // ADDED
+    this.isHotSelling = false,
+    this.isComboPack = false,
     this.comboProductIds = const [],
     this.variants = const [],
     this.rating = 0.0,
@@ -128,6 +133,7 @@ class Product {
     required this.updatedAt,
     this.aiOptimized = false,
     this.aiAuditPending = false,
+    this.aiDescriptionBnEnriched = false,
   });
 
   factory Product.fromMap(Map<String, dynamic> map, String id) {
@@ -148,6 +154,8 @@ class Product {
       nameBn: map['nameBn'] ?? '',
       description: map['description'] ?? '',
       descriptionBn: map['descriptionBn'] ?? '',
+      aiGeneratedDescription: map['aiGeneratedDescription']?.toString(),
+      aiTags: List<String>.from(map['aiTags'] ?? []),
       price: (map['price'] ?? 0.0).toDouble(),
       oldPrice: (map['oldPrice'] ?? 0.0).toDouble(),
       purchasePrice: (map['purchasePrice'] ?? 0.0).toDouble(),
@@ -184,6 +192,7 @@ class Product {
       updatedAt: (map['updatedAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
       aiOptimized: map['aiOptimized'] ?? false,
       aiAuditPending: map['aiAuditPending'] ?? false,
+      aiDescriptionBnEnriched: map['ai_descriptionBn_enriched'] ?? map['aiDescriptionBnEnriched'] ?? false,
     );
   }
 
@@ -195,6 +204,8 @@ class Product {
       'nameBn': nameBn,
       'description': description,
       'descriptionBn': descriptionBn,
+      'aiGeneratedDescription': aiGeneratedDescription,
+      'aiTags': aiTags,
       'price': price,
       'oldPrice': oldPrice,
       'purchasePrice': purchasePrice,

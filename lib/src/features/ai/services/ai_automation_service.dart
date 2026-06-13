@@ -24,20 +24,66 @@ class AiAutomationService {
 
       if (!hasSpareQuota) return;
 
-      // 2. Identify products without AI descriptions or tags
       final productsSnap = await _db.collection(HubPaths.products)
-          .where('ai_processed', isEqualTo: false)
+          .where('ai_descriptionBn_enriched', isEqualTo: false)
           .limit(10)
           .get();
 
       for (var doc in productsSnap.docs) {
         final data = doc.data();
-        final prompt = "Generate SEO tags and a professional Bengali description for: ${data['name']}";
-        
-        // This will automatically update the AICacheService
-        await _ai.generateResponse(prompt);
-        
-        await doc.reference.update({'ai_processed': true});
+
+        final name = data['name'] ?? 'Product';
+        final descRaw = data['description'] ?? '';
+        final descBnRaw = data['descriptionBn'] ?? '';
+
+        final prompt =
+            'Improve this Bengali product description for a wholesale bazaar. Also return exactly 5 SEO tags after a "Tags:" marker. Description inputs: EN="$descRaw" BN="$descBnRaw". Product name: $name. Output: First the improved Bangla description, then "Tags: bag, rice, wholesale, ..." with 5 tags. Keep the style natural and B2B wholesale.';
+
+        final aiResult = await _ai.generateResponse(prompt);
+
+        String improvedBn = descBnRaw;
+        final tags = <String>[];
+
+        if (aiResult.isNotEmpty) {
+          final lower = aiResult.toLowerCase();
+          final tagMarker = lower.indexOf('tags:');
+          if (tagMarker != -1) {
+            final tagSegment = aiResult.substring(tagMarker + 5);
+            tags.addAll(
+              tagSegment
+                  .split(RegExp(r'[\n\r,،]+'))
+                  .map((t) => t.trim())
+                  .where((t) => t.length > 1)
+                  .take(5)
+                  .toList(),
+            );
+            improvedBn = aiResult.substring(0, tagMarker).trim();
+          } else {
+            improvedBn = aiResult.trim();
+          }
+        }
+
+        if (improvedBn.isEmpty || improvedBn == descBnRaw) {
+          final fallbackPrompt =
+              'Rewrite the following product description into natural, professional Bangla for a wholesale bazaar listing. Name: $name. Description: $descRaw';
+          final fallback = await _ai.generateResponse(fallbackPrompt);
+          if (fallback.isNotEmpty) {
+            improvedBn = fallback.trim();
+          }
+        }
+
+        if (improvedBn.isEmpty || improvedBn == descBnRaw) {
+          await doc.reference.update({'ai_processed': true});
+          continue;
+        }
+
+        await doc.reference.update({
+          'descriptionBn': improvedBn,
+          if (tags.isNotEmpty) 'aiTags': tags,
+          'ai_processed': true,
+          'aiOptimized': true,
+          'ai_descriptionBn_enriched': true,
+        });
       }
       // AI Background Caching Task Completed
     } catch (e) {
