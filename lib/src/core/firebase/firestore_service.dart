@@ -60,7 +60,7 @@ class FirestoreService {
       await _db
           .collection(HubPaths.users)
           .doc(uid)
-          .update({...data, 'updatedAt': FieldValue.serverTimestamp()});
+          .set({...data, 'updatedAt': FieldValue.serverTimestamp()}, SetOptions(merge: true));
     } catch (e) {
       throw FirestoreException('Failed to update profile: $e', details: e);
     }

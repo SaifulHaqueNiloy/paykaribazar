@@ -30,7 +30,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE22: true
   FLUTTER_VERSION: '3.27.0'
   JAVA_VERSION: '17'
 
@@ -219,7 +219,6 @@ jobs:
 
       - name: Run unit tests
         run: flutter test --coverage
-        continue-on-error: true
 
       - name: Check for dependency security issues
         run: |
@@ -406,14 +405,12 @@ jobs:
           firebase deploy --only firestore:rules \
             --project=${{ secrets.FIREBASE_PROJECT_ID }} \
             --token=${{ secrets.FIREBASE_TOKEN }}
-        continue-on-error: true
 
       - name: Deploy Storage Rules
         run: |
           firebase deploy --only storage \
             --project=${{ secrets.FIREBASE_PROJECT_ID }} \
             --token=${{ secrets.FIREBASE_TOKEN }}
-        continue-on-error: true
 
       - name: Deploy Hosting
         run: |

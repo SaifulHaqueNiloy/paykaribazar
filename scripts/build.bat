@@ -44,7 +44,7 @@ call flutter pub get
 if errorlevel 1 goto error
 
 echo [3/3] Generating code
-call flutter pub run build_runner build --delete-conflicting-outputs
+call dart run build_runner build --delete-conflicting-outputs
 if errorlevel 1 goto error
 
 echo ✅ Setup complete
@@ -64,7 +64,7 @@ flutter analyze --no-fatal-infos
 echo.
 
 echo Running tests...
-flutter test --coverage 2>&1 | findstr /v "^$" | more
+call flutter test --coverage
 echo ✅ Validation complete
 echo.
 

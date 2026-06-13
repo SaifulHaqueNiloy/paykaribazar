@@ -238,15 +238,19 @@ class Product {
     if (tieredPrices.isEmpty) return price;
     double selectedPrice = price;
     tieredPrices.forEach((range, tPrice) {
+      int? start;
+      int? end;
       if (range.contains('-')) {
         final parts = range.split('-');
-        final start = int.tryParse(parts[0]) ?? 0;
-        final end = int.tryParse(parts[1]) ?? 999999;
-        if (qty >= start && qty <= end) selectedPrice = tPrice;
+        start = int.tryParse(parts[0].trim());
+        end = parts.length > 1 ? int.tryParse(parts[1].trim()) : null;
       } else if (range.endsWith('+')) {
-        final start = int.tryParse(range.replaceAll('+', '')) ?? 0;
-        if (qty >= start) selectedPrice = tPrice;
+        start = int.tryParse(range.replaceAll('+', '').trim());
+        end = null;
       }
+      if (start == null) return;
+      final inRange = end == null ? qty >= start : qty >= start && qty <= end;
+      if (inRange) selectedPrice = tPrice;
     });
     return selectedPrice;
   }

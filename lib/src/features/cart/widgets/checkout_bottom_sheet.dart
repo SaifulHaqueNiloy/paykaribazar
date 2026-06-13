@@ -238,6 +238,28 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
               })
           .toList();
 
+       final insufficient = items.where((it) => (it['quantity'] as int) > 999).toList();
+       if (insufficient.isNotEmpty) {
+         throw Exception('Some items exceed available stock limit.');
+       }
+
+       await FirebaseFirestore.instance.runTransaction((tx) async {
+         for (final it in items) {
+           final productRef = FirebaseFirestore.instance.collection(HubPaths.products).doc(it['productId'] as String);
+           final snap = await tx.get(productRef);
+           if (!snap.exists) {
+             throw Exception('Product "${it['productName']}" no longer exists.');
+           }
+           final data = snap.data() as Map<String, dynamic>;
+           final currentStock = (data['stock'] ?? 0) as int;
+           final qty = it['quantity'] as int;
+           if (currentStock < qty) {
+             throw Exception('Insufficient stock for "${it['productName']}". Available: $currentStock');
+           }
+           tx.update(productRef, {'stock': FieldValue.increment(-qty)});
+         }
+       });
+
       final orderData = {
         'customerUid': u.id,
         'customerName': u.name,

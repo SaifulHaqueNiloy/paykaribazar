@@ -44,7 +44,6 @@ jobs:
 
       - name: 🧪 Run tests
         run: flutter test --coverage
-        continue-on-error: true
 
   build-release:
     name: 🏗️ Build Release APKs (Customer & Admin)

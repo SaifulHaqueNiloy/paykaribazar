@@ -49,6 +49,16 @@ if %errorlevel% neq 0 (
 )
 echo ✅ Git repository detected
 
+REM Get GitHub remote URL to avoid hardcoded username
+for /f "tokens=*" %%a in ('git config --get remote.origin.url') do (
+    set REMOTE_URL=%%a
+)
+REM Convert SSH to HTTPS if needed and strip .git
+set REMOTE_URL=%REMOTE_URL:git@github.com:=https://github.com/%
+set REMOTE_URL=%REMOTE_URL:.git=%
+set RELEASE_URL=%REMOTE_URL%/releases/tag/%TAG%
+set ACTIONS_URL=%REMOTE_URL%/actions
+
 echo.
 echo =============================================================================
 echo 📋 Release Details:
@@ -120,7 +130,7 @@ echo   3. 🎉 Create GitHub Release
 echo.
 echo 📥 When complete, download APKs from:
 echo.
-echo    🔗 https://github.com/YOUR_USERNAME/paykari_bazar/releases/%TAG%
+echo    🔗 %RELEASE_URL%
 echo.
 echo 📱 Download both:
 echo   • paykari_bazar_customer_%VERSION%.apk (🛍️  Customer App)
@@ -131,7 +141,7 @@ echo 💡 Next Steps:
 echo =============================================================================
 echo.
 echo 1. Watch GitHub Actions:
-echo    🔗 https://github.com/YOUR_USERNAME/paykari_bazar/actions
+echo    🔗 %ACTIONS_URL%
 echo.
 echo 2. After build completes (~20 min):
 echo    • Download APKs from Releases page
@@ -139,7 +149,7 @@ echo    • Transfer to your phone
 echo    • Install and test both apps
 echo.
 echo 3. Share release with your team:
-echo    🔗 https://github.com/YOUR_USERNAME/paykari_bazar/releases/%TAG%
+echo    🔗 %RELEASE_URL%
 echo.
 echo =============================================================================
 echo.

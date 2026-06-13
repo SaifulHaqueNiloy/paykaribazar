@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:paykari_bazar/src/features/cart/widgets/checkout_bottom_sheet.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import '../../di/providers.dart';
 import '../../utils/styles.dart';
@@ -183,9 +184,11 @@ class CartScreen extends ConsumerWidget {
   }
 
   void _handleCheckout(BuildContext context, WidgetRef ref, double total) {
-    // Implement Checkout navigation or logic
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Proceeding to Checkout...')),
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+      builder: (_) => const CheckoutBottomSheet(),
     );
   }
 }

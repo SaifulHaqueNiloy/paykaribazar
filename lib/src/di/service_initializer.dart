@@ -29,6 +29,7 @@ import '../shared/services/payment_service.dart';
 import '../features/auth/services/auth_service.dart';
 import '../features/ai/services/ai_service.dart';
 import '../features/ai/services/ai_audit_service.dart';
+import '../features/ai/services/ai_automation_service.dart';
 import '../features/ai/services/api_quota_service.dart';
 import '../features/ai/services/forecasting_service.dart';
 import '../features/commerce/services/cart_service.dart';
@@ -115,6 +116,7 @@ class ServiceInitializer {
           secrets: getIt<SecretsService>(),
         ));
     getIt.registerLazySingleton<AIAuditService>(() => AIAuditService());
+    getIt.registerLazySingleton<AiAutomationService>(() => AiAutomationService());
     getIt.registerLazySingleton<ApiQuotaService>(() => ApiQuotaService());
     getIt.registerLazySingleton<ForecastingService>(() => ForecastingService());
     getIt.registerLazySingleton<CartService>(() => CartService());

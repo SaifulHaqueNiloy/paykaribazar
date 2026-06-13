@@ -57,7 +57,6 @@ class BackgroundTaskService {
 @pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    final container = ProviderContainer();
     final stopwatch = Stopwatch()..start();
 
     try {
@@ -67,21 +66,19 @@ void callbackDispatcher() {
         );
       }
 
-      final bool result = await _routeTask(container, task, inputData);
+      final bool result = await _routeTask(task, inputData);
       debugPrint('Task $task completed in ${stopwatch.elapsedMilliseconds}ms with result: $result');
       return result;
     } catch (e) {
       debugPrint('Task $task failed: $e');
-      // In a real app, report to Crashlytics/Sentry here
       return false;
     } finally {
       stopwatch.stop();
-      container.dispose();
     }
   });
 }
 
-Future<bool> _routeTask(ProviderContainer container, String task, Map<String, dynamic>? data) async {
+Future<bool> _routeTask(String task, Map<String, dynamic>? data) async {
   switch (task) {
     case BackgroundTaskService.backupTask:
     case 'PB_SYSTEM_BACKUP':
@@ -91,9 +88,9 @@ Future<bool> _routeTask(ProviderContainer container, String task, Map<String, dy
       return true;
 
     case BackgroundTaskService.aiAuditTask:
-    case 'backgroundBackup': // Legacy name support
-      final aiAutomation = container.read(aiAutomationProvider);
-      final notificationService = container.read(notificationServiceProvider);
+    case 'backgroundBackup':
+      final aiAutomation = getIt<AiAutomationService>();
+      final notificationService = getIt<NotificationService>();
       await notificationService.init();
       await aiAutomation.checkAndRun();
       await notificationService.showNotification(
