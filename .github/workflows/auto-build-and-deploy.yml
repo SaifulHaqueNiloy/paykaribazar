@@ -414,7 +414,7 @@ jobs:
 
       - name: Deploy Hosting
         run: |
-          firebase deploy --only hosting \
+          firebase deploy --only hosting:customer,hosting:admin \
             --project=${{ secrets.FIREBASE_PROJECT_ID }} \
             --token=${{ secrets.FIREBASE_TOKEN }}
 

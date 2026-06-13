@@ -2,11 +2,12 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:workmanager/workmanager.dart';
 import '../../../firebase_options.dart';
 import 'backup_service.dart';
-import '../di/providers.dart';
+import '../di/service_locator.dart';
+import '../features/ai/services/ai_automation_service.dart';
+import '../shared/services/notification_service.dart';
 
 class BackgroundTaskService {
   static const String backupTask = 'pb_backup_task_v3';

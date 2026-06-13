@@ -115,7 +115,7 @@ jobs:
           firebase firestore:rules:get --project=${{ secrets.FIREBASE_PROJECT_ID }} > /tmp/deployed_firestore.txt
           
           # Compare deployed rules with local rules
-          if diff -q firestore.rules /tmp/deployed_firestore.txt > /dev/null 2>&1; then
+          if diff -q -b firestore.rules /tmp/deployed_firestore.txt > /dev/null 2>&1; then
             echo "✅ Firestore Rules verification: PASSED"
             echo "status=passed" >> $GITHUB_OUTPUT
           else
@@ -145,7 +145,7 @@ jobs:
           firebase storage:rules:get --project=${{ secrets.FIREBASE_PROJECT_ID }} > /tmp/deployed_storage.txt
           
           # Compare deployed rules with local rules
-          if diff -q storage.rules /tmp/deployed_storage.txt > /dev/null 2>&1; then
+          if diff -q -b storage.rules /tmp/deployed_storage.txt > /dev/null 2>&1; then
             echo "✅ Storage Rules verification: PASSED"
             echo "status=passed" >> $GITHUB_OUTPUT
           else

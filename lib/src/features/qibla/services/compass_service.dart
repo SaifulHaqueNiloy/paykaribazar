@@ -182,9 +182,9 @@ class CompassService {
   Stream<Map<String, dynamic>> getRealTimeQiblaDirection() {
     final controller = StreamController<Map<String, dynamic>>();
     
-    double qiblaBearing = 135.0; // Default Mecca direction fallback (e.g. South-East from many places)
+    double qiblaBearing = 135.0;
 
-    Future(() async {
+    unawaited(Future(() async {
       try {
         qiblaBearing = await getQiblaBearing();
       } catch (_) {}
@@ -221,13 +221,6 @@ class CompassService {
         });
       }
 
-      timeoutTimer = Timer(const Duration(milliseconds: 1500), () {
-        if (!receivedCompassEvent) {
-          compassSub?.cancel();
-          startSimulation();
-        }
-      });
-
       try {
         compassSub = compassStream.listen(
           (heading) {
@@ -250,12 +243,13 @@ class CompassService {
         }
       }
 
-      controller.onCancel = () {
-        compassSub?.cancel();
-        timeoutTimer?.cancel();
-        simulationTimer?.cancel();
-      };
-    });
+      timeoutTimer = Timer(const Duration(milliseconds: 1500), () {
+        if (!receivedCompassEvent) {
+          compassSub?.cancel();
+          startSimulation();
+        }
+      });
+    }));
 
     return controller.stream;
   }

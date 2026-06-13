@@ -117,7 +117,7 @@ echo 🤖 GitHub Actions is now building your APKs...
 echo.
 echo 📊 Check build progress at:
 echo.
-echo    🔗 https://github.com/YOUR_USERNAME/paykari_bazar/actions
+echo    🔗 %ACTIONS_URL%
 echo.
 echo ⏱️  Expected build time: 15-25 minutes (depends on GitHub server load)
 echo.
