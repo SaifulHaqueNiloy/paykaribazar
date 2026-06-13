@@ -230,6 +230,12 @@ jobs:
           [ -d "integration_test" ] && DIRS_TO_ANALYZE="$DIRS_TO_ANALYZE integration_test"
           flutter analyze $DIRS_TO_ANALYZE --no-fatal-infos --no-fatal-warnings
 
+      - name: 📊 Run Dart Code Metrics
+        run: |
+          flutter pub global activate dart_code_metrics || true
+          flutter pub global run dart_code_metrics:metrics analyze lib/ --set-exit-on-violation-level=warning || true
+        continue-on-error: true
+
       - name: Run unit tests
         run: flutter test --coverage
 
