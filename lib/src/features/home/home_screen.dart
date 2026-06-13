@@ -12,7 +12,6 @@ import 'widgets/home_widgets.dart';
 import 'widgets/category_chips.dart';
 import 'widgets/flash_sale_timer.dart';
 import 'widgets/loyalty_status_card.dart';
-import 'widgets/qibla_indicator.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -168,7 +167,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       child: StaticSearchBar(isDark: isDark, t: _t),
                     ),
-                    const QiblaIndicator(),
                     const SizedBox(height: 10),
                     promoAsync.when(
                       data: (promo) {

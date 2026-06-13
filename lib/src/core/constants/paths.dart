@@ -25,6 +25,7 @@ class HubPaths {
   static const String termsConditions = 'settings/terms_conditions';
   static const String partners = 'settings/partners';
   static const String staffList = 'settings/staff_list';
+  static const String howToUse = 'settings/how_to_use';
 
   // Interactive Collections
   static const String reviews = 'reviews';

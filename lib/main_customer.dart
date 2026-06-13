@@ -98,8 +98,14 @@ void main() {
           .limit(1)
           .get();
       if (snap.docs.isEmpty) {
-        await DatabaseSeeder.seedLocations();
-        debugPrint('✅ Auto-seeded locations at startup');
+        await DatabaseSeeder.seedAll();
+        debugPrint('✅ Auto-seeded all default database collections at startup');
+      } else {
+        final infoSnap = await FirebaseFirestore.instance.doc(HubPaths.aboutUs).get();
+        if (!infoSnap.exists) {
+          await DatabaseSeeder.seedStaticInfo();
+          debugPrint('✅ Auto-seeded static info documents');
+        }
       }
     } catch (e) {
       debugPrint('⚠️ Auto-seed check skipped/failed: $e');

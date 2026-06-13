@@ -240,7 +240,7 @@ class ProfileScreen extends ConsumerWidget {
                         _gridItem(
                             Icons.menu_book_rounded,
                             'কিভাবে ব্যব...',
-                            () => context.push('/how-to-use'),
+                            () => _navToInfo(context, 'কিভাবে ব্যবহার করবেন', HubPaths.howToUse),
                             Colors.purple,
                             isDark),
                         _gridItem(

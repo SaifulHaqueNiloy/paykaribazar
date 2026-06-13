@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import '../core/constants/paths.dart';
+import '../di/service_locator.dart';
+import '../features/commerce/services/loyalty_service.dart';
 
 class SyncService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -18,7 +20,14 @@ class SyncService {
       // 1. Sync User Presence/Last Seen
       await _updateUserPresence(user.uid);
 
-      // 2. Clear expired notifications or temp data
+      // 2. Trigger Daily Login Bonus check
+      try {
+        await getIt<LoyaltyService>().handleDailyLoginBonus(user.uid);
+      } catch (e) {
+        debugPrint('Daily Login Bonus Error: $e');
+      }
+
+      // 3. Clear expired notifications or temp data
       await _cleanupOldData(user.uid);
 
       debugPrint('Data Sync Completed for user: ${user.uid}');

@@ -7,6 +7,7 @@ import '../../../core/firebase/firestore_service.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../core/services/security_initializer.dart';
 import '../../../di/service_locator.dart';
+import '../../../core/constants/paths.dart';
 
 final authServiceProvider = Provider((ref) => getIt<AuthService>());
 
@@ -21,12 +22,37 @@ class AuthService {
   })  : _storage = storage,
         _firestore = firestore;
 
+  String _normalizePhone(String phone) {
+    String cleaned = phone.replaceAll(RegExp(r'[\s\-()]+'), '');
+    if (cleaned.startsWith('+880')) {
+      cleaned = cleaned.substring(3);
+    } else if (cleaned.startsWith('880')) {
+      cleaned = cleaned.substring(2);
+    } else if (cleaned.startsWith('+88')) {
+      cleaned = cleaned.substring(3);
+    } else if (cleaned.startsWith('88')) {
+      cleaned = cleaned.substring(2);
+    }
+    if (cleaned.length == 10 && RegExp(r'^[1-9]\d{9}$').hasMatch(cleaned)) {
+      cleaned = '0$cleaned';
+    }
+    return cleaned;
+  }
+
+  String _generateReferralCode(String name, String? phone) {
+    final cleanName = name.replaceAll(RegExp(r'[^a-zA-Z]'), '').toUpperCase();
+    final prefix = cleanName.length >= 3 ? cleanName.substring(0, 3) : 'PB';
+    final rand = (1000 + (DateTime.now().microsecondsSinceEpoch % 9000)).toString();
+    return '$prefix$rand';
+  }
+
   Future<User?> login(String emailOrPhone, String password) async {
     try {
       String email = emailOrPhone.trim();
       // If the input doesn't look like an email, assume it's a phone number and use the internal format
       if (!email.contains('@')) {
-        email = '$email@paykaribazar.com';
+        final normalized = _normalizePhone(email);
+        email = '$normalized@paykaribazar.com';
       }
 
       final credential = await _auth.signInWithEmailAndPassword(
@@ -67,8 +93,9 @@ class AuthService {
     String? referralCode,
   }) async {
     try {
+      final normalizedPhone = phone != null ? _normalizePhone(phone) : null;
       final authEmail =
-          email ?? (phone != null ? '$phone@paykaribazar.com' : null);
+          email ?? (normalizedPhone != null ? '$normalizedPhone@paykaribazar.com' : null);
       if (authEmail == null) throw Exception('Email or Phone is required');
 
       final res = await _auth.createUserWithEmailAndPassword(
@@ -80,8 +107,9 @@ class AuthService {
         await _firestore.updateProfile(res.user!.uid, {
           'name': name,
           'email': email,
-          'phone': phone,
-          'referralCode': referralCode,
+          'phone': normalizedPhone,
+          'referredBy': referralCode,
+          'myReferralCode': _generateReferralCode(name, normalizedPhone),
           'role': 'customer',
           'createdAt': FieldValue.serverTimestamp(),
         });
@@ -104,10 +132,14 @@ class AuthService {
       );
       final res = await _auth.signInWithCredential(credential);
       if (res.user != null) {
+        final doc = await FirebaseFirestore.instance.collection(HubPaths.users).doc(res.user!.uid).get();
+        final existingReferral = doc.data()?['myReferralCode'];
+        
         await _firestore.updateProfile(res.user!.uid, {
           'name': res.user!.displayName,
           'email': res.user!.email,
           'profilePic': res.user!.photoURL,
+          'myReferralCode': existingReferral ?? _generateReferralCode(res.user!.displayName ?? 'User', null),
           'lastLogin': FieldValue.serverTimestamp(),
         });
       }
@@ -128,13 +160,15 @@ class AuthService {
     final res = await _auth.createUserWithEmailAndPassword(
         email: email, password: password);
     if (res.user != null) {
+      final normalizedPhone = _normalizePhone(phone);
       await _firestore.updateProfile(res.user!.uid, {
         'name': name,
-        'phone': phone,
+        'phone': normalizedPhone,
         'staffId': staffId,
         'role': role,
+        'myReferralCode': _generateReferralCode(name, normalizedPhone),
         'allowMultipleDevices': allowMultipleDevices,
-        'createdAt': DateTime.now(),
+        'createdAt': FieldValue.serverTimestamp(),
       });
     }
   }

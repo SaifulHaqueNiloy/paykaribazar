@@ -1,8 +1,11 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import 'package:paykari_bazar/src/utils/styles.dart';
+import 'package:paykari_bazar/src/di/service_locator.dart';
+import 'package:paykari_bazar/src/features/qibla/services/compass_service.dart';
 
 class SimpleFloatingCart extends ConsumerWidget {
   const SimpleFloatingCart({super.key});
@@ -29,46 +32,6 @@ class SimpleFloatingCart extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          // Price Display Card
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppStyles.primaryColor,
-              borderRadius: BorderRadius.circular(10),
-              boxShadow: [
-                BoxShadow(
-                  color: AppStyles.primaryColor.withOpacity(0.4),
-                  blurRadius: 12,
-                  offset: const Offset(0, 4),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  itemCount == 1 ? '1 item' : '$itemCount items',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  '৳${totalPrice.toStringAsFixed(0)}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-
           // Shopping Bag Button
           GestureDetector(
             onTap: () => context.push('/cart'),
@@ -86,38 +49,59 @@ class SimpleFloatingCart extends ConsumerWidget {
                   ),
                 ],
               ),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  const Icon(
-                    Icons.shopping_bag_rounded,
-                    color: Colors.white,
-                    size: 28,
-                  ),
-                  // Item Count Badge
-                  Positioned(
-                    top: 0,
-                    right: 2,
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Color(0xFFFF4444),
+              child: StreamBuilder<Map<String, dynamic>>(
+                stream: getIt<CompassService>().getRealTimeQiblaDirection(),
+                builder: (context, snapshot) {
+                  double angleRad = 0.0;
+                  if (snapshot.hasData && snapshot.data != null && !snapshot.data!.containsKey('error')) {
+                    final double relativeAngle = (snapshot.data!['relativeAngle'] as num).toDouble();
+                    angleRad = relativeAngle * (pi / 180);
+                  } else {
+                    angleRad = 0.0;
+                  }
+
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      const Icon(
+                        Icons.shopping_bag_rounded,
+                        color: Colors.white,
+                        size: 28,
                       ),
-                      child: Center(
-                        child: Text(
-                          itemCount > 99 ? '99+' : itemCount.toString(),
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
+                      // Compass / Clock Hand
+                      Transform.rotate(
+                        angle: angleRad,
+                        child: CustomPaint(
+                          size: const Size(50, 50),
+                          painter: CompassClockHandPainter(),
+                        ),
+                      ),
+                      // Item Count Badge
+                      Positioned(
+                        top: 0,
+                        right: 2,
+                        child: Container(
+                          width: 24,
+                          height: 24,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFFFF4444),
+                          ),
+                          child: Center(
+                            child: Text(
+                              itemCount > 99 ? '99+' : itemCount.toString(),
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 10,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                ],
+                    ],
+                  );
+                },
               ),
             ),
           ),
@@ -140,18 +124,18 @@ class SimpleFloatingCart extends ConsumerWidget {
                   ),
                 ],
               ),
-              child: const Row(
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.check_circle_outline,
                     color: Colors.white,
                     size: 16,
                   ),
-                  SizedBox(width: 6),
+                  const SizedBox(width: 6),
                   Text(
-                    'চেকআউট',
-                    style: TextStyle(
+                    'চেকআউট (${itemCount == 1 ? "1 item" : "$itemCount items"} • ৳${totalPrice.toStringAsFixed(0)})',
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 13,
                       fontWeight: FontWeight.bold,
@@ -169,4 +153,31 @@ class SimpleFloatingCart extends ConsumerWidget {
       return const SizedBox.shrink();
     }
   }
+}
+
+class CompassClockHandPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppStyles.accentColor
+      ..style = PaintingStyle.fill;
+
+    final center = Offset(size.width / 2, size.height / 2);
+    
+    final path = Path()
+      ..moveTo(center.dx - 2, center.dy)
+      ..lineTo(center.dx + 2, center.dy)
+      ..lineTo(center.dx + 1, center.dy - 20)
+      ..lineTo(center.dx, center.dy - 23)
+      ..lineTo(center.dx - 1, center.dy - 20)
+      ..close();
+
+    canvas.drawPath(path, paint);
+
+    canvas.drawCircle(center, 4, paint..color = Colors.white);
+    canvas.drawCircle(center, 2, paint..color = AppStyles.accentColor);
+  }
+
+  @override
+  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }

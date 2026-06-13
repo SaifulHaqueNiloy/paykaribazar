@@ -35,6 +35,7 @@ import '../features/commerce/services/cart_service.dart';
 import '../features/commerce/services/cart_pos_service.dart';
 import '../features/commerce/services/order_service.dart';
 import '../features/commerce/services/product_service.dart';
+import '../features/commerce/services/loyalty_service.dart';
 import '../features/wishlist/services/wishlist_service.dart';
 import '../features/logistics/services/delivery_service.dart';
 import '../features/logistics/services/geofencing_service.dart';
@@ -120,6 +121,7 @@ class ServiceInitializer {
     getIt.registerLazySingleton<CartPosService>(() => CartPosService());
     getIt.registerLazySingleton<OrderService>(() => OrderService());
     getIt.registerLazySingleton<ProductService>(() => ProductService());
+    getIt.registerLazySingleton<LoyaltyService>(() => LoyaltyService());
     getIt.registerLazySingleton<WishlistService>(() => WishlistService());
     getIt.registerLazySingleton<DeliveryService>(() => DeliveryService());
     getIt.registerLazySingleton<GeofencingService>(() => GeofencingService());

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../di/providers.dart';
 import '../../utils/styles.dart';
 
@@ -19,6 +21,7 @@ class WalletScreen extends ConsumerWidget {
       body: userAsync.when(
         data: (data) {
           final points = data?['points'] ?? 0;
+          final uid = data?['id']?.toString() ?? FirebaseAuth.instance.currentUser?.uid ?? '';
           return SingleChildScrollView(
             padding: const EdgeInsets.all(20),
             child: Column(
@@ -32,7 +35,7 @@ class WalletScreen extends ConsumerWidget {
                   child: Text('লেনদেনের ইতিহাস', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 ),
                 const SizedBox(height: 16),
-                _buildTransactionList(isDark),
+                _buildTransactionList(uid, isDark),
               ],
             ),
           );
@@ -94,38 +97,85 @@ class WalletScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTransactionList(bool isDark) {
-    return ListView.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: 3,
-      separatorBuilder: (_, __) => const SizedBox(height: 10),
-      itemBuilder: (context, index) => Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                CircleAvatar(backgroundColor: Colors.green.withOpacity(0.1), child: const Icon(Icons.add, color: Colors.green, size: 18)),
-                const SizedBox(width: 12),
-                const Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('কেনাকাটার রিওয়ার্ড', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
-                    Text('১২ জুন ২০২৪', style: TextStyle(color: Colors.grey, fontSize: 10)),
-                  ],
-                ),
-              ],
+  Widget _buildTransactionList(String uid, bool isDark) {
+    if (uid.isEmpty) return const SizedBox.shrink();
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance
+          .collection(HubPaths.users)
+          .doc(uid)
+          .collection('transactions')
+          .orderBy('createdAt', descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (snapshot.hasError) {
+          return Center(child: Text('Error: ${snapshot.error}', style: const TextStyle(fontSize: 12)));
+        }
+        final docs = snapshot.data?.docs ?? [];
+        if (docs.isEmpty) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: Text('কোনো লেনদেনের ইতিহাস পাওয়া যায়নি।', style: TextStyle(color: Colors.grey, fontSize: 12)),
             ),
-            const Text('+৫০', style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold, fontSize: 16)),
-          ],
-        ),
-      ),
+          );
+        }
+
+        return ListView.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: docs.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            final data = docs[index].data() as Map<String, dynamic>;
+            final String title = data['title'] ?? 'পয়েন্ট অ্যাড';
+            final int pointsVal = (data['points'] ?? 0).toInt();
+            final String type = data['type'] ?? 'credit';
+            final Timestamp? timeStamp = data['createdAt'] as Timestamp?;
+            final String timeStr = timeStamp != null 
+                ? '${timeStamp.toDate().day}/${timeStamp.toDate().month}/${timeStamp.toDate().year}'
+                : '';
+
+            final bool isCredit = type == 'credit';
+
+            return Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: (isCredit ? Colors.green : Colors.red).withOpacity(0.1),
+                        child: Icon(isCredit ? Icons.add : Icons.remove, color: isCredit ? Colors.green : Colors.red, size: 18),
+                      ),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+                          if (timeStr.isNotEmpty)
+                            Text(timeStr, style: const TextStyle(color: Colors.grey, fontSize: 10)),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Text(
+                    '${isCredit ? "+" : "-"}$pointsVal',
+                    style: TextStyle(color: isCredit ? Colors.green : Colors.red, fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

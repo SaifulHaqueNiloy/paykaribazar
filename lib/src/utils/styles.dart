@@ -223,6 +223,27 @@ class AppStyles {
     return Icons.category_rounded;
   }
 
+  static TextTheme _safeApplyFontSizeFactor(TextTheme theme, double scale) {
+    if (scale == 1.0) return theme;
+    return theme.copyWith(
+      displayLarge: theme.displayLarge?.copyWith(fontSize: (theme.displayLarge?.fontSize ?? 57.0) * scale),
+      displayMedium: theme.displayMedium?.copyWith(fontSize: (theme.displayMedium?.fontSize ?? 45.0) * scale),
+      displaySmall: theme.displaySmall?.copyWith(fontSize: (theme.displaySmall?.fontSize ?? 36.0) * scale),
+      headlineLarge: theme.headlineLarge?.copyWith(fontSize: (theme.headlineLarge?.fontSize ?? 32.0) * scale),
+      headlineMedium: theme.headlineMedium?.copyWith(fontSize: (theme.headlineMedium?.fontSize ?? 28.0) * scale),
+      headlineSmall: theme.headlineSmall?.copyWith(fontSize: (theme.headlineSmall?.fontSize ?? 24.0) * scale),
+      titleLarge: theme.titleLarge?.copyWith(fontSize: (theme.titleLarge?.fontSize ?? 22.0) * scale),
+      titleMedium: theme.titleMedium?.copyWith(fontSize: (theme.titleMedium?.fontSize ?? 16.0) * scale),
+      titleSmall: theme.titleSmall?.copyWith(fontSize: (theme.titleSmall?.fontSize ?? 14.0) * scale),
+      bodyLarge: theme.bodyLarge?.copyWith(fontSize: (theme.bodyLarge?.fontSize ?? 16.0) * scale),
+      bodyMedium: theme.bodyMedium?.copyWith(fontSize: (theme.bodyMedium?.fontSize ?? 14.0) * scale),
+      bodySmall: theme.bodySmall?.copyWith(fontSize: (theme.bodySmall?.fontSize ?? 12.0) * scale),
+      labelLarge: theme.labelLarge?.copyWith(fontSize: (theme.labelLarge?.fontSize ?? 14.0) * scale),
+      labelMedium: theme.labelMedium?.copyWith(fontSize: (theme.labelMedium?.fontSize ?? 12.0) * scale),
+      labelSmall: theme.labelSmall?.copyWith(fontSize: (theme.labelSmall?.fontSize ?? 11.0) * scale),
+    );
+  }
+
   // --- Theme Generators ---
   static ThemeData getLightTheme(TextTheme baseTextTheme, {Map<String, dynamic>? config}) {
     final effectiveConfig = _effectiveConfig(config);
@@ -230,17 +251,19 @@ class AppStyles {
     final p = primary(config);
     final scale = textScale(config);
     
+    final baseTheme = GoogleFonts.hindSiliguriTextTheme(baseTextTheme);
+    final scaledTextTheme = _safeApplyFontSizeFactor(baseTheme, scale).apply(
+      bodyColor: const Color(0xFF1E293B),
+      displayColor: const Color(0xFF1E293B),
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.light,
       primaryColor: p,
       fontFamily: GoogleFonts.hindSiliguri().fontFamily,
       scaffoldBackgroundColor: const Color(0xFFF0F2F5),
-      textTheme: GoogleFonts.hindSiliguriTextTheme(baseTextTheme).apply(
-        fontSizeFactor: scale,
-        bodyColor: const Color(0xFF1E293B),
-        displayColor: const Color(0xFF1E293B),
-      ),
+      textTheme: scaledTextTheme,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.grey.shade100,
@@ -256,17 +279,19 @@ class AppStyles {
     final p = _getColor(config, 'primary_color_dark', primary(config).withOpacity(0.7));
     final scale = textScale(config);
 
+    final baseTheme = GoogleFonts.hindSiliguriTextTheme(baseTextTheme);
+    final scaledTextTheme = _safeApplyFontSizeFactor(baseTheme, scale).apply(
+      bodyColor: const Color(0xFFF1F5F9),
+      displayColor: const Color(0xFFF1F5F9),
+    );
+
     return ThemeData(
       useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: p,
       fontFamily: GoogleFonts.hindSiliguri().fontFamily,
       scaffoldBackgroundColor: const Color(0xFF0F172A),
-      textTheme: GoogleFonts.hindSiliguriTextTheme(baseTextTheme).apply(
-        fontSizeFactor: scale,
-        bodyColor: const Color(0xFFF1F5F9),
-        displayColor: const Color(0xFFF1F5F9),
-      ),
+      textTheme: scaledTextTheme,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: Colors.white.withOpacity(0.05),
