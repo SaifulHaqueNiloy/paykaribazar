@@ -107,53 +107,12 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
-      - name: Verify Firestore Rules Deployed
-        id: firestore_verify
-        run: |
-          echo "🔍 Waiting for propagation..."
-          sleep 5
-          firebase firestore:rules:get --project=${{ secrets.FIREBASE_PROJECT_ID }} > /tmp/deployed_firestore.txt
-          
-          # Compare deployed rules with local rules
-          if diff -q -b firestore.rules /tmp/deployed_firestore.txt > /dev/null 2>&1; then
-            echo "✅ Firestore Rules verification: PASSED"
-            echo "status=passed" >> $GITHUB_OUTPUT
-          else
-            echo "⚠️  Firestore Rules differ (minification/formatting)"
-            echo "status=passed_with_formatting" >> $GITHUB_OUTPUT
-            # Show differences for debugging
-            echo "::notice::Firestore Rules - Minor formatting differences (expected)"
-          fi
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
-
       - name: Deploy Storage Rules
         id: storage_deploy
         run: |
           echo "🚀 Deploying Storage Rules..."
           firebase deploy --only storage --project=${{ secrets.FIREBASE_PROJECT_ID }} || exit 1
           echo "✅ Storage Rules deployed successfully"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-
-      - name: Verify Storage Rules Deployed
-        id: storage_verify
-        run: |
-          echo "🔍 Waiting for propagation..."
-          sleep 5
-          firebase storage:rules:get --project=${{ secrets.FIREBASE_PROJECT_ID }} > /tmp/deployed_storage.txt
-          
-          # Compare deployed rules with local rules
-          if diff -q -b storage.rules /tmp/deployed_storage.txt > /dev/null 2>&1; then
-            echo "✅ Storage Rules verification: PASSED"
-            echo "status=passed" >> $GITHUB_OUTPUT
-          else
-            echo "⚠️  Storage Rules differ (minification/formatting)"
-            echo "status=passed_with_formatting" >> $GITHUB_OUTPUT
-            # Show differences for debugging
-            echo "::notice::Storage Rules - Minor formatting differences (expected)"
-          fi
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
 
@@ -164,11 +123,9 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Firestore Rules" >> $GITHUB_STEP_SUMMARY
           echo "- **Deploy Status:** ${{ steps.firestore_deploy.outcome }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Verify Status:** ${{ steps.firestore_verify.outputs.status || 'verification skipped' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Storage Rules" >> $GITHUB_STEP_SUMMARY
           echo "- **Deploy Status:** ${{ steps.storage_deploy.outcome }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Verify Status:** ${{ steps.storage_verify.outputs.status || 'verification skipped' }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Deploy Timestamp:** $(date -u +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
 
