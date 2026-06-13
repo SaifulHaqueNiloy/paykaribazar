@@ -3,6 +3,13 @@ name: 🛡️ Security Scan & Dependency Check
 on:
   push:
     branches: [main, develop]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   schedule:
     # Run daily at 2 AM UTC
     - cron: '0 2 * * *'
@@ -153,6 +160,22 @@ jobs:
       - name: Install dependencies
         run: flutter pub get || true
         continue-on-error: true
+
+      - name: ✨ Cache Pub dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      - name: ⚡ Cache build_runner output
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool/build
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-runner-
 
       - name: Generate code
         run: flutter pub run build_runner build --delete-conflicting-outputs || true

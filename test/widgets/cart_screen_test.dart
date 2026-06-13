@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:go_router/go_router.dart';
 import 'package:paykari_bazar/src/features/cart/cart_screen.dart';
+import 'package:paykari_bazar/src/features/cart/widgets/checkout_bottom_sheet.dart';
 import 'package:paykari_bazar/src/features/commerce/services/cart_service.dart';
 import 'package:paykari_bazar/src/features/commerce/providers/cart_provider.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
@@ -279,7 +280,7 @@ void main() {
       expect(find.text('-৳20.0'), findsOneWidget);
     });
 
-    testWidgets('checkout button shows snackbar when tapped', (WidgetTester tester) async {
+    testWidgets('checkout button opens checkout bottom sheet when tapped', (WidgetTester tester) async {
       when(() => mockCartService.fetchSavedCart()).thenAnswer((_) async => [
         {'id': '1', 'name': 'Test Product', 'imageUrl': 'https://example.com/img.jpg', 'price': 100.0, 'quantity': 1, 'unit': 'pcs'},
       ]);
@@ -307,8 +308,12 @@ void main() {
               'delivery_fee_base': 0.0,
             })),
           ],
-          child: const MaterialApp(
-            home: CartScreen(),
+          child: MaterialApp(
+            home: Builder(
+              builder: (context) => Scaffold(
+                body: const CartScreen(),
+              ),
+            ),
           ),
         ),
       );
@@ -320,7 +325,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('Proceeding to Checkout...'), findsOneWidget);
+      expect(find.byType(CheckoutBottomSheet), findsOneWidget);
     });
 
     testWidgets('empty cart shop now button navigates home', (WidgetTester tester) async {
