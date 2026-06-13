@@ -427,25 +427,90 @@ class _EmergencyDetailsScreenState
                   final name = data['name'] ?? 'Helpline';
                   final phone = data['phone'] ?? '';
 
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    child: ListTile(
-                      leading: const CircleAvatar(
-                        child: Icon(Icons.phone_in_talk),
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isDark ? Colors.white10 : Colors.grey.shade200,
                       ),
-                      title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      subtitle: Text(phone, style: const TextStyle(fontSize: 11)),
-                      trailing: phone.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.phone, color: Colors.green),
-                              onPressed: () async {
-                                final url = 'tel:$phone';
-                                if (await canLaunchUrl(Uri.parse(url))) {
-                                  await launchUrl(Uri.parse(url));
-                                }
-                              },
-                            )
-                          : null,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: Colors.orangeAccent, width: 5),
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.orangeAccent.withOpacity(0.3),
+                                  width: 2,
+                                ),
+                              ),
+                              child: const CircleAvatar(
+                                radius: 24,
+                                backgroundColor: Colors.white10,
+                                child: Icon(Icons.phone_in_talk, color: Colors.orangeAccent, size: 20),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    name,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.orangeAccent.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: const Text(
+                                      'EMERGENCY CALL',
+                                      style: TextStyle(
+                                        color: Colors.orangeAccent,
+                                        fontSize: 9,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (phone.isNotEmpty)
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.green.withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(Icons.phone_rounded, color: Colors.green, size: 20),
+                                  onPressed: () async {
+                                    final url = 'tel:$phone';
+                                    if (await canLaunchUrl(Uri.parse(url))) {
+                                      await launchUrl(Uri.parse(url));
+                                    }
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -502,33 +567,104 @@ class _EmergencyDetailsScreenState
                   final group = data['group'] ?? 'O+';
                   final location = data['location'] ?? 'Unknown';
 
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 10),
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Colors.red.withOpacity(0.1),
-                        child: Text(
-                          group,
-                          style: const TextStyle(
-                            color: Colors.red,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF0F172A) : Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: isDark ? Colors.white10 : Colors.grey.shade200,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          border: Border(
+                            left: BorderSide(color: Colors.redAccent, width: 5),
                           ),
                         ),
+                        padding: const EdgeInsets.all(12),
+                        child: Row(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.redAccent.withOpacity(0.3),
+                                  width: 2,
+                                ),
+                              ),
+                              child: CircleAvatar(
+                                radius: 24,
+                                backgroundColor: Colors.redAccent.withOpacity(0.1),
+                                child: Text(
+                                  group,
+                                  style: const TextStyle(
+                                    color: Colors.redAccent,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    name,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 6),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: Colors.redAccent.withOpacity(0.1),
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        const Icon(Icons.location_on, size: 10, color: Colors.redAccent),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          location,
+                                          style: const TextStyle(
+                                            color: Colors.redAccent,
+                                            fontSize: 9,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (phone.isNotEmpty)
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.green.withOpacity(0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  icon: const Icon(Icons.phone_rounded, color: Colors.green, size: 20),
+                                  onPressed: () async {
+                                    final url = 'tel:$phone';
+                                    if (await canLaunchUrl(Uri.parse(url))) {
+                                      await launchUrl(Uri.parse(url));
+                                    }
+                                  },
+                                ),
+                              ),
+                          ],
+                        ),
                       ),
-                      title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
-                      subtitle: Text(location, style: const TextStyle(fontSize: 11)),
-                      trailing: phone.isNotEmpty
-                          ? IconButton(
-                              icon: const Icon(Icons.phone, color: Colors.green),
-                              onPressed: () async {
-                                final url = 'tel:$phone';
-                                if (await canLaunchUrl(Uri.parse(url))) {
-                                  await launchUrl(Uri.parse(url));
-                                }
-                              },
-                            )
-                          : null,
                     ),
                   );
                 },
@@ -673,32 +809,105 @@ class _EmergencyDetailsScreenState
           itemCount: docs.length,
           itemBuilder: (c, i) {
             final data = docs[i].data() as Map<String, dynamic>;
-            return Card(
-              elevation: 0,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  side: BorderSide(color: Colors.grey.withOpacity(0.1))),
+            final phone = data['phone'] ?? '';
+            return Container(
               margin: const EdgeInsets.only(bottom: 12),
-              child: ListTile(
-                leading: CircleAvatar(
-                    backgroundColor: Colors.blue.withOpacity(0.1),
-                    child:
-                        const Icon(Icons.person, color: Colors.blue, size: 20)),
-                title: Text(data['name'] ?? 'Doctor Name',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 13)),
-                subtitle: Text(data['specialty'] ?? 'Specialty',
-                    style: const TextStyle(fontSize: 11)),
-                trailing: (data['phone'] != null && data['phone'].toString().isNotEmpty)
-                    ? IconButton(
-                        icon: const Icon(Icons.phone, color: Colors.green, size: 20),
-                        onPressed: () async {
-                          final url = 'tel:${data['phone']}';
-                          if (await canLaunchUrl(Uri.parse(url))) {
-                            await launchUrl(Uri.parse(url));
-                          }
-                        })
-                    : null,
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  )
+                ],
+                border: Border.all(
+                  color: isDark ? Colors.white10 : Colors.grey.shade100,
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(color: Colors.blueAccent, width: 5),
+                    ),
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  child: Row(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: Colors.blueAccent.withOpacity(0.3),
+                            width: 2,
+                          ),
+                        ),
+                        child: const CircleAvatar(
+                          radius: 24,
+                          backgroundColor: Colors.white10,
+                          child: Icon(Icons.medical_services_outlined, color: Colors.blueAccent, size: 20),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              data['name'] ?? 'Doctor Name',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.blueAccent.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.badge_outlined, size: 12, color: Colors.blueAccent),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    data['specialty'] ?? 'Specialty',
+                                    style: const TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w900,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      if (phone.isNotEmpty)
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.1),
+                            shape: BoxShape.circle,
+                          ),
+                          child: IconButton(
+                            icon: const Icon(Icons.phone_rounded, color: Colors.green, size: 20),
+                            onPressed: () async {
+                              final url = 'tel:$phone';
+                              if (await canLaunchUrl(Uri.parse(url))) {
+                                await launchUrl(Uri.parse(url));
+                              }
+                            },
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             );
           },

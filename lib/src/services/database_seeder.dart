@@ -77,29 +77,43 @@ class DatabaseSeeder {
         'path': HubPaths.partners,
         'data': {
           'content': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #00838F, #00ACC1); padding: 15px; border-radius: 10px; color: white; margin-bottom: 15px;">
-    <h3 style="margin: 0;">Our Trusted Partners</h3>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #00838F, #00ACC1); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 131, 143, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">Our Trusted Partners</h3>
   </div>
-  <p>We collaborate with Bangladesh's top manufacturers, agricultural hubs, and international distributors to supply genuine high-quality items at factory wholesale prices.</p>
-  <ul>
-    <li><b>Agro & Farm Connect:</b> Direct sourcing of fresh vegetables and grains.</li>
-    <li><b>Consumer Brands Ltd:</b> Partnered for fast-moving consumer goods (FMCG).</li>
-    <li><b>Logistics Express:</b> Our delivery backbone for nationwide transport.</li>
-  </ul>
+  <p style="font-size: 14px; margin-bottom: 15px;">We collaborate with Bangladesh's top manufacturers, agricultural hubs, and international distributors to supply genuine high-quality items at factory wholesale prices.</p>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #00838F; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #00838F; font-size: 14px;">Agro & Farm Connect</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Direct sourcing of fresh vegetables and grains from organic local growers.</p>
+  </div>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #00ACC1; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #00ACC1; font-size: 14px;">Consumer Brands Ltd</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Partnered for fast-moving consumer goods (FMCG) and household necessities.</p>
+  </div>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #20B2AA; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #20B2AA; font-size: 14px;">Logistics Express</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Our delivery backbone ensuring secure and fast nationwide transport.</p>
+  </div>
 </div>
 ''',
           'contentBn': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #00838F, #00ACC1); padding: 15px; border-radius: 10px; color: white; margin-bottom: 15px;">
-    <h3 style="margin: 0;">আমাদের বিশ্বস্ত অংশীদারগণ</h3>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #00838F, #00ACC1); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0, 131, 143, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">আমাদের বিশ্বস্ত অংশীদারগণ</h3>
   </div>
-  <p>আমরা সরাসরি ফ্যাক্টরি এবং মূল উৎপাদকদের সাথে কাজ করি যাতে আমাদের গ্রাহকরা সেরা মূল্যে পণ্য পান।</p>
-  <ul>
-    <li><b>এগ্রো অ্যান্ড ফার্ম কানেক্ট:</b> সরাসরি মাঠ পর্যায় থেকে তাজা শাকসবজি ও শস্য সরবরাহকারী।</li>
-    <li><b>কনজুমার ব্র্যান্ডস লিমিটেড:</b> নিত্যপ্রয়োজনীয় মুদি ও কসমেটিক পণ্য সরবরাহকারী পার্টনার।</li>
-    <li><b>লজিস্টিকস এক্সপ্রেস:</b> সারা বাংলাদেশে দ্রুত পণ্য পৌঁছানোর অন্যতম সহযোগী।</li>
-  </ul>
+  <p style="font-size: 14px; margin-bottom: 15px;">আমরা সরাসরি দেশের সেরা ফ্যাক্টরি, মূল উৎপাদক এবং আমদানিকারকদের সাথে কাজ করি যাতে আমাদের গ্রাহকরা সরাসরি পাইকারি মূল্যে আসল পণ্য পান।</p>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #00838F; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #00838F; font-size: 14px;">এগ্রো অ্যান্ড ফার্ম কানেক্ট</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">সরাসরি মাঠ পর্যায় থেকে রাসায়নিকমুক্ত তাজা শাকসবজি ও শস্য সরবরাহকারী।</p>
+  </div>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #00ACC1; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #00ACC1; font-size: 14px;">কনজুমার ব্র্যান্ডস লিমিটেড</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">নিত্যপ্রয়োজনীয় মুদি ও বিশ্বমানের প্রসাধন সামগ্রী সরবরাহকারী পার্টনার।</p>
+  </div>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #20B2AA; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #20B2AA; font-size: 14px;">লজিস্টিকস এক্সপ্রেস</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">আমাদের দেশের প্রতিটি কোণায় দ্রুত ও নিরাপদ পণ্য ডেলিভারি সেবাদাতা অংশীদার।</p>
+  </div>
 </div>
 ''',
         }
@@ -108,31 +122,35 @@ class DatabaseSeeder {
         'path': HubPaths.staffList,
         'data': {
           'content': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #37474F, #546E7A); padding: 15px; border-radius: 10px; color: white; margin-bottom: 15px;">
-    <h3 style="margin: 0;">Meet Our Core Team</h3>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #37474F, #546E7A); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(55, 71, 79, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">Meet Our Core Team</h3>
   </div>
-  <p>Our dedicated operations, quality-assurance, customer success, and technology teams are active 24/7 to deliver seamless operations.</p>
-  <ul>
-    <li><b>Saiful Haq Niloy</b> - Founder & Chief Executive Officer</li>
-    <li><b>Operations Division</b> - Managing inventory & quality inspections</li>
-    <li><b>Support Stars</b> - Resolving tickets and chats in real time</li>
-    <li><b>Rider Force</b> - Swiftly carrying goods safely to your doorstep</li>
-  </ul>
+  <p style="font-size: 14px; margin-bottom: 15px;">Our dedicated operations, quality-assurance, customer success, and technology teams are active 24/7 to deliver seamless operations.</p>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #37474F; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #37474F; font-size: 14px;">Saiful Haq Niloy</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Founder & Chief Executive Officer</p>
+  </div>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #546E7A; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #546E7A; font-size: 14px;">Operations Division</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Responsible for inventory sorting, sorting quality and packaging control.</p>
+  </div>
 </div>
 ''',
           'contentBn': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #37474F, #546E7A); padding: 15px; border-radius: 10px; color: white; margin-bottom: 15px;">
-    <h3 style="margin: 0;">আমাদের মূল দল (Team)</h3>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #37474F, #546E7A); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(55, 71, 79, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">আমাদের টিম (Meet Our Team)</h3>
   </div>
-  <p>আপনার প্রতিটি অর্ডার সময়মতো এবং সঠিকভাবে পৌঁছানোর পেছনে কাজ করছে আমাদের দক্ষ টিম।</p>
-  <ul>
-    <li><b>সাইফুল হক নিলয়</b> - প্রতিষ্ঠাতা এবং প্রধান নির্বাহী কর্মকর্তা</li>
-    <li><b>অপারেশন বিভাগ</b> - গুণগত মান নিয়ন্ত্রণ এবং ইনভেন্টরি ম্যানেজমেন্ট।</li>
-    <li><b>কাস্টমার সাপোর্ট</b> - ২৪/৭ আপনার সব সমস্যার তাত্ক্ষণিক সমাধান দিতে প্রস্তুত।</li>
-    <li><b>ডেলিভারি রাইডার্স</b> - সরাসরি আপনার দোকানে পণ্য পৌঁছে দেওয়ার দায়িত্বে নিয়োজিত।</li>
-  </ul>
+  <p style="font-size: 14px; margin-bottom: 15px;">পাইকারী বাজারকে প্রতিদিন সুন্দরভাবে পরিচালনা করতে আমাদের ব্যাক-অফিস ও ফিল্ড টিম নিরলস কাজ করছে।</p>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #37474F; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #37474F; font-size: 14px;">সাইফুল হক নিলয়</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">প্রতিষ্ঠাতা এবং প্রধান নির্বাহী কর্মকর্তা</p>
+  </div>
+  <div style="background: #F4F6F7; padding: 15px; border-radius: 12px; border-left: 5px solid #546E7A; margin-bottom: 12px;">
+    <h4 style="margin: 0 0 5px 0; color: #546E7A; font-size: 14px;">অপারেশন ও কিউসি বিভাগ</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">পণ্যের মান নিয়ন্ত্রণ, শর্টিং এবং প্যাকিং তদারকিতে নিয়োজিত টিম।</p>
+  </div>
 </div>
 ''',
         }
@@ -141,56 +159,46 @@ class DatabaseSeeder {
         'path': HubPaths.faqs,
         'data': {
           'content': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #1565C0, #1E88E5); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 20px;">Frequently Asked Questions (FAQs)</h2>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #1565C0, #1E88E5); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(21, 101, 192, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">Frequently Asked Questions (FAQs)</h3>
   </div>
   
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">Q: What is the minimum order value?</h4>
-    <p style="margin: 0; font-size: 13px;">A: Since this is a wholesale platform, the minimum checkout requirement is BDT 1,000.</p>
+  <div style="background: #F8F9FA; padding: 16px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #1E88E5; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+    <h4 style="margin: 0 0 8px 0; color: #1565C0; font-size: 14px;">Q: What is the minimum order value?</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">A: Since this is a wholesale platform, the minimum checkout requirement is BDT 1,000.</p>
   </div>
 
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">Q: How do referral points work?</h4>
-    <p style="margin: 0; font-size: 13px;">A: Copy your invite code from the Profile tab and share it. When users register and place their first order, you get points that can be redeemed as cash discounts.</p>
+  <div style="background: #F8F9FA; padding: 16px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #1E88E5; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+    <h4 style="margin: 0 0 8px 0; color: #1565C0; font-size: 14px;">Q: How do referral points work?</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">A: Copy your invite code from the Profile tab and share it. When users register and place their first order, you get points that can be redeemed as cash discounts.</p>
   </div>
 
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">Q: How long does delivery take?</h4>
-    <p style="margin: 0; font-size: 13px;">A: Inside Dhaka: 24 hours. Outside Dhaka: 48-72 hours.</p>
-  </div>
-
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">Q: Can I apply to be a Reseller?</h4>
-    <p style="margin: 0; font-size: 13px;">A: Yes! If you want to resell products and earn margins without stock holdings, apply via the "Personal Hub -> Join & Earn" in the profile tab.</p>
+  <div style="background: #F8F9FA; padding: 16px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #1E88E5; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+    <h4 style="margin: 0 0 8px 0; color: #1565C0; font-size: 14px;">Q: How long does delivery take?</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">A: Inside Dhaka: 24 hours. Outside Dhaka: 48-72 hours.</p>
   </div>
 </div>
 ''',
           'contentBn': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #1565C0, #1E88E5); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 20px;">সাধারণ জিজ্ঞাসা (FAQs)</h2>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #1565C0, #1E88E5); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(21, 101, 192, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">সাধারণ জিজ্ঞাসা (FAQs)</h3>
   </div>
   
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">প্রশ্ন: সর্বনিম্ন কত টাকার অর্ডার করতে হবে?</h4>
-    <p style="margin: 0; font-size: 13px;">উত্তর: এটি একটি পাইকারি প্লাটফর্ম হওয়ায় সর্বনিম্ন অর্ডারের পরিমাণ ১,০০০ টাকা।</p>
+  <div style="background: #F8F9FA; padding: 16px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #1E88E5; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+    <h4 style="margin: 0 0 8px 0; color: #1565C0; font-size: 14px;">প্রশ্ন: সর্বনিম্ন কত টাকার অর্ডার করতে হবে?</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">উত্তর: এটি একটি পাইকারি প্লাটফর্ম হওয়ায় সর্বনিম্ন অর্ডারের পরিমাণ ১,০০০ টাকা।</p>
   </div>
 
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">প্রশ্ন: রেফারেল পয়েন্ট কিভাবে কাজ করে?</h4>
-    <p style="margin: 0; font-size: 13px;">উত্তর: প্রোফাইল ট্যাব থেকে আপনার ইনভাইট কোড কপি করে শেয়ার করুন। নতুন কোনো ইউজার সেই কোড দিয়ে সাইনআপ করে প্রথম অর্ডার সম্পন্ন করলে আপনি ফ্রি ডিসকাউন্ট পয়েন্ট পাবেন।</p>
+  <div style="background: #F8F9FA; padding: 16px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #1E88E5; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+    <h4 style="margin: 0 0 8px 0; color: #1565C0; font-size: 14px;">প্রশ্ন: রেফারেল পয়েন্ট কিভাবে কাজ করে?</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">উত্তর: প্রোফাইল ট্যাব থেকে আপনার ইনভাইট কোড কপি করে শেয়ার করুন। নতুন কোনো ইউজার সেই কোড দিয়ে সাইনআপ করে প্রথম অর্ডার সম্পন্ন করলে আপনি ফ্রি ডিসকাউন্ট পয়েন্ট পাবেন।</p>
   </div>
 
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">প্রশ্ন: পণ্য পৌঁছাতে কত সময় লাগে?</h4>
-    <p style="margin: 0; font-size: 13px;">উত্তর: ঢাকা সিটির ভেতরে ২৪ ঘণ্টা এবং ঢাকার বাইরে ৪৮ থেকে ৭২ ঘণ্টার মধ্যে ডেলিভারি সম্পন্ন হয়।</p>
-  </div>
-
-  <div style="background: #f8f9fa; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-left: 4px solid #1E88E5;">
-    <h4 style="margin: 0 0 5px 0; color: #1565C0;">প্রশ্ন: আমি কি রিসেলার হিসেবে কাজ করতে পারি?</h4>
-    <p style="margin: 0; font-size: 13px;">উত্তর: হ্যাঁ! কোনো ইনভেস্টমেন্ট ছাড়া পণ্য শেয়ার করে লভ্যাংশ আয় করতে প্রোফাইলের "Join & Earn" থেকে রিসেলার হিসেবে আবেদন করুন।</p>
+  <div style="background: #F8F9FA; padding: 16px; border-radius: 12px; margin-bottom: 15px; border-left: 5px solid #1E88E5; box-shadow: 0 2px 8px rgba(0,0,0,0.02);">
+    <h4 style="margin: 0 0 8px 0; color: #1565C0; font-size: 14px;">প্রশ্ন: পণ্য পৌঁছাতে কত সময় লাগে?</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">উত্তর: ঢাকা সিটির ভেতরে ২৪ ঘণ্টা এবং ঢাকার বাইরে ৪৮ থেকে ৭২ ঘণ্টার মধ্যে ডেলিভারি সম্পন্ন হয়।</p>
   </div>
 </div>
 ''',
@@ -200,25 +208,31 @@ class DatabaseSeeder {
         'path': HubPaths.aboutUs,
         'data': {
           'content': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #E65100, #F57C00); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 20px;">About Paykari Bazar</h2>
-    <p style="margin: 5px 0 0 0; font-size: 13px; opacity: 0.9;">Empowering local businesses since 2024</p>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #E65100, #F57C00); padding: 25px 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(230, 81, 0, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">About Paykari Bazar</h3>
+    <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.9;">Empowering local businesses since 2024</p>
   </div>
-  <p><b>Paykari Bazar</b> is Bangladesh's pioneering digital B2B wholesale platform. We connect local retailers directly with factories, farmers, and main suppliers to eliminate unnecessary middle-man costs.</p>
-  <p>Our state-of-the-art tech ecosystem simplifies order processing, secures digital escrow payments, and manages quick last-mile logistics. We enable micro-merchants and reseller entrepreneurs to launch and grow their ventures with zero stock investment.</p>
-  <p><b>Our Vision:</b> To build a transparent, highly efficient, and integrated supply-chain network serving every corner of Bangladesh.</p>
+  <p style="font-size: 14px;"><b>Paykari Bazar</b> is Bangladesh's pioneering digital B2B wholesale platform. We connect local retailers directly with factories, farmers, and main suppliers to eliminate unnecessary middle-man costs.</p>
+  <p style="font-size: 14px;">Our state-of-the-art tech ecosystem simplifies order processing, secures digital escrow payments, and manages quick last-mile logistics. We enable micro-merchants and reseller entrepreneurs to launch and grow their ventures with zero stock investment.</p>
+  <div style="background: #FFF8F3; padding: 15px; border-radius: 12px; border: 1px solid #FFE0B2; margin-top: 15px;">
+    <h4 style="margin: 0 0 5px 0; color: #E65100; font-size: 14px;">Our Vision</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">To build a transparent, highly efficient, and integrated supply-chain network serving every corner of Bangladesh.</p>
+  </div>
 </div>
 ''',
           'contentBn': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #E65100, #F57C00); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 20px;">আমাদের সম্পর্কে (About Us)</h2>
-    <p style="margin: 5px 0 0 0; font-size: 13px; opacity: 0.9;">২০২৪ থেকে ক্ষুদ্র ও মাঝারি ব্যবসায়ের বিশ্বস্ত ডিজিটাল পার্টনার</p>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #E65100, #F57C00); padding: 25px 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(230, 81, 0, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">আমাদের সম্পর্কে (About Us)</h3>
+    <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.9;">২০২৪ থেকে খুচরা বিক্রেতা ও ক্ষুদ্র উদ্যোগের ডিজিটাল প্ল্যাটফর্ম</p>
   </div>
-  <p><b>পাইকারী বাজার</b> হলো বাংলাদেশের প্রথম সারির ডিজিটাল বিটুবি (B2B) পাইকারি প্ল্যাটফর্ম। আমরা দেশের প্রতিটি প্রান্তের খুচরা বিক্রেতা ও ব্যবসায়ীদের সরাসরি কারখানা, খামারি এবং মূল আমদানিকারকদের সাথে যুক্ত করি।</p>
-  <p>আমাদের আধুনিক প্রযুক্তি সিস্টেমের মাধ্যমে অতি সহজে পাইকারি কেনাকাটা, নিরাপদ ডিজিটাল পেমেন্ট এবং দ্রুত লজিস্টিকস ডেলিভারি সেবা প্রদান করা হয়। এছাড়া আমরা রিসেলারদের জন্য বিনা পুঁজিতে ব্যবসা শুরু করার অনন্য সুযোগ তৈরি করেছি।</p>
-  <p><b>আমাদের লক্ষ্য:</b> সমগ্র বাংলাদেশে একটি স্বচ্ছ, সাশ্রয়ী এবং সম্পূর্ণ নির্ভরযোগ্য পাইকারি বাজার নেটওয়ার্ক গড়ে তোলা।</p>
+  <p style="font-size: 14px;"><b>পাইকারী বাজার</b> হলো বাংলাদেশের প্রথম সারির ডিজিটাল বিটুবি (B2B) পাইকারি প্ল্যাটফর্ম। আমরা দেশের প্রতিটি প্রান্তের খুচরা বিক্রেতা ও ব্যবসায়ীদের সরাসরি কারখানা, খামারি এবং মূল আমদানিকারকদের সাথে যুক্ত করি।</p>
+  <p style="font-size: 14px;">আমাদের আধুনিক প্রযুক্তি সিস্টেমের মাধ্যমে অতি সহজে পাইকারি কেনাকাটা, নিরাপদ ডিজিটাল পেমেন্ট এবং দ্রুত লজিস্টিকস ডেলিভারি সেবা প্রদান করা হয়। এছাড়া আমরা রিসেলারদের জন্য বিনা পুঁজিতে ব্যবসা শুরু করার অনন্য সুযোগ তৈরি করেছি।</p>
+  <div style="background: #FFF8F3; padding: 15px; border-radius: 12px; border: 1px solid #FFE0B2; margin-top: 15px;">
+    <h4 style="margin: 0 0 5px 0; color: #E65100; font-size: 14px;">আমাদের মূল লক্ষ্য</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">সমগ্র বাংলাদেশে একটি স্বচ্ছ, সাশ্রয়ী এবং সম্পূর্ণ নির্ভরযোগ্য পাইকারি বাজার নেটওয়ার্ক গড়ে তোলা।</p>
+  </div>
 </div>
 ''',
         }
@@ -227,29 +241,41 @@ class DatabaseSeeder {
         'path': HubPaths.termsConditions,
         'data': {
           'content': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #4E342E, #6D4C41); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 20px;">Terms & Conditions</h2>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #4E342E, #6D4C41); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(78, 52, 46, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">Terms & Conditions</h3>
   </div>
-  <ol>
-    <li><b>Wholesale Purchase Agreement:</b> Products listed here are strictly for wholesale and commercial trade. Minimum billing per check-out is BDT 1,000.</li>
-    <li><b>Pricing & Quotations:</b> Wholesale rates depend on market availability and factory tariffs. Listed rates are subject to change without prior notice.</li>
-    <li><b>Returns Policy:</b> Damaged or mis-shipped goods must be claimed with clear video proof within 48 hours of shipment delivery.</li>
-    <li><b>Wallet & Credits:</b> In-app wallet funds are secure, non-transferable, and can be used for orders or refunded as per our standard policy.</li>
-  </ol>
+  <div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #E5E8E8;">
+    <h4 style="margin: 0 0 5px 0; color: #4E342E; font-size: 14px;">1. Wholesale Purchase Agreement</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Products listed here are strictly for wholesale and commercial trade. Minimum billing per check-out is BDT 1,000.</p>
+  </div>
+  <div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #E5E8E8;">
+    <h4 style="margin: 0 0 5px 0; color: #4E342E; font-size: 14px;">2. Pricing & Quotations</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Wholesale rates depend on market availability and factory tariffs. Listed rates are subject to change without prior notice.</p>
+  </div>
+  <div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #E5E8E8;">
+    <h4 style="margin: 0 0 5px 0; color: #4E342E; font-size: 14px;">3. Returns Policy</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">Damaged or mis-shipped goods must be claimed with clear video proof within 48 hours of shipment delivery.</p>
+  </div>
 </div>
 ''',
           'contentBn': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #4E342E, #6D4C41); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 20px;">ব্যবহারের শর্তাবলী</h2>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #4E342E, #6D4C41); padding: 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(78, 52, 46, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">ব্যবহারের শর্তাবলী (Terms & Conditions)</h3>
   </div>
-  <ol>
-    <li><b>পাইকারি কেনাকাটার চুক্তি:</b> এই প্ল্যাটফর্মে সকল পণ্য শুধুমাত্র খুচরা ব্যবসা ও বাণিজ্যিক ব্যবহারের উদ্দেশ্যে পাইকারি মূল্যে বিক্রি হয়। সর্বনিম্ন অর্ডারের পরিমাণ ১,০০০ টাকা।</li>
-    <li><b>পণ্য মূল্য ও স্টক:</b> বাজারের কাঁচামাল ও উৎপাদন ব্যয়ের ওপর ভিত্তি করে পণ্যের দাম পরিবর্তিত হতে পারে। যেকোনো দাম পরিবর্তনের অধিকার কর্তৃপক্ষ সংরক্ষণ করে।</li>
-    <li><b>রিটার্ন ও রিফান্ড নীতি:</b> কোনো পণ্য ভাঙা বা ভুল ডেলিভারি হলে, তা বুঝে পাওয়ার ৪৮ ঘণ্টার মধ্যে আনবক্সিং ভিডিও প্রমাণ সহ কাস্টমার কেয়ারে ক্লেইম করতে হবে।</li>
-    <li><b>ওয়ালেট ও ক্রেডিট পলিসি:</b> আপনার ইন-অ্যাপ ওয়ালেটের টাকা সম্পূর্ণ নিরাপদ। এটি দিয়ে কেনাকাটা করতে পারবেন অথবা নিয়ম অনুযায়ী ক্যাশআউট করতে পারবেন।</li>
-  </ol>
+  <div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #E5E8E8;">
+    <h4 style="margin: 0 0 5px 0; color: #4E342E; font-size: 14px;">১. পাইকারি কেনাকাটার চুক্তি</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">এই প্ল্যাটফর্মে সকল পণ্য শুধুমাত্র বাণিজ্যিক ব্যবহারের উদ্দেশ্যে পাইকারি মূল্যে বিক্রি হয়। সর্বনিম্ন অর্ডারের পরিমাণ ১,০০০ টাকা।</p>
+  </div>
+  <div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #E5E8E8;">
+    <h4 style="margin: 0 0 5px 0; color: #4E342E; font-size: 14px;">২. পণ্য মূল্য ও স্টক</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">বাজারের কাঁচামাল ও উৎপাদন ব্যয়ের ওপর ভিত্তি করে পণ্যের দাম পরিবর্তিত হতে পারে। যেকোনো দাম পরিবর্তনের অধিকার কর্তৃপক্ষ সংরক্ষণ করে।</p>
+  </div>
+  <div style="margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid #E5E8E8;">
+    <h4 style="margin: 0 0 5px 0; color: #4E342E; font-size: 14px;">৩. রিটার্ন ও রিফান্ড নীতি</h4>
+    <p style="margin: 0; font-size: 13px; color: #566573;">কোনো পণ্য ভাঙা বা ভুল ডেলিভারি হলে, তা বুঝে পাওয়ার ৪৮ ঘণ্টার মধ্যে আনবক্সিং ভিডিও প্রমাণ সহ কাস্টমার কেয়ারে ক্লেইম করতে হবে।</p>
+  </div>
 </div>
 ''',
         }
@@ -258,58 +284,74 @@ class DatabaseSeeder {
         'path': HubPaths.howToUse,
         'data': {
           'content': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #4A148C, #7B1FA2); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 22px;">How to Use Paykari Bazar</h2>
-    <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Master the app features in minutes</p>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #4A148C, #7B1FA2); padding: 25px 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(74, 20, 140, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">How to Use Paykari Bazar</h3>
+    <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.9;">Master the app features in minutes</p>
   </div>
   
-  <div style="border-left: 4px solid #FF6F00; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #FF6F00; margin: 0 0 10px 0;">1. Browse & Add to Cart</h3>
-    <p style="margin: 0;">Explore categorized products, search for top wholesale deals, and add items to your cart. Look out for bulk pack discounts!</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #FF6F00;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #FF6F00; font-size: 14px;">1. Browse & Add to Cart</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">Explore categorized products, search for top wholesale deals, and add items to your cart. Look out for bulk pack discounts!</p>
+    </div>
   </div>
 
-  <div style="border-left: 4px solid #00C853; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #00C853; margin: 0 0 10px 0;">2. Apply Coupons & Redeem Points</h3>
-    <p style="margin: 0;">During checkout, write valid promo codes or tap to redeem your referral points to earn immediate discounts.</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #00C853;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #00C853; font-size: 14px;">2. Apply Coupons & Redeem Points</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">During checkout, write valid promo codes or tap to redeem your referral points to earn immediate discounts.</p>
+    </div>
   </div>
 
-  <div style="border-left: 4px solid #2979FF; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #2979FF; margin: 0 0 10px 0;">3. Smart Payments</h3>
-    <p style="margin: 0;">Use Cash on Delivery (COD), Mobile Banking (bKash/Nagad), or your in-app Wallet. Top up your wallet in the Profile tab for single-tap payment convenience.</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #2979FF;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #2979FF; font-size: 14px;">3. Smart Payments</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">Use Cash on Delivery (COD), Mobile Banking (bKash/Nagad), or your in-app Wallet. Top up your wallet in the Profile tab for single-tap payment convenience.</p>
+    </div>
   </div>
 
-  <div style="border-left: 4px solid #AA00FF; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #AA00FF; margin: 0 0 10px 0;">4. Join & Earn (Reseller / Rider / Staff)</h3>
-    <p style="margin: 0;">Apply to become a <b>Reseller</b> to sell items and earn margins, a <b>Rider</b> to deliver products and earn delivery bonuses, or <b>Staff</b> to help manage local operations. Apply easily from the Profile tab!</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #AA00FF;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #AA00FF; font-size: 14px;">4. Join & Earn (Reseller / Rider / Staff)</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">Apply to become a <b>Reseller</b> to sell items and earn margins, a <b>Rider</b> to deliver products and earn delivery bonuses, or <b>Staff</b> to help manage local operations. Apply easily from the Profile tab!</p>
+    </div>
   </div>
 </div>
 ''',
           'contentBn': '''
-<div style="font-family: Arial, sans-serif; line-height: 1.6;">
-  <div style="background: linear-gradient(135deg, #4A148C, #7B1FA2); padding: 20px; border-radius: 12px; color: white; margin-bottom: 20px;">
-    <h2 style="margin: 0; font-size: 22px;">কিভাবে পাইকারী বাজার ব্যবহার করবেন</h2>
-    <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">অ্যাপের প্রতিটি ফিচারের সহজ ও বিস্তারিত নির্দেশিকা</p>
+<div style="font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1.7; color: #2C3E50;">
+  <div style="background: linear-gradient(135deg, #4A148C, #7B1FA2); padding: 25px 20px; border-radius: 14px; color: white; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(74, 20, 140, 0.15);">
+    <h3 style="margin: 0; font-size: 18px; font-weight: 750;">কিভাবে পাইকারী বাজার ব্যবহার করবেন</h3>
+    <p style="margin: 5px 0 0 0; font-size: 12px; opacity: 0.9;">অ্যাপের প্রতিটি ফিচারের সহজ ও বিস্তারিত নির্দেশিকা</p>
   </div>
   
-  <div style="border-left: 4px solid #FF6F00; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #FF6F00; margin: 0 0 10px 0;">১. পণ্য খুঁজুন ও কার্টে যুক্ত করুন</h3>
-    <p style="margin: 0;">প্রয়োজনীয় ক্যাটাগরি অনুযায়ী পণ্য ব্রাউজ করুন অথবা সরাসরি সার্চ করুন। পণ্যের পাইকারি লট বা প্যাক সাইজ অনুযায়ী কার্টে যুক্ত করুন।</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #FF6F00;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #FF6F00; font-size: 14px;">১. পণ্য খুঁজুন ও কার্টে যুক্ত করুন</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">প্রয়োজনীয় ক্যাটাগরি অনুযায়ী পণ্য ব্রাউজ করুন অথবা সরাসরি সার্চ করুন। পণ্যের পাইকারি লট বা প্যাক সাইজ অনুযায়ী কার্টে যুক্ত করুন।</p>
+    </div>
   </div>
 
-  <div style="border-left: 4px solid #00C853; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #00C853; margin: 0 0 10px 0;">২. কুপন ও পয়েন্ট রিডিম</h3>
-    <p style="margin: 0;">চেকআউট পেজে গিয়ে আপনার একটিভ প্রমো কোড/কুপন লিখুন অথবা আপনার প্রোফাইলে জমানো রেফারেল পয়েন্ট রিডিম করে বিল কমিয়ে নিন।</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #00C853;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #00C853; font-size: 14px;">২. কুপন ও পয়েন্ট রিডিম</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">চেকআউট পেজে গিয়ে আপনার একটিভ প্রমো কোড/কুপন লিখুন অথবা আপনার প্রোফাইলে জমানো রেফারেল পয়েন্ট রিডিম করে বিল কমিয়ে নিন।</p>
+    </div>
   </div>
 
-  <div style="border-left: 4px solid #2979FF; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #2979FF; margin: 0 0 10px 0;">৩. সহজ পেমেন্ট মাধ্যম</h3>
-    <p style="margin: 0;">ক্যাশ অন ডেলিভারি (COD), মোবাইল ব্যাংকিং (বিকাশ/নগদ) অথবা ইন-অ্যাপ ওয়ালেটের মাধ্যমে তাত্ক্ষণিক বিল পরিশোধ করুন। সহজে ওয়ালেট রিচার্জ করে এক ক্লিকে অর্ডার করতে পারেন।</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #2979FF;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #2979FF; font-size: 14px;">৩. সহজ পেমেন্ট মাধ্যম</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">ক্যাশ অন ডেলিভারি (COD), মোবাইল ব্যাংকিং (বিকাশ/নগদ) অথবা ইন-অ্যাপ ওয়ালেটের মাধ্যমে তাত্ক্ষণিক বিল পরিশোধ করুন। সহজে ওয়ালেট রিচার্জ করে এক ক্লিকে অর্ডার করতে পারেন।</p>
+    </div>
   </div>
 
-  <div style="border-left: 4px solid #AA00FF; padding-left: 15px; margin-bottom: 20px;">
-    <h3 style="color: #AA00FF; margin: 0 0 10px 0;">৪. যুক্ত হোন ও আয় করুন (রিসেলার / রাইডার / স্টাফ)</h3>
-    <p style="margin: 0;">কোনো মূলধন ছাড়া লভ্যাংশ আয় করতে প্রোফাইল ট্যাব থেকে <b>রিসেলার</b>, পণ্য ডেলিভারি দিয়ে আয় করতে <b>রাইডার</b> অথবা আমাদের সাথে সরাসরি যুক্ত হতে <b>স্টাফ</b> হিসেবে আবেদন করুন।</p>
+  <div style="display: flex; margin-bottom: 15px; background: #F8F9FA; padding: 15px; border-radius: 12px; border-left: 5px solid #AA00FF;">
+    <div style="flex: 1;">
+      <h4 style="margin: 0 0 5px 0; color: #AA00FF; font-size: 14px;">৪. যুক্ত হোন ও আয় করুন (রিসেলার / রাইডার / স্টাফ)</h4>
+      <p style="margin: 0; font-size: 13px; color: #566573;">কোনো মূলধন ছাড়া লভ্যাংশ আয় করতে প্রোফাইল ট্যাব থেকে <b>রিসেলার</b>, পণ্য ডেলিভারি দিয়ে আয় করতে <b>রাইডার</b> অথবা আমাদের সাথে সরাসরি যুক্ত হতে <b>স্টাফ</b> হিসেবে আবেদন করুন।</p>
+    </div>
   </div>
 </div>
 ''',

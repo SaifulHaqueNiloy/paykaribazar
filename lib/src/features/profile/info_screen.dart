@@ -97,46 +97,143 @@ class InfoScreen extends ConsumerWidget {
                           final role = user['role'] ?? '';
                           final profilePic = user['profilePic'];
 
-                          return Card(
-                            margin: const EdgeInsets.only(bottom: 10),
-                            color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                              side: BorderSide(
-                                color: isDark ? Colors.white10 : Colors.grey.shade200,
+                          Color roleColor = Colors.grey;
+                          IconData roleIcon = Icons.person;
+                          String roleName = role.toUpperCase();
+
+                          if (docPath == HubPaths.partners) {
+                            roleColor = Colors.teal;
+                            roleIcon = Icons.storefront;
+                            roleName = lang == 'bn' ? 'অফিসিয়াল রিসেলার' : 'Official Reseller';
+                          } else {
+                            if (role == 'admin') {
+                              roleColor = Colors.redAccent;
+                              roleIcon = Icons.admin_panel_settings;
+                              roleName = lang == 'bn' ? 'এডমিন' : 'ADMIN';
+                            } else if (role == 'staff') {
+                              roleColor = Colors.blue;
+                              roleIcon = Icons.assignment_ind;
+                              roleName = lang == 'bn' ? 'স্টাফ' : 'STAFF';
+                            } else if (role == 'logistic') {
+                              roleColor = Colors.orange;
+                              roleIcon = Icons.delivery_dining;
+                              roleName = lang == 'bn' ? 'রাইডার' : 'RIDER';
+                            } else if (role == 'marketing') {
+                              roleColor = Colors.pink;
+                              roleIcon = Icons.campaign;
+                              roleName = lang == 'bn' ? 'মার্কেটিং' : 'MARKETING';
+                            } else if (role == 'accountsFinance') {
+                              roleColor = Colors.purple;
+                              roleIcon = Icons.payments;
+                              roleName = lang == 'bn' ? 'অ্যাকাউন্টস' : 'FINANCE';
+                            }
+                          }
+
+                          return Container(
+                            margin: const EdgeInsets.only(bottom: 12),
+                            decoration: BoxDecoration(
+                              color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 4),
+                                )
+                              ],
+                              border: Border.all(
+                                color: isDark ? Colors.white10 : Colors.grey.shade100,
                               ),
                             ),
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage: (profilePic != null && profilePic.toString().isNotEmpty)
-                                    ? NetworkImage(profilePic)
-                                    : null,
-                                child: (profilePic == null || profilePic.toString().isEmpty)
-                                    ? const Icon(Icons.person)
-                                    : null,
-                              ),
-                              title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold)),
-                              subtitle: Text(
-                                docPath == HubPaths.partners
-                                    ? (lang == 'bn' ? 'অফিসিয়াল রিসেলার' : 'Official Reseller')
-                                    : role.toUpperCase(),
-                                style: const TextStyle(
-                                  color: Colors.blueAccent,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(16),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  border: Border(
+                                    left: BorderSide(color: roleColor, width: 5),
+                                  ),
+                                ),
+                                padding: const EdgeInsets.all(12),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                          color: roleColor.withOpacity(0.3),
+                                          width: 2,
+                                        ),
+                                      ),
+                                      child: CircleAvatar(
+                                        radius: 26,
+                                        backgroundColor: isDark ? Colors.white10 : Colors.grey.shade100,
+                                        backgroundImage: (profilePic != null && profilePic.toString().isNotEmpty)
+                                            ? NetworkImage(profilePic)
+                                            : null,
+                                        child: (profilePic == null || profilePic.toString().isEmpty)
+                                            ? Icon(Icons.person, color: isDark ? Colors.white70 : Colors.black54, size: 24)
+                                            : null,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 16),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            name,
+                                            style: const TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold,
+                                              letterSpacing: 0.2,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 6),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                              color: roleColor.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: Row(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Icon(roleIcon, size: 12, color: roleColor),
+                                                const SizedBox(width: 4),
+                                                Text(
+                                                  roleName,
+                                                  style: TextStyle(
+                                                    color: roleColor,
+                                                    fontSize: 10,
+                                                    fontWeight: FontWeight.w900,
+                                                    letterSpacing: 0.5,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    if (phone.isNotEmpty)
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.green.withOpacity(0.1),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: IconButton(
+                                          icon: const Icon(Icons.phone_rounded, color: Colors.green, size: 20),
+                                          onPressed: () async {
+                                            final url = 'tel:$phone';
+                                            if (await canLaunchUrl(Uri.parse(url))) {
+                                              await launchUrl(Uri.parse(url));
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                  ],
                                 ),
                               ),
-                              trailing: phone.isNotEmpty
-                                  ? IconButton(
-                                      icon: const Icon(Icons.phone, color: Colors.green),
-                                      onPressed: () async {
-                                        final url = 'tel:$phone';
-                                        if (await canLaunchUrl(Uri.parse(url))) {
-                                          await launchUrl(Uri.parse(url));
-                                        }
-                                      },
-                                    )
-                                  : null,
                             ),
                           );
                         },

@@ -65,25 +65,19 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
           phone: _phoneCtrl.text.trim(),
           email: _emailCtrl.text.isNotEmpty ? _emailCtrl.text.trim() : null,
           password: _passCtrl.text.trim(),
-          referralCode: _refCtrl.text.isNotEmpty ? _refCtrl.text.trim() : null);
-
-      if (res != null) {
-        final uid = res.user!.uid;
-        await ref.read(firestoreServiceProvider).updateProfile(uid, {
-          'districtId': _selectedDistrict,
-          'upazilaId': _selectedUpazila,
-          'bloodGroup': _selectedBloodGroup,
-          'isBloodDonor': _isBloodDonor,
-          'bloodContactNumber': _isBloodDonor
+          referralCode: _refCtrl.text.isNotEmpty ? _refCtrl.text.trim() : null,
+          districtId: _selectedDistrict,
+          upazilaId: _selectedUpazila,
+          bloodGroup: _selectedBloodGroup,
+          isBloodDonor: _isBloodDonor,
+          bloodContactNumber: _isBloodDonor
               ? (_bloodPhoneCtrl.text.isNotEmpty
                   ? _bloodPhoneCtrl.text.trim()
                   : _phoneCtrl.text.trim())
-              : null,
-        });
+              : null);
 
-        await ref
-            .read(loyaltyServiceProvider)
-            .addPoints(uid, 'signupPoints', reason: _t('welcomeBonus'));
+      if (res != null) {
+        final uid = res.user!.uid;
 
         if (_isBloodDonor && _selectedBloodGroup != null) {
           await ref.read(firestoreServiceProvider).registerAsDonor({

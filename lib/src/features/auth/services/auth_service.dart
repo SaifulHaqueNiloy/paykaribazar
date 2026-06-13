@@ -149,6 +149,11 @@ class AuthService {
     String? phone,
     required String password,
     String? referralCode,
+    String? districtId,
+    String? upazilaId,
+    String? bloodGroup,
+    bool isBloodDonor = false,
+    String? bloodContactNumber,
   }) async {
     try {
       final normalizedPhone = phone != null ? _normalizePhone(phone) : null;
@@ -196,6 +201,11 @@ class AuthService {
           'myReferralCode': myCode,
           'points': signupBonus, 
           'role': 'customer',
+          'districtId': districtId,
+          'upazilaId': upazilaId,
+          'bloodGroup': bloodGroup,
+          'isBloodDonor': isBloodDonor,
+          'bloodContactNumber': bloodContactNumber,
           'createdAt': FieldValue.serverTimestamp(),
         });
 
