@@ -25,6 +25,12 @@ service cloud.firestore {
 
     function isValidPhone(phone) { return phone.matches('^01[3-9][0-9]{8}$'); }
 
+    // Rate limiting helper
+    function isNotRateLimited(userId) {
+      return !exists(/databases/$(database)/documents/rateLimits/$(userId)) || 
+             request.time > get(/databases/$(database)/documents/rateLimits/$(userId)).data.lastRequest + duration.value(1, "s");
+    }
+
     // ==================== USERS & WISHLIST ====================
     match /users/{userId} {
       allow read: if isAuth() || isAdmin();
@@ -50,7 +56,10 @@ service cloud.firestore {
     // ==================== PRODUCTS (DNA PATH) ====================
     match /hub/data/products/{productId} {
       allow read: if true;
-      allow write: if isAdmin() || isReseller();
+      allow write: if (isAdmin() || isReseller()) && 
+                   isNotRateLimited(request.auth.uid) &&
+                   request.resource.data.keys().hasAll(['name', 'price', 'categoryId']) &&
+                   request.resource.data.price > 0;
       
       match /reviews/{reviewId} {
         allow read: if true;
@@ -148,6 +157,11 @@ service cloud.firestore {
       allow read: if true;
       allow create: if isAuth();
       allow update: if isOwner(resource.data.userId) || isAdmin();
+    }
+
+    // ==================== RATE LIMITS ====================
+    match /rateLimits/{userId} {
+      allow read, write: if isOwner(userId);
     }
 
     // ==================== AI SOVEREIGN RULES ====================

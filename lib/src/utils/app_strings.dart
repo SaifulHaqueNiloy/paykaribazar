@@ -46,6 +46,8 @@ class AppStrings {
     'total': 'সর্বমোট',
     'checkout': 'চেকআউট',
     'appName': 'পাইকারী বাজার',
+    'welcomeMsg': 'পাইকারী বাজারে আপনাকে স্বাগতম!',
+    'guest': 'অতিথি',
     'appNameAdmin': 'পাইকারী বাজার (অ্যাডমিন)',
     'rewardsRankings': 'রিওয়ার্ড ও র‍্যাঙ্কিং',
     'voucherCenter': 'কুপন ও ভাউচার',
@@ -350,6 +352,10 @@ class AppStrings {
     'trustAuthentic': '১০০% আসল পণ্য',
     'trustReturn': '৭ দিনের রিটার্ন',
     'trustFastDelivery': 'দ্রুত ডেলিভারি',
+    'aiError': 'এআই সার্ভিস ত্রুটি',
+    'aiErrorDesc': 'দুঃখিত, এআই প্রসেসিংয়ে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।',
+    'passwordResetSent': 'পাসওয়ার্ড রিসেট লিঙ্ক আপনার ইমেইলে পাঠানো হয়েছে।',
+    'resetPassword': 'রিসেট করুন',
   };
 
   // --- English Translations ---
@@ -363,6 +369,8 @@ class AppStrings {
     'total': 'Total',
     'checkout': 'Checkout',
     'appName': 'Paykari Bazar',
+    'welcomeMsg': 'Welcome to Paykari Bazar!',
+    'guest': 'Guest',
     'appNameAdmin': 'Paykari Bazar (Admin)',
     'rewardsRankings': 'Rewards & Rankings',
     'voucherCenter': 'Coupon & Vouchers',
@@ -667,5 +675,9 @@ class AppStrings {
     'trustAuthentic': '100% Authentic',
     'trustReturn': '7 Days Return',
     'trustFastDelivery': 'Fast Delivery',
+    'aiError': 'AI Service Error',
+    'aiErrorDesc': 'Sorry, there was an issue processing your request with AI. Please try again.',
+    'passwordResetSent': 'Password reset link has been sent to your email.',
+    'resetPassword': 'Reset Password',
   };
 }

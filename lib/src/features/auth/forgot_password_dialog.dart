@@ -33,8 +33,6 @@ class _ForgotPasswordDialogState extends ConsumerState<ForgotPasswordDialog> {
       if (mounted) {
         Navigator.pop(context);
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('পাসওয়ার্ড রিসেট লিঙ্ক আপনার ইমেইলে পাঠানো হয়েছে।'),
           SnackBar(
             content: Text(_t('passwordResetSent')),
             backgroundColor: Colors.green,
@@ -96,7 +94,6 @@ class _ForgotPasswordDialogState extends ConsumerState<ForgotPasswordDialog> {
           ),
           child: _isLoading 
             ? const SizedBox(height: 20, width: 20, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
-            : const Text('রিসেট করুন', style: TextStyle(color: Colors.white)),
             : Text(_t('resetPassword'), style: const TextStyle(color: Colors.white)),
         ),
       ],
