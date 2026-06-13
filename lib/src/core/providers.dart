@@ -103,6 +103,7 @@ final currentUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
 final actualUserDataProvider = currentUserDataProvider;
 
 final allUsersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
+  // Guarded to prevent PERMISSION_DENIED console logs when logged out or during auto-logout redirection
   final user = ref.watch(authStateProvider).value;
   if (user == null) return Stream.value(<Map<String, dynamic>>[]);
   final userData = ref.watch(currentUserDataProvider).value;
@@ -138,6 +139,7 @@ final storesProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
 });
 
 final ordersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
+  // Guarded to prevent PERMISSION_DENIED console logs when logged out or during auto-logout redirection
   final user = ref.watch(authStateProvider).value;
   if (user == null) return Stream.value(<Map<String, dynamic>>[]);
   final userData = ref.watch(currentUserDataProvider).value;
@@ -192,6 +194,7 @@ final groupedAiAuditProvider =
 });
 
 final aiAuditLogsProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
+  // Guarded to prevent PERMISSION_DENIED console logs when logged out or during auto-logout redirection
   final user = ref.watch(authStateProvider).value;
   if (user == null) return Stream.value(<Map<String, dynamic>>[]);
   final userData = ref.watch(currentUserDataProvider).value;

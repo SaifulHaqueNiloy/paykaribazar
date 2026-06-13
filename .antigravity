@@ -1,0 +1,18 @@
+# Antigravity Agent Rules
+
+Any AI agent working on this codebase MUST follow these instructions strictly:
+
+1. **Add Comments for Code Changes:**
+   Whenever you add, modify, or delete any code blocks, you MUST add clear, concise comments explaining the change, the reason behind it, and any design/architecture considerations. Write comments in the local language specified in the global rules (e.g., Bangla/English) or default to clear technical English.
+
+2. **Language Rules:**
+   Always check user rules for response language requirements (e.g., Bangla and short explanations).
+
+3. **No Placeholders:**
+   Never use placeholders or mock data unless explicitly requested. Always implement fully functional, production-ready code.
+
+4. **Verify before completing:**
+   Always run diagnostics/analysis (e.g., `flutter analyze`) to ensure the codebase remains clean and error-free after making changes.
+
+5. **Never Push to Git Without Permission:**
+   You MUST NEVER run `git push` or deploy any changes unless the user explicitly commands or gives permission to do so. Always ask for permission before modifying remote states.

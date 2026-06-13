@@ -19,6 +19,7 @@ class DatabaseSeeder {
         'used_today': 0,
         'daily_limit': 5000,
         'status': 'active',
+        // Changed to Timestamp.now() because Firestore doesn't support FieldValue.serverTimestamp() inside lists/arrays
         'last_used': Timestamp.now(),
       },
       {

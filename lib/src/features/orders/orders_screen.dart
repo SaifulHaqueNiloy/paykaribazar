@@ -34,6 +34,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       collectionPath: 'orders',
       pageSize: 10,
       queryBuilder: (query) {
+        // Changed filter key from 'buyerId' to 'customerUid' to match security rules and schema
         var q = query.where('customerUid', isEqualTo: uid);
         if (_activeFilter != 'All') {
           q = q.where('status', isEqualTo: _activeFilter);
