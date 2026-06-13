@@ -282,7 +282,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                                 .update({
                               'heroGifts.megaDrawDate': ctrl.text.trim()
                             });
-                            if (mounted) Navigator.pop(c);
+                            if (c.mounted) Navigator.pop(c);
                           },
                           child: Text(_t('save').toUpperCase())),
                     ],
@@ -326,7 +326,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                                       .update({
                                     'heroGifts.$key': nCtrl.text.trim()
                                   });
-                                  if (mounted) Navigator.pop(c);
+                                  if (c.mounted) Navigator.pop(c);
                                 },
                                 child: Text(_t('save').toUpperCase()))
                           ]));
@@ -459,7 +459,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                               : currentCount,
                           'createdAt': FieldValue.serverTimestamp()
                         }, SetOptions(merge: true));
-                        if (mounted) Navigator.pop(c);
+                        if (c.mounted) Navigator.pop(c);
                       },
                       child: Text(_t('save').toUpperCase()))
                 ]));
@@ -531,7 +531,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                               .read(firestoreServiceProvider)
                               .updateAppSettings(docName, data);
                         }
-                        if (mounted) Navigator.pop(c);
+                        if (c.mounted) Navigator.pop(c);
                       },
                       child: Text(_t('save').toUpperCase()))
                 ]));
@@ -684,7 +684,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                               .update({
                             'banners': FieldValue.arrayUnion([ctrl.text.trim()])
                           });
-                          if (mounted) Navigator.pop(c);
+                          if (c.mounted) Navigator.pop(c);
                         }
                       },
                       child: Text(_t('save').toUpperCase()))
@@ -824,7 +824,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                                   'imageUrl': finalUrl
                                 });
                               }
-                              if (mounted) Navigator.pop(c);
+                              if (c.mounted) Navigator.pop(c);
                             }
                           },
                           child: Text(_t('save').toUpperCase()))
@@ -1011,7 +1011,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                                 .collection('settings')
                                 .doc('promotions')
                                 .update({'promoCodes': updated});
-                            if (mounted) Navigator.pop(c);
+                            if (c.mounted) Navigator.pop(c);
                           },
                           child: Text(_t('save').toUpperCase()))
                     ])));
@@ -1090,7 +1090,7 @@ class _MarketingTabState extends ConsumerState<MarketingTab> {
                   .collection('settings')
                   .doc('promotions')
                   .update({'megaDrawWinners': winners});
-              if (mounted) Navigator.pop(c);
+              if (c.mounted) Navigator.pop(c);
             },
             child: Text(_t('save').toUpperCase()),
           ),

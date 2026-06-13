@@ -239,10 +239,10 @@ class _PremiumFloatingCartState extends ConsumerState<PremiumFloatingCart>
             ),
 
             // CHECKOUT ARROW + DRAG INDICATOR
-            Positioned(
+            const Positioned(
               right: 16,
               bottom: 12,
-              child: const Tooltip(
+              child: Tooltip(
                 message: 'Tap to checkout | Long press to move',
                 child: Icon(
                   Icons.drag_indicator_rounded,
@@ -293,11 +293,11 @@ class _PremiumFloatingCartState extends ConsumerState<PremiumFloatingCart>
               ),
             ),
             // Cardinal directions (N, S, E, W)
-            Positioned(
+            const Positioned(
               top: 2,
               child: Text(
                 'N',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 8,
                   fontWeight: FontWeight.bold,
                   color: AppStyles.accentColor,
@@ -394,7 +394,7 @@ class QiblaHandPainter extends CustomPainter {
     );
 
     // Arrow tip
-    final arrowSize = 3.0;
+    const arrowSize = 3.0;
     final tipPoint = Offset(center.dx, center.dy - handLength);
 
     canvas.drawPath(

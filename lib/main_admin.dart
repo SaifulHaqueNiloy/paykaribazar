@@ -22,31 +22,32 @@ void main() {
     
     // Visual Safety Net
     ErrorWidget.builder = (FlutterErrorDetails details) {
-      return Material(
-        child: Container(
-          color: AppStyles.darkBackgroundColor,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.bolt_rounded, color: AppStyles.primaryColor, size: 60),
-              const SizedBox(height: 20),
-              const Text(
-                'দুঃখিত! একটি সমস্যা হয়েছে।',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'আমাদের এআই ইঞ্জিন সমস্যাটি সমাধানের চেষ্টা করছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।',
-                style: TextStyle(fontSize: 14, color: Colors.white70),
-                textAlign: TextAlign.center,
-              ),
-              if (dotenv.env['DEBUG'] == 'true') ...[
+      return Directionality(
+        textDirection: TextDirection.ltr,
+        child: Material(
+          child: Container(
+            color: AppStyles.darkBackgroundColor,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.bolt_rounded, color: AppStyles.primaryColor, size: 60),
+                const SizedBox(height: 20),
+                const Text(
+                  'দুঃখিত! একটি সমস্যা হয়েছে।',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'আমাদের এআই ইঞ্জিন সমস্যাটি সমাধানের চেষ্টা করছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।',
+                  style: TextStyle(fontSize: 14, color: Colors.white70),
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 20),
                 Text(details.exception.toString(), style: const TextStyle(color: Colors.grey, fontSize: 10)),
-              ]
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -66,8 +67,18 @@ void main() {
     try {
       await DatabaseSeeder.seedAiQuota();
       debugPrint('AI Quota Seeded successfully');
+      
+      // Auto seed/sync locations if database is empty or has no districts
+      final snap = await FirebaseFirestore.instance.collection(HubPaths.locations)
+          .where('type', isEqualTo: 'district')
+          .limit(1)
+          .get();
+      if (snap.docs.isEmpty) {
+        await DatabaseSeeder.seedLocations();
+        debugPrint('✅ Auto-seeded locations at startup');
+      }
     } catch (e) {
-      debugPrint('Seeding Error: $e');
+      debugPrint('Seeding Error / Auto-seed check failed: $e');
     }
 
     // DNA ENFORCED

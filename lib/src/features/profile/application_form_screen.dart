@@ -51,8 +51,11 @@ class _ApplicationFormScreenState extends State<ApplicationFormScreen> {
     String title = 'Apply for ';
     if (widget.role == 'reseller') {
       title += 'Reseller';
-    } else if (widget.role == 'rider') title += 'Delivery Person';
-    else title += 'Office Staff';
+    } else if (widget.role == 'rider') {
+      title += 'Delivery Person';
+    } else {
+      title += 'Office Staff';
+    }
 
     return Scaffold(
       backgroundColor: isD ? AppStyles.darkBackgroundColor : AppStyles.backgroundColor,

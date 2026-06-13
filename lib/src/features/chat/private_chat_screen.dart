@@ -78,6 +78,7 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
       final url = await refStorage.getDownloadURL();
       _send(imageUrl: url, text: '');
     } catch (e) {
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
     } finally {
       setState(() => _isUploading = false);

@@ -454,7 +454,7 @@ class _LogisticsTabState extends ConsumerState<LogisticsTab> {
                         });
                         await ref.read(firestoreService).addLocation(data);
                       }
-                      if (mounted) Navigator.pop(c);
+                      if (c.mounted) Navigator.pop(c);
                     },
                     child: Text(_t('save').toUpperCase())),
               ],

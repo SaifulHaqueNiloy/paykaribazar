@@ -45,7 +45,6 @@ void main() {
         final pageState = PaginationState<Product>(
           items: products,
           cursor: 'cursor1',
-          hasMore: true,
         );
 
         notifier = ProductsPaginationNotifier(
@@ -61,7 +60,7 @@ void main() {
           descending: any(named: 'descending'),
         )).thenAnswer((_) async => pageState);
 
-        await notifier.fetchFirstPage(pageSize: 20);
+        await notifier.fetchFirstPage();
         expect(notifier.state.value, isNotNull);
         expect(notifier.state.value!.items.length, equals(2));
         expect(notifier.state.value!.cursor, equals('cursor1'));
@@ -82,7 +81,7 @@ void main() {
           descending: any(named: 'descending'),
         )).thenThrow(Exception('Network error'));
 
-        await notifier.fetchFirstPage(pageSize: 20);
+        await notifier.fetchFirstPage();
         expect(notifier.state.hasError, isTrue);
       });
     });
@@ -93,7 +92,6 @@ void main() {
         final firstPage = PaginationState<Product>(
           items: [_createProduct('p1', 'SKU1', now)],
           cursor: 'cursor1',
-          hasMore: true,
         );
         final secondPage = PaginationState<Product>(
           items: [_createProduct('p2', 'SKU2', now)],
@@ -114,7 +112,7 @@ void main() {
           descending: any(named: 'descending'),
         )).thenAnswer((_) async => firstPage);
 
-        await notifier.fetchFirstPage(pageSize: 20);
+        await notifier.fetchFirstPage();
         expect(notifier.state.value!.items.length, equals(1));
 
         when(() => mockPagination.getNextPage<Product>(
@@ -154,7 +152,7 @@ void main() {
           descending: any(named: 'descending'),
         )).thenAnswer((_) async => firstPage);
 
-        await notifier.fetchFirstPage(pageSize: 20);
+        await notifier.fetchFirstPage();
         await notifier.fetchNextPage();
 
         expect(notifier.state.value!.items.length, equals(1));
@@ -168,7 +166,6 @@ void main() {
         final pageState = PaginationState<Product>(
           items: [_createProduct('p1', 'SKU1', now)],
           cursor: 'cursor1',
-          hasMore: true,
         );
 
         notifier = ProductsPaginationNotifier(
@@ -184,7 +181,7 @@ void main() {
           descending: any(named: 'descending'),
         )).thenAnswer((_) async => pageState);
 
-        await notifier.fetchFirstPage(pageSize: 20);
+        await notifier.fetchFirstPage();
         notifier.reset();
         expect(notifier.state.value, isNull);
         expect(notifier.state.isLoading, isTrue);
@@ -220,7 +217,6 @@ void main() {
         final pageState = PaginationState<Order>(
           items: orders,
           cursor: 'cursor1',
-          hasMore: true,
         );
 
         notifier = OrdersPaginationNotifier(
@@ -238,7 +234,7 @@ void main() {
           descending: any(named: 'descending'),
         )).thenAnswer((_) async => pageState);
 
-        await notifier.fetchFirstPage(pageSize: 15, userOrdersOnly: true);
+        await notifier.fetchFirstPage();
         expect(notifier.state.value, isNotNull);
         expect(notifier.state.value!.items.length, equals(2));
       });
@@ -258,7 +254,6 @@ void main() {
         notifier = OrdersPaginationNotifier(
           orderService: null,
           paginationService: mockPagination,
-          userId: null,
         );
 
         when(() => mockPagination.getFilteredFirstPage<Order>(
@@ -270,7 +265,7 @@ void main() {
           descending: any(named: 'descending'),
         )).thenAnswer((_) async => pageState);
 
-        await notifier.fetchFirstPage(pageSize: 15, userOrdersOnly: false);
+        await notifier.fetchFirstPage(userOrdersOnly: false);
         expect(notifier.state.value!.items.length, equals(2));
       });
     });
@@ -347,7 +342,6 @@ Order _createOrder(String id, String customerUid, DateTime now) {
     total: 110.0,
     address: 'Addr',
     paymentMethod: 'COD',
-    status: OrderStatus.pending,
     createdAt: now,
     updatedAt: now,
   );

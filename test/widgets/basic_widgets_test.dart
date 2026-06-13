@@ -735,7 +735,7 @@ void main() {
         await tester.pumpWidget(
           MaterialApp(
             home: PopScope(
-              onPopInvoked: (didPop) {
+              onPopInvokedWithResult: (didPop, result) {
                 if (didPop) {
                   onWillPopCalled = true;
                 }

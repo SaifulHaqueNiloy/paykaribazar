@@ -44,8 +44,11 @@ class _ForgotPasswordScreenState extends ConsumerState<ForgotPasswordScreen> {
         final String p = id.replaceAll(RegExp(r'[^0-9]'), '');
         if (p.length == 10) {
           searchId = '0$p';
-        } else if (p.length == 11) searchId = p;
-        else throw _t('invalidPhoneError');
+        } else if (p.length == 11) {
+          searchId = p;
+        } else {
+          throw _t('invalidPhoneError');
+        }
       }
 
       final col = FirebaseFirestore.instance.collection('users');

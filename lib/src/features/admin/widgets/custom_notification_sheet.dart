@@ -38,6 +38,7 @@ class _CustomNotificationSheetState
               title: _titleCtrl.text,
               body: _bodyCtrl.text,
             );
+            if (!context.mounted) return;
             Navigator.pop(context);
           },
           child: const Text('SEND NOW'),

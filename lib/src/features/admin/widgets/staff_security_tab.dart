@@ -136,10 +136,12 @@ class _StaffSecurityTabState extends ConsumerState<StaffSecurityTab> {
                     staffId: staffIdCtrl.text,
                     password: passCtrl.text,
                     role: role);
-                if (mounted) Navigator.pop(c);
+                if (c.mounted) {
+                  Navigator.of(c).pop();
+                }
               } catch (e) {
-                if (mounted) {
-                  ScaffoldMessenger.of(context)
+                if (c.mounted) {
+                  ScaffoldMessenger.of(c)
                       .showSnackBar(SnackBar(content: Text(e.toString())));
                 }
               }
@@ -172,7 +174,9 @@ class _StaffSecurityTabState extends ConsumerState<StaffSecurityTab> {
               await ref.read(authServiceProvider).updateStaffCredentials(
                   user['uid'] ?? user['id'],
                   phone: phoneCtrl.text);
-              if (mounted) Navigator.pop(c);
+              if (c.mounted) {
+                Navigator.of(c).pop();
+              }
             },
             child: const Text('UPDATE CREDENTIALS'),
           ),

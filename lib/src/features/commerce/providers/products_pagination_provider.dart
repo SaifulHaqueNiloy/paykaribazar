@@ -31,8 +31,6 @@ class ProductsPaginationNotifier
             doc.id,
           ),
           pageSize: pageSize,
-          orderBy: 'createdAt',
-          descending: true,
         );
       } else {
         pageState = await paginationService.getFilteredFirstPage<Product>(

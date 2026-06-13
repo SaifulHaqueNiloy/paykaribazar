@@ -130,7 +130,7 @@ class _TeamsTabState extends ConsumerState<TeamsTab> {
           selectedShops.remove(name);
         } }); }, controlAffinity: ListTileControlAffinity.leading, dense: true); })]
       ])),
-      actions: [TextButton(onPressed: () => Navigator.pop(c), child: const Text('CANCEL')), ElevatedButton(onPressed: () async { await FirebaseFirestore.instance.collection(HubPaths.users).doc(user['uid'] ?? user['id']).update({'role': selectedRole, 'approvedShops': selectedRole == 'reseller' ? selectedShops : FieldValue.delete()}); Navigator.pop(c); }, child: const Text('UPDATE'))],
+      actions: [TextButton(onPressed: () => Navigator.pop(c), child: const Text('CANCEL')), ElevatedButton(onPressed: () async { await FirebaseFirestore.instance.collection(HubPaths.users).doc(user['uid'] ?? user['id']).update({'role': selectedRole, 'approvedShops': selectedRole == 'reseller' ? selectedShops : FieldValue.delete()}); if (c.mounted) Navigator.pop(c); }, child: const Text('UPDATE'))],
     )));
   }
 

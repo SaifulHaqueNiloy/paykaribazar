@@ -19,7 +19,7 @@ flutter analyze
 flutter pub get
 
 # 2. Generate code (if needed)
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 
 # 3. Run all tests
 flutter test test/ --coverage
@@ -68,10 +68,10 @@ Got dependencies!
 
 ```bash
 # Full clean build
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 
 # Watch mode (useful during development)
-flutter pub run build_runner watch
+dart run build_runner watch
 ```
 
 **Expected Output:**

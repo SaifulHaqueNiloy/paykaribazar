@@ -147,7 +147,7 @@ class _EmergencyTabState extends ConsumerState<EmergencyTab>
                 } else {
                   await doc.reference.update(data);
                 }
-                if (mounted) Navigator.pop(c);
+                if (c.mounted) Navigator.pop(c);
               },
               child: const Text('SAVE')),
         ],
@@ -241,7 +241,7 @@ class _EmergencyTabState extends ConsumerState<EmergencyTab>
                 } else {
                   await doc.reference.update(data);
                 }
-                if (mounted) Navigator.pop(c);
+                if (c.mounted) Navigator.pop(c);
               },
               child: const Text('SAVE')),
         ],
@@ -329,7 +329,7 @@ class _EmergencyTabState extends ConsumerState<EmergencyTab>
                 } else {
                   await doc.reference.update(data);
                 }
-                if (mounted) Navigator.pop(c);
+                if (c.mounted) Navigator.pop(c);
               },
               child: const Text('SAVE')),
         ],

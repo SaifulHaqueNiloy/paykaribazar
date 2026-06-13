@@ -55,6 +55,29 @@ if ! command -v git &> /dev/null; then
 fi
 print_success "Git is installed"
 
+# Check for Java 17+
+if command -v java &> /dev/null; then
+    JAVA_VER=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2 | cut -d'.' -f1)
+    if [ "$JAVA_VER" -lt 17 ]; then
+        print_error "Java 17 or higher is required (Found: $JAVA_VER)"
+        exit 1
+    fi
+    print_success "Java $JAVA_VER is installed"
+else
+    print_error "Java is not installed (Required: Java 17)"
+    exit 1
+fi
+
+# Check for Dart 3.6.0+
+if command -v dart &> /dev/null; then
+    DART_VER=$(dart --version 2>&1 | cut -d' ' -f4)
+    if [[ "$DART_VER" < "3.6.0" ]]; then
+        print_error "Dart 3.6.0 or higher is required (Found: $DART_VER). Please update Flutter."
+        exit 1
+    fi
+    print_success "Dart $DART_VER is installed"
+fi
+
 # Check if repository is linked to GitHub
 if git config --get remote.origin.url | grep -q "github.com"; then
     REPO_URL=$(git config --get remote.origin.url)

@@ -493,6 +493,7 @@ jobs:
 
       - name: Release Customer via Shorebird
         run: |
+          cp shorebird_customer.yaml shorebird.yaml
           shorebird release android \
             -t lib/main_customer.dart \
             --artifact apk \
@@ -501,6 +502,7 @@ jobs:
 
       - name: Release Admin via Shorebird
         run: |
+          cp shorebird_admin.yaml shorebird.yaml
           shorebird release android \
             -t lib/main_admin.dart \
             --artifact apk \

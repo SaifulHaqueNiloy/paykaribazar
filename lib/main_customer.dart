@@ -14,6 +14,7 @@ import 'firebase_options.dart';
 import 'src/di/service_initializer.dart';
 import 'src/di/service_locator.dart';
 import 'src/di/providers.dart';
+import 'src/services/database_seeder.dart';
 import 'src/services/backup_service.dart';
 import 'src/shared/services/update_service.dart';
 import 'src/utils/router_customer.dart';
@@ -47,33 +48,34 @@ void main() {
 
     // Visual Safety Net
     ErrorWidget.builder = (FlutterErrorDetails details) {
-      return Material(
-        child: Container(
-          color: AppStyles.backgroundColor,
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.bolt_rounded,
-                  color: AppStyles.primaryColor, size: 60),
-              const SizedBox(height: 20),
-              const Text(
-                'দুঃখিত! একটি সমস্যা হয়েছে।',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'আমাদের এআই ইঞ্জিন সমস্যাটি সমাধানের চেষ্টা করছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।',
-                style: TextStyle(fontSize: 14),
-                textAlign: TextAlign.center,
-              ),
-              if (dotenv.env['DEBUG'] == 'true') ...[
+      return Directionality(
+        textDirection: TextDirection.ltr,
+        child: Material(
+          child: Container(
+            color: AppStyles.backgroundColor,
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(Icons.bolt_rounded,
+                    color: AppStyles.primaryColor, size: 60),
+                const SizedBox(height: 20),
+                const Text(
+                  'দুঃখিত! একটি সমস্যা হয়েছে।',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'আমাদের এআই ইঞ্জিন সমস্যাটি সমাধানের চেষ্টা করছে। অনুগ্রহ করে কিছুক্ষণ পর আবার চেষ্টা করুন।',
+                  style: TextStyle(fontSize: 14),
+                  textAlign: TextAlign.center,
+                ),
                 const SizedBox(height: 20),
                 Text(details.exception.toString(),
                     style: const TextStyle(color: Colors.grey, fontSize: 10)),
-              ]
-            ],
+              ],
+            ),
           ),
         ),
       );
@@ -88,6 +90,20 @@ void main() {
 
     // Initialize all services
     await ServiceInitializer.initialize();
+
+    // Auto seed/sync locations if database is empty or has no districts
+    try {
+      final snap = await FirebaseFirestore.instance.collection(HubPaths.locations)
+          .where('type', isEqualTo: 'district')
+          .limit(1)
+          .get();
+      if (snap.docs.isEmpty) {
+        await DatabaseSeeder.seedLocations();
+        debugPrint('✅ Auto-seeded locations at startup');
+      }
+    } catch (e) {
+      debugPrint('⚠️ Auto-seed check skipped/failed: $e');
+    }
 
     // Initialize Workmanager
     try {

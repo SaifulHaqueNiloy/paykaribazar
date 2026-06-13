@@ -58,7 +58,7 @@ void main() {
 
       test('page slicing trims extra document', () {
         final mockDocs = List.generate(21, (i) => _createMockDocument('doc$i', {}));
-        final pageSize = 20;
+        const pageSize = 20;
         final hasMore = mockDocs.length > pageSize;
         final docs = hasMore ? mockDocs.take(pageSize).toList() : mockDocs;
         expect(docs.length, equals(pageSize));
@@ -98,7 +98,7 @@ void main() {
 
         // Filter: where('categoryId', '==', 'cat1')
         final filtered = mockDocs.where((doc) {
-          final data = doc.data() as Map<String, dynamic>;
+          final data = doc.data();
           return data['categoryId'] == 'cat1';
         }).toList();
 
@@ -119,7 +119,7 @@ void main() {
 
         // Filter: categoryId == 'cat1' AND isFlashSale == true
         final filtered = mockDocs.where((doc) {
-          final data = doc.data() as Map<String, dynamic>;
+          final data = doc.data();
           return data['categoryId'] == 'cat1' && (data['isFlashSale'] as bool);
         }).toList();
 

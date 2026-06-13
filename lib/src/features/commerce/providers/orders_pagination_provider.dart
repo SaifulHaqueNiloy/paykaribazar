@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart' hide Order;
 import '../../../core/services/firebase_pagination_service.dart';
 import '../../../models/order_model.dart';
 
@@ -41,8 +40,6 @@ class OrdersPaginationNotifier
             ...doc.data() as Map<String, dynamic>,
           }),
           pageSize: pageSize,
-          orderBy: 'createdAt',
-          descending: true,
         );
       } else {
         pageState = await paginationService.getFilteredFirstPage<Order>(
@@ -59,8 +56,6 @@ class OrdersPaginationNotifier
             ...doc.data() as Map<String, dynamic>,
           }),
           pageSize: pageSize,
-          orderBy: 'createdAt',
-          descending: true,
         );
       }
 
@@ -104,8 +99,6 @@ class OrdersPaginationNotifier
             ...doc.data() as Map<String, dynamic>,
           }),
           pageSize: currentState.pageSize,
-          orderBy: 'createdAt',
-          descending: true,
         );
       } else {
         pageState = await paginationService.getFilteredNextPage<Order>(
@@ -123,8 +116,6 @@ class OrdersPaginationNotifier
             ...doc.data() as Map<String, dynamic>,
           }),
           pageSize: currentState.pageSize,
-          orderBy: 'createdAt',
-          descending: true,
         );
       }
 

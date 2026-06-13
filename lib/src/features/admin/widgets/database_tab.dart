@@ -442,7 +442,9 @@ class _DatabaseTabState extends State<DatabaseTab> {
             DateTime? date;
             if (data['createdAt'] is Timestamp) {
               date = (data['createdAt'] as Timestamp).toDate();
-            } else if (data['timestamp'] is Timestamp) date = (data['timestamp'] as Timestamp).toDate();
+            } else if (data['timestamp'] is Timestamp) {
+              date = (data['timestamp'] as Timestamp).toDate();
+            }
             
             if (date != null) {
               final String key = '${date.day}/${date.month}';
@@ -561,8 +563,10 @@ class _DatabaseTabState extends State<DatabaseTab> {
                 }
               });
               await doc.reference.update(updatedData);
-              if (mounted) {
+              if (c.mounted) {
                 Navigator.pop(c);
+              }
+              if (mounted) {
                 Navigator.pop(context);
                 _loadInitialDocs();
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Record updated successfully')));
@@ -599,9 +603,13 @@ class _DatabaseTabState extends State<DatabaseTab> {
                   final val = valCtrl.text;
                   if (val.toLowerCase() == 'true') {
                     newData[keyCtrl.text] = true;
-                  } else if (val.toLowerCase() == 'false') newData[keyCtrl.text] = false;
-                  else if (num.tryParse(val) != null) newData[keyCtrl.text] = num.parse(val);
-                  else newData[keyCtrl.text] = val;
+                  } else if (val.toLowerCase() == 'false') {
+                    newData[keyCtrl.text] = false;
+                  } else if (num.tryParse(val) != null) {
+                    newData[keyCtrl.text] = num.parse(val);
+                  } else {
+                    newData[keyCtrl.text] = val;
+                  }
                   keyCtrl.clear(); valCtrl.clear();
                 });
               }
@@ -612,7 +620,7 @@ class _DatabaseTabState extends State<DatabaseTab> {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('CANCEL', style: TextStyle(fontSize: 11))),
           ElevatedButton(onPressed: newData.isEmpty ? null : () async {
             await FirebaseFirestore.instance.collection(widget.collectionName).add({...newData, 'createdAt': FieldValue.serverTimestamp()});
-            if (mounted) {
+            if (context.mounted) {
               Navigator.pop(context);
               _loadInitialDocs();
             }
@@ -632,7 +640,7 @@ class _DatabaseTabState extends State<DatabaseTab> {
           TextButton(onPressed: () => Navigator.pop(context), child: const Text('CANCEL', style: TextStyle(fontSize: 11))),
           ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Colors.red), onPressed: () async {
             await doc.reference.delete();
-            if (mounted) {
+            if (context.mounted) {
               Navigator.pop(context);
               _loadInitialDocs();
             }

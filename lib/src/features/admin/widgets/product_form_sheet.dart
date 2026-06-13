@@ -25,7 +25,7 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
   File? _image;
   bool _isLoading = false;
   bool _isAiAnalyzing = false; // ⭐ NEW: Track AI analysis state
-  String _catId = 'grocery', _catName = 'Grocery', _catNameBn = 'মুদি';
+  final String _catId = 'grocery', _catName = 'Grocery', _catNameBn = 'মুদি';
 
   bool _isFlashSale = false;
   bool _isNewArrival = true;

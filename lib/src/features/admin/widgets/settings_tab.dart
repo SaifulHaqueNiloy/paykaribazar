@@ -179,7 +179,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
             onPressed: () async {
               final newLimit = int.tryParse(ctrl.text) ?? currentLimit;
               await _updateApiQuotaEntry(id, {'daily_limit': newLimit});
-              if (mounted) Navigator.pop(c);
+              if (c.mounted) Navigator.pop(c);
             },
             child: const Text('SAVE'),
           )
@@ -209,6 +209,7 @@ class _SettingsTabState extends ConsumerState<SettingsTab> {
 
     if (updated) {
       await docRef.update({'keys': keys});
+      if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Quota updated successfully!')));
     }
   }

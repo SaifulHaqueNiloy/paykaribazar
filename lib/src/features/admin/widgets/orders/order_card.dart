@@ -359,7 +359,7 @@ class _OrderCardState extends ConsumerState<OrderCard> {
                                   .collection('orders')
                                   .doc(widget.order['id'].toString())
                                   .update(updateData);
-                              Navigator.pop(ctx);
+                              if (ctx.mounted) Navigator.pop(ctx);
                             },
                           );
                         },
