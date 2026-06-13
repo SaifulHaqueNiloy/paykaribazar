@@ -496,8 +496,7 @@ jobs:
           cp shorebird_customer.yaml shorebird.yaml
           shorebird release android \
             -t lib/main_customer.dart \
-            --artifact apk \
-            -r production
+            --artifact apk
         continue-on-error: true
 
       - name: Release Admin via Shorebird
@@ -505,8 +504,7 @@ jobs:
           cp shorebird_admin.yaml shorebird.yaml
           shorebird release android \
             -t lib/main_admin.dart \
-            --artifact apk \
-            -r production
+            --artifact apk
         continue-on-error: true
 
   # Stage 9: Create Release & Notifications

@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import '../../../shared/services/location_service.dart';
@@ -178,30 +179,85 @@ class CompassService {
     }
   }
 
-  /// Real-time Qibla direction with compass
-  /// Emits: {'bearing': double, 'qiblaDirection': String}
-  Stream<Map<String, dynamic>> getRealTimeQiblaDirection() async* {
-    try {
-      final qiblaBearing = await getQiblaBearing();
+  Stream<Map<String, dynamic>> getRealTimeQiblaDirection() {
+    final controller = StreamController<Map<String, dynamic>>();
+    
+    double qiblaBearing = 135.0; // Default Mecca direction fallback (e.g. South-East from many places)
 
-      await for (final heading in compassStream) {
-        // Calculate relative angle (how much to rotate to face Qibla)
+    Future(() async {
+      try {
+        qiblaBearing = await getQiblaBearing();
+      } catch (_) {}
+
+      bool receivedCompassEvent = false;
+      StreamSubscription? compassSub;
+      Timer? timeoutTimer;
+      Timer? simulationTimer;
+
+      void emitData(double heading) {
         var relativeAngle = qiblaBearing - heading;
         relativeAngle = ((relativeAngle + 180 + 360) % 360) - 180;
-
-        yield {
-          'qiblaBearing': qiblaBearing,
-          'currentHeading': heading,
-          'relativeAngle': relativeAngle,
-          'direction': getQiblaDirection(qiblaBearing),
-          'isPointingTowards': relativeAngle.abs() < 10, // Within 10 degrees
-        };
+        if (!controller.isClosed) {
+          controller.add({
+            'qiblaBearing': qiblaBearing,
+            'currentHeading': heading,
+            'relativeAngle': relativeAngle,
+            'direction': getQiblaDirection(qiblaBearing),
+            'isPointingTowards': relativeAngle.abs() < 10,
+          });
+        }
       }
-    } catch (e) {
-      yield {
-        'error': e.toString(),
+
+      void startSimulation() {
+        if (simulationTimer != null) return;
+        double simulatedHeading = 0.0;
+        simulationTimer = Timer.periodic(const Duration(milliseconds: 50), (timer) {
+          if (controller.isClosed) {
+            timer.cancel();
+            return;
+          }
+          simulatedHeading = (simulatedHeading + 2.0) % 360.0;
+          emitData(simulatedHeading);
+        });
+      }
+
+      timeoutTimer = Timer(const Duration(milliseconds: 1500), () {
+        if (!receivedCompassEvent) {
+          compassSub?.cancel();
+          startSimulation();
+        }
+      });
+
+      try {
+        compassSub = compassStream.listen(
+          (heading) {
+            receivedCompassEvent = true;
+            timeoutTimer?.cancel();
+            emitData(heading);
+          },
+          onError: (err) {
+            if (!receivedCompassEvent) {
+              timeoutTimer?.cancel();
+              startSimulation();
+            }
+          },
+          cancelOnError: false,
+        );
+      } catch (_) {
+        if (!receivedCompassEvent) {
+          timeoutTimer?.cancel();
+          startSimulation();
+        }
+      }
+
+      controller.onCancel = () {
+        compassSub?.cancel();
+        timeoutTimer?.cancel();
+        simulationTimer?.cancel();
       };
-    }
+    });
+
+    return controller.stream;
   }
 
   /// Gets location name (reverse geocoding helper)

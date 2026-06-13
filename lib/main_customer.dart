@@ -102,7 +102,9 @@ void main() {
         debugPrint('✅ Auto-seeded all default database collections at startup');
       } else {
         final infoSnap = await FirebaseFirestore.instance.doc(HubPaths.aboutUs).get();
-        if (!infoSnap.exists) {
+        final partnersSnap = await FirebaseFirestore.instance.doc(HubPaths.partners).get();
+        final staffSnap = await FirebaseFirestore.instance.doc(HubPaths.staffList).get();
+        if (!infoSnap.exists || !partnersSnap.exists || !staffSnap.exists) {
           await DatabaseSeeder.seedStaticInfo();
           debugPrint('✅ Auto-seeded static info documents');
         }

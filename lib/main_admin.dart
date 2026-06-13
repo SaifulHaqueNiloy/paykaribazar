@@ -14,6 +14,7 @@ import 'src/utils/globals.dart';
 import 'src/utils/update_dialog.dart';
 import 'src/di/providers.dart';
 import 'src/di/service_initializer.dart';
+import 'src/core/constants/paths.dart';
 import 'src/services/database_seeder.dart'; // Import Seeder
 
 void main() {
@@ -76,6 +77,14 @@ void main() {
       if (snap.docs.isEmpty) {
         await DatabaseSeeder.seedLocations();
         debugPrint('✅ Auto-seeded locations at startup');
+      }
+
+      final infoSnap = await FirebaseFirestore.instance.doc(HubPaths.aboutUs).get();
+      final partnersSnap = await FirebaseFirestore.instance.doc(HubPaths.partners).get();
+      final staffSnap = await FirebaseFirestore.instance.doc(HubPaths.staffList).get();
+      if (!infoSnap.exists || !partnersSnap.exists || !staffSnap.exists) {
+        await DatabaseSeeder.seedStaticInfo();
+        debugPrint('✅ Auto-seeded static info documents');
       }
     } catch (e) {
       debugPrint('Seeding Error / Auto-seed check failed: $e');

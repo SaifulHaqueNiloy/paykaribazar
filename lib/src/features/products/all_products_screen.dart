@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/core/firebase/firestore_paginator.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import 'package:paykari_bazar/src/features/home/widgets/home_widgets.dart';
 import '../../utils/styles.dart';
+
+enum ProductViewMode { category, shop }
 
 class AllProductsScreen extends ConsumerStatefulWidget {
   const AllProductsScreen({super.key});
@@ -18,7 +21,9 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
   late FirestorePaginator<Map<String, dynamic>> _paginator;
   final ScrollController _scrollController = ScrollController();
   String? _selectedCategory;
-  int _gridColumns = 2; // Default per instruction
+  String? _selectedShopId;
+  int _gridColumns = 2;
+  ProductViewMode _viewMode = ProductViewMode.category;
 
   @override
   void initState() {
@@ -26,6 +31,12 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
     _loadGridPreference();
     _initPaginator();
     _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _loadGridPreference() async {
@@ -45,6 +56,14 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
   void _initPaginator() {
     _paginator = FirestorePaginator<Map<String, dynamic>>(
       collectionPath: HubPaths.products,
+      queryBuilder: (query) {
+        if (_viewMode == ProductViewMode.category) {
+          return _selectedCategory == null
+              ? query
+              : query.where('categoryId', isEqualTo: _selectedCategory);
+        }
+        return _selectedShopId == null ? query : query.where('shopId', isEqualTo: _selectedShopId);
+      },
       fromFirestore: (doc) {
         final data = doc.data() as Map<String, dynamic>;
         data['id'] = doc.id;
@@ -52,6 +71,19 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
       },
     );
 
+    _paginator.fetchFirstPage().then((_) {
+      if (mounted) setState(() {});
+    });
+  }
+
+  Future<void> _switchViewMode(ProductViewMode mode) async {
+    if (_viewMode == mode) return;
+    setState(() {
+      _viewMode = mode;
+      _selectedCategory = null;
+      _selectedShopId = null;
+    });
+    _paginator.refresh();
     _paginator.fetchFirstPage().then((_) {
       if (mounted) setState(() {});
     });
@@ -69,12 +101,6 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
   }
 
   @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final categoriesAsync = ref.watch(categoriesProvider);
@@ -87,6 +113,28 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
+          SegmentedButton<ProductViewMode>(
+            style: SegmentedButton.styleFrom(
+              backgroundColor: isDark ? Colors.white10 : Colors.white,
+              selectedBackgroundColor: Colors.white,
+              selectedForegroundColor: AppStyles.primaryColor,
+            ),
+            segments: const [
+              ButtonSegment<ProductViewMode>(
+                value: ProductViewMode.category,
+                label: Text('Category', style: TextStyle(fontSize: 12)),
+                icon: Icon(Icons.category_outlined, size: 16),
+              ),
+              ButtonSegment<ProductViewMode>(
+                value: ProductViewMode.shop,
+                label: Text('Shop', style: TextStyle(fontSize: 12)),
+                icon: Icon(Icons.storefront_outlined, size: 16),
+              ),
+            ],
+            selected: {_viewMode},
+            onSelectionChanged: (selected) => _switchViewMode(selected.first),
+          ),
+          const SizedBox(width: 8),
           IconButton(
             icon: Icon(_gridColumns == 2 ? Icons.grid_view_rounded : (_gridColumns == 3 ? Icons.view_comfy_rounded : Icons.view_module_rounded)),
             tooltip: 'Change Grid Layout',
@@ -100,7 +148,7 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
       ),
       body: Column(
         children: [
-          _buildCategoryFilter(categoriesAsync, isDark),
+          _buildFilter(categoriesAsync, isDark),
           Expanded(
             child: _paginator.items.isEmpty && _paginator.isLoading
                 ? const Center(child: CircularProgressIndicator(color: AppStyles.primaryColor))
@@ -137,6 +185,13 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
     );
   }
 
+  Widget _buildFilter(AsyncValue<List<Map<String, dynamic>>> categoriesAsync, bool isDark) {
+    if (_viewMode == ProductViewMode.category) {
+      return _buildCategoryFilter(categoriesAsync, isDark);
+    }
+    return _buildShopFilter(isDark);
+  }
+
   Widget _buildCategoryFilter(AsyncValue<List<Map<String, dynamic>>> categoriesAsync, bool isDark) {
     return categoriesAsync.when(
       data: (categories) => Container(
@@ -158,10 +213,16 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
               child: ChoiceChip(
                 label: Text(name),
                 selected: isSelected,
-                onSelected: (selected) {
-                  setState(() {
-                    _selectedCategory = id;
-                  });
+                onSelected: (selected) async {
+                  if (!selected) {
+                    setState(() => _selectedCategory = null);
+                    _paginator.refresh();
+                    _paginator.fetchFirstPage().then((_) {
+                      if (mounted) setState(() {});
+                    });
+                    return;
+                  }
+                  setState(() => _selectedCategory = id);
                 },
                 backgroundColor: isDark ? Colors.white10 : Colors.grey[200],
                 selectedColor: AppStyles.primaryColor,
@@ -180,6 +241,63 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
       ),
       loading: () => const SizedBox(height: 50),
       error: (_, __) => const SizedBox(),
+    );
+  }
+
+  Widget _buildShopFilter(bool isDark) {
+    final shopsStream = FirebaseFirestore.instance.collection(HubPaths.stores).snapshots();
+    return StreamBuilder<QuerySnapshot>(
+      stream: shopsStream,
+      builder: (context, snapshot) {
+        final docs = snapshot.data?.docs ?? [];
+        return Container(
+          height: 50,
+          margin: const EdgeInsets.symmetric(vertical: 8),
+          child: docs.isEmpty
+              ? const Center(child: Text('No shops available'))
+              : ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  itemCount: docs.length + 1,
+                  itemBuilder: (context, index) {
+                    final isAll = index == 0;
+                    final data = isAll ? null : docs[index - 1].data() as Map<String, dynamic>?;
+                    final id = isAll ? null : docs[index - 1].id;
+                    final name = isAll ? 'All Shops' : (data?['name'] ?? 'Shop');
+                    final isSelected = _selectedShopId == id;
+
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 8),
+                      child: ChoiceChip(
+                        label: Text(name),
+                        selected: isSelected,
+                        onSelected: (selected) async {
+                          if (!selected) {
+                            setState(() => _selectedShopId = null);
+                            _paginator.refresh();
+                            _paginator.fetchFirstPage().then((_) {
+                              if (mounted) setState(() {});
+                            });
+                            return;
+                          }
+                          setState(() => _selectedShopId = id);
+                        },
+                        backgroundColor: isDark ? Colors.white10 : Colors.grey[200],
+                        selectedColor: AppStyles.primaryColor,
+                        labelStyle: TextStyle(
+                          color: isSelected ? Colors.white : (isDark ? Colors.white70 : Colors.black87),
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        side: BorderSide.none,
+                        showCheckmark: false,
+                      ),
+                    );
+                  },
+                ),
+        );
+      },
     );
   }
 
