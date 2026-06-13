@@ -673,7 +673,7 @@ jobs:
   notify-failure:
     name: 🚨 Notify Failure
     runs-on: ubuntu-latest
-    needs: [setup, test-and-analyze, build-mobile, build-web]
+    needs: [setup, test-security-analyze, build-mobile, build-web]
     if: failure()
 
     env:
