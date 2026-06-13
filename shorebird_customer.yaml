@@ -3,17 +3,4 @@
 # This file should be checked into version control.
 
 app_id: ada3af82-7f78-4f6a-a458-ea46addb14d1
-
-# Shorebird config
-shorebird_version: 1
-
-# Flutter details
-flutter_version: "3.27.0"
-flutter_channel: stable
-
-# Release targets
-platforms:
-  - android
-
-# Auto update control
 auto_update: true
