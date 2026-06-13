@@ -2,13 +2,18 @@
 # Learn more at https://docs.shorebird.dev
 # This file should be checked into version control.
 
-# This is the unique identifier assigned to your app.
-# Your app_id is not a secret and is just used to identify your app
-# when requesting patches from Shorebird's servers.
 app_id: ada3af82-7f78-4f6a-a458-ea46addb14d1
 
-# auto_update controls if Shorebird should automatically update in the background on launch.
-# If auto_update: false, you will need to use package:shorebird_code_push to trigger updates.
-# https://pub.dev/packages/shorebird_code_push
-# Uncomment the following line to disable automatic updates.
-# auto_update: false
+# Shorebird config
+shorebird_version: 1
+
+# Flutter details
+flutter_version: "3.27.0"
+flutter_channel: stable
+
+# Release targets
+platforms:
+  - android
+
+# Auto update control
+auto_update: true

@@ -4,9 +4,10 @@
 # 🏗️ Paykari Bazar - Complete Build Script
 # ====================================================
 # Builds all apps: Android (APK/AAB), iOS, Web, Windows, Linux
-# Usage: ./scripts/build.sh [target] [mode]
+# Usage: ./scripts/build.sh [target] [mode] [options]
 #        ./scripts/build.sh all release
 #        ./scripts/build.sh android debug
+#        ./scripts/build.sh all release --clean
 # ====================================================
 
 set -e
@@ -23,7 +24,19 @@ NC='\033[0m'
 # Parse arguments
 BUILD_TARGET="${1:-all}"
 BUILD_MODE="${2:-release}"
+CLEAN_BUILD=false
 TIMESTAMP=$(date +%s)
+
+# Check for --clean flag
+if [[ "${3:-}" == "--clean" || "${1:-}" == "--clean" ]]; then
+    CLEAN_BUILD=true
+fi
+
+# ====================================================
+# Persistent Pub Cache
+# ====================================================
+export PUB_CACHE="$HOME/.pub-cache"
+mkdir -p "$PUB_CACHE"
 
 print_header() {
     echo ""
@@ -52,11 +65,23 @@ flutter --version
 print_step "Dart version"
 dart --version
 
-print_step "Installing dependencies"
-flutter pub get
+# Smart pub get: only run if dependencies changed
+if [ pubspec.yaml -nt .dart_tool/package_config.json ] || [ pubspec.lock -nt .dart_tool/package_config.json ]; then
+    echo "Dependencies changed, running pub get..."
+    print_step "Installing dependencies"
+    flutter pub get
+else
+    echo "Dependencies unchanged, skipping pub get"
+fi
 
-print_step "Generating code"
-flutter pub run build_runner build --delete-conflicting-outputs
+# Incremental build_runner: only clean if --clean flag is set
+if [ "$CLEAN_BUILD" = true ]; then
+    print_step "Running build_runner (clean)"
+    flutter pub run build_runner build --delete-conflicting-outputs
+else
+    print_step "Running build_runner (incremental)"
+    flutter pub run build_runner build
+fi
 
 print_done "Setup complete"
 

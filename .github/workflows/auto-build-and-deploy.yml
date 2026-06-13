@@ -7,6 +7,9 @@ on:
       - '**.md'
       - '**.txt'
       - 'dna/**'
+  schedule:
+    # Keep the daily security scan schedule
+    - cron: '0 2 * * *'
   workflow_dispatch:
     inputs:
       deploy_to:
@@ -36,6 +39,8 @@ env:
 
 permissions:
   contents: write
+  security-events: write
+  actions: read
 
 jobs:
   # Stage 1: Setup & Validation
@@ -48,6 +53,7 @@ jobs:
       version: ${{ steps.versioning.outputs.version }}
       should_deploy: ${{ steps.setup.outputs.should_deploy }}
       apps: ${{ steps.determine_apps.outputs.apps }}
+      has_code_changes: ${{ steps.changes.outputs.admin == 'true' || steps.changes.outputs.customer == 'true' || steps.changes.outputs.shared == 'true' }}
 
     steps:
       - uses: actions/checkout@v4.2.0
@@ -174,12 +180,12 @@ jobs:
           echo "Determined apps to build: $APPS"
 
   # Stage 3: Testing & Analysis
-  test-and-analyze:
+  test-security-analyze:
     name: 🧪 Test & Analyze
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: setup
-    if: ${{ github.event.inputs.skip_tests != 'true' }}
+    if: needs.setup.outputs.has_code_changes == 'true' && github.event.inputs.skip_tests != 'true'
 
     steps:
       - uses: actions/checkout@v4.2.0
@@ -192,6 +198,14 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
 
+      - name: Cache build_runner outputs
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-runner-
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -200,6 +214,13 @@ jobs:
 
       - name: Generate code
         run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: 📦 Dependency Audit
+        run: |
+          echo "🔍 Checking for dependency security issues..."
+          flutter pub outdated || true
+          dart pub audit || echo "⚠️ dart pub audit not supported or failed"
+          npm audit --audit-level=moderate || true
 
       - name: Run Flutter Analyze
         run: |
@@ -212,18 +233,92 @@ jobs:
       - name: Run unit tests
         run: flutter test --coverage
 
-      - name: Check for dependency security issues
+  # Security: Vulnerability Scanning
+  vulnerability-scan:
+    name: 🔐 Security Scan
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 20
+    if: needs.setup.outputs.has_code_changes == 'true'
+    steps:
+      - uses: actions/checkout@v4.2.0
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      - name: Upload Trivy results to Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results.sarif'
+        continue-on-error: true
+
+  # Security: Secret Leak Detection
+  secrets-scan:
+    name: 🔑 Secrets Scan
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 10
+    if: needs.setup.outputs.has_code_changes == 'true'
+    steps:
+      - uses: actions/checkout@v4.2.0
+        with:
+          fetch-depth: 0
+      - name: Determine base commit
+        id: trufflehog_base
         run: |
-          dart pub audit || echo "⚠️ dart pub audit not supported or failed"
-          echo "✅ Analysis and security check complete"
+          if [ "${{ github.event_name }}" == "push" ]; then
+            if [ -n "${{ github.event.before }}" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+              echo "base=${{ github.event.before }}" >> $GITHUB_OUTPUT
+            else
+              echo "base=$(git rev-parse HEAD~1 2>/dev/null || echo 'HEAD~1')" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "base=$(git merge-base origin/${{ github.base_ref }} HEAD)" >> $GITHUB_OUTPUT
+          fi
+      - name: Check for committed secrets
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: ${{ steps.trufflehog_base.outputs.base }}
+          head: HEAD
+          extra_args: --debug
+        continue-on-error: true
+
+  # Security: SBOM Generation
+  sbom-generation:
+    name: 📋 Generate SBOM
+    runs-on: ubuntu-latest
+    needs: setup
+    timeout-minutes: 15
+    if: needs.setup.outputs.has_code_changes == 'true'
+    steps:
+      - uses: actions/checkout@v4.2.0
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - name: Install syft
+        run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+      - name: Generate SBOM
+        run: |
+          syft dir:. -o spdx-json > sbom.spdx.json
+      - name: Upload SBOM
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: sbom.*
+          retention-days: 30
 
   # Stage 4: Build Mobile Apps (Unified)
   build-mobile:
     name: 🏗️ Build ${{ matrix.app }} (${{ matrix.build-type }})
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    needs: [setup, test-and-analyze]
-    if: needs.setup.result == 'success' && (needs.test-and-analyze.result == 'success' || needs.test-and-analyze.result == 'skipped')
+    needs: [setup, test-security-analyze, vulnerability-scan, secrets-scan]
+    if: needs.setup.result == 'success' && (needs.test-security-analyze.result == 'success' || needs.test-security-analyze.result == 'skipped')
 
     env:
       KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
@@ -251,6 +346,14 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
+
+      - name: Cache build_runner outputs
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-runner-
 
       - name: Cache Pub dependencies
         uses: actions/cache@v4
@@ -308,7 +411,7 @@ jobs:
     name: 🌐 Build Web App
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [setup, test-and-analyze]
+    needs: [setup, test-security-analyze, vulnerability-scan, secrets-scan]
 
     steps:
       - uses: actions/checkout@v4.2.0
@@ -320,6 +423,14 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           cache: true
+
+      - name: Cache build_runner outputs
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-build-runner-
 
       - name: Install dependencies
         run: flutter pub get
@@ -441,11 +552,15 @@ jobs:
 
   # Stage 8: Deploy via Shorebird (OTA)
   deploy-shorebird:
-    name: 🐦 Deploy via Shorebird (OTA)
+    name: 🐦 Deploy ${{ matrix.app }} via Shorebird (OTA)
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: [setup, build-mobile]
     if: needs.setup.outputs.should_deploy == 'true' && (github.event_name == 'push' || github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'shorebird-only')
+    strategy:
+      fail-fast: false
+      matrix:
+        app: ${{ fromJSON(needs.setup.outputs.apps) }}
 
     env:
       SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
@@ -464,26 +579,14 @@ jobs:
       - name: Setup Shorebird
         uses: shorebirdtech/setup-shorebird@v1
 
-      - name: Release Customer via Shorebird
+      - name: Release via Shorebird
         run: |
-          cp shorebird_customer.yaml shorebird.yaml
+          cp shorebird_${{ matrix.app }}.yaml shorebird.yaml
           shorebird patch android \
-            -t lib/main_customer.dart \
+            -t lib/main_${{ matrix.app }}.dart \
             -- --build-number=${{ needs.setup.outputs.build_number }} || \
           shorebird release android \
-            -t lib/main_customer.dart \
-            --artifact apk \
-            -- --build-number=${{ needs.setup.outputs.build_number }}
-        continue-on-error: true
-
-      - name: Release Admin via Shorebird
-        run: |
-          cp shorebird_admin.yaml shorebird.yaml
-          shorebird patch android \
-            -t lib/main_admin.dart \
-            -- --build-number=${{ needs.setup.outputs.build_number }} || \
-          shorebird release android \
-            -t lib/main_admin.dart \
+            -t lib/main_${{ matrix.app }}.dart \
             --artifact apk \
             -- --build-number=${{ needs.setup.outputs.build_number }}
         continue-on-error: true

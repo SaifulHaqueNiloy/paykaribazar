@@ -169,15 +169,26 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-pub-
 
+      - name: 🔍 Check for changes requiring code generation
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            codegen:
+              - 'lib/**.dart'
+              - 'pubspec.yaml'
+              - 'pubspec.lock'
+
       - name: ⚡ Cache build_runner output
         uses: actions/cache@v4
         with:
           path: .dart_tool/build
-          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock', 'lib/**.dart') }}
           restore-keys: |
             ${{ runner.os }}-build-runner-
 
       - name: Generate code
+        if: steps.filter.outputs.codegen == 'true'
         run: flutter pub run build_runner build --delete-conflicting-outputs || true
         continue-on-error: true
 
