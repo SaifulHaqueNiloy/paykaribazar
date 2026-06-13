@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paykari_bazar/src/features/home/home_screen.dart';
 import 'package:paykari_bazar/src/features/home/widgets/robust_floating_cart.dart';
 import 'package:paykari_bazar/src/features/orders/emergency_details_screen.dart';
-import 'package:paykari_bazar/src/features/products/all_products_screen.dart';
+import 'package:paykari_bazar/src/features/products/grouped_products_screen.dart';
 import 'package:paykari_bazar/src/features/home/rewards_screen.dart';
 import 'package:paykari_bazar/src/features/profile/profile_screen.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
@@ -39,7 +39,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 children: const [
                   HomeScreen(),
                   EmergencyDetailsScreen(),
-                  AllProductsScreen(),
+                  ProductGroupedScreen(),
                   RewardsScreen(),
                   ProfileScreen(),
                 ],

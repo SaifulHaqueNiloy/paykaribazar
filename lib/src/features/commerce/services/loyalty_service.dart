@@ -109,9 +109,32 @@ class LoyaltyService {
 
   Future<void> handleReferralPurchase(String uid, double subtotal) async {
     final user = await _db.collection(HubPaths.users).doc(uid).get();
-    final String? referredBy = user.data()?['referredBy'];
-    if (referredBy != null) {
-      await addPoints(referredBy, 'referral_bonus');
-    }
+    final String? referredByUid = user.data()?['referredByUid'];
+    if (referredByUid == null || referredByUid.isEmpty) return;
+
+    await _db.runTransaction((tx) async {
+      final referrerRef = _db.collection(HubPaths.users).doc(referredByUid);
+      final referrerSnap = await tx.get(referrerRef);
+
+      if (!referrerSnap.exists) return;
+
+      final currentPoints = (referrerSnap.data()?['points'] ?? 0) as int;
+      final newPoints = currentPoints + 50;
+      final claimedCount = (referrerSnap.data()?['referredCount'] ?? 0) as int;
+
+      tx.update(referrerRef, {
+        'points': newPoints,
+        'referredCount': claimedCount + 1,
+        'lastPointUpdate': FieldValue.serverTimestamp(),
+      });
+
+      final transactionRef = referrerRef.collection('transactions').doc();
+      tx.set(transactionRef, {
+        'title': 'রেফারেল বোনাস (Referral Bonus)',
+        'points': 50,
+        'type': 'credit',
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    });
   }
 }

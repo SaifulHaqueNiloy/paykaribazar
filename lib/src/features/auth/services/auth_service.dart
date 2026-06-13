@@ -13,6 +13,7 @@ final authServiceProvider = Provider((ref) => getIt<AuthService>());
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
   final StorageService _storage;
   final FirestoreService _firestore;
 
@@ -39,11 +40,34 @@ class AuthService {
     return cleaned;
   }
 
-  String _generateReferralCode(String name, String? phone) {
+  Future<String> _generateReferralCode(String name, String? phone) async {
     final cleanName = name.replaceAll(RegExp(r'[^a-zA-Z]'), '').toUpperCase();
     final prefix = cleanName.length >= 3 ? cleanName.substring(0, 3) : 'PB';
-    final rand = (1000 + (DateTime.now().microsecondsSinceEpoch % 9000)).toString();
-    return '$prefix$rand';
+    final random = '$prefix${DateTime.now().microsecondsSinceEpoch % 9000 + 1000}';
+
+    final existing = await _db
+        .collection(HubPaths.users)
+        .where('myReferralCode', isEqualTo: random)
+        .limit(1)
+        .get();
+
+    if (existing.docs.isEmpty) {
+      return random;
+    }
+
+    for (var i = 0; i < 10; i++) {
+      final candidate = '$prefix${DateTime.now().microsecondsSinceEpoch % 9000 + 1000 + i}';
+      final dup = await _db
+          .collection(HubPaths.users)
+          .where('myReferralCode', isEqualTo: candidate)
+          .limit(1)
+          .get();
+
+      if (dup.docs.isEmpty) return candidate;
+    }
+
+    final fallback = '${prefix}_${DateTime.now().millisecondsSinceEpoch}';
+    return fallback;
   }
 
   Future<User?> login(String emailOrPhone, String password) async {
@@ -104,15 +128,41 @@ class AuthService {
       );
 
       if (res.user != null) {
+        String? referrerUid;
+
+        if (referralCode != null && referralCode.isNotEmpty) {
+          final refDoc = await _db
+              .collection(HubPaths.users)
+              .where('myReferralCode', isEqualTo: referralCode)
+              .limit(1)
+              .get();
+
+          if (refDoc.docs.isEmpty) {
+            throw Exception('Invalid referral code');
+          }
+
+          referrerUid = refDoc.docs.first.id;
+        }
+
+        final myCode = await _generateReferralCode(name, normalizedPhone);
+
         await _firestore.updateProfile(res.user!.uid, {
           'name': name,
           'email': email,
           'phone': normalizedPhone,
           'referredBy': referralCode,
-          'myReferralCode': _generateReferralCode(name, normalizedPhone),
+          'referredByUid': referrerUid,
+          'myReferralCode': myCode,
           'role': 'customer',
           'createdAt': FieldValue.serverTimestamp(),
         });
+
+        if (referrerUid != null) {
+          await _db.collection(HubPaths.users).doc(referrerUid).update({
+            'referredCount': FieldValue.increment(1),
+            'updatedAt': FieldValue.serverTimestamp(),
+          });
+        }
       }
       return res;
     } catch (e) {
@@ -134,12 +184,12 @@ class AuthService {
       if (res.user != null) {
         final doc = await FirebaseFirestore.instance.collection(HubPaths.users).doc(res.user!.uid).get();
         final existingReferral = doc.data()?['myReferralCode'];
-        
+
         await _firestore.updateProfile(res.user!.uid, {
           'name': res.user!.displayName,
           'email': res.user!.email,
           'profilePic': res.user!.photoURL,
-          'myReferralCode': existingReferral ?? _generateReferralCode(res.user!.displayName ?? 'User', null),
+          'myReferralCode': existingReferral ?? await _generateReferralCode(res.user!.displayName ?? 'User', null),
           'lastLogin': FieldValue.serverTimestamp(),
         });
       }
@@ -161,12 +211,13 @@ class AuthService {
         email: email, password: password);
     if (res.user != null) {
       final normalizedPhone = _normalizePhone(phone);
+      final myCode = await _generateReferralCode(name, normalizedPhone);
       await _firestore.updateProfile(res.user!.uid, {
         'name': name,
         'phone': normalizedPhone,
         'staffId': staffId,
         'role': role,
-        'myReferralCode': _generateReferralCode(name, normalizedPhone),
+        'myReferralCode': myCode,
         'allowMultipleDevices': allowMultipleDevices,
         'createdAt': FieldValue.serverTimestamp(),
       });

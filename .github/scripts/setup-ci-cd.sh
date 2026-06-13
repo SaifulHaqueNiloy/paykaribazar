@@ -182,7 +182,7 @@ echo "📦 Installing dependencies..."
 flutter pub get
 
 echo "🔨 Generating code..."
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 
 # Test
 echo "🧪 Running tests..."
@@ -216,7 +216,7 @@ cd "$PROJECT_ROOT"
 echo "🧪 Running tests..."
 
 flutter pub get
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 flutter analyze
 flutter test --coverage
 

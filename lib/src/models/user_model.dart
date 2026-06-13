@@ -66,6 +66,7 @@ class UserModel {
   final String? profilePic;
   final int points;
   final String? myReferralCode;
+  final int referredCount;
   final String currentMode; // 'shopping' or 'work'
   
   final String? q1, a1, h1, q2, a2, h2, q3, a3, h3;
@@ -78,7 +79,7 @@ class UserModel {
     required this.id, required this.name, required this.phone,
     this.email = '', this.role = UserRole.customer,
     this.addresses = const [], this.profilePic, this.points = 0,
-    this.myReferralCode, 
+    this.myReferralCode, this.referredCount = 0,
     this.currentMode = 'shopping',
     this.q1, this.a1, this.h1,
     this.q2, this.a2, this.h2,
