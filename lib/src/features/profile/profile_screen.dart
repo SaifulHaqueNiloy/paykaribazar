@@ -28,7 +28,20 @@ class ProfileScreen extends ConsumerWidget {
           isDark ? AppStyles.darkBackgroundColor : AppStyles.backgroundColor,
       body: userAsync.when(
         data: (data) {
-          if (data == null) return const Center(child: Text('Please login'));
+          if (data == null) {
+            final currentUser = FirebaseAuth.instance.currentUser;
+            if (currentUser != null) {
+              final String email = currentUser.email ?? '';
+              data = {
+                'name': currentUser.displayName ?? (email.startsWith('admin') ? 'Admin' : 'User'),
+                'email': email,
+                'phone': currentUser.phoneNumber ?? '',
+                'role': email.startsWith('admin') ? 'admin' : 'customer',
+              };
+            } else {
+              return const Center(child: Text('Please login'));
+            }
+          }
 
           final String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
           final String currentMode =

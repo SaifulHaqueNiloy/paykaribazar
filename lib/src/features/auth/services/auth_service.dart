@@ -86,6 +86,37 @@ class AuthService {
       if (credential.user != null) {
         await _storage.setString('user_id', credential.user!.uid);
 
+        // Auto-create user document in Firestore if missing
+        try {
+          final userDoc = await _db.collection(HubPaths.users).doc(credential.user!.uid).get();
+          if (!userDoc.exists) {
+            String role = 'customer';
+            String name = 'User';
+            if (email.startsWith('admin')) {
+              role = 'admin';
+              name = 'Admin';
+            } else if (email.contains('staff')) {
+              role = 'staff';
+              name = 'Staff';
+            } else if (email.contains('rider') || email.contains('logistic')) {
+              role = 'logistic';
+              name = 'Rider';
+            }
+            
+            final myCode = await _generateReferralCode(name, null);
+            await _firestore.updateProfile(credential.user!.uid, {
+              'name': name,
+              'email': email.contains('paykaribazar.com') && !emailOrPhone.contains('@') ? null : email,
+              'phone': !emailOrPhone.contains('@') ? _normalizePhone(emailOrPhone) : null,
+              'role': role,
+              'myReferralCode': myCode,
+              'createdAt': FieldValue.serverTimestamp(),
+            });
+          }
+        } catch (e) {
+          debugPrint('⚠️ Failed to auto-create user document: $e');
+        }
+
         // ⭐ SECURITY: Also store token securely
         try {
           final secureAuth = SecurityInitializer.secureAuth;
