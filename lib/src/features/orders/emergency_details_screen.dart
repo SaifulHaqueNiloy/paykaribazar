@@ -3,11 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:go_router/go_router.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_strings.dart';
 import '../../di/providers.dart';
-import '../../core/constants/paths.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EmergencyDetailsScreen extends ConsumerStatefulWidget {
@@ -916,43 +914,6 @@ class _EmergencyDetailsScreenState
     );
   }
 
-  Widget _buildFloatingCart() {
-    final cart = ref.watch(cartProvider);
-    final total = ref.watch(cartTotalProvider);
-    
-    if (cart.items.isEmpty) return const SizedBox.shrink();
-
-    return GestureDetector(
-      onTap: () => context.push('/cart'),
-      child: Container(
-        height: 65,
-        width: 85,
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF6200EE),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-                color: Colors.deepPurple.withOpacity(0.3),
-                blurRadius: 15,
-                offset: const Offset(0, 5))
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('${cart.items.length} ${_t('items')}', 
-                style: const TextStyle(color: Colors.white70, fontSize: 9)),
-            Text('৳ ${total.toInt()}',
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w900)),
-          ],
-        ),
-      ),
-    );
-  }
 
   Future<void> _submitOrder(String type) async {
     setState(() => _isSubmitting = true);

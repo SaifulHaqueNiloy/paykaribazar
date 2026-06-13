@@ -9,7 +9,6 @@ import '../../services/home_providers.dart';
 import 'widgets/greeting_widget.dart';
 import 'widgets/notice_slider.dart';
 import 'widgets/home_widgets.dart';
-import 'widgets/category_chips.dart';
 import 'widgets/flash_sale_timer.dart';
 import 'widgets/loyalty_status_card.dart';
 
@@ -123,6 +122,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final newArrivalsAsync = ref.watch(newArrivalsProvider);
     final hotSellingAsync = ref.watch(hotSellingProvider);
     final comboPacksAsync = ref.watch(comboPacksProvider);
+    final specialOffersAsync = ref.watch(specialOffersProvider);
+    final justForYouAsync = ref.watch(justForYouProvider);
 
     return Scaffold(
       backgroundColor: isDark ? AppStyles.darkBackgroundColor : AppStyles.backgroundColor,
@@ -143,7 +144,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const SizedBox(width: 8),
                     Text(_t('appName'), style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 18, color: Colors.white)),
                     const Spacer(),
-                    IconButton(icon: const Icon(Icons.notifications_none_rounded, color: Colors.white), onPressed: () {}),
+                    IconButton(
+                      icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
+                      onPressed: () {
+                        // বাংলা: নোটিফিকেশন ফিচারটি এখনো যুক্ত না থাকায় স্নাকবার দেখানো হচ্ছে
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('কোনো নতুন নোটিফিকেশন নেই')),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -153,7 +162,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     const GreetingWidget(),
                     const LoyaltyStatusCard(),
-                    const CategoryChips(),
                     flashDealsAsync.when(
                       data: (deals) {
                         if (deals.isEmpty) return const SizedBox.shrink();
@@ -253,6 +261,48 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             ),
                             ProductHorizontalList(
                               products: newArrivals.map((p) => p.toMap()).toList(),
+                              emptyMessage: _t('noProductsFound'),
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
+                    
+                    // Special Offers Section
+                    specialOffersAsync.when(
+                      data: (specialOffers) {
+                        if (specialOffers.isEmpty) return const SizedBox.shrink();
+                        return Column(
+                          children: [
+                            SectionHeader(
+                              title: _t('specialOffers'),
+                              onTap: _navigateToAllProducts,
+                            ),
+                            ProductHorizontalList(
+                              products: specialOffers.map((p) => p.toMap()).toList(),
+                              emptyMessage: _t('noProductsFound'),
+                            ),
+                          ],
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
+
+                    // Just For You Section
+                    justForYouAsync.when(
+                      data: (justForYou) {
+                        if (justForYou.isEmpty) return const SizedBox.shrink();
+                        return Column(
+                          children: [
+                            SectionHeader(
+                              title: _t('justForYou'),
+                              onTap: _navigateToAllProducts,
+                            ),
+                            ProductHorizontalList(
+                              products: justForYou.map((p) => p.toMap()).toList(),
                               emptyMessage: _t('noProductsFound'),
                             ),
                           ],

@@ -169,6 +169,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: build-release
+    env:
+      SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4.2.0
@@ -182,11 +184,6 @@ jobs:
         run: |
           curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/shorebirdtech/shorebird/main/scripts/install.sh | bash
           echo "${HOME}/.shorebird/bin" >> $GITHUB_PATH
-
-      - name: Setup Shorebird auth
-        run: |
-          mkdir -p ~/.shorebird
-          echo "${{ secrets.SHOREBIRD_AUTH_TOKEN }}" > ~/.shorebird/credentials.json
 
       - name: Release Customer via Shorebird
         run: |
@@ -229,10 +226,10 @@ jobs:
         run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Web (Customer)
-        run: flutter build web -t lib/main_customer.dart --release
+        run: flutter build web -t lib/main_customer.dart --release --output=build/web_customer
 
       - name: Build Web (Admin)
-        run: flutter build web -t lib/main_admin.dart --release
+        run: flutter build web -t lib/main_admin.dart --release --output=build/web_admin
 
       - name: Setup Firebase CLI
         run: npm install -g firebase-tools

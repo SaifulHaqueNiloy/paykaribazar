@@ -38,6 +38,11 @@ final comboPacksProvider = FutureProvider<List<Product>>((ref) async {
   return products.where((p) => p.isComboPack).toList();
 });
 
+final specialOffersProvider = FutureProvider<List<Product>>((ref) async {
+  final products = await ref.watch(homeProductsProvider.future);
+  return products.where((p) => p.hasDiscount).toList();
+});
+
 final justForYouProvider = FutureProvider<List<Product>>((ref) async {
   final products = await ref.watch(homeProductsProvider.future);
   // For now, just return a shuffle or slice as "Just For You"

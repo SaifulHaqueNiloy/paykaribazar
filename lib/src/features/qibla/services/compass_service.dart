@@ -221,27 +221,20 @@ class CompassService {
         });
       }
 
-      try {
-        compassSub = compassStream.listen(
-          (heading) {
-            receivedCompassEvent = true;
-            timeoutTimer?.cancel();
-            emitData(heading);
-          },
-          onError: (err) {
-            if (!receivedCompassEvent) {
-              timeoutTimer?.cancel();
-              startSimulation();
-            }
-          },
-          cancelOnError: false,
-        );
-      } catch (_) {
-        if (!receivedCompassEvent) {
+      compassSub = compassStream.listen(
+        (heading) {
+          receivedCompassEvent = true;
           timeoutTimer?.cancel();
-          startSimulation();
-        }
-      }
+          emitData(heading);
+        },
+        onError: (err) {
+          if (!receivedCompassEvent) {
+            timeoutTimer?.cancel();
+            startSimulation();
+          }
+        },
+        cancelOnError: false,
+      );
 
       timeoutTimer = Timer(const Duration(milliseconds: 1500), () {
         if (!receivedCompassEvent) {
@@ -255,6 +248,8 @@ class CompassService {
         compassSub?.cancel();
         timeoutTimer?.cancel();
         simulationTimer?.cancel();
+        // বাংলা: রিসোর্স লিক প্রতিরোধে StreamController ক্লোজ করা হলো
+        controller.close();
       };
     }));
 

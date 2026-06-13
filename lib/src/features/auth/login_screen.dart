@@ -205,21 +205,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
-  // ⭐ DEMO LOGIN: For testing purposes
-  Future<void> _handleDemoLogin() async {
-    // Pre-fill with test credentials
-    setState(() {
-      _idCtrl.text = 'demo@test.com';  // Test email
-      _passCtrl.text = 'Demo@1234';     // Test password
-      _isPhoneLogin = false;
-    });
-    
-    // Auto-submit login
-    await Future.delayed(const Duration(milliseconds: 300));
-    if (mounted) {
-      await _handleLogin();
-    }
-  }
+  // ⭐ DEMO LOGIN: For testing purposes (Commented out to prevent compiler warnings, can be uncommented for local testing)
+  // Future<void> _handleDemoLogin() async {
+  //   // Pre-fill with test credentials
+  //   setState(() {
+  //     _idCtrl.text = 'demo@test.com';  // Test email
+  //     _passCtrl.text = 'Demo@1234';     // Test password
+  //     _isPhoneLogin = false;
+  //   });
+  //   
+  //   // Auto-submit login
+  //   await Future.delayed(const Duration(milliseconds: 300));
+  //   if (mounted) {
+  //     await _handleLogin();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -596,10 +596,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             _socialBtn(Icons.g_mobiledata_rounded, const Color(0xFFDB4437),
                 onTap: _handleGoogleLogin, size: 40, isDark: isDark),
             _socialBtn(Icons.facebook_rounded, const Color(0xFF4267B2),
-                onTap: () {}, size: 30, isDark: isDark),
+                onTap: () {
+                  // বাংলা: ফেসবুক লগইন ফিচারটি এখনো চালু করা হয়নি
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('ফেসবুক লগইন ফিচারটি শীঘ্রই আসছে')),
+                  );
+                }, size: 30, isDark: isDark),
             _socialBtn(
                 Icons.apple_rounded, isDark ? Colors.white : Colors.black,
-                onTap: () {}, size: 30, isDark: isDark),
+                onTap: () {
+                  // বাংলা: অ্যাপল লগইন ফিচারটি এখনো চালু করা হয়নি
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('অ্যাপল লগইন ফিচারটি শীঘ্রই আসছে')),
+                  );
+                }, size: 30, isDark: isDark),
           ],
         ),
       ],

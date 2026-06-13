@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../di/providers.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_strings.dart';

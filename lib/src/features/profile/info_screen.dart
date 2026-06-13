@@ -5,7 +5,6 @@ import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../utils/styles.dart';
 import '../../di/providers.dart';
-import '../../core/constants/paths.dart';
 
 class InfoScreen extends ConsumerWidget {
   final String title;

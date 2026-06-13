@@ -449,7 +449,7 @@ jobs:
         run: |
           flutter build web -t lib/main_${{ matrix.web-app }}.dart --release -v
           mkdir -p build/web_artifacts
-          mv build/web build/web_artifacts/${{ matrix.web-app }}
+          mv build/web build/web_artifacts/web_${{ matrix.web-app }}
 
       - name: Upload web artifacts
         uses: actions/upload-artifact@v4

@@ -67,14 +67,24 @@ class LoyaltyService {
   }
 
   Future<void> removePurchasePoints(String customerUid, String orderId) async {
+    int earned = 50;
+    try {
+      // বাংলা: ডেটাবেজ সেটিংস থেকে ডাইনামিক পয়েন্ট মান লোড করা হচ্ছে
+      final settings = await _db.doc(HubPaths.loyaltyDoc).get();
+      final data = settings.data();
+      earned = (data?['purchasePoints'] ?? 50).toInt();
+    } catch (_) {
+      // Fallback
+    }
+
     await _db.collection(HubPaths.users).doc(customerUid).update({
-      'points': FieldValue.increment(-50),
+      'points': FieldValue.increment(-earned),
     });
     
     try {
       await _db.collection(HubPaths.users).doc(customerUid).collection('transactions').add({
         'title': 'অর্ডার বাতিল বা ফেরত (Order Cancelled/Returned)',
-        'points': 50,
+        'points': earned,
         'type': 'debit',
         'createdAt': FieldValue.serverTimestamp(),
       });

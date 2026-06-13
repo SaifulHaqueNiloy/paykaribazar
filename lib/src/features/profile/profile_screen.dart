@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 
@@ -451,7 +450,7 @@ class ProfileScreen extends ConsumerWidget {
   Widget _headerActionButtons(WidgetRef ref, bool isDark) {
     return Column(
       children: [
-        _circleIconButton(Icons.help_outline, () {}),
+        _circleIconButton(Icons.help_outline, () => _launchWhatsApp()),
         const SizedBox(height: 10),
         _circleIconButton(Icons.translate_rounded,
             () => ref.read(languageProvider.notifier).toggleLanguage()),
