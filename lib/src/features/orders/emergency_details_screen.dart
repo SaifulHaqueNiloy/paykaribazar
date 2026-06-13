@@ -7,6 +7,8 @@ import 'package:go_router/go_router.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_strings.dart';
 import '../../di/providers.dart';
+import '../../core/constants/paths.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EmergencyDetailsScreen extends ConsumerStatefulWidget {
   final String? category;
@@ -83,14 +85,19 @@ class _EmergencyDetailsScreenState
               children: [
                 _buildHeader(isDark),
                 const SizedBox(height: 16),
-                if (_selectedService == 'pharmacy')
+                if (_selectedService == 'pharmacy') ...[
                   _buildDetailedMedicineForm(isDark),
-                if (_selectedService == 'blood')
+                  const SizedBox(height: 8),
+                  _buildDoctorsListSection(isDark),
+                ],
+                if (_selectedService == 'blood') ...[
                   _buildDetailedBloodForm(isDark),
-                if (_selectedService == 'helpline')
+                  const SizedBox(height: 8),
+                  _buildDonorsStream(isDark),
+                ],
+                if (_selectedService == 'helpline') ...[
                   _buildHelplineSection(isDark),
-                const SizedBox(height: 8),
-                _buildDoctorsListSection(isDark),
+                ],
                 const SizedBox(height: 100),
               ],
             ),
@@ -379,8 +386,157 @@ class _EmergencyDetailsScreenState
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+        ],
       ),
-      child: const Center(child: Text('Emergency Helplines are listed below')),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'জরুরি হেল্পলাইন নম্বরসমূহ (Emergency Helplines)',
+            style: TextStyle(fontWeight: FontWeight.w900, fontSize: 13),
+          ),
+          const SizedBox(height: 12),
+          StreamBuilder<QuerySnapshot>(
+            stream: FirebaseFirestore.instance
+                .collection(HubPaths.helplines)
+                .snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final docs = snapshot.data?.docs ?? [];
+              if (docs.isEmpty) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      'কোনো হেল্পলাইন পাওয়া যায়নি।',
+                      style: TextStyle(color: Colors.grey.shade400, fontSize: 12),
+                    ),
+                  ),
+                );
+              }
+              return ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: docs.length,
+                itemBuilder: (c, i) {
+                  final data = docs[i].data() as Map<String, dynamic>;
+                  final name = data['name'] ?? 'Helpline';
+                  final phone = data['phone'] ?? '';
+
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      leading: const CircleAvatar(
+                        child: Icon(Icons.phone_in_talk),
+                      ),
+                      title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      subtitle: Text(phone, style: const TextStyle(fontSize: 11)),
+                      trailing: phone.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.phone, color: Colors.green),
+                              onPressed: () async {
+                                final url = 'tel:$phone';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(Uri.parse(url));
+                                }
+                              },
+                            )
+                          : null,
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDonorsStream(bool isDark) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+        ],
+      ),
+      child: StreamBuilder<QuerySnapshot>(
+        stream:
+            FirebaseFirestore.instance.collection(HubPaths.donors).snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          final docs = snapshot.data?.docs ?? [];
+          if (docs.isEmpty) {
+            return Center(
+                child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text('কোনো ডোনার পাওয়া যায়নি।',
+                        style: TextStyle(color: Colors.grey.shade400, fontSize: 12))));
+          }
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text(
+                'রক্তদাতাদের তালিকা (Blood Donors)',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+              ),
+              const SizedBox(height: 12),
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: docs.length,
+                itemBuilder: (c, i) {
+                  final data = docs[i].data() as Map<String, dynamic>;
+                  final name = data['name'] ?? 'Anonymous';
+                  final phone = data['phone'] ?? '';
+                  final group = data['group'] ?? 'O+';
+                  final location = data['location'] ?? 'Unknown';
+
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 10),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.red.withOpacity(0.1),
+                        child: Text(
+                          group,
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      title: Text(name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      subtitle: Text(location, style: const TextStyle(fontSize: 11)),
+                      trailing: phone.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.phone, color: Colors.green),
+                              onPressed: () async {
+                                final url = 'tel:$phone';
+                                if (await canLaunchUrl(Uri.parse(url))) {
+                                  await launchUrl(Uri.parse(url));
+                                }
+                              },
+                            )
+                          : null,
+                    ),
+                  );
+                },
+              ),
+            ],
+          );
+        },
+      ),
     );
   }
 
@@ -533,10 +689,16 @@ class _EmergencyDetailsScreenState
                         fontWeight: FontWeight.bold, fontSize: 13)),
                 subtitle: Text(data['specialty'] ?? 'Specialty',
                     style: const TextStyle(fontSize: 11)),
-                trailing: IconButton(
-                    icon:
-                        const Icon(Icons.phone, color: Colors.green, size: 20),
-                    onPressed: () {}),
+                trailing: (data['phone'] != null && data['phone'].toString().isNotEmpty)
+                    ? IconButton(
+                        icon: const Icon(Icons.phone, color: Colors.green, size: 20),
+                        onPressed: () async {
+                          final url = 'tel:${data['phone']}';
+                          if (await canLaunchUrl(Uri.parse(url))) {
+                            await launchUrl(Uri.parse(url));
+                          }
+                        })
+                    : null,
               ),
             );
           },

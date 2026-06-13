@@ -9,6 +9,7 @@ import 'package:flutter/services.dart';
 import '../../di/providers.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/styles.dart';
+import '../../utils/version_utils.dart';
 import 'info_screen.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -651,11 +652,20 @@ class ProfileScreen extends ConsumerWidget {
         Text('Crafted with ❤️ by Saiful Haq Niloy',
             style: TextStyle(
                 color: isDark ? Colors.white38 : Colors.black38, fontSize: 10)),
-        const Text('v1.0.0+9 • UPDATE PENDING',
-            style: TextStyle(
-                color: Colors.redAccent,
+        FutureBuilder<String>(
+          future: VersionUtils.getDisplayVersion(),
+          builder: (context, snapshot) {
+            final version = snapshot.data ?? '1.0.0+1';
+            return Text(
+              'v$version',
+              style: TextStyle(
+                color: isDark ? Colors.white38 : Colors.black38,
                 fontSize: 9,
-                fontWeight: FontWeight.w900)),
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          },
+        ),
         const SizedBox(height: 20),
         OutlinedButton.icon(
           onPressed: () => FirebaseAuth.instance.signOut(),

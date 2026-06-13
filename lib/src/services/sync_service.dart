@@ -73,6 +73,7 @@ class SyncService {
   Future<void> _cacheLocationsLocally() async {
     try {
       final snap = await _firestore.collection(HubPaths.locations).get();
+      await Hive.initFlutter();
       final box = await Hive.openBox('app_cache');
       final locList = snap.docs.map((d) => d.data()).toList();
       await box.put('cached_locations', locList);

@@ -91,6 +91,7 @@ dependencies:
   record: ^6.2.0
   audioplayers: ^6.0.0
   speech_to_text: ^7.3.0
+  firebase_app_check: ^0.3.2+10
 dev_dependencies:
   flutter_test:
     sdk: flutter
