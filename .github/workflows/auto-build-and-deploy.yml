@@ -377,7 +377,8 @@ jobs:
         if: needs.setup.outputs.should_deploy == 'true'
         run: |
           cp shorebird_${{ matrix.app }}.yaml shorebird.yaml
-          shorebird release android -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}
+          shorebird patch android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart -- --build-number=${{ needs.setup.outputs.build_number }} || \
+          shorebird release android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}
         env:
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
 
