@@ -39,20 +39,30 @@ class LoyaltyService {
       if (type == 'signupPoints' || type == 'signup') earned = 100;
     }
 
-    await _db.collection(HubPaths.users).doc(uid).set({
-      'points': FieldValue.increment(earned),
-      'lastPointUpdate': FieldValue.serverTimestamp(),
-    }, SetOptions(merge: true));
-
+    // USE FIRESTORE TRANSACTION TO PREVENT RACE CONDITIONS (Point #9 from Audit)
+    // বাংলা: ট্রানজেকশন ব্যবহার করে একই সময় একাধিক পয়েন্ট যোগ হওয়া বন্ধ করা হয়েছে
     try {
-      await _db.collection(HubPaths.users).doc(uid).collection('transactions').add({
-        'title': description,
-        'points': earned,
-        'type': 'credit',
-        'createdAt': FieldValue.serverTimestamp(),
+      await _db.runTransaction((transaction) async {
+        final userRef = _db.collection(HubPaths.users).doc(uid);
+        final userSnap = await transaction.get(userRef);
+
+        if (userSnap.exists) {
+          transaction.update(userRef, {
+            'points': FieldValue.increment(earned),
+            'lastPointUpdate': FieldValue.serverTimestamp(),
+          });
+
+          final transRef = userRef.collection('transactions').doc();
+          transaction.set(transRef, {
+            'title': description,
+            'points': earned,
+            'type': 'credit',
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+        }
       });
     } catch (e) {
-      // Fail silently if subcollection write fails
+      debugPrint('Loyalty transaction failed: $e');
     }
   }
 

@@ -10,6 +10,27 @@ class ProductService {
       (snap) => snap.docs.map((doc) => Product.fromMap(doc.data(), doc.id)).toList());
   }
 
+  /// DNA ENFORCED: Paginated fetching to optimize performance and reduce Firestore reads
+  /// বাংলা: ডাটাবেস রিড কমাতে এবং পারফরম্যান্স বাড়াতে প্যাগিনেশন ব্যবহার করা হয়েছে
+  Future<QuerySnapshot<Map<String, dynamic>>> getProductsPaginated({
+    DocumentSnapshot? lastDocument,
+    int limit = 10,
+    String? categoryId,
+  }) async {
+    Query<Map<String, dynamic>> query = _firestore.collection(HubPaths.products)
+        .orderBy('createdAt', descending: true);
+
+    if (categoryId != null) {
+      query = query.where('categoryId', isEqualTo: categoryId);
+    }
+
+    if (lastDocument != null) {
+      query = query.startAfterDocument(lastDocument);
+    }
+
+    return query.limit(limit).get();
+  }
+
   Future<Product?> getProductById(String id) async {
     final doc = await _firestore.collection(HubPaths.products).doc(id).get();
     if (doc.exists) {

@@ -49,7 +49,15 @@ service cloud.firestore {
     // ==================== ORDERS ====================
     match /orders/{orderId} {
       allow read: if isAuth() && (resource.data.customerUid == request.auth.uid || resource.data.resellerUid == request.auth.uid || isStaff());
-      allow create: if isAuth() && request.resource.data.customerUid == request.auth.uid;
+
+      // DNA ENFORCED: Strict field validation for orders (Point #1 from Audit)
+      // বাংলা: অর্ডার ডাটার নিখুঁত যাচাইকরণ নিশ্চিত করা হয়েছে
+      allow create: if isAuth() &&
+                    request.resource.data.customerUid == request.auth.uid &&
+                    request.resource.data.totalAmount >= 0 &&
+                    request.resource.data.items is list &&
+                    request.resource.data.status == 'Pending';
+
       allow update: if isStaff() || (isOwner(resource.data.customerUid) && request.resource.data.status == 'cancelled');
     }
 

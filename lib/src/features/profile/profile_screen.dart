@@ -45,12 +45,7 @@ class ProfileScreen extends ConsumerWidget {
           }
 
           final String uid = FirebaseAuth.instance.currentUser?.uid ?? '';
-          final String currentMode =
-              data['currentMode']?.toString() ?? 'shopping';
           final int points = (data['points'] ?? 0).toInt();
-          final String name = data['name'] ?? 'User';
-          final String phone = data['phone'] ?? '';
-          final String? profilePic = data['profilePic'];
           final String roleStr = data['role'] ?? 'customer';
           final String referralCode = data['myReferralCode'] ?? uid.substring(uid.length - 6).toUpperCase();
 
@@ -61,8 +56,7 @@ class ProfileScreen extends ConsumerWidget {
           return SingleChildScrollView(
             child: Column(
               children: [
-                _buildHeader(context, ref, uid, name, phone, profilePic,
-                    currentMode, isDark, t),
+                _buildHeader(context, ref, data, isDark, t),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
@@ -120,7 +114,7 @@ class ProfileScreen extends ConsumerWidget {
                         ]),
                       ],
                       if (isReseller) ...[
-                        _buildSectionHeader(t('reseller').toUpperCase() + ' PANEL', isDark),
+                        _buildSectionHeader('${t('reseller').toUpperCase()} PANEL', isDark),
                         _buildXRow([
                           _gridItem(
                               Icons.dashboard_rounded,
@@ -149,7 +143,7 @@ class ProfileScreen extends ConsumerWidget {
                         ]),
                       ],
                       if (isRider) ...[
-                        _buildSectionHeader(t('rider').toUpperCase() + ' PANEL', isDark),
+                        _buildSectionHeader('${t('rider').toUpperCase()} PANEL', isDark),
                         _buildXRow([
                           _gridItem(
                               Icons.moped_rounded,
@@ -172,7 +166,7 @@ class ProfileScreen extends ConsumerWidget {
                         ]),
                       ],
                       if (isStaff) ...[
-                        _buildSectionHeader(t('staff').toUpperCase() + ' PANEL', isDark),
+                        _buildSectionHeader('${t('staff').toUpperCase()} PANEL', isDark),
                         _buildXRow([
                           _gridItem(
                               Icons.admin_panel_settings_rounded,
@@ -353,26 +347,27 @@ class ProfileScreen extends ConsumerWidget {
   Widget _buildHeader(
       BuildContext context,
       WidgetRef ref,
-      String uid,
-      String name,
-      String phone,
-      String? profilePic,
-      String currentMode,
+      Map<String, dynamic> data,
       bool isDark,
       String Function(String) t) {
+    final String name = data['name'] ?? 'User';
+    final String phone = data['phone'] ?? '';
+    final String email = data['email'] ?? '';
+    final String? profilePic = data['profilePic'];
+    final String? district = data['districtId'];
+    final String? upazila = data['upazilaId'];
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
       decoration: BoxDecoration(
-        color: isDark
-            ? AppStyles.darkSurfaceColor
-            : AppStyles.primaryColor, // Branding Header
+        color: isDark ? AppStyles.darkSurfaceColor : AppStyles.primaryColor,
         borderRadius: const BorderRadius.vertical(bottom: Radius.circular(30)),
       ),
       child: Row(
         children: [
           _buildAvatar(profilePic),
-          const SizedBox(width: 15),
+          const SizedBox(width: 20),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -382,18 +377,41 @@ class ProfileScreen extends ConsumerWidget {
                     Text(name,
                         style: const TextStyle(
                             color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold)),
-                    const SizedBox(width: 5),
+                            fontSize: 24, // BIGGER NAME
+                            fontWeight: FontWeight.w900)),
+                    const SizedBox(width: 8),
                     const Icon(Icons.verified_rounded,
-                        color: Colors.blueAccent, size: 14),
+                        color: Colors.blueAccent, size: 18),
                   ],
                 ),
-                Text(phone,
-                    style:
-                        const TextStyle(color: Colors.white60, fontSize: 11)),
-                const SizedBox(height: 10),
-                _modeToggleButton(uid, currentMode),
+                const SizedBox(height: 4),
+                if (phone.isNotEmpty)
+                  Text(phone,
+                      style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
+                if (email.isNotEmpty)
+                  Text(email,
+                      style: const TextStyle(color: Colors.white54, fontSize: 11)),
+                if (district != null || upazila != null) ...[
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: Colors.white12,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.location_on_rounded, color: Colors.white70, size: 10),
+                        const SizedBox(width: 4),
+                        Text(
+                          '${upazila ?? ""} ${district ?? ""}'.trim(),
+                          style: const TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
@@ -426,35 +444,6 @@ class ProfileScreen extends ConsumerWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _modeToggleButton(String uid, String currentMode) {
-    return InkWell(
-      onTap: () => _toggleWorkMode(uid, currentMode),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        decoration: BoxDecoration(
-          color: Colors.white10,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white24),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(Icons.work_outline, color: Colors.white, size: 10),
-            const SizedBox(width: 6),
-            Text(
-              currentMode == 'work' ? t('switchToShopping').toUpperCase() : t('switchToWork').toUpperCase(),
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 10,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 0.5),
-            ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -684,14 +673,6 @@ class ProfileScreen extends ConsumerWidget {
         ),
       ],
     );
-  }
-
-  void _toggleWorkMode(String uid, String currentMode) {
-    final nextMode = currentMode == 'work' ? 'shopping' : 'work';
-    FirebaseFirestore.instance
-        .collection(HubPaths.users)
-        .doc(uid)
-        .update({'currentMode': nextMode});
   }
 
   void _launchWhatsApp() async {

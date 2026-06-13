@@ -249,6 +249,13 @@ class CompassService {
           startSimulation();
         }
       });
+
+      // DNA ENFORCED: Auto-close controller when all listeners are gone
+      controller.onCancel = () {
+        compassSub?.cancel();
+        timeoutTimer?.cancel();
+        simulationTimer?.cancel();
+      };
     }));
 
     return controller.stream;

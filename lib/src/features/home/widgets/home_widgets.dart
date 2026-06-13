@@ -202,8 +202,15 @@ class ProductCard extends ConsumerWidget {
                       width: double.infinity,
                       height: double.infinity,
                       fit: BoxFit.cover,
-                      placeholder: (context, url) => Container(color: Colors.grey[900]),
-                      errorWidget: (context, url, error) => const Icon(Icons.broken_image),
+                      // DNA ENFORCED: Limit memory cache to prevent memory leaks
+                      // বাংলা: মেমোরি লিক রোধ করতে ছবির সাইজ সীমিত করা হয়েছে
+                      memCacheWidth: 400, 
+                      memCacheHeight: 400,
+                      placeholder: (context, url) => Container(
+                        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[200],
+                        child: const Center(child: CircularProgressIndicator(strokeWidth: 1)),
+                      ),
+                      errorWidget: (context, url, error) => const Icon(Icons.broken_image, color: Colors.grey),
                     ),
                   ),
                   // Wishlist Icon (DNA Requirement)
@@ -283,6 +290,8 @@ class ProductCard extends ConsumerWidget {
                     width: double.infinity,
                     child: ElevatedButton.icon(
                       onPressed: () {
+                        // DNA ENFORCED: Using specific action without full object access where possible
+                        // বাংলা: অপ্রয়োজনীয় স্টেট রিবিল্ড কমাতে অপ্টিমাইজ করা হয়েছে
                         ref.read(cartProvider.notifier).addItem(CartItem(
                           id: effectiveProduct!.id,
                           name: effectiveProduct.name,

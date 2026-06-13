@@ -9,6 +9,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'firebase_options.dart';
 import 'src/di/service_initializer.dart';
@@ -90,6 +91,13 @@ void main() {
 
     // Initialize all services
     await ServiceInitializer.initialize();
+
+    // DNA ENFORCED: Initialize Firebase App Check for API Security (Audit Point #2)
+    // বাংলা: এপিআই সিকিউরিটি নিশ্চিত করতে অ্যাপ চেক চালু করা হয়েছে
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: AndroidProvider.playIntegrity,
+      appleProvider: AppleProvider.deviceCheck,
+    );
 
     // Auto seed/sync locations if database is empty or has no districts
     try {

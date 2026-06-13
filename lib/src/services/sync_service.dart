@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import '../core/constants/paths.dart';
 import '../di/service_locator.dart';
 import '../features/commerce/services/loyalty_service.dart';
@@ -11,26 +12,23 @@ class SyncService {
 
   SyncService();
 
-  /// Main sync entry point called at app startup
   Future<void> syncData() async {
     final user = _auth.currentUser;
     if (user == null) return;
 
     try {
-      // 1. Sync User Presence/Last Seen
       await _updateUserPresence(user.uid);
-
-      // 2. Trigger Daily Login Bonus check
       try {
         await getIt<LoyaltyService>().handleDailyLoginBonus(user.uid);
       } catch (e) {
         debugPrint('Daily Login Bonus Error: $e');
       }
-
-      // 3. Clear expired notifications or temp data
       await _cleanupOldData(user.uid);
+      
+      // DNA ENFORCED: Cache Locations locally for offline support
+      await _cacheLocationsLocally();
 
-      debugPrint('Data Sync Completed for user: ${user.uid}');
+      debugPrint('Data Sync Completed');
     } catch (e) {
       debugPrint('Sync Error: $e');
     }
@@ -44,19 +42,43 @@ class SyncService {
   }
 
   Future<void> _cleanupOldData(String uid) async {
-    // Example: Delete notifications older than 30 days
-    final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
-    final oldNotifs = await _firestore.collection(HubPaths.notifications)
-        .where('userId', isEqualTo: uid)
-        .where('createdAt', isLessThan: Timestamp.fromDate(thirtyDaysAgo))
-        .get();
+    try {
+      final thirtyDaysAgo = DateTime.now().subtract(const Duration(days: 30));
+      final allUserNotifs = await _firestore.collection(HubPaths.notifications)
+          .where('userId', isEqualTo: uid)
+          .get();
 
-    if (oldNotifs.docs.isNotEmpty) {
-      final batch = _firestore.batch();
-      for (var doc in oldNotifs.docs) {
-        batch.delete(doc.reference);
+      if (allUserNotifs.docs.isNotEmpty) {
+        final oldDocs = allUserNotifs.docs.where((doc) {
+          final createdAt = doc.data()['createdAt'];
+          if (createdAt is Timestamp) {
+            return createdAt.toDate().isBefore(thirtyDaysAgo);
+          }
+          return false;
+        }).toList();
+
+        if (oldDocs.isNotEmpty) {
+          final batch = _firestore.batch();
+          for (var doc in oldDocs) {
+            batch.delete(doc.reference);
+          }
+          await batch.commit();
+        }
       }
-      await batch.commit();
+    } catch (e) {
+      debugPrint('Notification cleanup error: $e');
+    }
+  }
+
+  Future<void> _cacheLocationsLocally() async {
+    try {
+      final snap = await _firestore.collection(HubPaths.locations).get();
+      final box = await Hive.openBox('app_cache');
+      final locList = snap.docs.map((d) => d.data()).toList();
+      await box.put('cached_locations', locList);
+      debugPrint('✅ Cached ${locList.length} locations locally');
+    } catch (e) {
+      debugPrint('Location caching error: $e');
     }
   }
 }
