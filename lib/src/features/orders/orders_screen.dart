@@ -34,7 +34,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       collectionPath: 'orders',
       pageSize: 10,
       queryBuilder: (query) {
-        var q = query.where('buyerId', isEqualTo: uid);
+        var q = query.where('customerUid', isEqualTo: uid);
         if (_activeFilter != 'All') {
           q = q.where('status', isEqualTo: _activeFilter);
         }

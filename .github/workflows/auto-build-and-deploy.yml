@@ -335,7 +335,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 45
     needs: [setup, prepare, test-security-analyze]
-    if: always() && needs.prepare.result == 'success'
+    if: needs.setup.outputs.should_deploy == 'true' && needs.prepare.result == 'success'
     strategy:
       fail-fast: false
       matrix:
@@ -407,7 +407,8 @@ jobs:
     name: 🌐 Build Web (${{ matrix.web-app }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    needs: [setup, test-security-analyze, vulnerability-scan, secrets-scan]
+    needs: [setup, prepare, test-security-analyze, vulnerability-scan, secrets-scan]
+    if: needs.setup.outputs.should_deploy == 'true' && needs.prepare.result == 'success'
     strategy:
       fail-fast: false
       matrix:
@@ -430,20 +431,17 @@ jobs:
           path: ~/.pub-cache
           key: ${{ runner.os }}-pub-${{ hashFiles('**/pubspec.lock') }}
 
-      - name: Cache build_runner
+      - name: Restore generated code
         uses: actions/cache@v4
         with:
           path: .dart_tool
-          key: ${{ runner.os }}-build-runner-${{ hashFiles('**/pubspec.lock') }}
+          key: ${{ runner.os }}-build-gen-${{ github.sha }}
 
       - name: Install dependencies
         run: flutter pub get
 
       - name: Create dummy Firebase options
         run: bash .github/scripts/create_dummy_firebase_options.sh
-
-      - name: Generate code
-        run: dart run build_runner build --delete-conflicting-outputs
 
       - name: Build Web
         run: |
@@ -454,9 +452,9 @@ jobs:
       - name: Upload web artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: web-builds
+          name: web-build-${{ matrix.web-app }}
           path: |
-            build/web_artifacts/
+            build/web_artifacts/web_${{ matrix.web-app }}
           retention-days: 30
 
   # Stage 6: Deploy to Firebase
@@ -480,11 +478,17 @@ jobs:
       - name: Install Firebase Tools
         run: npm install -g firebase-tools
 
-      - name: Download web artifacts
+      - name: Download customer web artifact
         uses: actions/download-artifact@v4
         with:
-          name: web-builds
-          path: build/
+          name: web-build-customer
+          path: build/web_customer
+
+      - name: Download admin web artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: web-build-admin
+          path: build/web_admin
 
       - name: Deploy Firestore Rules
         run: |
@@ -549,46 +553,6 @@ jobs:
           fi
         continue-on-error: true
 
-  # Stage 8: Deploy via Shorebird (OTA)
-  deploy-shorebird:
-    name: 🐦 Deploy ${{ matrix.app }} via Shorebird (OTA)
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    needs: [setup, build-mobile]
-    if: needs.setup.outputs.should_deploy == 'true' && (github.event_name == 'push' || github.event.inputs.deploy_to == 'all' || github.event.inputs.deploy_to == 'shorebird-only')
-    strategy:
-      fail-fast: false
-      matrix:
-        app: ${{ fromJSON(needs.setup.outputs.apps) }}
-
-    env:
-      SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
-      SHOREBIRD_AUTH_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
-
-    steps:
-      - uses: actions/checkout@v4.2.0
-        with: # Full history is not needed for deployment
-          fetch-depth: 1
-
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-
-      - name: Setup Shorebird
-        uses: shorebirdtech/setup-shorebird@v1
-
-      - name: Release via Shorebird
-        run: |
-          cp shorebird_${{ matrix.app }}.yaml shorebird.yaml
-          shorebird patch android \
-            -t lib/main_${{ matrix.app }}.dart \
-            -- --build-number=${{ needs.setup.outputs.build_number }} || \
-          shorebird release android \
-            -t lib/main_${{ matrix.app }}.dart \
-            --artifact apk \
-            -- --build-number=${{ needs.setup.outputs.build_number }}
-        continue-on-error: true
 
   # Stage 9: Create Release & Notifications
   release:

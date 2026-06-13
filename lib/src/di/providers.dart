@@ -100,6 +100,11 @@ final currentUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
 final actualUserDataProvider = currentUserDataProvider;
 
 final allUsersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
+  final user = ref.watch(authStateProvider).value;
+  if (user == null) return Stream.value(<Map<String, dynamic>>[]);
+  final userData = ref.watch(currentUserDataProvider).value;
+  final role = userData?['role'] ?? 'customer';
+  if (role != 'admin' && role != 'staff') return Stream.value(<Map<String, dynamic>>[]);
   return FirebaseFirestore.instance.collection(HubPaths.users).snapshots().map((snap) => snap.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList());
 });
 
@@ -116,6 +121,11 @@ final storesProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
 });
 
 final ordersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
+  final user = ref.watch(authStateProvider).value;
+  if (user == null) return Stream.value(<Map<String, dynamic>>[]);
+  final userData = ref.watch(currentUserDataProvider).value;
+  final role = userData?['role'] ?? 'customer';
+  if (role != 'admin' && role != 'staff') return Stream.value(<Map<String, dynamic>>[]);
   return FirebaseFirestore.instance.collection(HubPaths.orders).orderBy('createdAt', descending: true).snapshots().map((snap) => snap.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList());
 });
 
@@ -147,6 +157,11 @@ final groupedAiAuditProvider = FutureProvider<Map<String, dynamic>>((ref) async 
 });
 
 final aiAuditLogsProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
+  final user = ref.watch(authStateProvider).value;
+  if (user == null) return Stream.value(<Map<String, dynamic>>[]);
+  final userData = ref.watch(currentUserDataProvider).value;
+  final role = userData?['role'] ?? 'customer';
+  if (role != 'admin') return Stream.value(<Map<String, dynamic>>[]);
   return FirebaseFirestore.instance.collection('ai_audit_logs').orderBy('timestamp', descending: true).snapshots().map((snap) => snap.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList());
 });
 

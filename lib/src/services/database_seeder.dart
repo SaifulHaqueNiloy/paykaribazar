@@ -19,7 +19,7 @@ class DatabaseSeeder {
         'used_today': 0,
         'daily_limit': 5000,
         'status': 'active',
-        'last_used': FieldValue.serverTimestamp(),
+        'last_used': Timestamp.now(),
       },
       {
         'id': 'DeepSeek-V3-Executive',
@@ -27,7 +27,7 @@ class DatabaseSeeder {
         'used_today': 0,
         'daily_limit': 2000,
         'status': 'active',
-        'last_used': FieldValue.serverTimestamp(),
+        'last_used': Timestamp.now(),
       },
       {
         'id': 'Gemini-2.0-Flash-Fallback',
@@ -35,7 +35,7 @@ class DatabaseSeeder {
         'used_today': 0,
         'daily_limit': 1500,
         'status': 'active',
-        'last_used': FieldValue.serverTimestamp(),
+        'last_used': Timestamp.now(),
       }
     ];
 

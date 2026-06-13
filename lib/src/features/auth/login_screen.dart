@@ -529,7 +529,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: CircularProgressIndicator(
                       color: Colors.white, strokeWidth: 3))
               : Text(_t('login'),
-                  style: const TextStyle(
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                       color: Colors.white)),
