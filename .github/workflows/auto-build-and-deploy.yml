@@ -379,20 +379,16 @@ jobs:
         uses: shorebirdtech/setup-shorebird@v1
         if: needs.setup.outputs.should_deploy == 'true'
 
-      - name: Build & Deploy (Shorebird)
+      - name: Build & Deploy (Shorebird with Flutter Fallback)
         if: needs.setup.outputs.should_deploy == 'true'
         run: |
           cp shorebird_${{ matrix.app }}.yaml shorebird.yaml
-          shorebird patch android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart -- --build-number=${{ needs.setup.outputs.build_number }} || \
-          shorebird release android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}
+          (shorebird patch android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart -- --build-number=${{ needs.setup.outputs.build_number }} || \
+           shorebird release android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}) || \
+          (echo "⚠️ Shorebird failed. Falling back to standard Flutter build..." && \
+           flutter build apk -t lib/main_${{ matrix.app }}.dart --release --build-number=${{ needs.setup.outputs.build_number }})
         env:
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
-
-      - name: Build Standard APK (If not deploying)
-        if: needs.setup.outputs.should_deploy != 'true'
-        run: |
-          flutter build apk -t lib/main_${{ matrix.app }}.dart --release \
-              --build-number=${{ needs.setup.outputs.build_number }}
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
