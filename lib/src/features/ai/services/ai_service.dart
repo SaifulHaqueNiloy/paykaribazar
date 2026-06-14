@@ -36,11 +36,13 @@ class AIService {
     required FirestoreService firestore,
     required SecretsService secrets,
     List<AIProvider>? mockProviders,
+    ApiQuotaService? apiQuotaService,
   }) : _secrets = secrets {
     _cache = AICacheService();
-    _quotaService = getIt.isRegistered<ApiQuotaService>()
-        ? getIt<ApiQuotaService>()
-        : ApiQuotaService();
+    _quotaService = apiQuotaService ??
+        (getIt.isRegistered<ApiQuotaService>()
+            ? getIt<ApiQuotaService>()
+            : ApiQuotaService());
     if (mockProviders != null) {
       _providers.addAll(mockProviders);
     } else {

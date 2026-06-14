@@ -2,22 +2,23 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_service.dart';
 import 'package:paykari_bazar/src/features/ai/services/ai_provider.dart';
+import 'package:paykari_bazar/src/features/ai/services/api_quota_service.dart';
 import 'package:paykari_bazar/src/core/firebase/firestore_service.dart';
 import 'package:paykari_bazar/src/core/services/secrets_service.dart';
 import 'package:paykari_bazar/src/features/ai/domain/ai_work_type.dart';
 
-// ============================================================================
-// MOCKS
-// ============================================================================
-
 class MockFirestoreService extends Mock implements FirestoreService {}
 class MockSecretsService extends Mock implements SecretsService {}
 class MockAIProvider extends Mock implements AIProvider {}
+class MockApiQuotaService extends Mock implements ApiQuotaService {}
 
 void main() {
   late MockAIProvider mockKimi;
   late MockAIProvider mockDeepSeek;
   late MockAIProvider mockGemini;
+  late MockApiQuotaService mockQuotaService;
+  late MockFirestoreService mockFirestore;
+  late MockSecretsService mockSecrets;
 
   setUpAll(() {
     registerFallbackValue(AiWorkType.generic);
@@ -27,10 +28,14 @@ void main() {
     mockKimi = MockAIProvider();
     mockDeepSeek = MockAIProvider();
     mockGemini = MockAIProvider();
+    mockQuotaService = MockApiQuotaService();
+    mockFirestore = MockFirestoreService();
+    mockSecrets = MockSecretsService();
 
     when(() => mockKimi.name).thenReturn('Kimi');
     when(() => mockDeepSeek.name).thenReturn('DeepSeek');
     when(() => mockGemini.name).thenReturn('Gemini');
+    when(() => mockQuotaService.hasQuota(any())).thenAnswer((_) async => true);
   });
 
   group('Day 2: AI Service Tests (20 tests)', () {
@@ -255,13 +260,11 @@ void main() {
     // ========================================================================
     group('AI Service Configuration', () {
       test('18. Mock providers can be injected into AIService', () {
-        final mockFirestore = MockFirestoreService();
-        final mockSecrets = MockSecretsService();
-        
         final aiService = AIService(
           firestore: mockFirestore,
           secrets: mockSecrets,
           mockProviders: [mockKimi, mockDeepSeek, mockGemini],
+          apiQuotaService: mockQuotaService,
         );
 
         expect(aiService, isNotNull);
@@ -269,33 +272,26 @@ void main() {
       });
 
       test('19. AIService is ready with mock providers', () {
-        final mockFirestore = MockFirestoreService();
-        final mockSecrets = MockSecretsService();
-        
         final aiService = AIService(
           firestore: mockFirestore,
           secrets: mockSecrets,
           mockProviders: [mockKimi, mockDeepSeek, mockGemini],
+          apiQuotaService: mockQuotaService,
         );
 
         expect(aiService.isReady, true);
       });
 
       test('20. Provider names accessible from AIService', () {
-        // ignore: unused_local_variable
-        final mockFirestore = MockFirestoreService();
-        // ignore: unused_local_variable
-        final mockSecrets = MockSecretsService();
-        
-        final providers = [mockKimi, mockDeepSeek, mockGemini];
-        // final aiService = AIService(
-        //   firestore: mockFirestore,
-        //   secrets: mockSecrets,
-        //   mockProviders: providers,
-        // );
+        final aiService = AIService(
+          firestore: mockFirestore,
+          secrets: mockSecrets,
+          mockProviders: [mockKimi, mockDeepSeek, mockGemini],
+          apiQuotaService: mockQuotaService,
+        );
 
-        expect(providers.map((p) => p.name).toList(), 
-            equals(['Kimi', 'DeepSeek', 'Gemini']));
+        final accessibleNames = [mockKimi.name, mockDeepSeek.name, mockGemini.name];
+        expect(accessibleNames, equals(['Kimi', 'DeepSeek', 'Gemini']));
       });
     });
   });

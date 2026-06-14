@@ -91,7 +91,7 @@ android {
 // Blueprint alignment: Force all Kotlin deps to 2.1.0
 // This is the "wise" upgrade to match your modern dependencies while fixing the crash
 configurations.all {
-    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+    resolutionStrategy.eachDependency { details ->
         if (details.requested.group == 'org.jetbrains.kotlin') {
             details.useVersion "2.1.0"
         }
