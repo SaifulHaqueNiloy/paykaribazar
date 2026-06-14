@@ -323,3 +323,11 @@ if (_passCtrl.text.isEmpty)
 | 8 | `main_admin.dart` ও `main_customer.dart` থেকে অব্যবহৃত `firebase_app_check` import সরানো হয়েছে | `main_admin.dart:10`, `main_customer.dart:14` | ✅ FIXED |
 | 9 | `isNewArrival` ডিফল্ট `false` করা হয়েছে | `product_model.dart:124` | ✅ FIXED |
 | 10 | `toMap()` এ `aiDescriptionBnEnriched` ফিল্ড যোগ করা হয়েছে | `product_model.dart:245` | ✅ FIXED |
+| 11 | নোটিফিকেশন বাটনে `/notifications` স্ক্রিনে নেভিগেট করা হচ্ছে | `home_screen.dart:246` | ✅ FIXED |
+| 12 | `product_detail_screen.dart`-এর হার্ডকোডেড ইংরেজি টেক্সট `AppStrings`-এ রুট bridging করা হয়েছে (প্র`src/utils/app_strings.dart`-এ নতুন keys যোগ করা হয়েছে: `similarProducts`, `quantity`, `addedToCart`, `outOfStock`, `addToCart`, `descriptionTitle`) | `product_detail_screen.dart`, `app_strings.dart` | ✅ FIXED |
+| 13 | `main_screen.dart` Bottom Navigation Bar লেবেল `languageProvider` থেকেrips | `main_screen.dart:22-26, 94-101` | ✅ FIXED |
+| 14 | `main_customer.dart`-এ `Future.delayed(..., () => _checkUpdate())` সরিয়ে `_checkUpdate()` directly call করা হয়েছে | `main_customer.dart:169-172` | ✅ FIXED |
+| 15 | `signup_screen.dart`-এ পাসওয়ার্ড লেন্থ >= 8 চেক যোগ করা হয়েছে | `signup_screen.dart:52-53` | ✅ FIXED |
+| 16 | `product_detail_screen.dart`-এ `_product!` force-unwrap ਸਮੱਸ্যা হাল করে躍 data fetch form \\u0027build()\\u0027-এ সরাসরি provider ব্যবহার করা হয়েছে | `product_detail_screen.dart:27-42` | ✅ FIXED |
+| 17 | `firestore.rules`-এ `isAdmin()` optimization হয়েছে, কিন্তু সম্পূর্ণ rewrite needed; marking partial | `firestore.rules:9-14` | ⚠️ PARTIAL |
+| 18 | `withOpacity()` → `withValues()` edited ফাইলগুলোতে sarejachurilla; 300+ occurrences across codebase全党 | Multiple files | 🔄 IN PROGRESS |

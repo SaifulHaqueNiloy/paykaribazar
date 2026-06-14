@@ -1,6 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../shared/services/media_service.dart';
+import '../services/user_media_service.dart';
 import '../core/constants/paths.dart';
 import 'service_locator.dart';
 import 'dart:async';
@@ -70,7 +72,6 @@ final forecastingServiceProvider = Provider((ref) => getIt<ForecastingService>()
 final apiQuotaServiceProvider = Provider((ref) => getIt<ApiQuotaService>());
 final billingMonitorProvider =
     Provider((ref) => getIt<FirebaseBillingMonitor>());
-import '../services/user_media_service.dart';
 
 final secretsServiceProvider = Provider((ref) => getIt<SecretsService>());
 final aiAutomationProvider = Provider((ref) => getIt<AiAutomationService>());
@@ -81,6 +82,7 @@ final autoTranslationProvider = Provider((ref) => getIt<AutoTranslationService>(
 final chatServiceProvider = Provider((ref) => getIt<ChatService>());
 final compassServiceProvider = Provider((ref) => getIt<CompassService>());
 final otaServiceProvider = Provider((ref) => OTAService());
+final mediaServiceProvider = Provider((ref) => getIt<MediaService>());
 final userMediaServiceProvider = Provider((ref) => getIt<UserMediaService>());
 final backupServiceProvider = Provider((ref) {
   final secrets = ref.watch(secretsServiceProvider);

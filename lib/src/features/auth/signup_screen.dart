@@ -50,7 +50,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
 
   Future<void> _handleSignup() async {
     if (_nameCtrl.text.isEmpty ||
-        _passCtrl.text.isEmpty ||
+        _passCtrl.text.length < 8 ||
         _selectedDistrict == null ||
         _selectedUpazila == null ||
         (_isEmailSignup ? _emailCtrl.text.isEmpty : _phoneCtrl.text.isEmpty)) {
