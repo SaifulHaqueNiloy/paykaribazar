@@ -10,6 +10,7 @@ import '../core/services/storage_service.dart';
 import '../core/services/permission_service.dart';
 import '../core/services/error_reporter_service.dart';
 import '../core/services/health_check_service.dart';
+import '../core/services/cache_service.dart';
 import '../core/services/security_initializer.dart'; // Security initialization
 import '../core/admin/dynamic_feature_control.dart'; // Dynamic UI/Feature Control
 
@@ -56,6 +57,10 @@ class ServiceInitializer {
     final sharedPrefs = await SharedPreferences.getInstance();
     getIt.registerLazySingleton<StorageService>(
         () => SharedPrefsService(sharedPrefs));
+
+    final cacheService = CacheService();
+    await cacheService.init();
+    getIt.registerSingleton<CacheService>(cacheService);
 
     getIt.registerLazySingleton<SecretsService>(() => SecretsService({}));
     getIt.registerLazySingleton<ConnectivityService>(

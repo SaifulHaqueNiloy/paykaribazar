@@ -121,7 +121,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // 🔵 Performance Optimization: Watch single productsProvider and filter locally.
     // This replaces 6 separate Firestore listeners with one, significantly reducing listener overhead.
     final productsAsync = ref.watch(productsProvider);
-    final simulatedId = ref.watch(simulatedUserUidProvider);
 
     AsyncValue<List<Map<String, dynamic>>> filterProducts(String type) {
       return productsAsync.whenData((list) {
@@ -169,37 +168,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SliverToBoxAdapter(child: NoticeSlider()),
-              if (simulatedId != null)
-                SliverToBoxAdapter(
-                  child: Container(
-                    color: Colors.red.shade900,
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.warning_amber_rounded, color: Colors.white, size: 20),
-                        const SizedBox(width: 8),
-                        Expanded(
-                          child: Text(
-                            'সিমুলেশন মোড সক্রিয় (UID: ${simulatedId.substring(0, 8)}...)',
-                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                        ),
-                        ElevatedButton(
-                          onPressed: () => ref.read(simulatedUserUidProvider.notifier).state = null,
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.red.shade900,
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                            minimumSize: Size.zero,
-                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-                          ),
-                          child: const Text('Exit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
               SliverToBoxAdapter(
                 child: Column(
                   children: [

@@ -7,6 +7,7 @@ import 'package:paykari_bazar/src/features/products/grouped_products_screen.dart
 import 'package:paykari_bazar/src/features/home/rewards_screen.dart';
 import 'package:paykari_bazar/src/features/profile/profile_screen.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
+import 'package:paykari_bazar/src/services/role_simulator_provider.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -19,6 +20,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final idx = ref.watch(navProvider);
+    final simulatedId = ref.watch(simulatedUserUidProvider);
 
     return PopScope(
       canPop: false,
@@ -32,20 +34,55 @@ class _MainScreenState extends ConsumerState<MainScreen> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: SafeArea(
-          child: Stack(
+          child: Column(
             children: [
-              IndexedStack(
-                index: idx.clamp(0, 4),
-                children: const [
-                  HomeScreen(),
-                  EmergencyDetailsScreen(),
-                  ProductGroupedScreen(),
-                  RewardsScreen(),
-                  ProfileScreen(),
-                ],
+              if (simulatedId != null)
+                Container(
+                  color: Colors.red.shade900,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.warning_amber_rounded, color: Colors.white, size: 20),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          'সিমুলেশন মোড সক্রিয় (UID: ${simulatedId.substring(0, 8)}...)',
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => ref.read(simulatedUserUidProvider.notifier).state = null,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.red.shade900,
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          minimumSize: Size.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                        ),
+                        child: const Text('Exit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+                      ),
+                    ],
+                  ),
+                ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    IndexedStack(
+                      index: idx.clamp(0, 4),
+                      children: const [
+                        HomeScreen(),
+                        EmergencyDetailsScreen(),
+                        ProductGroupedScreen(),
+                        RewardsScreen(),
+                        ProfileScreen(),
+                      ],
+                    ),
+                    // Floating cart with Qibla integrated
+                    const PremiumFloatingCart(),
+                  ],
+                ),
               ),
-              // Floating cart with Qibla integrated
-              const PremiumFloatingCart(),
             ],
           ),
         ),
