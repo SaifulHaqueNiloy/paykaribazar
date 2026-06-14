@@ -6,7 +6,7 @@ class AutoTranslationService {
   final String _apiKey;
 
   AutoTranslationService({String? apiKey})
-      : _apiKey = apiKey ?? const String.fromEnvironment('AI_API_KEY', defaultValue: '');
+      : _apiKey = apiKey ?? const String.fromEnvironment('AI_API_KEY');
 
   Future<String> translate(String text, {String to = 'bn'}) async {
     if (text.isEmpty || text.length < 2) return text;

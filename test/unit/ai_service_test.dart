@@ -290,6 +290,7 @@ void main() {
           apiQuotaService: mockQuotaService,
         );
 
+        expect(aiService.isReady, true);
         final accessibleNames = [mockKimi.name, mockDeepSeek.name, mockGemini.name];
         expect(accessibleNames, equals(['Kimi', 'DeepSeek', 'Gemini']));
       });

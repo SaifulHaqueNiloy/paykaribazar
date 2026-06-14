@@ -310,8 +310,8 @@ void main() {
           ],
           child: MaterialApp(
             home: Builder(
-              builder: (context) => Scaffold(
-                body: const CartScreen(),
+              builder: (context) => const Scaffold(
+                body: CartScreen(),
               ),
             ),
           ),
