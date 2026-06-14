@@ -331,3 +331,30 @@ if (_passCtrl.text.isEmpty)
 | 16 | `product_detail_screen.dart`-এ `_product!` force-unwrap ਸਮੱਸ্যা হাল করে躍 data fetch form \\u0027build()\\u0027-এ সরাসরি provider ব্যবহার করা হয়েছে | `product_detail_screen.dart:27-42` | ✅ FIXED |
 | 17 | `firestore.rules`-এ `isAdmin()` optimization হয়েছে, কিন্তু সম্পূর্ণ rewrite needed; marking partial | `firestore.rules:9-14` | ⚠️ PARTIAL |
 | 18 | `withOpacity()` → `withValues()` edited ফাইলগুলোতে sarejachurilla; 300+ occurrences across codebase全党 | Multiple files | 🔄 IN PROGRESS |
+
+---
+
+## 🔍 Duplicate / Empty / Stub Files Detected
+
+| # | ফাইলের পাথ | আকার |ধരন | বিবরণ |
+|---|-----------|-------|------|--------|
+| 1 | `lib/src/features/delivery/delivery_dashboard_screen.dart` | 79 bytes | Stub | শুধুমাত্র একটি কমেন্ট — `DEPRECATED: Duplicate of lib/src/features/delivery/delivery_dashboard.dart` |
+| 2 | `lib/src/features/staff/staff_team_screen.dart` | 77 bytes | Stub | শুধুমাত্র একটি কমেন্ট — `DEPRECATED: Duplicate of lib/src/features/profile/staff_team_screen.dart` |
+| 3 | `lib/src/features/products/widgets/product_widgets.dart` | 94 bytes | Re-export stub | `export 'package:paykari_bazar/src/features/home/widgets/home_widgets.dart' show ProductCard;` |
+| 4 | `lib/src/core/extensions.dart` | 99 bytes | Re-export stub | `export 'extensions/map_extensions.dart';` + comment |
+| 5 | `paykari_bazar/lib/main.dart` | 83 bytes | Redirect stub | `export 'main_customer.dart';` |
+| 6 | `paykari_bazar_admin/lib/main.dart` | 77 bytes | Redirect stub | `export 'main_admin.dart';` |
+| 7 | `paykari_bazar_admin/lib/main_admin.dart` | 59 bytes | Stub | শুধুমাত্র `// DEPRECATED: Moved to paykari_bazar/lib/main_admin.dart` |
+| 8 | `paykari_bazar/test/widget_test.dart` | 66 bytes | Stub | শুধুমাত্র `// Deprecated: Use logic-based tests in coupon_service_test.dart` |
+| 9 | `test/widget_test.dart` | 391 bytes | Duplicate | `test/widgets/widget_test.dart`-এর exact duplicate |
+| 10 | `test/widgets/widget_test.dart` | 391 bytes | Duplicate | `test/widget_test.dart`-এর exact duplicate |
+
+---
+
+### পরামর্শ (Recommendation)
+
+- স্টাব/ডুপ্লিকেট ফাইলগুলো (`delivery_dashboard_screen.dart`, `staff_team_screen.dart`, `main.dart` redirects, `extensions.dart`, `product_widgets.dart`, `main_admin.dart` stub) সরিয়ে ফেলুন অথবা বrardercase-এ **archive** ফোল্ডারে নิน।
+- `test/widget_test.dart` ও `test/widgets/widget_test.dart` একই কনটেন্ট — একটি বর্জন করুন।
+- ডুপ্লিকেটগুলোగła `git rm` করে commit করুন।
+
+---
