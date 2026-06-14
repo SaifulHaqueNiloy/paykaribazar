@@ -128,6 +128,42 @@ if [ ! -f "$TARGET_JSON_FILE" ]; then
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1234567890:android:abc123xyz_customer",
+        "android_client_info": {
+          "package_name": "com.paykaribazar.customer"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "dummy_key"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1234567890:android:abc123xyz_admin",
+        "android_client_info": {
+          "package_name": "com.paykaribazar.admin"
+        }
+      },
+      "api_key": [
+        {
+          "current_key": "dummy_key"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"
