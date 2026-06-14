@@ -186,6 +186,13 @@ class ProfileScreen extends ConsumerWidget {
                               () => context.push('/admin'),
                               Colors.orange,
                               isDark),
+                          if (roleStr == 'admin')
+                            _gridItem(
+                                Icons.bolt_rounded,
+                                'সিমুলেটর',
+                                () => context.push('/customer-simulator'),
+                                Colors.teal,
+                                isDark),
                         ]),
                       ],
                       _buildSectionHeader(t('teamPartners'), isDark),

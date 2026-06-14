@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/styles.dart';
-import '../../services/home_providers.dart';
+import '../../services/role_simulator_provider.dart';
 import 'widgets/greeting_widget.dart';
 import 'widgets/notice_slider.dart';
 import 'widgets/home_widgets.dart';
@@ -121,16 +121,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     // 🔵 Performance Optimization: Watch single productsProvider and filter locally.
     // This replaces 6 separate Firestore listeners with one, significantly reducing listener overhead.
     final productsAsync = ref.watch(productsProvider);
+    final simulatedId = ref.watch(simulatedUserUidProvider);
 
-    // Local filtering helper for different sections
     AsyncValue<List<Map<String, dynamic>>> filterProducts(String type) {
       return productsAsync.whenData((list) {
         switch (type) {
           case 'flash': return list.where((p) => p['isFlashSale'] == true).toList();
           case 'new': return list.where((p) => p['isNewArrival'] == true || p['isNew'] == true).toList();
           case 'hot': return list.where((p) => p['isHotSelling'] == true || p['isHot'] == true).toList();
-          case 'combo': return list.where((p) => p['category'] == 'Combo' || p['category'] == 'কম্বো').toList();
-          case 'special': return list.where((p) => (p['discountPrice'] ?? 0) > 0).toList();
+          case 'combo': return list.where((p) => p['categoryId'] == 'combo' || p['categoryName'] == 'Combo' || p['categoryNameBn'] == 'কম্বো' || p['isCombo'] == true).toList();
+          case 'special': return list.where((p) => (p['oldPrice'] ?? 0) > (p['price'] ?? 0)).toList();
           case 'justForYou': return list.where((p) => p['isRecommended'] == true).toList();
           default: return [];
         }
@@ -169,9 +169,67 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
               ),
               const SliverToBoxAdapter(child: NoticeSlider()),
+              if (simulatedId != null)
+                SliverToBoxAdapter(
+                  child: Container(
+                    color: Colors.red.shade900,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.warning_amber_rounded, color: Colors.white, size: 20),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'সিমুলেশন মোড সক্রিয় (UID: ${simulatedId.substring(0, 8)}...)',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () => ref.read(simulatedUserUidProvider.notifier).state = null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.red.shade900,
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                            minimumSize: Size.zero,
+                            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+                          ),
+                          child: const Text('Exit', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               SliverToBoxAdapter(
                 child: Column(
                   children: [
+                    productsAsync.when(
+                      data: (_) => const SizedBox.shrink(),
+                      loading: () => const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Center(child: CircularProgressIndicator(color: AppStyles.primaryColor)),
+                      ),
+                      error: (err, stack) => Container(
+                        margin: const EdgeInsets.all(16),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.red.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.red.withOpacity(0.3)),
+                        ),
+                        child: Column(
+                          children: [
+                            const Icon(Icons.error_outline_rounded, color: Colors.red, size: 30),
+                            const SizedBox(height: 8),
+                            Text(
+                              'প্রোডাক্ট লোড করতে সমস্যা হয়েছে: $err',
+                              style: const TextStyle(color: Colors.red, fontSize: 12, fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     const GreetingWidget(),
                     const LoyaltyStatusCard(),
                     filterProducts('flash').when(

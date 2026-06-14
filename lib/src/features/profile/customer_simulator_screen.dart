@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/role_simulator_provider.dart';
+import '../../services/database_seeder.dart';
 import '../../utils/styles.dart';
 import '../../di/providers.dart';
 
@@ -64,6 +65,27 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
       appBar: AppBar(
         title: const Text('Customer App Simulator'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.dns_rounded, color: Colors.blue),
+            onPressed: () async {
+              try {
+                await DatabaseSeeder.seedProducts();
+                await DatabaseSeeder.seedPromos();
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Products and Banners seeded successfully!'))
+                  );
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Seeding failed: $e'))
+                  );
+                }
+              }
+            },
+            tooltip: 'Force Seed Products & Promos',
+          ),
           IconButton(
             icon: const Icon(Icons.delete_sweep_rounded, color: Colors.red),
             onPressed: _nukeSandbox,
