@@ -24,7 +24,7 @@ import '../shared/services/location_service.dart';
 import '../shared/services/media_service.dart';
 import '../shared/services/map_service.dart';
 import '../shared/services/update_service.dart';
-import '../shared/services/background_task_service.dart';
+import '../services/background_task_service.dart';
 import '../shared/services/payment_service.dart';
 import '../features/auth/services/auth_service.dart';
 import '../features/ai/services/ai_service.dart';

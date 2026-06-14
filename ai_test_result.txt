@@ -1,0 +1,42 @@
+﻿00:00 +0: loading C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart
+00:00 +0: (setUpAll)
+00:00 +0: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 1. Kimi provider name returns correctly
+00:00 +1: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 2. DeepSeek provider name returns correctly
+00:00 +2: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 3. Gemini provider name returns correctly
+00:00 +3: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 4. Multiple providers can be configured in list
+00:00 +4: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 5. Provider order preserved in fallback chain
+00:00 +5: Day 2: AI Service Tests (20 tests) Provider Health Checks 6. Health check returns true for healthy provider
+00:00 +6: Day 2: AI Service Tests (20 tests) Provider Health Checks 7. Health check returns false for unhealthy provider
+00:00 +7: Day 2: AI Service Tests (20 tests) Provider Health Checks 8. Can mock different health states for different providers
+00:00 +8: Day 2: AI Service Tests (20 tests) Provider Health Checks 9. Health check can be called multiple times
+00:00 +9: Day 2: AI Service Tests (20 tests) Provider Health Checks 10. Health check failure triggers fallback
+00:00 +10: Day 2: AI Service Tests (20 tests) Provider Generation 11. Generate method returns response from provider
+00:00 +11: Day 2: AI Service Tests (20 tests) Provider Generation 12. Generate method called with correct params
+00:00 +12: Day 2: AI Service Tests (20 tests) Provider Generation 13. Different providers return different responses
+00:00 +13: Day 2: AI Service Tests (20 tests) Error Handling 14. Handle provider exception gracefully
+00:00 +14: Day 2: AI Service Tests (20 tests) Error Handling 15. Fallback continues on provider failure
+00:00 +15: Day 2: AI Service Tests (20 tests) Error Handling 16. Multiple fallback attempts tracked
+00:00 +16: Day 2: AI Service Tests (20 tests) Error Handling 17. Empty response handled correctly
+00:00 +17: Day 2: AI Service Tests (20 tests) AI Service Configuration 18. Mock providers can be injected into AIService
+00:00 +17 -1: Day 2: AI Service Tests (20 tests) AI Service Configuration 18. Mock providers can be injected into AIService [E]
+  [core/no-app] No Firebase App '[DEFAULT]' has been created - call Firebase.initializeApp()
+  package:firebase_core_platform_interface/src/method_channel/method_channel_firebase.dart 190:5  MethodChannelFirebase.app
+  package:firebase_core/src/firebase.dart 79:41                                                   Firebase.app
+  package:cloud_firestore/src/firestore.dart 33:21                                                FirebaseFirestore.instance
+  package:paykari_bazar/src/features/ai/services/api_quota_service.dart 8:76                      new ApiQuotaService
+  package:paykari_bazar/src/features/ai/services/ai_service.dart 43:11                            new AIService
+  test\unit\ai_service_test.dart 261:27                                                           main.<fn>.<fn>.<fn>
+  
+00:00 +17 -1: Day 2: AI Service Tests (20 tests) AI Service Configuration 19. AIService is ready with mock providers
+00:00 +17 -2: Day 2: AI Service Tests (20 tests) AI Service Configuration 19. AIService is ready with mock providers [E]
+  [core/no-app] No Firebase App '[DEFAULT]' has been created - call Firebase.initializeApp()
+  package:firebase_core_platform_interface/src/method_channel/method_channel_firebase.dart 190:5  MethodChannelFirebase.app
+  package:firebase_core/src/firebase.dart 79:41                                                   Firebase.app
+  package:cloud_firestore/src/firestore.dart 33:21                                                FirebaseFirestore.instance
+  package:paykari_bazar/src/features/ai/services/api_quota_service.dart 8:76                      new ApiQuotaService
+  package:paykari_bazar/src/features/ai/services/ai_service.dart 43:11                            new AIService
+  test\unit\ai_service_test.dart 275:27                                                           main.<fn>.<fn>.<fn>
+  
+00:00 +17 -2: Day 2: AI Service Tests (20 tests) AI Service Configuration 20. Provider names accessible from AIService
+00:00 +18 -2: (tearDownAll)
+00:00 +18 -2: Some tests failed.

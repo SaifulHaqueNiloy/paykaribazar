@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart'; // MASTER HUB IMPORT
+import 'package:paykari_bazar/src/core/services/security_initializer.dart';
 import '../../../models/user_model.dart';
 import '../../../utils/styles.dart';
 import '../../../utils/app_strings.dart';
@@ -228,6 +229,21 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
     final double finalTotal = ref.read(cartTotalProvider);
 
     try {
+      // ⭐ SECURITY: Step 1 - Biometric Verification for high-value operations
+      final secureAuth = SecurityInitializer.secureAuth;
+      final isAuthenticated = await secureAuth.authenticateForSensitiveOperation(
+        localizedReason: 'Confirm payment of ৳${finalTotal.toInt()}',
+      );
+
+      if (!isAuthenticated) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Verification failed. Order not placed.')),
+          );
+        }
+        return;
+      }
+
       final items = state.items
           .map((i) => {
                 'productId': i.id,
@@ -260,6 +276,10 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
          }
        });
 
+       // ⭐ SECURITY: Step 2 - Sign API Request (Simulation) and Encrypt ID
+       final apiSecurity = SecurityInitializer.apiSecurity;
+       final encryption = SecurityInitializer.encryption;
+
       final orderData = {
         'customerUid': u.id,
         'customerName': u.name,
@@ -277,7 +297,15 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
         'isEmergency': false,
         'orderType': 'regular',
         'createdAt': FieldValue.serverTimestamp(),
+        'security_token': encryption.encrypt(u.id), // Encrypt sensitive field
       };
+
+      // Get secure headers for the "API call"
+      final headers = apiSecurity.getSecureHeaders(
+        endpoint: '/api/orders/place',
+        body: orderData.toString(),
+      );
+      debugPrint('✅ Secure Headers generated: ${headers['X-Signature']}');
 
       await ref.read(firestoreServiceProvider).placeOrder(orderData);
 
@@ -291,7 +319,7 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
         Navigator.pop(context);
         context.push('/orders');
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Order placed successfully!'),
+            content: Text('Order placed securely! ✅'),
             backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating));
       }

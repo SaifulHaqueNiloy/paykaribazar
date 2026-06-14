@@ -1,0 +1,749 @@
+﻿00:00 +0: loading C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart
+00:00 +0: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management User Provider 1. User provider initializes with default state
+00:00 +1: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management User Provider 2. User login updates provider state
+00:00 +2: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management User Provider 3. User logout clears provider state
+00:00 +3: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management User Provider 4. User profile update modifies state
+00:00 +4: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Theme Provider 1. Theme provider initializes with light mode
+00:00 +5: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Theme Provider 2. Theme dark mode toggle works correctly
+00:00 +6: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Theme Provider 3. Theme accent color can be changed
+00:00 +7: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Theme Provider 4. Theme state changes are independent
+00:00 +8: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Notification Provider 1. Notification provider initializes empty
+00:00 +9: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Notification Provider 2. Adding notification increments unread count
+00:00 +10: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Notification Provider 3. Multiple notifications accumulate correctly
+00:00 +11: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Notification Provider 4. Mark as read clears unread count
+00:00 +12: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Notification Provider 5. Clear all resets notification state
+00:00 +13: C:/Users/n/paykari_bazar/test/additional/additional_providers_test.dart: Provider Tests - Riverpod State Management Provider Isolation 1. Multiple containers maintain separate state
+00:00 +14: C:/Users/n/paykari_bazar/test/additional/additional_widgets_test.dart: Widget Tests - Extended Coverage SearchBar Widget 1. SearchBar renders with hint text
+00:01 +15: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Authentication to Purchase 1. Complete user journey: login → search → purchase
+00:02 +16: C:/Users/n/paykari_bazar/test/additional/additional_widgets_test.dart: Widget Tests - Extended Coverage SearchBar Widget 2. SearchBar clears text on clear button tap
+00:02 +17: C:/Users/n/paykari_bazar/test/additional/additional_widgets_test.dart: Widget Tests - Extended Coverage SearchBar Widget 2. SearchBar clears text on clear button tap
+00:02 +18: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +19: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +20: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +21: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +22: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +23: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +24: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +25: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:02 +26: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:03 +27: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:03 +28: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:03 +29: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+00:03 +30: C:/Users/n/paykari_bazar/test/additional/additional_widgets_test.dart: Widget Tests - Extended Coverage CheckoutButton Widget 2. CheckoutButton shows loading indicator when loading
+00:03 +31: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 2. Order history accumulates correctly
+00:03 +32: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 2. Order history accumulates correctly
+00:03 +33: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 2. Order history accumulates correctly
+00:03 +34: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 2. Order history accumulates correctly
+00:03 +35: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 2. Order history accumulates correctly
+00:03 +36: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 2. Order history accumulates correctly
+00:03 +37: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 2. Order history accumulates correctly
+00:03 +38: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Complex Workflows 1. Complete checkout orchestration with delivery tracking
+00:04 +39: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - AI Recommendations → Cart 1. Get AI recommendations and add to secure cart
+00:04 +40: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - AI Recommendations → Cart 2. AI recommendations logged to cart access log
+00:04 +41: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Biometric Verification → Encrypted Checkout 1. Biometric verification enables secure checkout
+00:05 +42: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Biometric Verification → Encrypted Checkout 2. Failed biometric blocks encrypted order creation
+00:05 +43: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 1. Complete workflow: AI → Cart → Biometric → Encrypted Order
+00:05 +44: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 2. Cart cleared after successful secure checkout
+00:06 +45: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 2. Cart cleared after successful secure checkout
+00:06 +46: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 2. Cart cleared after successful secure checkout
+00:06 +47: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 2. Cart cleared after successful secure checkout
+00:06 +48: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 2. Cart cleared after successful secure checkout
+00:06 +49: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 2. Cart cleared after successful secure checkout
+00:06 +50: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Full End-to-End Flow 2. Cart cleared after successful secure checkout
+00:06 +51: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Fallback Chain 1. Gemini primary provider success
+00:06 +52: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Security & Compliance 1. Order encryption required for checkout
+00:06 +53: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Security & Compliance 1. Order encryption required for checkout
+00:06 +54: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Fallback Chain 3. Kimi fallback on both Gemini and Deepseek failure
+00:06 +55: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Fallback Chain 4. All providers fail throws exception
+00:07 +56: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Audit Logging 1. Log AI request and response
+00:07 +57: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Audit Logging 2. Query provider-specific logs
+00:07 +58: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Audit Logging 3. Integration: full query logs to audit
+00:07 +59: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Performance 1. Cache hit returns in < 50ms
+00:07 +60: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Performance 2. Full query response under 300ms
+00:07 +61: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Cart Service 1. Add item to empty cart
+00:07 +62: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Cart Service 2. Increase quantity of existing product
+00:07 +63: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Cart Service 3. Remove item from cart
+00:07 +64: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Cart Service 4. Calculate cart total
+00:08 +65: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Cart Service 5. Clear cart
+00:08 +66: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Order Service 1. Create new order
+00:08 +67: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Order Service 2. Update order status
+00:08 +68: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Order Service 3. Get user orders
+00:08 +69: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Order Service 4. Filter orders by status - single order per status
+00:08 +70: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Order Service 5. Cancel pending order
+00:08 +71: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Payment Service 1. Process successful payment
+00:08 +72: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Payment Service 2. Reject invalid payment amount
+00:08 +73: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Payment Service 3. Refund successful payment
+00:08 +74: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Payment Service 4. Get payments by order
+00:08 +75: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Payment Service 5. Check if order is paid
+00:08 +76: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Checkout Flow 1. Complete successfully checkout flow
+00:08 +77: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Checkout Flow 2. Reject checkout with empty cart
+00:08 +78: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Checkout Flow 3. Handle payment failure and cancel order
+00:08 +79: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Checkout Flow 4. Multi-item checkout
+00:08 +80: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Biometric Authentication 1. Register biometric for user
+00:09 +81: C:/Users/n/paykari_bazar/test/core_services/commerce_services_test.dart: Commerce Services Tests Commerce - Checkout Flow 5. Order appears in user history after checkout
+00:09 +82: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Biometric Authentication 2. Authenticate with biometric
+00:09 +83: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Biometric Authentication 3. Fallback to PIN when biometric fails
+00:09 +84: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Encryption (AES-256) 1. Encrypt PII data
+00:09 +85: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Encryption (AES-256) 2. Decrypt encrypted PII
+00:09 +86: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Encryption (AES-256) 3. Store and retrieve encrypted PII
+00:09 +87: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - API Security (HMAC-SHA256) 1. Sign API request with HMAC signature
+00:09 +88: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - API Security (HMAC-SHA256) 2. Verify API signature
+00:09 +89: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Secure Secret Loading 1. Save and retrieve secret from storage
+00:09 +90: C:/Users/n/paykari_bazar/test/core_services/security_services_test.dart: Security Services Tests Security - Secure Secret Loading 2. Delete secret and verify removal
+00:10 +91: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - Product CRUD 1. Create new product
+00:10 +92: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - Product CRUD 2. Update product details
+00:10 +93: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - Product CRUD 3. Delete product
+00:10 +94: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - Product CRUD 4. Toggle product active status
+00:10 +95: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - User Management 1. Update user role
+00:10 +96: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - User Management 2. Toggle user active status
+00:10 +97: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - User Management 3. Delete user
+00:10 +98: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - Order Management 1. Update order status
+00:10 +99: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - Order Management 2. Query orders by status
+00:10 +100: C:/Users/n/paykari_bazar/test/integration/admin_crud_test.dart: Admin Panel CRUD Tests Admin - Order Management 3. Cancel order (only pending allowed)
+00:10 +101: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Network Errors 1. Network timeout handling
+00:11 +102: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Network Errors 2. Retry mechanism on failure
+00:11 +103: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Input Validation 1. Empty cart checkout blocked
+00:11 +104: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Input Validation 2. Invalid email rejected
+00:11 +105: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Input Validation 3. Invalid amount rejected
+00:11 +106: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Concurrency 1. Concurrent order placement detected
+00:11 +107: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Concurrency 2. Duplicate order rejected
+00:11 +108: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Cache & Rate Limiting 1. Rate limit enforcement
+00:11 +109: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Cache & Rate Limiting 2. Cache expiration handling
+00:11 +110: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Provider Fallback 1. Fallback chain on provider failure
+00:11 +111: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Complete Purchase Flow 1. Full purchase flow: login → browse → cart → checkout → order
+00:11 +112: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Complete Purchase Flow 2. Multi-item purchase flow
+00:11 +113: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Complete Purchase Flow 3. Stock decreases after order
+00:11 +114: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Complete Purchase Flow 4. Cart persists across operations
+00:11 +115: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Complete Purchase Flow 5. Order history persists
+00:11 +116: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Payment Processing 1. Successful payment processes
+00:11 +117: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Payment Processing 2. Invalid amount rejected
+00:11 +118: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Payment Processing 3. Payment refund works
+00:11 +119: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Session Management 1. Login/logout cycle
+00:11 +120: C:/Users/n/paykari_bazar/test/integration/purchase_flow_test.dart: Purchase Flow Integration Tests Integration - Session Management 2. Cart clears on logout
+00:12 +121: C:/Users/n/paykari_bazar/test/performance/nvidia_test.dart: NVIDIA API Configuration NVIDIA API Key is available via environment
+⚠️ SKIPPING: NVIDIA_API_KEY not found in environment
+00:12 +122: C:/Users/n/paykari_bazar/test/performance/nvidia_test.dart: NVIDIA API Configuration NVIDIA API configuration validates format
+00:13 +123: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality measure records synchronous operation duration
+00:13 +124: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality measure async records asynchronous operation duration
+00:13 +125: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality getStats returns performance statistics
+00:13 +126: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality percentileDuration calculates percentiles correctly
+00:13 +127: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality exportAsJson produces valid JSON
+00:13 +128: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality exportAsCsv produces valid CSV
+00:13 +129: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality clear removes all metrics
+00:13 +130: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality multiple metrics tracked independently
+00:13 +131: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality recordMetric accepts preformed metrics
+00:13 +132: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Tracker Functionality AutoStopwatch measures operation
+00:13 +133: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Benchmarks - Critical Operations Data Operations list operations
+00:13 +134: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Benchmarks - Critical Operations Data Operations map bulk operations
+00:13 +135: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Benchmarks - Critical Operations Data Operations json serialization
+00:13 +136: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Benchmarks - Critical Operations Async Operations immediate future
+00:13 +137: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Benchmarks - Critical Operations Async Operations delayed future within tolerance
+00:13 +138: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Performance Benchmarks - Critical Operations Async Operations concurrent futures
+00:13 +139: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Assertion Helper Tests assertAverageBelowThreshold passes for fast operations
+00:13 +140: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Assertion Helper Tests assertMaxBelowThreshold passes for reasonable operations
+00:13 +141: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Assertion Helper Tests assertP95BelowThreshold validates percentile
+00:13 +142: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Export Functionality json export is readable
+00:13 +143: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Export Functionality csv export has correct format
+00:13 +144: C:/Users/n/paykari_bazar/test/performance/performance_benchmark_test.dart: Export Functionality report printing generates meaningful output
+
+============================================================
+PERFORMANCE REPORT
+============================================================
+
+metric:
+  Count: 1
+  Average: 0ms
+  Min: 0ms
+  Max: 0ms
+  P50: 0ms
+  P95: 0ms
+  P99: 0ms
+  Std Dev: 0.00ms
+
+============================================================
+00:13 +145: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Login 1. User not logged in initially
+00:13 +146: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Login 2. Successful login sets user state
+00:13 +147: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Login 3. Login fails with invalid email
+00:13 +148: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Login 4. Login fails with short password
+00:13 +149: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Logout 1. Logout clears user state
+00:13 +150: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Logout 2. Logout when not logged in
+00:13 +151: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Logout 3. Multiple logout calls safe
+00:13 +152: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Signup 1. Successful signup creates user
+00:13 +153: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Signup 2. Signup fails with missing fields
+00:13 +154: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - Signup 3. New user email not verified initially
+00:13 +155: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - User Management 1. Verify email after signup
+00:13 +156: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - User Management 2. Update user profile
+00:13 +157: C:/Users/n/paykari_bazar/test/providers/auth_provider_test.dart: Auth Provider Tests Auth - User Management 3. Update profile preserves existing data
+00:14 +158: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Add to Cart 1. Add single item to empty cart
+00:14 +159: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Add to Cart 2. Add duplicate items increases quantity
+00:14 +160: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Add to Cart 3. Add multiple different items
+00:14 +161: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Add to Cart 4. Add item with quantity > 1
+00:14 +162: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Remove from Cart 1. Remove item from cart
+00:14 +163: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Remove from Cart 2. Remove non-existent item does nothing
+00:15 +164: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Remove from Cart 3. Remove all items one by one
+00:15 +165: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Calculations 1. Calculate total price correctly
+00:15 +166: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Calculations 2. Calculate total items
+00:15 +167: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Calculations 3. Total is zero for empty cart
+00:15 +168: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Calculations 4. Update total after quantity change
+00:15 +169: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Calculations 5. Total updates after item removal
+00:15 +170: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Management 1. Update item quantity
+00:15 +171: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Management 2. Clear entire cart
+00:15 +172: C:/Users/n/paykari_bazar/test/providers/cart_provider_test.dart: Cart Provider Tests Cart - Management 3. Quantity of 0 removes item
+00:15 +173: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider is always healthy
+00:15 +174: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider name is correct
+00:15 +175: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates response for pricing
+🔄 [FallbackProvider] Using fallback mode for work type: AiWorkType.pricing
+00:15 +176: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates response for product description
+🔄 [FallbackProvider] Using fallback mode for work type: AiWorkType.productDescription
+00:15 +177: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates response for theme
+🔄 [FallbackProvider] Using fallback mode for work type: AiWorkType.theme
+00:15 +178: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates response for notification
+🔄 [FallbackProvider] Using fallback mode for work type: AiWorkType.notification
+00:15 +179: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates response for dashboard insight
+🔄 [FallbackProvider] Using fallback mode for work type: AiWorkType.dashboardInsight
+00:15 +180: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates generic response for unknown type
+🔄 [FallbackProvider] Using fallback mode for work type: null
+00:15 +181: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+🔄 [FallbackProvider] Using fallback mode for work type: AiWorkType.pricing
+00:16 +182: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +183: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +184: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +185: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +186: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +187: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +188: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +189: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +190: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:16 +191: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +192: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +193: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +194: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +195: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +196: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +197: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +198: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +199: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +200: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +201: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:17 +202: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider generates stream response
+00:18 +203: C:/Users/n/paykari_bazar/test/providers/fallback_provider_test.dart: FallbackProvider Tests FallbackProvider handles empty prompt
+🔄 [FallbackProvider] Using fallback mode for work type: null
+00:19 +204: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Fetch Products 1. Initial state is loading
+00:19 +205: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Fetch Products 2. Fetch products successfully
+00:19 +206: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Fetch Products 3. Fetched products have correct data
+00:19 +207: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Search 1. Search returns matching products
+00:19 +208: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Search 2. Search is case insensitive
+00:19 +209: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Search 3. Empty search returns all products
+00:19 +210: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Search 4. Search for non-existent product
+00:19 +211: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Filter 1. Filter by category
+00:19 +212: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Filter 2. Filter by price range
+00:19 +213: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Filter 3. Filter by empty category returns all
+00:19 +214: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Details 1. Get product by valid ID
+00:19 +215: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Details 2. Get product by invalid ID returns null
+00:19 +216: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Details 3. Product stock status correct
+00:19 +217: C:/Users/n/paykari_bazar/test/providers/product_provider_test.dart: Product Provider Tests Product - Details 4. Product rating and reviews
+00:19 +218: C:/Users/n/paykari_bazar/test/services/ai_providers_test.dart: GeminiProvider Tests GeminiProvider basic properties
+00:19 +219: C:/Users/n/paykari_bazar/test/services/ai_providers_test.dart: KimiProvider Tests KimiProvider name
+00:20 +220: C:/Users/n/paykari_bazar/test/services/ai_providers_test.dart: DeepSeekProvider Tests DeepSeekProvider name
+00:20 +221: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: (setUpAll)
+00:20 +221: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Use primary provider when available
+🏥 [AIProviderManager] Running health check on all providers...
+✅ [AIProviderManager] Primary provider (Primary Provider) is healthy
+🚀 [AIProviderManager] Using primary provider: Primary Provider
+✅ [AIProviderManager] Primary provider succeeded
+00:20 +222: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Switch to fallback when primary fails
+🏥 [AIProviderManager] Running health check on all providers...
+⚠️ [AIProviderManager] Primary provider down, switching to Fallback Provider
+🔄 [AIProviderManager] Using fallback provider: Fallback Provider
+✅ [AIProviderManager] Fallback provider succeeded
+00:20 +223: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Handle timeout and fallback
+🏥 [AIProviderManager] Running health check on all providers...
+✅ [AIProviderManager] Primary provider (Primary Provider) is healthy
+🚀 [AIProviderManager] Using primary provider: Primary Provider
+⚠️ [AIProviderManager] Primary provider failed: Exception: Timeout
+🔄 [AIProviderManager] Switching to fallback provider...
+🔄 [AIProviderManager] Using fallback provider: Fallback Provider
+✅ [AIProviderManager] Fallback provider succeeded
+00:20 +224: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Get active provider name
+🏥 [AIProviderManager] Running health check on all providers...
+✅ [AIProviderManager] Primary provider (Primary Provider) is healthy
+00:20 +225: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Get fallback provider name when primary down
+🏥 [AIProviderManager] Running health check on all providers...
+⚠️ [AIProviderManager] Primary provider down, switching to Fallback Provider
+00:20 +226: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Stream generation with fallback
+00:20 +227: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Get provider statistics
+🏥 [AIProviderManager] Running health check on all providers...
+✅ [AIProviderManager] Primary provider (Primary Provider) is healthy
+00:20 +228: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Reset providers to retry
+🔄 [AIProviderManager] Resetting provider status...
+🏥 [AIProviderManager] Running health check on all providers...
+✅ [AIProviderManager] Primary provider (Primary Provider) is healthy
+🚀 [AIProviderManager] Using primary provider: Primary Provider
+✅ [AIProviderManager] Primary provider succeeded
+00:20 +229: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: (tearDownAll)
+00:22 +229: C:/Users/n/paykari_bazar/test/services/ai_service_test.dart: AIService Fallback Logic basic properties test
+00:22 +230: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Basic Operations set and get value
+✅ Cache service initialized
+✅ Data cached for key: key1 (Expires: 2026-06-15 06:34:10.743343)
+✅ Cache hit for key: key1
+🧹 All cache cleared
+00:22 +231: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Basic Operations get non-existent key returns null
+✅ Cache service initialized
+🧹 All cache cleared
+00:22 +232: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Basic Operations set overwrites existing value
+✅ Cache service initialized
+✅ Data cached for key: key1 (Expires: 2026-06-15 06:34:10.876128)
+✅ Data cached for key: key1 (Expires: 2026-06-15 06:34:10.878366)
+✅ Cache hit for key: key1
+🧹 All cache cleared
+00:22 +233: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Basic Operations delete removes key
+✅ Cache service initialized
+✅ Data cached for key: key1 (Expires: 2026-06-15 06:34:10.898153)
+🧹 All cache cleared
+00:22 +234: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Basic Operations clearAll removes all entries
+✅ Cache service initialized
+✅ Data cached for key: key1 (Expires: 2026-06-15 06:34:10.918977)
+✅ Data cached for key: key2 (Expires: 2026-06-15 06:34:10.920484)
+🧹 All cache cleared
+🧹 All cache cleared
+00:22 +235: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Time-Based Expiration expired items return null
+✅ Cache service initialized
+✅ Data cached for key: expire_key (Expires: 2026-06-14 06:34:11.940384)
+✅ Cache hit for key: expire_key
+00:23 +236: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Time-Based Expiration expired items return null
+00:23 +237: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Time-Based Expiration expired items return null
+00:23 +238: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Time-Based Expiration expired items return null
+00:23 +239: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Time-Based Expiration expired items return null
+00:23 +240: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Time-Based Expiration expired items return null
+00:23 +241: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Time-Based Expiration expired items return null
+⚠️ Cache expired for key: expire_key
+🧹 All cache cleared
+00:24 +242: C:/Users/n/paykari_bazar/test/services/cache_service_test.dart: CacheService Tests Statistics getStats returns correct metrics
+✅ Cache service initialized
+✅ Data cached for key: s1 (Expires: 2026-06-15 06:34:12.961492)
+✅ Data cached for key: s2 (Expires: 2026-06-15 06:34:12.963488)
+🧹 All cache cleared
+00:25 +243: C:/Users/n/paykari_bazar/test/services/checkout_flow_service_test.dart: Checkout Flow Tests Complete checkout flow
+00:25 +244: C:/Users/n/paykari_bazar/test/services/checkout_flow_service_test.dart: Checkout Flow Tests Validate shipping address logic
+00:26 +245: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests calculateDiscount percentage discount
+00:26 +246: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests calculateDiscount fixed discount
+00:26 +247: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests calculateDiscount discount capped at cartTotal
+00:26 +248: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests calculateDiscount percentage discount respects maxDiscount
+00:26 +249: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests calculateDiscount percentage discount without maxDiscount
+00:26 +250: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests calculateDiscount fixed discount smaller than cartTotal
+00:26 +251: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests validateCoupon edge cases empty couponCode returns null
+00:26 +252: C:/Users/n/paykari_bazar/test/services/coupon_service_test.dart: CouponService Tests validateCoupon edge cases zero cartTotal with percentage coupon
+00:26 +253: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getFirstPage fetches first page successfully
+00:27 +254: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getFirstPage detects hasMore when documents exceed page size
+00:27 +255: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getFirstPage returns empty list for collection with no documents
+00:27 +256: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getFirstPage page slicing trims extra document
+00:27 +257: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getNextPage fetches next page with cursor
+00:27 +258: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getNextPage returns empty when no more documents
+00:27 +259: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getNextPage throws when cursor document not found
+00:27 +260: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getFilteredFirstPage applies where clause filters correctly
+00:27 +261: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests getFilteredFirstPage handles multiple where clauses
+00:27 +262: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests Performance Tests handles large document sets efficiently
+00:27 +263: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests Performance Tests pagination slicing is efficient
+00:27 +264: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests Edge Cases handles exactly pageSize documents
+00:27 +265: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests Edge Cases handles pageSize + 1 documents
+00:27 +266: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests Edge Cases handles single document
+00:27 +267: C:/Users/n/paykari_bazar/test/services/firebase_pagination_service_test.dart: FirebasePaginationService Tests Edge Cases handles null data gracefully
+00:28 +268: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: (setUpAll)
+00:28 +268: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Place new order with deliveryFee and discount
+00:28 +269: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Get customer orders stream
+00:28 +270: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Create order from model
+00:28 +271: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Update order
+00:28 +272: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Assign order to rider
+00:28 +273: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Cancel order with null reason
+00:28 +274: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Get order by ID
+00:28 +275: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Update order status
+00:28 +276: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: OrderService Tests Cancel order
+00:28 +277: C:/Users/n/paykari_bazar/test/services/order_service_test.dart: (tearDownAll)
+00:28 +277: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Get product by ID
+00:28 +278: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Get products stream
+00:28 +279: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Filter products by category
+00:28 +280: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Update product stock
+00:28 +281: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Search products
+00:28 +282: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product matchesSearch matches by name
+00:28 +283: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product matchesSearch matches by nameBn
+00:28 +284: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product matchesSearch matches by sku
+00:28 +285: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product matchesSearch matches by category
+00:28 +286: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product matchesSearch does not match unrelated query
+00:28 +287: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product helpers getPriceForQuantity without tieredPrices
+00:28 +288: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product helpers hasDiscount true when oldPrice > price
+00:28 +289: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product helpers getName returns Bangla when lang is bn
+00:28 +290: C:/Users/n/paykari_bazar/test/services/product_service_test.dart: ProductService Tests Product helpers getCategory returns Bangla category when available
+00:29 +291: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt and decrypt plaintext
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:29 +292: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt produces different ciphertexts for same plaintext
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data encrypted successfully
+00:29 +293: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt token
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:29 +294: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt JSON data
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:29 +295: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt health data
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:29 +296: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt payment info
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:29 +297: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt PII
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:29 +298: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests decrypt invalid data throws exception
+✅ Encryption service initialized (AES-256)
+❌ Decryption failed: FormatException: Invalid character (at character 30)
+invalid_base64_encrypted_data!!!
+                             ^
+
+00:29 +299: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encryptJson with empty map
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:29 +300: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests generate secure headers for GET request
+✅ Secure headers generated for /api/v1/products
+   Signature: d155b28ff019a278...
+00:29 +301: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests generate secure headers for POST request with body
+✅ Secure headers generated for /api/v1/products
+   Signature: 5934177c8911bb3e...
+00:30 +302: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests signature changes with different endpoints
+✅ Secure headers generated for /api/v1/products
+   Signature: ca3bbda81ec998da...
+✅ Secure headers generated for /api/v1/orders
+   Signature: a228754f183e6833...
+00:30 +303: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests signature changes with different body
+✅ Secure headers generated for /api/v1/products
+   Signature: d8afb961a116a649...
+✅ Secure headers generated for /api/v1/products
+   Signature: c81d9bc9eb44a8fa...
+00:30 +304: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests sign payment request
+00:30 +305: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests verify webhook signature
+00:30 +306: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests update and reset credentials
+✅ API credentials updated
+✅ Secure headers generated for /api/v1/products
+   Signature: 01b3537c74a6f792...
+✅ API credentials reset to default
+✅ Secure headers generated for /api/v1/products
+   Signature: 27f1d8ae703481ec...
+00:30 +307: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests get Dio headers includes user ID
+✅ Secure headers generated for /api/v1/products
+   Signature: 682a7a23aff543ef...
+00:30 +308: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests get headers with rate limit info includes user ID
+✅ Secure headers generated for /api/v1/products
+   Signature: 8d4d0e9720729cc4...
+00:30 +309: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: APISecurityService Tests get signature debug info
+00:30 +310: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: Security Integration Tests encryption and API security work together
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Secure headers generated for /api/v1/auth
+   Signature: da9354313a4c9f32...
+✅ Data decrypted successfully
+00:30 +311: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: AICacheService Unit Tests (setUpAll)
+00:30 +311: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: AICacheService Unit Tests cache set and get
+00:30 +312: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: AICacheService Unit Tests cache key is unique for different prompts
+00:30 +313: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: AICacheService Unit Tests cache respects TTL (Simulation)
+00:30 +314: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: AICacheService Unit Tests cache stats check
+00:30 +315: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: AICacheService Unit Tests (tearDownAll)
+00:30 +315: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: FirestorePaginator Logic Tests paginator initial state
+00:30 +316: C:/Users/n/paykari_bazar/test/services/unit_services_test.dart: FirestorePaginator Logic Tests paginator refresh resets state
+00:31 +317: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests Provider name is accessible
+00:31 +318: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests Health check returns true
+00:31 +319: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests Generate method returns non-empty response
+00:31 +320: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests Generate with pricing work type
+00:31 +321: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests GenerateStream yields responses
+00:31 +322: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests Multiple generate calls work independently
+00:31 +323: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests GenerateStream works with different prompts
+00:31 +324: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests Provider supports all AiWorkType values
+00:31 +325: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests Generate responses are consistent in structure
+00:31 +326: C:/Users/n/paykari_bazar/test/unit/ai_service_comprehensive_test.dart: AIProvider Interface Tests HealthCheck can be called multiple times
+00:32 +327: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: (setUpAll)
+00:32 +327: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 1. Kimi provider name returns correctly
+00:32 +328: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 2. DeepSeek provider name returns correctly
+00:32 +329: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 3. Gemini provider name returns correctly
+00:32 +330: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 4. Multiple providers can be configured in list
+00:32 +331: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Fallback Chain 5. Provider order preserved in fallback chain
+00:32 +332: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Health Checks 6. Health check returns true for healthy provider
+00:32 +333: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Health Checks 7. Health check returns false for unhealthy provider
+00:32 +334: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Health Checks 8. Can mock different health states for different providers
+00:32 +335: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Health Checks 9. Health check can be called multiple times
+00:32 +336: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Health Checks 10. Health check failure triggers fallback
+00:32 +337: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Generation 11. Generate method returns response from provider
+00:32 +338: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Generation 12. Generate method called with correct params
+00:32 +339: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Generation 13. Different providers return different responses
+00:32 +340: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 14. Handle provider exception gracefully
+00:32 +341: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 15. Fallback continues on provider failure
+00:32 +342: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 16. Multiple fallback attempts tracked
+00:32 +343: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 17. Empty response handled correctly
+00:32 +344: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) AI Service Configuration 18. Mock providers can be injected into AIService
+00:32 +344 -1: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) AI Service Configuration 18. Mock providers can be injected into AIService [E]
+  [core/no-app] No Firebase App '[DEFAULT]' has been created - call Firebase.initializeApp()
+  package:firebase_core_platform_interface/src/method_channel/method_channel_firebase.dart 190:5  MethodChannelFirebase.app
+  package:firebase_core/src/firebase.dart 79:41                                                   Firebase.app
+  package:cloud_firestore/src/firestore.dart 33:21                                                FirebaseFirestore.instance
+  package:paykari_bazar/src/features/ai/services/api_quota_service.dart 8:76                      new ApiQuotaService
+  package:paykari_bazar/src/features/ai/services/ai_service.dart 43:11                            new AIService
+  test\unit\ai_service_test.dart 261:27                                                           main.<fn>.<fn>.<fn>
+  
+00:32 +344 -1: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) AI Service Configuration 19. AIService is ready with mock providers
+00:32 +344 -2: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) AI Service Configuration 19. AIService is ready with mock providers [E]
+  [core/no-app] No Firebase App '[DEFAULT]' has been created - call Firebase.initializeApp()
+  package:firebase_core_platform_interface/src/method_channel/method_channel_firebase.dart 190:5  MethodChannelFirebase.app
+  package:firebase_core/src/firebase.dart 79:41                                                   Firebase.app
+  package:cloud_firestore/src/firestore.dart 33:21                                                FirebaseFirestore.instance
+  package:paykari_bazar/src/features/ai/services/api_quota_service.dart 8:76                      new ApiQuotaService
+  package:paykari_bazar/src/features/ai/services/ai_service.dart 43:11                            new AIService
+  test\unit\ai_service_test.dart 275:27                                                           main.<fn>.<fn>.<fn>
+  
+00:32 +344 -2: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) AI Service Configuration 20. Provider names accessible from AIService
+00:32 +345 -2: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: (tearDownAll)
+00:33 +345 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) BackupService - Backup & Restore (5 tests) 1. Performs full backup successfully
+00:33 +346 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) BackupService - Backup & Restore (5 tests) 2. Restores data from backup file
+00:33 +347 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) BackupService - Backup & Restore (5 tests) 3. Retrieves backup history metadata
+00:33 +348 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) BackupService - Backup & Restore (5 tests) 4. Tracks background backup for user
+00:33 +349 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) BackupService - Backup & Restore (5 tests) 5. Validates restore URL format
+00:33 +350 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) FirebasePaginationService - Cursor Pagination (5 tests) 6. Pagination state includes items field
+00:33 +351 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) FirebasePaginationService - Cursor Pagination (5 tests) 7. Cursor-based next page handling
+00:33 +352 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) FirebasePaginationService - Cursor Pagination (5 tests) 8. Filtering supports where clauses
+00:33 +353 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) FirebasePaginationService - Cursor Pagination (5 tests) 9. Last page detection with hasMore flag
+00:33 +354 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) FirebasePaginationService - Cursor Pagination (5 tests) 10. Collection count tracking
+00:33 +355 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 11. Quota service tracks providers
+00:33 +356 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 12. Returns quota status with remaining field
+00:33 +357 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 13. Normalizes provider keys to lowercase
+00:33 +358 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 14. Tracks per-provider usage independently
+00:33 +359 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 15. Detects quota exhaustion
+00:33 +360 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 16. Handles daily quota reset
+00:33 +361 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 17. Provides quota status under high usage
+00:33 +362 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 18. Supports multiple provider rotation
+00:33 +363 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 19. Validates quota limit values
+00:33 +364 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 20. Returns accurate quota representation
+00:33 +365 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 21. Service initializes without errors
+00:33 +366 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 22. Biometric availability detection
+00:33 +367 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 23. Lists available biometric types
+00:33 +368 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 24. Requires biometric for payment
+00:33 +369 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 25. Stores tokens in secure storage
+00:33 +370 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 26. Retrieves secure tokens
+00:33 +371 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 27. Deletes secure data on logout
+00:33 +372 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 28. Handles biometric failure gracefully
+00:33 +373 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) EncryptionService - AES-256 Encryption (5 tests) 29. Encrypts plaintext to base64 format
+00:33 +374 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) EncryptionService - AES-256 Encryption (5 tests) 30. Decrypts base64 back to plaintext
+00:33 +375 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) EncryptionService - AES-256 Encryption (5 tests) 31. Encrypts payment card information
+00:33 +376 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) EncryptionService - AES-256 Encryption (5 tests) 32. Encrypts PII and health records
+00:33 +377 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) EncryptionService - AES-256 Encryption (5 tests) 33. Validates encryption key strength
+00:34 +378 -2: C:/Users/n/paykari_bazar/test/unit/encryption_test.dart: EncryptionService Unit Tests Encrypt and Decrypt String
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:34 +379 -2: C:/Users/n/paykari_bazar/test/unit/encryption_test.dart: EncryptionService Unit Tests Encrypt and Decrypt JSON
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:34 +380 -2: C:/Users/n/paykari_bazar/test/unit/encryption_test.dart: EncryptionService Unit Tests PII Data Encryption
+✅ Encryption service initialized (AES-256)
+✅ Data encrypted successfully
+✅ Data decrypted successfully
+00:35 +381 -2: C:/Users/n/paykari_bazar/test/unit/firestore_service_test.dart: FirestoreService Tests Placeholder Test: Structure Ready
+00:35 +382 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) AddressModel - Address Serialization 1. AddressModel toMap serialization works correctly
+00:35 +383 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) AddressModel - Address Serialization 2. AddressModel fromMap deserialization works correctly
+00:35 +384 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) AddressModel - Address Serialization 3. AddressModel fullAddress computed getter works
+00:36 +385 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) UserModel - User Profile Management 1. UserModel toMap includes all fields
+00:36 +386 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) UserModel - User Profile Management 2. UserModel fromMap restores all fields
+00:36 +387 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) UserModel - User Profile Management 3. UserModel with multiple addresses
+00:36 +388 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Variant - Product Variants 1. Variant toMap serialization
+00:36 +389 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Variant - Product Variants 2. Variant fromMap deserialization
+00:36 +390 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Product - E-commerce Products 1. Product toMap includes commerce fields
+00:36 +391 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Product - E-commerce Products 2. Product fromMap deserializes correctly
+00:36 +392 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Product - E-commerce Products 3. Product with variants
+00:36 +393 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Product - E-commerce Products 4. Product tiered pricing
+00:36 +394 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) CartItem - Shopping Cart Items 1. CartItem subtotal calculation
+00:36 +395 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) CartItem - Shopping Cart Items 2. CartItem quantity mutation
+00:36 +396 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) CartState - Shopping Cart State Management 1. CartState totalAmount calculation
+00:36 +397 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) CartState - Shopping Cart State Management 2. CartState itemCount
+00:36 +398 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) CartState - Shopping Cart State Management 3. CartState copyWith method
+00:36 +399 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) OrderItem - Order Items 1. OrderItem toMap serialization
+00:36 +400 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) OrderItem - Order Items 2. OrderItem fromMap deserialization
+00:36 +401 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Order - Order Management 1. Order toMap includes all fields
+00:36 +402 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Order - Order Management 2. Order fromMap deserialization
+00:36 +403 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Order - Order Management 3. Order status transitions
+00:36 +404 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Doctor - Healthcare Provider Profile 1. Doctor toMap serialization
+00:36 +405 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Doctor - Healthcare Provider Profile 2. Doctor fromMap deserialization
+00:36 +406 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) BloodDonor - Blood Donation Registry 1. BloodDonor toMap serialization
+00:36 +407 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) BloodDonor - Blood Donation Registry 2. BloodDonor fromMap deserialization
+00:36 +408 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Review - Product Reviews & Ratings 1. Review toMap serialization
+00:36 +409 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Review - Product Reviews & Ratings 2. Review fromMap deserialization
+00:36 +410 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) BackupItem - Data Backup Management 1. BackupItem toMap serialization
+00:36 +411 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) BackupItem - Data Backup Management 2. BackupItem fromMap deserialization
+00:36 +412 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Cross-Model Integration - Model Dependencies 1. User with addresses and orders
+00:36 +413 -2: C:/Users/n/paykari_bazar/test/unit/models_test.dart: Day 4: Model Tests (25+ tests) Cross-Model Integration - Model Dependencies 2. Product with variants and reviews
+00:36 +414 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: OrderItem Tests OrderItem creation
+00:36 +415 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: OrderItem Tests OrderItem serialization
+00:36 +416 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: OrderStatus Tests OrderStatus display strings
+00:36 +417 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: OrderStatus Tests OrderStatus fromString
+00:36 +418 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order creation
+00:36 +419 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order serialization
+00:36 +420 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order copyWith
+00:36 +421 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order canBeCancelled
+00:36 +422 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order isDelivered
+00:36 +423 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order getOrderSummary
+00:36 +424 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order with Firestore Timestamp
+00:36 +425 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Tests Order with items
+00:36 +426 -2: C:/Users/n/paykari_bazar/test/unit/order_model_test.dart: Order Calculations Order math validation
+00:37 +427 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Variant creation and serialization
+00:37 +428 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Variant toMap and fromMap
+00:37 +429 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Product creation with all fields
+00:37 +430 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Product discounted price calculation
+00:37 +431 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Product margin calculation
+00:37 +432 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Product with tiered pricing
+00:37 +433 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Product with variants
+00:37 +434 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Product FilterType enum
+00:37 +435 -2: C:/Users/n/paykari_bazar/test/unit/product_model_test.dart: Product Model Tests Product AI fields
+00:38 +436 -2: C:/Users/n/paykari_bazar/test/unit/quota_service_test.dart: ApiQuotaService Unit Tests Provider Key Normalization
+00:38 +437 -2: C:/Users/n/paykari_bazar/test/unit/quota_service_test.dart: ApiQuotaService Unit Tests QuotaData Model Logic
+00:38 +438 -2: C:/Users/n/paykari_bazar/test/unit/quota_service_test.dart: ApiQuotaService Unit Tests Exhausted status blocks quota
+00:39 +439 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Widget Foundation - Basic Rendering 1. MaterialApp renders successfully
+00:40 +440 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Widget Foundation - Basic Rendering 2. Scaffold renders with AppBar and Body
+00:40 +441 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Widget Foundation - Basic Rendering 3. Basic Text widget rendering
+00:40 +442 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) ListTile - Item List Components 1. ListTile renders with title and subtitle
+00:40 +443 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) ListTile - Item List Components 2. ListTile responds to tap
+00:40 +444 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) ListTile - Item List Components 3. ListTile with leading icon
+00:40 +445 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Button - Interactive Elements 1. ElevatedButton renders and responds
+00:41 +446 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Button - Interactive Elements 2. TextButton renders correctly
+00:41 +447 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Button - Interactive Elements 3. FloatingActionButton functionality
+00:41 +448 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) TextField - Input Components 1. TextField accepts input
+00:41 +449 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:41 +450 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:41 +451 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:41 +452 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:41 +453 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +454 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +455 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +456 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +457 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +458 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +459 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +460 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +461 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +462 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +463 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +464 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders empty cart state
+00:42 +465 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) TabBar & TabView - Tabbed Navigation 2. TabBarView content switches on tab select
+00:43 +466 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders cart items with quantities and prices
+00:43 +467 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders cart items with quantities and prices
+00:43 +468 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders cart items with quantities and prices
+00:43 +469 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders cart items with quantities and prices
+00:43 +470 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests renders cart items with quantities and prices
+00:43 +471 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Navigation - Screen Navigation 1. Navigator push and pop
+00:43 +472 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests increase quantity when plus button tapped
+00:43 +473 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests increase quantity when plus button tapped
+00:43 +474 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests increase quantity when plus button tapped
+00:43 +475 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests increase quantity when plus button tapped
+00:43 +476 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests increase quantity when plus button tapped
+00:43 +477 -2: C:/Users/n/paykari_bazar/test/widgets/basic_widgets_test.dart: Day 5: Widget Tests (30+ tests) Responsive Layout - Size Adaptation 3. SingleChildScrollView handles overflow
+00:43 +478 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests decrease quantity when minus button tapped
+00:43 +479 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests displays order summary with totals
+00:44 +480 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests displays discount row when discount > 0
+00:44 +481 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests checkout button opens checkout bottom sheet when tapped
+00:44 +482 -2: C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart: CartScreen Widget Tests empty cart shop now button navigates home
+00:45 +483 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) ConsumerWidget - Riverpod Integration 1. ConsumerWidget renders with provider data
+00:46 +484 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Initialization and Rendering renders FlashSaleTimer with future end time
+00:46 +485 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Initialization and Rendering renders FlashSaleTimer with future end time
+00:46 +486 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Initialization and Rendering renders FlashSaleTimer with future end time
+00:46 +487 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Initialization and Rendering renders FlashSaleTimer with future end time
+00:46 +488 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Initialization and Rendering renders FlashSaleTimer with future end time
+00:47 +489 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Mock Cart - Shopping Cart Widgets 3. CartWidget add item button
+00:47 +490 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Mock Cart - Shopping Cart Widgets 3. CartWidget add item button
+00:47 +491 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Mock Cart - Shopping Cart Widgets 3. CartWidget add item button
+00:47 +492 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Duration.zero Handling (Fixed Bug) handles Duration.zero correctly without calling isZero getter
+00:47 +493 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Mock Cart - Shopping Cart Widgets 4. CartWidget remove item button
+00:47 +494 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Mock Cart - Shopping Cart Widgets 4. CartWidget remove item button
+00:47 +495 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Mock Cart - Shopping Cart Widgets 4. CartWidget remove item button
+00:47 +496 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Timer Countdown Functionality properly formats digit padding (leading zeros)
+00:47 +497 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Timer Countdown Functionality properly formats digit padding (leading zeros)
+00:47 +498 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Product Display - Product List & Details 2. ProductCard with favorite button
+00:47 +499 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Timer Countdown Functionality stops timer in dispose
+00:47 +500 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Product Display - Product List & Details 3. Product filter chips
+00:47 +501 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Product Display - Product List & Details 4. Product list grid view
+00:47 +502 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests UI Elements and Styling displays all required UI elements
+00:47 +503 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Order Display - Order Screen 1. OrderCard displays order details
+00:47 +504 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Order Display - Order Screen 1. OrderCard displays order details
+00:47 +505 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Order Display - Order Screen 2. OrdersList renders multiple orders
+00:47 +506 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests UI Elements and Styling renders time boxes with separators
+00:48 +507 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Order Display - Order Screen 3. OrdersScreen empty state
+00:48 +508 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Edge Cases and Boundary Conditions handles time ending exactly at now
+00:48 +509 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Checkout - Payment & Address Forms 1. Address selection dropdown
+00:48 +510 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Edge Cases and Boundary Conditions handles negative duration (past time)
+00:48 +511 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Checkout - Payment & Address Forms 2. Payment method selection
+00:48 +512 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Checkout - Payment & Address Forms 2. Payment method selection
+00:48 +513 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Checkout - Payment & Address Forms 3. Checkout summary display
+00:48 +514 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Checkout - Payment & Address Forms 3. Checkout summary display
+00:48 +515 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Integration Tests multiple timers work independently
+00:48 +516 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Profile & Settings - User Account 1. Profile header with user info
+00:48 +517 -2: C:/Users/n/paykari_bazar/test/widgets/flash_sale_timer_test.dart: FlashSaleTimer Widget Tests Integration Tests timer widget lifecycle works correctly
+00:48 +518 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Profile & Settings - User Account 2. Profile settings menu
+00:48 +519 -2: C:/Users/n/paykari_bazar/test/widgets/consumer_widgets_test.dart: Day 5: Advanced Consumer Widget Tests (20+ tests) Profile & Settings - User Account 3. Profile edit form
+00:50 +520 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - Layout 1. Home screen renders with AppBar and body
+00:51 +521 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - Layout 2. Home screen has search bar
+00:52 +522 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - Layout 3. Home screen displays categories
+00:52 +523 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - Layout 4. Home screen has bottom navigation
+00:52 +524 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider renders empty SizedBox when banners list is empty
+00:53 +525 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider renders empty SizedBox when banners list is empty
+00:53 +526 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider renders empty SizedBox when banners list is empty
+00:53 +527 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider renders empty SizedBox when banners list is empty
+00:53 +528 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider renders empty SizedBox when banners list is empty
+00:53 +529 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - Featured Sections 2. Flash sale section visible
+00:53 +530 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider renders PageView with correct height when banners provided
+00:53 +531 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider renders PageView with correct height when banners provided
+00:54 +532 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - Featured Sections 4. Special offers visible
+00:54 +533 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests BannerSlider has correct padding and margins
+00:54 +534 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - User Interactions 1. Product card tap navigates to details
+00:54 +535 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests SectionHeader renders title and view all button
+00:54 +536 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - User Interactions 2. Search bar input works
+00:54 +537 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - User Interactions 2. Search bar input works
+00:54 +538 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests SectionHeader has correct text styling
+00:54 +539 -2: C:/Users/n/paykari_bazar/test/widgets/home_screen_test.dart: Home Screen Widget Tests Home Screen - User Interactions 3. Category selection works
+00:54 +540 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests SectionHeader has correct padding
+00:54 +541 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList renders empty message when products list is empty
+00:54 +542 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList renders ListView when products provided
+00:54 +543 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList renders correct number of product cards
+00:55 +544 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList has correct scroll direction (horizontal)
+00:55 +545 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList has proper item margins and padding
+00:55 +546 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests Home Widgets Integration renders multiple home widgets without BoxDecoration opacity errors
+00:56 +547 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Rendering 1. Login screen renders with email and password fields
+00:57 +548 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+00:57 +549 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+00:58 +550 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+00:58 +551 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+00:58 +552 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+00:58 +553 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+00:58 +554 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - User Input 4. Login button becomes enabled with valid input
+00:58 +555 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - User Input 4. Login button becomes enabled with valid input
+00:58 +556 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 3. Product detail shows description
+00:58 +557 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Authentication 1. Login button triggers authentication
+00:58 +558 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 4. Shows in-stock status
+00:58 +559 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Authentication 2. Loading indicator shows during login
+00:58 +560 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Images & Variants 1. Image carousel displays
+00:59 +561 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Images & Variants 1. Image carousel displays
+00:59 +562 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Authentication 4. Forgot password link is accessible
+00:59 +563 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Images & Variants 2. Color variant selector
+00:59 +564 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Images & Variants 2. Color variant selector
+00:59 +565 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Images & Variants 2. Color variant selector
+00:59 +566 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Sign Up Navigation 3. Social login options available
+00:59 +567 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Images & Variants 3. Size variant selector
+00:59 +568 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Sign Up Navigation 4. Remember me checkbox is present
+00:59 +569 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Sign Up Navigation 4. Remember me checkbox is present
+00:59 +570 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Actions 2. Add to wishlist button works
+00:59 +571 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Actions 3. Quantity selector works
+00:59 +572 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Related & Reviews 1. Related products section visible
+00:59 +573 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Related & Reviews 2. Reviews section visible
+01:02 +574 -2: C:/Users/n/paykari_bazar/test/widgets/widget_test.dart: App widget can be instantiated
+01:02 +575 -2: Some tests failed.

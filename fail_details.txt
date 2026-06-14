@@ -1,0 +1,167 @@
+﻿  [  +12 ms] Found plugin workmanager at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\workmanager-0.6.0\
+  [  +15 ms] Found plugin integration_test at C:\Users\n\paykari_bazar\flutter\packages\integration_test\
+  [ +119 ms] No packages with native assets. Skipping native assets compilation.
+  [        ] Writing native_assets.yaml.
+  [  +19 ms] Writing C:\Users\n\paykari_bazar\build\native_assets\windows\native_assets.yaml done.
+> [   +5 ms] C:\Users\n\paykari_bazar\flutter\bin\cache\dart-sdk\bin\dartaotruntime.exe --disable-dart-dev C:\Users\n\paykari_bazar\flutter\bin\cache\dart-sdk\bin\snapshots\frontend_server_aot.dart.snapshot --sdk-root C:\Users\n\paykari_bazar\flutter\bin\cache\artifacts\engine\common\flutter_patched_sdk/ --incremental --no-print-incremental-dependencies --target=flutter --experimental-emit-debug-metadata --output-dill C:\Users\n\AppData\Local\Temp\flutter_tools.4a930c4c\flutter_test_compiler.814e4402\output.dill --packages C:\Users\n\paykari_bazar\.dart_tool\package_config.json -Ddart.vm.profile=false -Ddart.vm.product=false --enable-asserts --track-widget-creation --initialize-from-dill C:\Users\n\paykari_bazar\build\test_cache\build\cache.dill.track.dill --native-assets file:///C:/Users/n/paykari_bazar/build/native_assets/windows/native_assets.yaml --verbosity=error
+  [  +20 ms] <- native-assets file:///C:/Users/n/paykari_bazar/build/native_assets/windows/native_assets.yaml
+  [        ] <- compile file:///C:/Users/n/AppData/Local/Temp/flutter_tools.4a930c4c/flutter_test_listener.6a68b046/listener.dart
+  [+9782 ms] <- accept
+  [        ] <- reset
+  [        ] Compiling file:///C:/Users/n/AppData/Local/Temp/flutter_tools.4a930c4c/flutter_test_listener.6a68b046/listener.dart took 10606ms
+  [ +828 ms] test 2: connected to test device, now awaiting test result
+  [        ] test 2: Waiting for test harness or tests to finish
+  00:02 +15: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Authentication to Purchase 1. Complete user journey: login → search → purchase
+  00:03 +16: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Authentication to Purchase 1. Complete user journey: login → search → purchase
+  00:03 +17: C:/Users/n/paykari_bazar/test/additional/additional_widgets_test.dart: Widget Tests - Extended Coverage SearchBar Widget 3. SearchBar calls onSearch callback
+> 00:03 +18: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Authentication to Purchase 2. Failed authentication prevents purchase
+> 00:03 +19: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Authentication to Purchase 2. Failed authentication prevents purchase
+  00:03 +20: C:/Users/n/paykari_bazar/test/additional/additional_widgets_test.dart: Widget Tests - Extended Coverage Filter & Sort Features 1. Filter chip renders
+  00:03 +21: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+  00:03 +22: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+  00:03 +23: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+  00:03 +24: C:/Users/n/paykari_bazar/test/additional/e2e_workflow_test.dart: E2E Tests - Full User Workflows E2E - Order Lifecycle 1. Order progresses through all statuses
+  [   +1 ms] Found plugin permission_handler_android at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_android-12.1.0\
+  [   +1 ms] Found plugin permission_handler_apple at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_apple-9.4.7\
+  [   +1 ms] Found plugin permission_handler_html at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_html-0.1.3+5\
+  [   +3 ms] Found plugin permission_handler_windows at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\permission_handler_windows-0.2.1\
+  [   +2 ms] Found plugin photo_manager at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\photo_manager-3.9.0\
+> 00:07 +42: C:/Users/n/paykari_bazar/test/core_services/ai_commerce_security_integration_test.dart: Core Services Integration Tests Integration - Biometric Verification → Encrypted Checkout 2. Failed biometric blocks encrypted order creation
+  [   +8 ms] Found plugin printing at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\printing-5.14.3\
+  [   +8 ms] Found plugin record at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\record-6.2.0\
+  [   +1 ms] Found plugin record_android at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\record_android-1.5.1\
+  [   +1 ms] Found plugin record_ios at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\record_ios-1.2.0\
+  [        ] Found plugin record_linux at C:\Users\n\AppData\Local\Pub\Cache\hosted\pub.dev\record_linux-1.3.0\
+  [        ] <- native-assets file:///C:/Users/n/paykari_bazar/build/native_assets/windows/native_assets.yaml
+  [        ] <- recompile file:///C:/Users/n/AppData/Local/Temp/flutter_tools.4a930c4c/flutter_test_listener.9f09d518/listener.dart 80e9418d-6270-438d-a0f3-888581b084bf
+  [        ] file:///C:/Users/n/AppData/Local/Temp/flutter_tools.4a930c4c/flutter_test_listener.9f09d518/listener.dart
+  [        ] file:///C:/Users/n/paykari_bazar/.dart_tool/flutter_build/dart_plugin_registrant.dart
+  [        ] <- 80e9418d-6270-438d-a0f3-888581b084bf
+> 00:09 +55: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Fallback Chain 4. All providers fail throws exception
+  00:10 +56: C:/Users/n/paykari_bazar/test/core_services/ai_service_test.dart: AI Service Tests AI - Audit Logging 1. Log AI request and response
+  [ +551 ms] <- accept
+  [        ] <- reset
+  [        ] Compiling file:///C:/Users/n/AppData/Local/Temp/flutter_tools.4a930c4c/flutter_test_listener.9f09d518/listener.dart took 989ms
+  [        ] test 5: starting test device
+  [        ] file:///C:/Users/n/AppData/Local/Temp/flutter_tools.4a930c4c/flutter_test_listener.732aecef/listener.dart
+  [        ] file:///C:/Users/n/paykari_bazar/.dart_tool/flutter_build/dart_plugin_registrant.dart
+  [        ] <- 94dbb4f9-2db4-41b0-92b0-c68dedfe2ead
+  [  +55 ms] test 8: connected to test device, now awaiting test result
+  [        ] test 8: Waiting for test harness or tests to finish
+> 00:14 +101: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Network Errors 1. Network timeout handling
+  [ +201 ms] <- accept
+  [        ] <- reset
+  [        ] Compiling file:///C:/Users/n/AppData/Local/Temp/flutter_tools.4a930c4c/flutter_test_listener.732aecef/listener.dart took 750ms
+  [        ] test 9: starting test device
+  [        ] test 9: awaiting connection to test device
+  [        ] test 9: VM Service uri is not available
+  [        ] test 9: test harness socket server is running at port:65393
+  [        ] test 9: Starting flutter_tester process with command=[C:\Users\n\paykari_bazar\flutter\bin\cache\artifacts\engine\windows-x64\flutter_tester.exe, --disable-vm-service, --enable-checked-mode, --verify-entry-points, --enable-software-rendering, --skia-deterministic-rendering, --enable-dart-profiling, --non-interactive, --use-test-fonts, --disable-asset-fonts, --packages=C:\Users\n\paykari_bazar\.dart_tool\package_config.json, --flutter-assets-dir=C:\Users\n\paykari_bazar\build\unit_test_assets, C:\Users\n\AppData\Local\Temp\flutter_tools.4a930c4c\flutter_test_listener.732aecef\listener.dart.dill], environment={FLUTTER_TEST: true, FONTCONFIG_FILE: C:\Users\n\AppData\Local\Temp\flutter_tools.4a930c4c\flutter_test_fonts.705195bc/fonts.conf, SERVER_PORT: 65393, APP_NAME: paykari_bazar, UNIT_TEST_ASSETS: C:\Users\n\paykari_bazar\build\unit_test_assets}
+  [   +6 ms] test 9: Started flutter_tester process at pid 2756
+> 00:14 +102: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Network Errors 2. Retry mechanism on failure
+> 00:14 +103: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Input Validation 1. Empty cart checkout blocked
+> 00:14 +104: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Input Validation 2. Invalid email rejected
+> 00:14 +105: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Input Validation 3. Invalid amount rejected
+> 00:14 +106: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Concurrency 1. Concurrent order placement detected
+> 00:14 +107: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Concurrency 2. Duplicate order rejected
+> 00:14 +108: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Cache & Rate Limiting 1. Rate limit enforcement
+> 00:14 +109: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Cache & Rate Limiting 2. Cache expiration handling
+> 00:14 +110: C:/Users/n/paykari_bazar/test/integration/edge_cases_test.dart: Edge Cases & Error Handling Tests Edge Cases - Provider Fallback 1. Fallback chain on provider failure
+  [ +235 ms] test 8: Test harness is no longer needed by test process
+  [        ] test 8: finished
+  [        ] test 8: cleaning up...
+  [        ] test 8: ensuring test device is terminated.
+  [        ] test 8: Terminating flutter_tester process
+  ✅ [AIProviderManager] Fallback provider succeeded
+  00:26 +223: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Handle timeout and fallback
+  🏥 [AIProviderManager] Running health check on all providers...
+  ✅ [AIProviderManager] Primary provider (Primary Provider) is healthy
+  🚀 [AIProviderManager] Using primary provider: Primary Provider
+> ⚠️ [AIProviderManager] Primary provider failed: Exception: Timeout
+  🔄 [AIProviderManager] Switching to fallback provider...
+  🔄 [AIProviderManager] Using fallback provider: Fallback Provider
+  ✅ [AIProviderManager] Fallback provider succeeded
+  00:26 +224: C:/Users/n/paykari_bazar/test/services/ai_provider_fallback_test.dart: AI Provider Fallback Tests Get active provider name
+  🏥 [AIProviderManager] Running health check on all providers...
+  ✅ Data decrypted successfully
+  00:35 +297: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encrypt PII
+  ✅ Encryption service initialized (AES-256)
+  ✅ Data encrypted successfully
+  ✅ Data decrypted successfully
+> 00:35 +298: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests decrypt invalid data throws exception
+  ✅ Encryption service initialized (AES-256)
+> ❌ Decryption failed: FormatException: Invalid character (at character 30)
+  invalid_base64_encrypted_data!!!
+                               ^
+  
+  00:35 +299: C:/Users/n/paykari_bazar/test/services/security_services_test.dart: EncryptionService Tests encryptJson with empty map
+  ✅ Encryption service initialized (AES-256)
+  00:37 +335: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Health Checks 9. Health check can be called multiple times
+  00:37 +336: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Health Checks 10. Health check failure triggers fallback
+  00:37 +337: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Generation 11. Generate method returns response from provider
+  00:38 +338: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Generation 12. Generate method called with correct params
+  00:38 +339: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Provider Generation 13. Different providers return different responses
+> 00:38 +340: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 14. Handle provider exception gracefully
+> 00:38 +341: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 15. Fallback continues on provider failure
+> 00:38 +342: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 16. Multiple fallback attempts tracked
+> 00:38 +343: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) Error Handling 17. Empty response handled correctly
+  00:38 +344: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) AI Service Configuration 18. Mock providers can be injected into AIService
+  00:38 +344 -1: C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart: Day 2: AI Service Tests (20 tests) AI Service Configuration 18. Mock providers can be injected into AIService [E]
+    [core/no-app] No Firebase App '[DEFAULT]' has been created - call Firebase.initializeApp()
+    package:firebase_core_platform_interface/src/method_channel/method_channel_firebase.dart 190:5  MethodChannelFirebase.app
+    package:firebase_core/src/firebase.dart 79:41                                                   Firebase.app
+  00:39 +360 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 16. Handles daily quota reset
+  00:39 +361 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 17. Provides quota status under high usage
+  00:39 +362 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 18. Supports multiple provider rotation
+  00:39 +363 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 19. Validates quota limit values
+  00:39 +364 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) ApiQuotaService - Rate Limiting via Quota (10 tests) 20. Returns accurate quota representation
+> 00:39 +365 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 21. Service initializes without errors
+  00:39 +366 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 22. Biometric availability detection
+  00:39 +367 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 23. Lists available biometric types
+  00:39 +368 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 24. Requires biometric for payment
+  00:39 +369 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 25. Stores tokens in secure storage
+  00:39 +370 -2: C:/Users/n/paykari_bazar/test/unit/core_services_test.dart: Day 3: Core Service Tests (33 tests) SecureAuthService - Biometric & Secure Storage (8 tests) 26. Retrieves secure tokens
+  [        ] test 45: Starting flutter_tester process with command=[C:\Users\n\paykari_bazar\flutter\bin\cache\artifacts\engine\windows-x64\flutter_tester.exe, --disable-vm-service, --enable-checked-mode, --verify-entry-points, --enable-software-rendering, --skia-deterministic-rendering, --enable-dart-profiling, --non-interactive, --use-test-fonts, --disable-asset-fonts, --packages=C:\Users\n\paykari_bazar\.dart_tool\package_config.json, --flutter-assets-dir=C:\Users\n\paykari_bazar\build\unit_test_assets, C:\Users\n\AppData\Local\Temp\flutter_tools.4a930c4c\flutter_test_listener.47aed910\listener.dart.dill], environment={FLUTTER_TEST: true, FONTCONFIG_FILE: C:\Users\n\AppData\Local\Temp\flutter_tools.4a930c4c\flutter_test_fonts.705195bc/fonts.conf, SERVER_PORT: 65478, APP_NAME: paykari_bazar, UNIT_TEST_ASSETS: C:\Users\n\paykari_bazar\build\unit_test_assets}
+  [   +9 ms] test 45: Started flutter_tester process at pid 5128
+  01:08 +543 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList renders correct number of product cards
+  01:08 +544 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList has correct scroll direction (horizontal)
+  01:08 +545 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests ProductHorizontalList has proper item margins and padding
+> 01:08 +546 -2: C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart: Home Widgets Tests Home Widgets Integration renders multiple home widgets without BoxDecoration opacity errors
+  [ +454 ms] test 44: Test harness is no longer needed by test process
+  [        ] test 44: finished
+  [        ] test 44: cleaning up...
+  [        ] test 44: ensuring test device is terminated.
+  [        ] test 44: Terminating flutter_tester process
+  [  +12 ms] test 46: Started flutter_tester process at pid 6504
+  01:10 +548 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Rendering 2. Login button is initially disabled
+  01:10 +549 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - Rendering 3. Password field obscures text
+  01:10 +550 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - User Input 1. User can enter email
+  01:10 +551 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - User Input 2. User can enter password
+> 01:10 +552 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - User Input 3. Form validation shows error on empty email
+  [+1217 ms] test 46: connected to test device, now awaiting test result
+  [        ] test 46: Waiting for test harness or tests to finish
+  01:11 +553 -2: C:/Users/n/paykari_bazar/test/widgets/login_screen_test.dart: Login Screen Widget Tests Login Form - User Input 4. Login button becomes enabled with valid input
+  01:11 +554 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+  01:11 +555 -2: C:/Users/n/paykari_bazar/test/widgets/product_detail_screen_test.dart: Product Detail Screen Widget Tests Product Detail - Information Display 1. Product detail screen displays product name
+  [        ] test 47: Test process is no longer needed by test harness
+  [        ] test 47: Shutting down test harness socket server
+  [  +49 ms] test 47: flutter_tester process at pid 11200 exited with code=-1
+  [        ] test 47: deleting temporary directory
+  [  +13 ms] test 47: finished
+> 01:16 +575 -2: Some tests failed.
+  [  +18 ms] Deleting C:\Users\n\AppData\Local\Temp\flutter_tools.4a930c4c\flutter_test_compiler.814e4402...
+  [   +1 ms] killing pid 6564
+  [ +149 ms] Deleting C:\Users\n\AppData\Local\Temp\flutter_tools.4a930c4c\flutter_test_fonts.705195bc...
+  [   +6 ms] test package returned with exit code 1
+  [        ] Runtime for phase TestRunner: Wall-clock: 0:01:30.454656; combined: 0:01:30.454697.
+             <asynchronous suspension>
+             #9      AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:153:19)
+             <asynchronous suspension>
+             #10     main (package:flutter_tools/executable.dart:93:3)
+             <asynchronous suspension>
+> System.Management.Automation.RemoteException
+> System.Management.Automation.RemoteException
+  [ +268 ms] ensureAnalyticsSent: 264ms
+  [        ] Running 2 shutdown hooks
+  [   +1 ms] Shutdown hooks complete
+  [  +65 ms] exiting with code 1
