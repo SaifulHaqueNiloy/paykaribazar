@@ -49,7 +49,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.paykaribazar.app"
+        // applicationId is defined dynamically in productFlavors
         minSdkVersion 23 // Updated to 23 as required by plugins (e.g., record_android, geolocator_android)
         targetSdk 36 // Reverted to 36 as required by facebook_auth, photo_manager, and sentry_flutter plugins
         versionCode pubspecVersionCode
@@ -57,6 +57,20 @@ android {
         
         def mapsKey = keystoreProperties['MAPS_API_KEY'] ?: "YOUR_API_KEY_HERE"
         manifestPlaceholders["MAPS_API_KEY"] = mapsKey
+    }
+
+    flavorDimensions "app"
+    productFlavors {
+        customer {
+            dimension "app"
+            applicationId "com.paykaribazar.customer"
+            resValue "string", "app_name", "Paykari Bazar"
+        }
+        admin {
+            dimension "app"
+            applicationId "com.paykaribazar.admin"
+            resValue "string", "app_name", "Paykari Bazar Admin"
+        }
     }
 
     buildTypes {

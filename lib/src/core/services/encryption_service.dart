@@ -1,9 +1,8 @@
-import 'package:encrypt/encrypt.dart' as encrypt_lib;
 import 'dart:convert';
+
+import 'package:encrypt/encrypt.dart' as encrypt_lib;
 import 'package:flutter/material.dart';
 
-/// Service for AES-256 encryption/decryption of sensitive data
-/// Uses: User tokens, payment information, personal health data
 class EncryptionService {
   // 32-byte key for AES-256 (exactly 32 characters for UTF-8 encoding)
   final _key = encrypt_lib.Key.fromUtf8('MySecureAES256KeyFor32BytLength!');
