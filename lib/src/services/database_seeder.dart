@@ -365,4 +365,120 @@ class DatabaseSeeder {
     }
     await batch.commit();
   }
+
+  static Future<void> seedProducts() async {
+    final firestore = FirebaseFirestore.instance;
+    final batch = firestore.batch();
+
+    final List<Map<String, dynamic>> products = [
+      {
+        'id': 'prod_rice_001',
+        'sku': 'GRO-RICE-M50',
+        'name': 'Premium Miniket Rice (50kg Bag)',
+        'nameBn': 'প্রিমিয়াম মিনিকেট চাল (৫০ কেজি বস্তা)',
+        'description': 'Genuine premium miniket rice directly from Dinajpur mills. Cleaned and auto-sorted.',
+        'descriptionBn': 'দিনাজপুরের অটো মিলের প্রিমিয়াম মিনিকেট চাল। সম্পূর্ণ ফ্রেশ এবং পলিশ করা।',
+        'price': 3200.0,
+        'oldPrice': 3500.0,
+        'stock': 100,
+        'unit': 'bag',
+        'unitBn': 'বস্তা',
+        'imageUrl': 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400',
+        'imageUrls': ['https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400'],
+        'categoryId': 'groceries',
+        'categoryName': 'Groceries',
+        'categoryNameBn': 'মুদি পণ্য',
+        'isNewArrival': true,
+        'isFlashSale': true,
+        'isHotSelling': true,
+        'flashSaleEndTime': Timestamp.fromDate(DateTime.now().add(const Duration(hours: 4))),
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
+      },
+      {
+        'id': 'prod_potato_002',
+        'sku': 'VEG-POTA-S50',
+        'name': 'Fresh Potato - Bogura (50kg)',
+        'nameBn': 'বগুড়ার তাজা আলু (৫০ কেজি)',
+        'description': 'Directly harvested high-quality potatoes from Bogura. Grade A sizing.',
+        'descriptionBn': 'সরাসরি বগুড়ার মাঠ থেকে সংগৃহীত তাজা গোল আলু। গ্রেড-এ সাইজ।',
+        'price': 1200.0,
+        'oldPrice': 1300.0,
+        'stock': 80,
+        'unit': 'sack',
+        'unitBn': 'বস্তা',
+        'imageUrl': 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400',
+        'imageUrls': ['https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=400'],
+        'categoryId': 'vegetables',
+        'categoryName': 'Vegetables',
+        'categoryNameBn': 'শাক-সবজি',
+        'isNewArrival': true,
+        'isFlashSale': false,
+        'isHotSelling': false,
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
+      },
+      {
+        'id': 'prod_combo_003',
+        'sku': 'COM-ESSENTIAL-01',
+        'name': 'Daily Essentials Grocery Combo',
+        'nameBn': 'নিত্যপ্রয়োজনীয় মুদি কম্বো প্যাক',
+        'description': 'Special bundle: Miniket Rice 10kg, Lentil (ডাল) 2kg, Soyabean Oil 2L, Sugar 1kg.',
+        'descriptionBn': 'বিশেষ অফার: মিনিকেট চাল ১০ কেজি, মসুর ডাল ২ কেজি, সয়াবিন তেল ২ লিটার, চিনি ১ কেজি।',
+        'price': 1800.0,
+        'oldPrice': 2000.0,
+        'stock': 50,
+        'unit': 'combo',
+        'unitBn': 'কম্বো',
+        'imageUrl': 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=400',
+        'imageUrls': ['https://images.unsplash.com/photo-1542838132-92c53300491e?w=400'],
+        'categoryId': 'combo',
+        'categoryName': 'Combo',
+        'categoryNameBn': 'কম্বো',
+        'isNewArrival': true,
+        'isCombo': true,
+        'isHotSelling': true,
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
+      },
+      {
+        'id': 'prod_oil_004',
+        'sku': 'GRO-OIL-M05',
+        'name': 'Pure Mustard Oil (5L)',
+        'nameBn': 'খাঁটি সরিষার তেল (৫ লিটার)',
+        'description': '100% pure wood-pressed mustard oil. Rich aroma and flavor.',
+        'descriptionBn': 'শতভাগ খাঁটি কাঠের ঘানিতে ভাঙানো সরিষার তেল। ঝাঁঝালো সুবাস ও স্বাদ।',
+        'price': 950.0,
+        'oldPrice': 1100.0,
+        'stock': 150,
+        'unit': 'bottle',
+        'unitBn': 'বোতল',
+        'imageUrl': 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400',
+        'imageUrls': ['https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400'],
+        'categoryId': 'groceries',
+        'categoryName': 'Groceries',
+        'categoryNameBn': 'মুদি পণ্য',
+        'isNewArrival': true,
+        'isRecommended': true,
+        'isHotSelling': true,
+        'createdAt': Timestamp.now(),
+        'updatedAt': Timestamp.now(),
+      }
+    ];
+
+    for (var p in products) {
+      batch.set(firestore.collection(HubPaths.products).doc(p['id']), p);
+    }
+    await batch.commit();
+  }
+
+  static Future<void> seedPromos() async {
+    final firestore = FirebaseFirestore.instance;
+    await firestore.collection('promos').doc('main_banner').set({
+      'banners': [
+        'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800',
+        'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800'
+      ]
+    }, SetOptions(merge: true));
+  }
 }

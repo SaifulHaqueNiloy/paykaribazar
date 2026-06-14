@@ -104,6 +104,20 @@ void main() {
         await DatabaseSeeder.seedAll();
         if (kDebugMode) debugPrint('✅ Auto-seeded all default database collections at startup');
       }
+
+      // Auto-seed mock products if empty
+      final prodSnap = await FirebaseFirestore.instance.collection(HubPaths.products).limit(1).get();
+      if (prodSnap.docs.isEmpty) {
+        await DatabaseSeeder.seedProducts();
+        if (kDebugMode) debugPrint('✅ Auto-seeded mock products at startup');
+      }
+
+      // Auto-seed mock banners if empty
+      final promoSnap = await FirebaseFirestore.instance.collection('promos').limit(1).get();
+      if (promoSnap.docs.isEmpty) {
+        await DatabaseSeeder.seedPromos();
+        if (kDebugMode) debugPrint('✅ Auto-seeded mock banners at startup');
+      }
     } catch (e) {
       if (kDebugMode) debugPrint('⚠️ Auto-seed check skipped/failed: $e');
     }
