@@ -383,8 +383,6 @@ jobs:
       - name: Build & Deploy (Shorebird with Flutter Fallback)
         if: needs.setup.outputs.should_deploy == 'true'
         run: |
-          cp shorebird_${{ matrix.app }}.yaml shorebird.yaml
-          
           # Try patching first
           if shorebird patch android --flavor ${{ matrix.app }} -t lib/main_${{ matrix.app }}.dart -- --build-number=${{ needs.setup.outputs.build_number }}; then
             echo "✅ Shorebird patch succeeded!"
