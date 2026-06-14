@@ -1,8 +1,6 @@
 // Trigger build: Secret updated
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -10,14 +8,11 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:workmanager/workmanager.dart';
 
-import 'firebase_options.dart';
 import 'src/di/service_initializer.dart';
 import 'src/di/service_locator.dart';
 import 'src/di/providers.dart';
 import 'src/services/database_seeder.dart';
-import 'src/services/backup_service.dart';
 import 'src/services/background_task_service.dart';
 import 'src/shared/services/update_service.dart';
 import 'src/utils/router_customer.dart';
@@ -167,7 +162,7 @@ class _CustomerAppState extends ConsumerState<CustomerApp> {
 
     if (mounted) {
       setState(() => _isInitialized = true);
-      Future.delayed(const Duration(seconds: 3), () => _checkUpdate());
+      _checkUpdate();
     }
   }
 

@@ -243,12 +243,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     const Spacer(),
                     IconButton(
                       icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
-                      onPressed: () {
-                        // 💡 Issue 15: Placeholder until NotificationsScreen is implemented
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('কোনো নতুন নোটিফিকেশন নেই')),
-                        );
-                      },
+                      onPressed: () => context.push('/notifications'),
                     ),
                   ],
                 ),

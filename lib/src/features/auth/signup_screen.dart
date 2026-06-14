@@ -59,7 +59,7 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
     }
     setState(() => _isLoading = true);
     try {
-      final res = await ref.read(authServiceProvider).signUp(
+      await ref.read(authServiceProvider).signUp(
           name: _nameCtrl.text.trim(),
           phone: _phoneCtrl.text.trim(),
           email: _emailCtrl.text.isNotEmpty ? _emailCtrl.text.trim() : null,

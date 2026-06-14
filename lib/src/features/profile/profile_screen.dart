@@ -186,13 +186,6 @@ class ProfileScreen extends ConsumerWidget {
                               () => context.push('/admin'),
                               Colors.orange,
                               isDark),
-                          if (roleStr == 'admin')
-                            _gridItem(
-                                Icons.bolt_rounded,
-                                'সিমুলেটর',
-                                () => context.push('/customer-simulator'),
-                                Colors.teal,
-                                isDark),
                         ]),
                       ],
                       _buildSectionHeader(t('teamPartners'), isDark),
@@ -379,6 +372,19 @@ class ProfileScreen extends ConsumerWidget {
       tierColor = Colors.grey;
     }
 
+    final mediaService = ref.watch(userMediaServiceProvider);
+    final String roleStr = data['role'] ?? 'customer';
+    final int limit = mediaService.getQuotaLimit(points, roleStr);
+    final int used = (data['usedStorage'] ?? 0).toInt();
+    final double usedPercent = limit > 0 ? (used / limit) * 100 : 0.0;
+
+    Color ticColor = Colors.green;
+    if (usedPercent >= 90) {
+      ticColor = Colors.red;
+    } else if (usedPercent >= 70) {
+      ticColor = Colors.orange;
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
@@ -402,8 +408,17 @@ class ProfileScreen extends ConsumerWidget {
                             fontSize: 24, // BIGGER NAME
                             fontWeight: FontWeight.w900)),
                     const SizedBox(width: 8),
-                    const Icon(Icons.verified_rounded,
-                        color: Colors.blueAccent, size: 18),
+                    GestureDetector(
+                      onTap: () => context.push('/cloud-storage'),
+                      child: Tooltip(
+                        message: 'স্টোরেজ ব্যবহার: ${usedPercent.toStringAsFixed(1)}%',
+                        child: Icon(
+                          Icons.verified_rounded,
+                          color: ticColor,
+                          size: 18,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 6),

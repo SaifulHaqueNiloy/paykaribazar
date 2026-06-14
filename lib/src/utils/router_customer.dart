@@ -26,6 +26,7 @@ import '../features/notifications/notification_screen.dart';
 import '../features/orders/emergency_details_screen.dart';
 import '../features/profile/how_to_use_screen.dart'; 
 import '../features/profile/customer_simulator_screen.dart';
+import '../features/profile/cloud_storage_screen.dart';
 import '../features/search/search_screen.dart';
 import '../features/orders/order_tracking_screen.dart';
 import '../di/providers.dart';
@@ -102,6 +103,7 @@ final customerRouter = GoRouter(
     GoRoute(path: '/customer-simulator', builder: (context, state) => const CustomerSimulatorScreen()),
     GoRoute(path: '/notifications', builder: (context, state) => const NotificationScreen()),
     GoRoute(path: '/how-to-use', builder: (context, state) => const HowToUseScreen()), 
+    GoRoute(path: '/cloud-storage', builder: (context, state) => const CloudStorageScreen()),
     
     GoRoute(
       path: '/apply', 

@@ -4,7 +4,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:workmanager/workmanager.dart';
 import '../../../firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'backup_service.dart';
+import 'user_media_service.dart';
 import '../di/service_locator.dart';
 import '../features/ai/services/ai_automation_service.dart';
 import '../shared/services/notification_service.dart';
@@ -114,7 +116,23 @@ Future<bool> _routeTask(String task, Map<String, dynamic>? data) async {
     case 'PB_SYSTEM_BACKUP':
       final uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid == null) return false;
+      
+      // Perform database backup
       await BackupService.performBackgroundBackup(uid);
+      
+      // Perform automatic user media backup to Cloudinary
+      try {
+        final userMediaService = getIt<UserMediaService>();
+        final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        if (userDoc.exists) {
+          final userData = userDoc.data()!;
+          final int points = (userData['points'] ?? 0).toInt();
+          final String role = userData['role'] ?? 'customer';
+          await userMediaService.runAutomaticBackup(uid, points, role);
+        }
+      } catch (e) {
+        debugPrint('Background Media Backup failed: $e');
+      }
       return true;
 
     case BackgroundTaskService.aiAuditTask:

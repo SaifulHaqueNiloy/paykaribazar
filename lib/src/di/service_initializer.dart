@@ -49,6 +49,7 @@ import '../services/sync_service.dart';
 import '../services/notice_service.dart';
 import '../services/auto_translation_service.dart';
 import '../services/fleet_service.dart';
+import '../services/user_media_service.dart';
 import '../features/ota/services/ota_service.dart';
 
 class ServiceInitializer {
@@ -110,6 +111,8 @@ class ServiceInitializer {
     getIt.registerLazySingleton<LocationService>(() => LocationService());
     getIt.registerLazySingleton<MediaService>(
         () => MediaService(getIt<SecretsService>()));
+    getIt.registerLazySingleton<UserMediaService>(
+        () => UserMediaService(getIt<MediaService>()));
     getIt.registerLazySingleton<MapService>(() => MapService());
     getIt.registerLazySingleton<UpdateService>(() => UpdateService());
     getIt.registerLazySingleton<BackgroundTaskService>(

@@ -70,6 +70,8 @@ final forecastingServiceProvider = Provider((ref) => getIt<ForecastingService>()
 final apiQuotaServiceProvider = Provider((ref) => getIt<ApiQuotaService>());
 final billingMonitorProvider =
     Provider((ref) => getIt<FirebaseBillingMonitor>());
+import '../services/user_media_service.dart';
+
 final secretsServiceProvider = Provider((ref) => getIt<SecretsService>());
 final aiAutomationProvider = Provider((ref) => getIt<AiAutomationService>());
 final updateServiceProvider = Provider((ref) => getIt<UpdateService>());
@@ -79,6 +81,7 @@ final autoTranslationProvider = Provider((ref) => getIt<AutoTranslationService>(
 final chatServiceProvider = Provider((ref) => getIt<ChatService>());
 final compassServiceProvider = Provider((ref) => getIt<CompassService>());
 final otaServiceProvider = Provider((ref) => OTAService());
+final userMediaServiceProvider = Provider((ref) => getIt<UserMediaService>());
 final backupServiceProvider = Provider((ref) {
   final secrets = ref.watch(secretsServiceProvider);
   final masterKey = secrets.getSecret('backup_master_key', fallback: 'paykari_bazar_secure_master_key_!');

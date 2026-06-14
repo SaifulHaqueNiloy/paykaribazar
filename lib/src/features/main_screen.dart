@@ -8,6 +8,7 @@ import 'package:paykari_bazar/src/features/home/rewards_screen.dart';
 import 'package:paykari_bazar/src/features/profile/profile_screen.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import 'package:paykari_bazar/src/services/role_simulator_provider.dart';
+import 'package:paykari_bazar/src/utils/app_strings.dart';
 
 class MainScreen extends ConsumerStatefulWidget {
   const MainScreen({super.key});
@@ -19,8 +20,10 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> {
   @override
   Widget build(BuildContext context) {
+    final lang = ref.watch(languageProvider).languageCode;
     final idx = ref.watch(navProvider);
     final simulatedId = ref.watch(simulatedUserUidProvider);
+    String t(String key) => AppStrings.get(key, lang);
 
     return PopScope(
       canPop: false,
@@ -90,15 +93,16 @@ class _MainScreenState extends ConsumerState<MainScreen> {
           selectedIndex: idx.clamp(0, 4),
           onDestinationSelected: (index) =>
               ref.read(navProvider.notifier).setIndex(index),
-          destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+          destinations: [
+            NavigationDestination(icon: const Icon(Icons.home), label: t('home')),
             NavigationDestination(
-                icon: Icon(Icons.emergency), label: 'Emergency'),
+                icon: const Icon(Icons.emergency), label: t('emergencyService')),
             NavigationDestination(
-                icon: Icon(Icons.grid_view), label: 'Products'),
+                icon: const Icon(Icons.grid_view), label: t('products')),
             NavigationDestination(
-                icon: Icon(Icons.card_giftcard), label: 'Rewards'),
-            NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+                icon: const Icon(Icons.card_giftcard), label: t('rewards')),
+            NavigationDestination(
+                icon: const Icon(Icons.person), label: t('profile')),
           ],
         ),
       ),

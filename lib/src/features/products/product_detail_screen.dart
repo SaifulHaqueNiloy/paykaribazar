@@ -6,6 +6,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import '../../models/product_model.dart';
 import '../../di/providers.dart';
+import '../../utils/app_strings.dart';
 import '../home/widgets/home_widgets.dart';
 
 class ProductDetailScreen extends ConsumerStatefulWidget {
@@ -180,10 +181,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
         ],
       );
 
-  Widget _buildQuantitySelector() => Row(
+  Widget _buildQuantitySelector(String t(String key)) => Row(
         children: [
-          const Text('Quantity:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text('${t('quantity')}:',
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const Spacer(),
           IconButton(
               onPressed: () =>
@@ -244,13 +245,13 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       quantity: _quantity,
                       unit: _product!.unit,
                     ));
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(const SnackBar(content: Text('Added to cart')));
+                 ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text(t('addedToCart'))));
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: isOutOfStock ? Colors.grey : Colors.teal,
                   minimumSize: const Size(double.infinity, 50)),
-              child: Text(isOutOfStock ? 'OUT OF STOCK' : 'ADD TO CART',
+              child: Text(isOutOfStock ? t('outOfStock') : t('addToCart'),
                   style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
             );
           },
