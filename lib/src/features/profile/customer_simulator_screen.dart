@@ -51,7 +51,7 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
       ),
     );
 
-    if (confirmed == true) {
+    if (confirmed == true && mounted) {
       // Logic to trigger sandbox cleanup via FirestoreService using a recursive delete
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sandbox cleared successfully.')));
     }
@@ -59,7 +59,6 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
 
   @override
   Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
     // বর্তমান সিমুলেটেড ইউজার আইডি চেক করা
     final simulatedId = ref.watch(simulatedUserUidProvider);
 
