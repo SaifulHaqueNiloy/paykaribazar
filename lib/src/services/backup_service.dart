@@ -47,11 +47,31 @@ class BackupService {
       }
 
       for (var collection in collections) {
-        final snap = await _db.collection(collection).get();
-        backupData['collections'][collection] = snap.docs.map((doc) => {
-          'id': doc.id,
-          ...doc.data(),
-        }).toList();
+        final List<Map<String, dynamic>> collectionDocs = [];
+        QuerySnapshot? lastSnap;
+        bool hasMore = true;
+
+        while (hasMore) {
+          var query = _db.collection(collection).orderBy(FieldPath.documentId).limit(500);
+          if (lastSnap != null && lastSnap.docs.isNotEmpty) {
+            query = query.startAfterDocument(lastSnap.docs.last);
+          }
+
+          final snap = await query.get();
+          if (snap.docs.isEmpty) {
+            hasMore = false;
+          } else {
+            collectionDocs.addAll(snap.docs.map((doc) => {
+              'id': doc.id,
+              ...doc.data() as Map<String, dynamic>,
+            }));
+            lastSnap = snap;
+            if (snap.docs.length < 500) {
+              hasMore = false;
+            }
+          }
+        }
+        backupData['collections'][collection] = collectionDocs;
       }
 
       final jsonStr = jsonEncode(backupData);
@@ -154,5 +174,80 @@ class BackupService {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .map((snap) => snap.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList());
+  }
+
+  /// Generates the encrypted backup payload and returns the local File object.
+  Future<File> generateBackupFile(String adminId) async {
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final backupData = <String, dynamic>{
+      'timestamp': timestamp,
+      'adminId': adminId,
+      'collections': {},
+    };
+
+    final collections = [
+      HubPaths.users,
+      HubPaths.orders,
+      HubPaths.products,
+      HubPaths.categories,
+      'settings',
+    ];
+
+    for (var collection in collections) {
+      final List<Map<String, dynamic>> collectionDocs = [];
+      QuerySnapshot? lastSnap;
+      bool hasMore = true;
+
+      while (hasMore) {
+        var query = _db.collection(collection).orderBy(FieldPath.documentId).limit(500);
+        if (lastSnap != null && lastSnap.docs.isNotEmpty) {
+          query = query.startAfterDocument(lastSnap.docs.last);
+        }
+
+        final snap = await query.get();
+        if (snap.docs.isEmpty) {
+          hasMore = false;
+        } else {
+          collectionDocs.addAll(snap.docs.map((doc) => {
+            'id': doc.id,
+            ...doc.data() as Map<String, dynamic>,
+          }));
+          lastSnap = snap;
+          if (snap.docs.length < 500) {
+            hasMore = false;
+          }
+        }
+      }
+      backupData['collections'][collection] = collectionDocs;
+    }
+
+    final jsonStr = jsonEncode(backupData);
+    final iv = encrypt.IV.fromSecureRandom(16);
+    final encrypted = _encrypter.encrypt(jsonStr, iv: iv);
+
+    final tempDir = await getTemporaryDirectory();
+    final file = File('${tempDir.path}/backup_$timestamp.enc');
+    await file.writeAsBytes(Uint8List.fromList(iv.bytes + encrypted.bytes));
+    return file;
+  }
+
+  /// Uploads a backup file to the local development Express sync server.
+  Future<bool> uploadBackupToLocalServer(File file, String uid) async {
+    try {
+      final uri = Uri.parse(kIsWeb
+          ? 'http://localhost:3000/upload-backup'
+          : ((!kIsWeb && Platform.isAndroid)
+              ? 'http://10.0.2.2:3000/upload-backup'
+              : 'http://localhost:3000/upload-backup'));
+      final request = http.MultipartRequest('POST', uri)
+        ..fields['uid'] = uid
+        ..files.add(await http.MultipartFile.fromPath('backupFile', file.path));
+      
+      final response = await request.send();
+      return response.statusCode == 200;
+    } catch (e) {
+      if (kDebugMode) debugPrint('❌ Local Backup Sync Server upload failed: $e');
+      return false;
+    }
   }
 }

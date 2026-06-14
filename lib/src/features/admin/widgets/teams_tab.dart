@@ -120,17 +120,39 @@ class _TeamsTabState extends ConsumerState<TeamsTab> {
   void _showRoleShopDialog(Map<String, dynamic> user, List<Map<String, dynamic>> allShops) {
     String selectedRole = user['role'] ?? 'customer';
     final List<String> selectedShops = List<String>.from(user['approvedShops'] ?? []);
+    final int currentLimitBytes = (user['storageLimit'] ?? (50 * 1024 * 1024)).toInt();
+    final double currentLimitMB = currentLimitBytes / (1024 * 1024);
+    final TextEditingController limitController = TextEditingController(text: currentLimitMB.toStringAsFixed(0));
+
     showDialog(context: context, builder: (c) => StatefulBuilder(builder: (context, setDialogState) => AlertDialog(
       title: const Text('Edit User Role & Shops', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
       content: SingleChildScrollView(child: Column(mainAxisSize: MainAxisSize.min, children: [
         DropdownButtonFormField<String>(value: selectedRole, items: ['admin', 'staff', 'logistic', 'reseller', 'marketing', 'accountsFinance', 'customer'].map((r) => DropdownMenuItem(value: r, child: Text(r.toUpperCase()))).toList(), onChanged: (v) => setDialogState(() => selectedRole = v!), decoration: const InputDecoration(labelText: 'User Role')),
+        const SizedBox(height: 12),
+        TextField(
+          controller: limitController,
+          keyboardType: TextInputType.number,
+          decoration: const InputDecoration(
+            labelText: 'Storage Limit (MB)',
+            hintText: 'Enter storage limit in MB',
+          ),
+        ),
         if (selectedRole == 'reseller') ...[const SizedBox(height: 20), const Align(alignment: Alignment.centerLeft, child: Text('Assign Approved Shops:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12))), const SizedBox(height: 8), ...allShops.map((shop) { final String name = shop['name']; return CheckboxListTile(title: Text(name, style: const TextStyle(fontSize: 13)), value: selectedShops.contains(name), onChanged: (val) { setDialogState(() { if (val == true) {
           selectedShops.add(name);
         } else {
           selectedShops.remove(name);
         } }); }, controlAffinity: ListTileControlAffinity.leading, dense: true); })]
       ])),
-      actions: [TextButton(onPressed: () => Navigator.pop(c), child: const Text('CANCEL')), ElevatedButton(onPressed: () async { await FirebaseFirestore.instance.collection(HubPaths.users).doc(user['uid'] ?? user['id']).update({'role': selectedRole, 'approvedShops': selectedRole == 'reseller' ? selectedShops : FieldValue.delete()}); if (c.mounted) Navigator.pop(c); }, child: const Text('UPDATE'))],
+      actions: [TextButton(onPressed: () => Navigator.pop(c), child: const Text('CANCEL')), ElevatedButton(onPressed: () async { 
+        final double? limitMB = double.tryParse(limitController.text);
+        final int limitBytes = limitMB != null ? (limitMB * 1024 * 1024).toInt() : (50 * 1024 * 1024).toInt();
+        await FirebaseFirestore.instance.collection(HubPaths.users).doc(user['uid'] ?? user['id']).update({
+          'role': selectedRole, 
+          'approvedShops': selectedRole == 'reseller' ? selectedShops : FieldValue.delete(),
+          'storageLimit': limitBytes,
+        }); 
+        if (c.mounted) Navigator.pop(c); 
+      }, child: const Text('UPDATE'))],
     )));
   }
 

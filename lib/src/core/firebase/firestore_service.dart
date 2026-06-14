@@ -7,8 +7,11 @@ import '../../di/service_locator.dart';
 import '../constants/paths.dart';
 import '../exceptions/app_exceptions.dart';
 
+import '../../shared/services/notification_service.dart';
+
 final _db = FirebaseFirestore.instance;
 final _storage = FirebaseStorage.instance;
+
 
 // --- GLOBAL PROVIDERS FOR UI COMPATIBILITY ---
 final allUsersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
@@ -101,6 +104,31 @@ class FirestoreService {
     try {
       await _db.collection(HubPaths.orders).doc(orderId).update(
           {'status': status, 'updatedAt': FieldValue.serverTimestamp()});
+
+      // Send status update notification to the customer
+      try {
+        final orderDoc = await _db.collection(HubPaths.orders).doc(orderId).get();
+        final orderData = orderDoc.data();
+        if (orderData != null && orderData['customerUid'] != null) {
+          final String customerUid = orderData['customerUid'];
+
+          String statusBn = status;
+          if (status == 'Pending') statusBn = 'অপেক্ষমান';
+          else if (status == 'Processing') statusBn = 'প্রসেসিং হচ্ছে';
+          else if (status == 'Shipped') statusBn = 'পাঠানো হয়েছে';
+          else if (status == 'Delivered') statusBn = 'ডেলিভারি করা হয়েছে';
+          else if (status == 'Cancelled' || status == 'cancelled') statusBn = 'বাতিল করা হয়েছে';
+
+          await getIt<NotificationService>().sendDirectNotification(
+            userId: customerUid,
+            title: '📦 অর্ডার আপডেট (Order Update)',
+            body: 'আপনার অর্ডারটির (#$orderId) স্ট্যাটাস পরিবর্তন করে "$statusBn" করা হয়েছে।',
+            data: {'type': 'order', 'orderId': orderId},
+          );
+        }
+      } catch (notifErr) {
+        // Silently catch notification errors to avoid failing the order status update itself
+      }
     } catch (e) {
       throw FirestoreException('Failed to update order status: $e', details: e);
     }

@@ -7,7 +7,7 @@ import '../../di/providers.dart';
 import '../../utils/styles.dart';
 
 // Riverpod StateProvider to persist Auto-Backup setting locally in memory (can link to SharedPreferences)
-final autoBackupEnabledProvider = StateProvider<bool>((ref) => false);
+final autoBackupEnabledProvider = StateProvider<bool>((ref) => true);
 
 class CloudStorageScreen extends ConsumerStatefulWidget {
   const CloudStorageScreen({super.key});
@@ -18,6 +18,32 @@ class CloudStorageScreen extends ConsumerStatefulWidget {
 
 class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
   bool _isUploading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _syncStorageUsage();
+      _triggerAutoBackupIfEnabled();
+    });
+  }
+
+  void _syncStorageUsage() {
+    final authUser = ref.read(authStateProvider).value;
+    if (authUser != null) {
+      ref.read(userMediaServiceProvider).recalculateAndSyncUsedStorage(authUser.uid);
+    }
+  }
+
+  void _triggerAutoBackupIfEnabled() {
+    final isEnabled = ref.read(autoBackupEnabledProvider);
+    if (isEnabled) {
+      final authUser = ref.read(authStateProvider).value;
+      if (authUser != null) {
+        ref.read(userMediaServiceProvider).runAutomaticBackup(authUser.uid);
+      }
+    }
+  }
 
   String _formatSize(int bytes) {
     if (bytes <= 0) return '0 B';
@@ -51,7 +77,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
       final int points = (user['points'] ?? 0).toInt();
       final String role = user['role'] ?? 'customer';
 
-      await userMediaService.uploadUserMedia(authUser.uid, file, fileName, points, role);
+      await userMediaService.uploadUserMedia(authUser.uid, file, fileName);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -69,7 +95,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
     }
   }
 
-  Future<void> _handleDelete(String mediaId, int fileSize) async {
+  Future<void> _handleDelete(String mediaId, int fileSize, String fileUrl) async {
     final authUser = ref.read(authStateProvider).value;
     if (authUser == null) return;
 
@@ -94,7 +120,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
     if (confirmed != true) return;
 
     try {
-      await userMediaService.deleteUserMedia(authUser.uid, mediaId, fileSize);
+      await userMediaService.deleteUserMedia(authUser.uid, mediaId, fileSize, fileUrl);
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('মিডিয়া ফাইল সফলভাবে ডিলিট করা হয়েছে।'), backgroundColor: Colors.green),
@@ -123,7 +149,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
     final int points = (user['points'] ?? 0).toInt();
     
     final userMediaService = ref.watch(userMediaServiceProvider);
-    final int limitBytes = userMediaService.getQuotaLimit(points, role);
+    final int limitBytes = userMediaService.getQuotaLimit(user);
     final double limitMB = limitBytes / (1024 * 1024);
 
     return Scaffold(
@@ -251,6 +277,12 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                           value: ref.watch(autoBackupEnabledProvider),
                           onChanged: (val) {
                             ref.read(autoBackupEnabledProvider.notifier).state = val;
+                            if (val) {
+                              final authUser = ref.read(authStateProvider).value;
+                              if (authUser != null) {
+                                ref.read(userMediaServiceProvider).runAutomaticBackup(authUser.uid);
+                              }
+                            }
                           },
                           activeColor: AppStyles.primaryColor,
                         ),
@@ -347,7 +379,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.delete_outline_rounded, color: Colors.redAccent, size: 20),
-                                      onPressed: () => _handleDelete(item['id'], size),
+                                      onPressed: () => _handleDelete(item['id'], size, fileUrl),
                                     ),
                                   ],
                                 ),

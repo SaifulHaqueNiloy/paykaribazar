@@ -70,15 +70,27 @@ class SyncService {
     }
   }
 
+  dynamic _sanitizeForJson(dynamic item) {
+    if (item is Timestamp) {
+      return item.toDate().toIso8601String();
+    } else if (item is Map) {
+      return item.map((k, v) => MapEntry(k.toString(), _sanitizeForJson(v)));
+    } else if (item is List) {
+      return item.map((e) => _sanitizeForJson(e)).toList();
+    }
+    return item;
+  }
+
   Future<void> _cacheLocationsLocally() async {
     try {
       final snap = await _firestore.collection(HubPaths.locations).get();
       final locList = snap.docs.map((d) => d.data()).toList();
+      final sanitizedList = _sanitizeForJson(locList);
 
       // Use CacheService to avoid redundant Hive initialization and box naming mismatch
       await getIt<CacheService>().set(
         key: 'cached_locations',
-        value: locList,
+        value: sanitizedList,
         ttl: const Duration(days: 7),
       );
       

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:photo_manager/photo_manager.dart';
 import '../shared/services/media_service.dart';
 
 class UserMediaService {
@@ -9,13 +10,12 @@ class UserMediaService {
 
   UserMediaService(this._mediaService);
 
-  /// Get storage quota in bytes based on points and role
-  int getQuotaLimit(int points, String role) {
-    if (role == 'admin') return 5 * 1024 * 1024 * 1024; // 5 GB
-    if (points >= 5000) return 500 * 1024 * 1024; // 500 MB (Platinum)
-    if (points >= 2500) return 250 * 1024 * 1024; // 250 MB (Gold)
-    if (points >= 1000) return 100 * 1024 * 1024; // 100 MB (Silver)
-    return 50 * 1024 * 1024; // 50 MB (Bronze)
+  /// Get storage quota in bytes from user data
+  int getQuotaLimit(Map<String, dynamic>? userData) {
+    if (userData != null && userData['storageLimit'] != null) {
+      return (userData['storageLimit'] as num).toInt();
+    }
+    return 50 * 1024 * 1024; // Default fallback 50 MB
   }
 
   /// Get user's currently used storage from Firestore
@@ -26,21 +26,36 @@ class UserMediaService {
   }
 
   /// Upload file to Cloudinary with quota check
-  Future<String?> uploadUserMedia(String userId, File file, String fileName, int points, String role) async {
+  Future<String?> uploadUserMedia(String userId, File file, String fileName, {String? localId}) async {
+    final int fileSize = await file.length();
+    bool spaceReserved = false;
+
     try {
-      final int fileSize = await file.length();
-      final int used = await getUsedStorage(userId);
-      final int limit = getQuotaLimit(points, role);
+      // 1. Reserve space in users collection using Transaction to prevent race conditions
+      await _db.runTransaction((transaction) async {
+        final userRef = _db.collection('users').doc(userId);
+        final userSnap = await transaction.get(userRef);
+        if (!userSnap.exists) throw Exception('User not found');
 
-      if (used + fileSize > limit) {
-        throw Exception('Storage quota exceeded! Please free up space.');
-      }
+        final userData = userSnap.data() ?? {};
+        final int used = (userData['usedStorage'] ?? 0).toInt();
+        final int limit = getQuotaLimit(userData);
 
-      // Upload to Cloudinary under user_backups folder
+        if (used + fileSize > limit) {
+          throw Exception('Storage quota exceeded! Please free up space.');
+        }
+
+        transaction.update(userRef, {
+          'usedStorage': FieldValue.increment(fileSize),
+        });
+      });
+      spaceReserved = true;
+
+      // 2. Upload to Cloudinary under user_backups folder
       final url = await _mediaService.uploadToCloudinary(file, folder: 'user_backups/$userId');
       if (url == null) throw Exception('Upload to Cloudinary failed.');
 
-      // Save media metadata to Firestore
+      // 3. Save media metadata to Firestore
       final mediaId = _db.collection('user_media').doc().id;
       await _db.collection('user_media').doc(mediaId).set({
         'id': mediaId,
@@ -50,27 +65,36 @@ class UserMediaService {
         'fileSize': fileSize,
         'mimeType': fileName.toLowerCase().endsWith('.mp4') ? 'video/mp4' : 'image/jpeg',
         'uploadedAt': FieldValue.serverTimestamp(),
-      });
-
-      // Update used storage in users document
-      await _db.collection('users').doc(userId).update({
-        'usedStorage': FieldValue.increment(fileSize),
+        if (localId != null) 'localId': localId,
       });
 
       return url;
     } catch (e) {
+      if (spaceReserved) {
+        // Rollback reserved space if upload failed
+        try {
+          await _db.collection('users').doc(userId).update({
+            'usedStorage': FieldValue.increment(-fileSize),
+          });
+        } catch (rollbackError) {
+          if (kDebugMode) debugPrint('Rollback failed: $rollbackError');
+        }
+      }
       if (kDebugMode) debugPrint('Error in uploadUserMedia: $e');
       rethrow;
     }
   }
 
   /// Delete file from Firestore and decrement usedStorage
-  Future<void> deleteUserMedia(String userId, String mediaId, int fileSize) async {
+  Future<void> deleteUserMedia(String userId, String mediaId, int fileSize, String fileUrl) async {
     try {
-      // 1. Delete from user_media collection
+      // 1. Delete from Cloudinary first
+      await _mediaService.deleteFromCloudinary(fileUrl);
+
+      // 2. Delete from user_media collection
       await _db.collection('user_media').doc(mediaId).delete();
 
-      // 2. Decrement usedStorage in users collection
+      // 3. Decrement usedStorage in users collection
       await _db.collection('users').doc(userId).update({
         'usedStorage': FieldValue.increment(-fileSize),
       });
@@ -98,17 +122,84 @@ class UserMediaService {
         });
   }
 
-  /// Simulate background media sync task
-  Future<void> runAutomaticBackup(String userId, int points, String role) async {
+  /// Scans local gallery files from newest to oldest and uploads them until user quota is exceeded.
+  Future<void> runAutomaticBackup(String userId) async {
     try {
-      // For simulation: Pick a small dummy file or dummy bytes, save it temporarily and upload
-      final dir = await Directory.systemTemp.createTemp('pb_autobackup');
-      final tempFile = File('${dir.path}/simulated_photo_${DateTime.now().millisecondsSinceEpoch}.jpg');
-      await tempFile.writeAsBytes(List.generate(1024 * 100, (index) => 0)); // 100 KB dummy file
+      // 1. Request/verify permissions
+      final PermissionState ps = await PhotoManager.requestPermissionExtend();
+      if (!ps.isAuth) {
+        if (kDebugMode) debugPrint('PhotoManager permission not granted.');
+        return;
+      }
 
-      await uploadUserMedia(userId, tempFile, tempFile.path.split('/').last, points, role);
+      // 2. Fetch the root/all media album
+      final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
+        type: RequestType.common,
+      );
+      if (albums.isEmpty) return;
+
+      // 3. Fetch the latest 50 media assets
+      final List<AssetEntity> assets = await albums.first.getAssetListRange(start: 0, end: 50);
+
+      // 4. Iterate assets, check if already backed up, and upload
+      for (final asset in assets) {
+        final localId = asset.id;
+
+        final existing = await _db.collection('user_media')
+            .where('userId', isEqualTo: userId)
+            .where('localId', isEqualTo: localId)
+            .limit(1)
+            .get();
+
+        if (existing.docs.isNotEmpty) {
+          // Already backed up, skip this asset
+          continue;
+        }
+
+        final file = await asset.file;
+        if (file == null) continue;
+
+        try {
+          await uploadUserMedia(
+            userId,
+            file,
+            (asset.title != null && asset.title!.isNotEmpty) ? asset.title! : 'media_$localId',
+            localId: localId,
+          );
+          if (kDebugMode) debugPrint('Auto backed up asset: $localId');
+        } catch (e) {
+          if (e.toString().contains('Storage quota exceeded')) {
+            if (kDebugMode) debugPrint('Auto backup stopped: storage quota reached.');
+            break; // Stop loop when limit is reached
+          }
+          if (kDebugMode) debugPrint('Failed auto backup for asset $localId: $e');
+        }
+      }
     } catch (e) {
       if (kDebugMode) debugPrint('Automatic Backup Error: $e');
+    }
+  }
+
+  /// Recalculates total used storage from user_media and updates user document to ensure consistency
+  Future<int> recalculateAndSyncUsedStorage(String userId) async {
+    try {
+      final snap = await _db.collection('user_media')
+          .where('userId', isEqualTo: userId)
+          .get();
+      
+      int totalSize = 0;
+      for (var doc in snap.docs) {
+        totalSize += ((doc.data()['fileSize'] ?? 0) as num).toInt();
+      }
+
+      await _db.collection('users').doc(userId).update({
+        'usedStorage': totalSize,
+      });
+
+      return totalSize;
+    } catch (e) {
+      if (kDebugMode) debugPrint('Sync Storage Error: $e');
+      rethrow;
     }
   }
 }

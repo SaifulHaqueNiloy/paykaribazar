@@ -4,6 +4,7 @@ import '../services/cart_service.dart';
 import '../../../di/service_locator.dart';
 import '../../../di/providers.dart';
 import '../../../services/business_config_service.dart';
+import '../../../models/user_model.dart';
 
 export '../domain/cart_model.dart' show CartState;
 
@@ -18,33 +19,48 @@ final cartSubtotalProvider = Provider<double>((ref) {
   return ref.watch(cartProvider).totalAmount;
 });
 
-/// DNA ENFORCED: Fetches user's current location details for fee calculation
+final selectedAddressIdProvider = StateProvider<String?>((ref) => null);
+
+/// DNA ENFORCED: Fetches selected address's location details for fee calculation
 final userLocationDetailsProvider =
     FutureProvider<Map<String, dynamic>?>((ref) async {
-  final user = ref.watch(actualUserDataProvider).value;
-  if (user == null) return null;
+  final userVal = ref.watch(actualUserDataProvider).value;
+  if (userVal == null) return null;
 
-  final String? districtId = user['districtId'];
-  final String? upazilaId = user['upazilaId'];
-  final String? stationId = user['stationId'];
+  final user = UserModel.fromMap(userVal);
+  if (user.addresses.isEmpty) return null;
 
-  // Hierarchy: Station -> Upazila -> District
-  final targets =
-      [stationId, upazilaId, districtId].where((id) => id != null).toList();
+  final selectedId = ref.watch(selectedAddressIdProvider);
+  AddressModel? address;
+  if (selectedId != null) {
+    try {
+      address = user.addresses.firstWhere((a) => a.id == selectedId);
+    } catch (_) {}
+  }
+  address ??= user.defaultAddress;
 
-  for (final id in targets) {
+  if (address == null) return null;
+
+  final String? targetId = address.areaId;
+  if (targetId != null && targetId.isNotEmpty) {
     final doc = await FirebaseFirestore.instance
         .collection(HubPaths.locations)
-        .doc(id)
+        .doc(targetId)
         .get();
     if (doc.exists) {
       final data = doc.data();
-      if (data != null && (data['baseCharge'] ?? 0) > 0) {
-        return data;
+      if (data != null) {
+        return {
+          ...data,
+          'baseCharge': (data['baseCharge'] ?? address.deliveryCharge).toDouble(),
+        };
       }
     }
   }
-  return null;
+
+  return {
+    'baseCharge': address.deliveryCharge,
+  };
 });
 
 /// Business Rules Provider (Reads from Firestore settings/business_rules)
@@ -77,12 +93,7 @@ final cartDeliveryFeeProvider = Provider<double>((ref) {
 
   final rules =
       ref.watch(businessRulesProvider).value ?? BusinessConfigService.defaults;
-  final double freeThreshold = BusinessConfigService.getDoubleRule(
-    'free_delivery_threshold',
-    rules: rules,
-  );
 
-  if (subtotal >= freeThreshold) return 0;
 
   final locationAsync = ref.watch(userLocationDetailsProvider);
   final double defaultFee = BusinessConfigService.getDoubleRule(

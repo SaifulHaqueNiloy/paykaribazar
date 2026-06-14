@@ -78,23 +78,24 @@ void main() {
       final snap = await FirebaseFirestore.instance.collection(HubPaths.locations)
           .where('type', isEqualTo: 'district')
           .limit(1)
-          .get();
+          .get()
+          .timeout(const Duration(seconds: 4));
       if (snap.docs.isEmpty) {
-        await DatabaseSeeder.seedAll();
+        await DatabaseSeeder.seedAll().timeout(const Duration(seconds: 8));
         if (kDebugMode) debugPrint('✅ Auto-seeded all default database collections at startup');
       }
 
       // Auto-seed mock products if empty
-      final prodSnap = await FirebaseFirestore.instance.collection(HubPaths.products).limit(1).get();
+      final prodSnap = await FirebaseFirestore.instance.collection(HubPaths.products).limit(1).get().timeout(const Duration(seconds: 4));
       if (prodSnap.docs.isEmpty) {
-        await DatabaseSeeder.seedProducts();
+        await DatabaseSeeder.seedProducts().timeout(const Duration(seconds: 8));
         if (kDebugMode) debugPrint('✅ Auto-seeded mock products at startup');
       }
 
       // Auto-seed mock banners if empty
-      final promoSnap = await FirebaseFirestore.instance.collection('promos').limit(1).get();
+      final promoSnap = await FirebaseFirestore.instance.collection('promos').limit(1).get().timeout(const Duration(seconds: 4));
       if (promoSnap.docs.isEmpty) {
-        await DatabaseSeeder.seedPromos();
+        await DatabaseSeeder.seedPromos().timeout(const Duration(seconds: 8));
         if (kDebugMode) debugPrint('✅ Auto-seeded mock banners at startup');
       }
     } catch (e) {
@@ -115,7 +116,10 @@ void main() {
     );
 
     // Sentry initialization — DSN from .env only, no hardcoded fallback
-    final dsn = (dotenv.env['SENTRY_DSN'] ?? '').trim();
+    String dsn = '';
+    try {
+      dsn = (dotenv.env['SENTRY_DSN'] ?? '').trim();
+    } catch (_) {}
 
     await SentryFlutter.init(
       (options) {

@@ -396,7 +396,7 @@ class _AiAuditTabState extends ConsumerState<AiAuditTab> {
   void _handleApprove(String id, Map<String, dynamic> data) async {
     try {
       final targetId = data['targetId'];
-      final col = data['collection'] ?? 'products';
+      final col = data['collection'] == 'products' ? HubPaths.products : (data['collection'] ?? HubPaths.products);
       final newVals = Map<String, dynamic>.from(data['newValues'] ?? {});
 
       await _db.collection(col).doc(targetId).update({
@@ -425,6 +425,6 @@ class _AiAuditTabState extends ConsumerState<AiAuditTab> {
         .collection('ai_audit_logs')
         .doc(id)
         .update({'status': 'rejected'});
-    await _db.collection('products').doc(id).update({'aiAuditPending': false});
+    await _db.collection(HubPaths.products).doc(id).update({'aiAuditPending': false});
   }
 }

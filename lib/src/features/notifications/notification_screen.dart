@@ -44,6 +44,13 @@ class NotificationScreen extends ConsumerWidget {
             return const Center(child: CircularProgressIndicator());
           }
           
+          if (snapshot.hasError) {
+            return Center(child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text('Error: ${snapshot.error}', style: const TextStyle(color: Colors.red)),
+            ));
+          }
+
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return _buildEmptyState(isDark);
           }

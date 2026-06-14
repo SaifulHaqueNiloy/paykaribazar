@@ -16,9 +16,18 @@ class SecurityInitializer {
     try {
       if (kDebugMode) debugPrint('🔐 [SecurityInitializer] Starting security services initialization...');
 
+      // Helper to safely access dotenv without throwing NotInitializedError
+      String? getEnv(String key) {
+        try {
+          return dotenv.env[key];
+        } catch (_) {
+          return null;
+        }
+      }
+
       // 1. Initialize encryption service — key from .env
       if (!getIt.isRegistered<EncryptionService>()) {
-        final encKey = dotenv.env['ENCRYPTION_KEY'];
+        final encKey = getEnv('ENCRYPTION_KEY');
         if (encKey == null && !kDebugMode) {
           throw Exception('❌ ENCRYPTION_KEY missing in production environment!');
         }
@@ -29,8 +38,8 @@ class SecurityInitializer {
 
       // 2. Initialize API security service — credentials from .env
       if (!getIt.isRegistered<APISecurityService>()) {
-        final apiKey = dotenv.env['API_KEY'] ?? 'paykari_bazar_api_key';
-        final apiSecret = dotenv.env['API_SECRET'] ?? 'paykari_bazar_api_secret_key_1234567890';
+        final apiKey = getEnv('API_KEY') ?? 'paykari_bazar_api_key';
+        final apiSecret = getEnv('API_SECRET') ?? 'paykari_bazar_api_secret_key_1234567890';
         getIt.registerSingleton<APISecurityService>(
           APISecurityService(apiKey: apiKey, apiSecret: apiSecret),
         );

@@ -18,7 +18,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   final _nameCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
-  String? _selectedDistrict, _selectedUpazila;
+  String? _selectedDistrict, _selectedUpazila, _selectedStation, _selectedArea;
   File? _imageFile;
   bool _isLoading = false;
   bool _initialized = false;
@@ -35,6 +35,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     _emailCtrl.text = userData['email'] ?? '';
     _selectedDistrict = userData['districtId'];
     _selectedUpazila = userData['upazilaId'];
+    _selectedStation = userData['stationId'];
+    _selectedArea = userData['areaId'];
     _initialized = true;
   }
 
@@ -70,6 +72,8 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         'email': _emailCtrl.text.trim(),
         'districtId': _selectedDistrict,
         'upazilaId': _selectedUpazila,
+        'stationId': _selectedStation,
+        'areaId': _selectedArea,
         if (imageUrl != null) 'profilePic': imageUrl,
       };
 
@@ -212,6 +216,34 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       }
                     }
 
+                    final stations = locations.where((l) =>
+                      l['type']?.toString().toLowerCase() == 'station' && l['parentId'] == _selectedUpazila
+                    ).toList();
+
+                    if (_selectedStation != null && !stations.any((s) => s['id'] == _selectedStation)) {
+                      final match = stations.firstWhere(
+                        (s) => s['name'] == _selectedStation, 
+                        orElse: () => <String, dynamic>{}
+                      );
+                      if (match.isNotEmpty) {
+                        _selectedStation = match['id'];
+                      }
+                    }
+
+                    final areas = locations.where((l) =>
+                      l['type']?.toString().toLowerCase() == 'area' && l['parentId'] == _selectedStation
+                    ).toList();
+
+                    if (_selectedArea != null && !areas.any((a) => a['id'] == _selectedArea)) {
+                      final match = areas.firstWhere(
+                        (a) => a['name'] == _selectedArea, 
+                        orElse: () => <String, dynamic>{}
+                      );
+                      if (match.isNotEmpty) {
+                        _selectedArea = match['id'];
+                      }
+                    }
+
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -221,12 +253,42 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                           setState(() {
                             _selectedDistrict = v;
                             _selectedUpazila = null;
+                            _selectedStation = null;
+                            _selectedArea = null;
                           });
                         }, isDark),
                         const SizedBox(height: 12),
                         _buildDropdown(t('selectUpazila'), _selectedUpazila, upazilas, (v) {
-                          setState(() => _selectedUpazila = v);
+                          setState(() {
+                            _selectedUpazila = v;
+                            _selectedStation = null;
+                            _selectedArea = null;
+                          });
                         }, isDark, enabled: _selectedDistrict != null),
+                        const SizedBox(height: 12),
+                        _buildDropdown(lang == 'bn' ? 'স্টেশন / বাজার নির্বাচন করুন' : 'Select Station / Bazar', _selectedStation, stations, (v) {
+                          setState(() {
+                            _selectedStation = v;
+                            _selectedArea = null;
+                          });
+                        }, isDark, enabled: _selectedUpazila != null),
+                        const SizedBox(height: 12),
+                        _buildDropdown(lang == 'bn' ? 'সাবস্টেশন / এলাকা নির্বাচন করুন' : 'Select Substation / Specific Area', _selectedArea, areas, (v) {
+                          setState(() {
+                            _selectedArea = v;
+                          });
+                        }, isDark, enabled: _selectedStation != null),
+                        if (_selectedArea != null) ...[
+                          const SizedBox(height: 8),
+                          Builder(builder: (context) {
+                            final matchArea = areas.firstWhere((a) => a['id'] == _selectedArea, orElse: () => <String, dynamic>{});
+                            final baseCharge = matchArea['baseCharge'] ?? 30.0;
+                            return Text(
+                              lang == 'bn' ? 'ডেলিভারি চার্জ: ৳${baseCharge.toInt()}' : 'Delivery Charge: ৳${baseCharge.toInt()}',
+                              style: const TextStyle(color: AppStyles.primaryColor, fontWeight: FontWeight.bold, fontSize: 13),
+                            );
+                          }),
+                        ],
                       ],
                     );
                   },

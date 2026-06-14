@@ -97,6 +97,7 @@ class AuthService {
               if (!userDoc.exists) 'role': role,
               'myReferralCode': myCode,
               if (!userDoc.exists) 'createdAt': FieldValue.serverTimestamp(),
+              if (!userDoc.exists) 'storageLimit': 50 * 1024 * 1024,
             });
           }
         } catch (e) {
@@ -196,6 +197,7 @@ class AuthService {
           'bloodGroup': bloodGroup,
           'isBloodDonor': isBloodDonor,
           'bloodContactNumber': bloodContactNumber,
+          'storageLimit': 50 * 1024 * 1024,
           'createdAt': FieldValue.serverTimestamp(),
           'updatedAt': FieldValue.serverTimestamp(),
         }, SetOptions(merge: true));
@@ -267,6 +269,7 @@ class AuthService {
           // Issue #12: Set role and createdAt for new Google Sign-In users
           if (isNewUser) 'role': 'customer',
           if (isNewUser) 'createdAt': FieldValue.serverTimestamp(),
+          if (isNewUser) 'storageLimit': 50 * 1024 * 1024,
         });
       }
       return res.user;
@@ -295,6 +298,7 @@ class AuthService {
         'role': role,
         'myReferralCode': myCode,
         'allowMultipleDevices': allowMultipleDevices,
+        'storageLimit': 50 * 1024 * 1024,
         'createdAt': FieldValue.serverTimestamp(),
       });
     }

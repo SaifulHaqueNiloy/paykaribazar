@@ -374,7 +374,7 @@ class ProfileScreen extends ConsumerWidget {
 
     final mediaService = ref.watch(userMediaServiceProvider);
     final String roleStr = data['role'] ?? 'customer';
-    final int limit = mediaService.getQuotaLimit(points, roleStr);
+    final int limit = mediaService.getQuotaLimit(data);
     final int used = (data['usedStorage'] ?? 0).toInt();
     final double usedPercent = limit > 0 ? (used / limit) * 100 : 0.0;
 

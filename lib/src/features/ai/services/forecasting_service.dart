@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../di/service_locator.dart';
+import '../../../core/constants/paths.dart';
 import 'ai_service.dart';
 
 class ForecastingService {
@@ -17,7 +18,7 @@ class ForecastingService {
           .where('createdAt', isGreaterThan: thirtyDaysAgo)
           .get();
 
-      final productsSnap = await _db.collection('products').get();
+      final productsSnap = await _db.collection(HubPaths.products).get();
       
       final salesData = salesSnap.docs.map((d) => d.data()).toList();
       final inventoryData = productsSnap.docs.map((d) => {

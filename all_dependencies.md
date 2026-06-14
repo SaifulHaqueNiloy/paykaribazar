@@ -10,7 +10,7 @@ This document lists all direct and development dependencies used in the **Paykar
 | :--- | :--- | :--- | :--- | :--- |
 | **`flutter_riverpod`** | `^2.6.1` | State management and dependency injection. | Riverpod is already excellent for this project. | Update to `^2.8.0` (latest stable 2.x). Consider Riverpod 3.x for major improvements (breaking changes). |
 | **`go_router`** | `^14.2.0` | Declarative routing for Flutter. | | No newer version. Alternatives: **AutoRoute**, vanilla navigator. |
-| **`get_it`** | `^8.3.0` | Service locator for accessing services. | | Update to `^8.2.0`. Alternative: Can be replaced entirely by Riverpod providers if desired. |
+| **`get_it`** | `^8.0.2` | Service locator for accessing services. | | Update to `^8.2.0`. Alternative: Can be replaced entirely by Riverpod providers if desired. |
 | **`intl`** | `^0.19.0` | Internationalization, formatting dates/numbers. | Standard package. | No newer version. |
 | **`cupertino_icons`** | `^1.0.8` | iOS style icons. | Standard package. | Update to `^1.0.9`. |
 
@@ -52,7 +52,7 @@ This document lists all direct and development dependencies used in the **Paykar
 
 | Package | Current Version | Purpose | Alternatives / Notes | Suggestion (Better Version / Alternative) |
 | :--- | :--- | :--- | :--- | :--- |
-| **`local_auth`** | `^2.3.0` | Biometric authentication (fingerprint/FaceID).| Required for biometrics. | Update to `^2.2.0`. |
+| **`local_auth`** | `^2.1.6` | Biometric authentication (fingerprint/FaceID).| Required for biometrics. | Update to `^2.2.0`. |
 | **`flutter_secure_storage`**| `^9.0.0` | Secure key-value storage (Keychain/Keystore).| | No newer version. Alternative: Hive (with encrypted box). |
 | **`encrypt`** | `^5.0.1` | AES/RSA cryptography for data. | Standard. | No newer version. |
 | **`hive`** / **`hive_flutter`** | `^2.2.3` / `^1.1.0` | Fast local key-value database. | | No newer version. Alternatives: **Isar** (newer database by same author, often faster), **sqflite**. |
@@ -68,6 +68,7 @@ This document lists all direct and development dependencies used in the **Paykar
 | **`photo_manager`** | `^3.3.0` | Advanced gallery asset queries. | Standard. | No newer version. |
 | **`pdf`** / **`printing`** | `^3.10.8` / `^5.11.1` | Generating and printing PDF documents. | Standard. | No newer version. |
 | **`widgets_to_image`** | `^2.0.1` | Capture any Flutter widget as an image. | Standard. | No newer version. |
+| **`audioplayers`** | `^6.0.0` | Playing local/remote audio assets. | | No newer version. Consider consolidating with `just_audio` if `just_audio` is preferred for high-fidelity playback. |
 | **`just_audio`** | `^0.9.46` | High-fidelity audio playback. | Duplicate of `audioplayers` functionality. | No newer version. Consider removing `audioplayers` if `just_audio` meets all needs, or vice-versa, to avoid redundancy. |
 | **`record`** | `^6.2.0` | Recording audio from mic. | Standard. | No newer version. |
 | **`speech_to_text`** | `^7.3.0` | Voice-to-text transcription. | Standard. | No newer version. |

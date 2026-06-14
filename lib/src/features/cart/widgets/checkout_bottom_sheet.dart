@@ -7,6 +7,8 @@ import 'package:paykari_bazar/src/core/services/security_initializer.dart';
 import '../../../models/user_model.dart';
 import '../../../utils/styles.dart';
 import '../../../utils/app_strings.dart';
+import '../../profile/widgets/address_form_sheet.dart';
+import '../../commerce/providers/cart_provider.dart';
 
 class CheckoutBottomSheet extends ConsumerStatefulWidget {
   const CheckoutBottomSheet({super.key});
@@ -34,6 +36,7 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
           setState(() {
             _selectedAddressId = initialAddr.id;
           });
+          ref.read(selectedAddressIdProvider.notifier).state = initialAddr.id;
         }
       }
     });
@@ -48,10 +51,7 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
   String _t(String k) =>
       AppStrings.get(k, ref.watch(languageProvider).languageCode);
 
-  void _openEditProfile() {
-    context.pop();
-    context.push('/edit-profile');
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -65,10 +65,36 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
     final discount = ref.watch(cartDiscountProvider);
     final pointsDiscount = ref.watch(cartPointsDiscountProvider);
     final total = ref.watch(cartTotalProvider);
+    final minOrderValue = ref.watch(cartMinimumOrderValueProvider);
+    final orderShortfall = ref.watch(cartShortfallProvider);
+    final isBelowMinimumOrder = orderShortfall > 0;
 
     final isAddressMissing = userModel == null || userModel.addresses.isEmpty;
 
     AddressModel? selectedAddress;
+    
+    // Helper to find address
+    AddressModel? getAddress(String? id) {
+      if (userModel == null || id == null) return null;
+      try {
+        return userModel.addresses.firstWhere((a) => a.id == id);
+      } catch (_) {
+        return userModel.addresses.isNotEmpty ? userModel.addresses.first : null;
+      }
+    }
+
+    selectedAddress = getAddress(_selectedAddressId);
+
+    // UI logic for showing address details
+    String getAddressSummary(AddressModel addr) {
+      final parts = [
+        addr.area.isNotEmpty ? addr.area : null,
+        addr.station.isNotEmpty ? addr.station : null,
+        addr.upazila.isNotEmpty ? addr.upazila : null,
+      ].whereType<String>().toList();
+      return parts.take(2).join(', ');
+    }
+
     if (userModel != null && _selectedAddressId != null) {
       try {
         selectedAddress =
@@ -99,25 +125,66 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
         if (isAddressMissing) ...[
           _buildAddressCompletionPrompt(),
         ] else ...[
-          DropdownButtonFormField<String>(
-            value: _selectedAddressId,
-            items: userModel.addresses
-                .map((addr) => DropdownMenuItem(
-                    value: addr.id,
-                    child: Text(addr.name,
-                        style: const TextStyle(fontWeight: FontWeight.bold))))
-                .toList(),
-            decoration: AppStyles.inputDecoration('Delivery To', isDark,
-                prefix: const Icon(Icons.location_on_rounded,
-                    size: 18, color: AppStyles.primaryColor)),
-            onChanged: (v) {
-              if (v != null) {
-                setState(() => _selectedAddressId = v);
-              }
-            },
-            hint: const Text('Select Address'),
+          // Visual Address Selection Card (Smarter UI)
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: isDark ? Colors.white10 : Colors.grey[100],
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: Colors.grey.withOpacity(0.2)),
+            ),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: AppStyles.primaryColor.withOpacity(0.1),
+                  child: const Icon(Icons.location_on, color: AppStyles.primaryColor),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(selectedAddress?.name ?? 'Select Address',
+                          style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 15)),
+                      if (selectedAddress != null)
+                        Text(getAddressSummary(selectedAddress),
+                            style: TextStyle(color: Colors.grey[600], fontSize: 12)),
+                    ],
+                  ),
+                ),
+                TextButton(
+                  onPressed: () => _showAddressPicker(userModel, userValue),
+                  child: Text(_t('change'), style: const TextStyle(fontWeight: FontWeight.bold)),
+                )
+              ],
+            ),
           ),
           const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              if (selectedAddress != null) ...[
+                TextButton.icon(
+                  icon: const Icon(Icons.add_location_alt_outlined, size: 16),
+                  label: Text(
+                    ref.watch(languageProvider).languageCode == 'bn' ? 'নতুন ঠিকানা' : 'New Address',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () => _addNewAddress(userValue),
+                ),
+                const VerticalDivider(),
+                TextButton.icon(
+                  icon: const Icon(Icons.edit_note, size: 16),
+                  label: Text(
+                    ref.watch(languageProvider).languageCode == 'bn' ? 'এডিট' : 'Edit',
+                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () => _editAddress(selectedAddress!, userValue),
+                ),
+              ],
+            ],
+          ),
+          const SizedBox(height: 8),
           TextField(
               controller: _phoneCtrl,
               keyboardType: TextInputType.phone,
@@ -126,10 +193,10 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
                       size: 18, color: AppStyles.primaryColor))),
           const SizedBox(height: 24),
           _summary(
-              subtotal, deliveryFee, isDark, discount, pointsDiscount, total),
+              subtotal, deliveryFee, isDark, discount, pointsDiscount, total, minOrderValue, orderShortfall),
           const SizedBox(height: 32),
           ElevatedButton(
-            onPressed: (selectedAddress == null || _loading)
+            onPressed: (selectedAddress == null || _loading || isBelowMinimumOrder)
                 ? null
                 : () => _placeOrder(cartNotifier, ref.read(cartProvider),
                     userModel, selectedAddress!),
@@ -157,7 +224,82 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
     );
   }
 
+  void _showAddressPicker(UserModel model, Map<String, dynamic>? userValue) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            ...model.addresses.map((addr) => ListTile(
+              leading: const Icon(Icons.location_on_outlined),
+              title: Text(addr.name, style: const TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(addr.fullAddress, maxLines: 1, overflow: TextOverflow.ellipsis),
+              trailing: _selectedAddressId == addr.id ? const Icon(Icons.check_circle, color: AppStyles.primaryColor) : null,
+              onTap: () {
+                setState(() => _selectedAddressId = addr.id);
+                ref.read(selectedAddressIdProvider.notifier).state = addr.id;
+                Navigator.pop(context);
+              },
+            )),
+            ListTile(
+              leading: const Icon(Icons.add_circle_outline, color: AppStyles.primaryColor),
+              title: const Text('Add New Address', style: TextStyle(color: AppStyles.primaryColor, fontWeight: FontWeight.bold)),
+              onTap: () {
+                Navigator.pop(context);
+                _addNewAddress(userValue);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _addNewAddress(Map<String, dynamic>? userValue) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AddressFormSheet(userData: userValue),
+    ).then((_) => _refreshAddressSelection());
+  }
+
+  void _editAddress(AddressModel addr, Map<String, dynamic>? userValue) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) => AddressFormSheet(
+        userData: {
+          ...userValue ?? {},
+          'addressId': addr.id,
+          'districtId': addr.district,
+          'upazilaId': addr.upazila,
+          'stationId': addr.station,
+          'areaId': addr.areaId,
+          'details': addr.detailedAddress,
+          'nameTag': addr.name,
+          'charge': addr.deliveryCharge,
+        },
+      ),
+    ).then((_) => _refreshAddressSelection());
+  }
+
+  void _refreshAddressSelection() {
+    final updatedUser = ref.read(currentUserDataProvider).value;
+    if (updatedUser != null) {
+      final updatedModel = UserModel.fromMap(updatedUser);
+      if (updatedModel.addresses.isNotEmpty) {
+        final latest = updatedModel.addresses.last;
+        setState(() => _selectedAddressId = latest.id);
+        ref.read(selectedAddressIdProvider.notifier).state = latest.id;
+      }
+    }
+  }
+
   Widget _buildAddressCompletionPrompt() {
+    final userValue = ref.watch(currentUserDataProvider).value;
+    final lang = ref.watch(languageProvider).languageCode;
     return Column(children: [
       const Icon(Icons.home_work_outlined, size: 60, color: Colors.orange),
       const SizedBox(height: 16),
@@ -170,19 +312,37 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
           style: TextStyle(color: Colors.grey, fontSize: 13)),
       const SizedBox(height: 24),
       ElevatedButton(
-          onPressed: _openEditProfile,
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => AddressFormSheet(userData: userValue),
+            ).then((_) {
+              final updatedUser = ref.read(currentUserDataProvider).value;
+              if (updatedUser != null) {
+                final updatedModel = UserModel.fromMap(updatedUser);
+                if (updatedModel.addresses.isNotEmpty) {
+                  final newAddr = updatedModel.addresses.last;
+                  setState(() {
+                    _selectedAddressId = newAddr.id;
+                  });
+                  ref.read(selectedAddressIdProvider.notifier).state = newAddr.id;
+                }
+              }
+            });
+          },
           style: ElevatedButton.styleFrom(
               backgroundColor: AppStyles.primaryColor,
               minimumSize: const Size(double.infinity, 55),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15))),
-          child: const Text('GO TO SETTINGS',
-              style: TextStyle(fontWeight: FontWeight.bold))),
+          child: Text(lang == 'bn' ? 'নতুন ঠিকানা যোগ করুন' : 'ADD ADDRESS',
+              style: const TextStyle(fontWeight: FontWeight.bold))),
     ]);
   }
 
   Widget _summary(double sub, double del, bool d, double discount,
-      double ptsDiscount, double total) {
+      double ptsDiscount, double total, double minOrderValue, double orderShortfall) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -197,9 +357,29 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
           _row('Points Discount', '- ৳${ptsDiscount.toInt()}',
               c: Colors.orange),
         _row(_t('deliveryFee'), '+ ৳${del.toInt()}'),
+        if (orderShortfall > 0)
+          _row(
+            ref.watch(languageProvider).languageCode == 'bn' ? 'ন্যূনতম অর্ডারের ঘাটতি' : 'Minimum Order Shortfall',
+            'Need ৳${orderShortfall.toInt()} more',
+            c: Colors.orange,
+          ),
         const Padding(
             padding: EdgeInsets.symmetric(vertical: 8), child: Divider()),
-        _row(_t('totalPayable'), '৳${total.toInt()}', b: true)
+        _row(_t('totalPayable'), '৳${total.toInt()}', b: true),
+        if (orderShortfall > 0) ...[
+          const SizedBox(height: 10),
+          Text(
+            ref.watch(languageProvider).languageCode == 'bn'
+                ? 'ন্যূনতম অর্ডার ৳${minOrderValue.toInt()}। অর্ডার সম্পন্ন করতে আরও কিছু পণ্য যোগ করুন।'
+                : 'Minimum order is ৳${minOrderValue.toInt()}. Add a bit more to place this order.',
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: Colors.orange,
+            ),
+            textAlign: TextAlign.center,
+          ),
+        ],
       ]),
     );
   }
@@ -227,6 +407,23 @@ class _CheckoutBottomSheetState extends ConsumerState<CheckoutBottomSheet> {
     final double discount = ref.read(cartDiscountProvider);
     final double pointsDiscount = ref.read(cartPointsDiscountProvider);
     final double finalTotal = ref.read(cartTotalProvider);
+    final double orderShortfall = ref.read(cartShortfallProvider);
+
+    if (orderShortfall > 0) {
+      if (mounted) {
+        final isBn = ref.read(languageProvider).languageCode == 'bn';
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(isBn 
+                ? 'ন্যূনতম অর্ডার সম্পূর্ণ করতে আরও ৳${orderShortfall.toInt()} মূল্যের পণ্য যোগ করুন।' 
+                : 'Add ৳${orderShortfall.toInt()} more to meet the minimum order.'),
+            backgroundColor: Colors.orange,
+          ),
+        );
+      }
+      setState(() => _loading = false);
+      return;
+    }
 
     try {
       // ⭐ SECURITY: Step 1 - Biometric Verification for high-value operations

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:crypto/crypto.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Advanced Caching Service with TTL and Compression support
 /// Uses Hive for fast, persistent storage
@@ -32,7 +33,12 @@ class CacheService {
     if (input is String) {
       return sha256.convert(utf8.encode(input)).toString();
     }
-    return sha256.convert(utf8.encode(jsonEncode(input))).toString();
+    return sha256.convert(utf8.encode(jsonEncode(input, toEncodable: (nonEncodable) {
+      if (nonEncodable is Timestamp) {
+        return nonEncodable.toDate().toIso8601String();
+      }
+      return nonEncodable.toString();
+    }))).toString();
   }
 
   /// Save data to cache with optional TTL (Time To Live)
@@ -53,7 +59,13 @@ class CacheService {
     };
 
     try {
-      await _cacheBox.put(cacheKey, jsonEncode(cacheData));
+      final jsonStr = jsonEncode(cacheData, toEncodable: (nonEncodable) {
+        if (nonEncodable is Timestamp) {
+          return nonEncodable.toDate().toIso8601String();
+        }
+        return nonEncodable.toString();
+      });
+      await _cacheBox.put(cacheKey, jsonStr);
       if (kDebugMode) debugPrint('✅ Data cached for key: $key (Expires: $expiration)');
     } catch (e) {
       if (kDebugMode) debugPrint('❌ Failed to save to cache: $e');

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'ai_service.dart';
 import '../../../shared/services/media_service.dart';
+import '../../../core/constants/paths.dart';
 
 class AiCommandService {
   final AIService _ai;
@@ -68,7 +69,7 @@ class AiCommandService {
     final int discount = data['discount_percent'] ?? 0;
     final String cat = data['category'] ?? 'all';
 
-    Query query = _db.collection('products');
+    Query query = _db.collection(HubPaths.products);
     if (cat != 'all') query = query.where('categoryName', isEqualTo: cat);
 
     final snap = await query.get();

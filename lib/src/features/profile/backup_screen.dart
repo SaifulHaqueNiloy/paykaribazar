@@ -18,6 +18,7 @@ class BackupScreen extends ConsumerStatefulWidget {
 
 class _BackupScreenState extends ConsumerState<BackupScreen> {
   bool _isBackingUp = false;
+  bool _isLocalBackingUp = false;
   bool _isRestoring = false;
   String? _lastBackupTime;
 
@@ -61,6 +62,44 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
       }
     } finally {
       if (mounted) setState(() => _isBackingUp = false);
+    }
+  }
+
+  Future<void> _runLocalBackup() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    setState(() => _isLocalBackingUp = true);
+    try {
+      final backupService = ref.read(backupServiceProvider);
+      final file = await backupService.generateBackupFile(user.uid);
+      final success = await backupService.uploadBackupToLocalServer(file, user.uid);
+
+      if (mounted) {
+        if (success) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('আপনার ডাটা সফলভাবে লোকাল সার্ভারে ব্যাকআপ করা হয়েছে। ✅'),
+              backgroundColor: Colors.green,
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('লোকাল ব্যাকআপ ব্যর্থ হয়েছে! সার্ভারটি চালু আছে কি না পরীক্ষা করুন। ❌'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('লোকাল ব্যাকআপ ব্যর্থ হয়েছে: $e'), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isLocalBackingUp = false);
     }
   }
 
@@ -160,6 +199,16 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
               onTap: _isBackingUp ? null : _runBackup,
               extra: _lastBackupTime != null ? 'সর্বশেষ: $_lastBackupTime' : null,
               isLoading: _isBackingUp,
+            ),
+            const SizedBox(height: 20),
+            _buildActionCard(
+              title: 'লোকাল সিঙ্ক ব্যাকআপ',
+              subtitle: 'আপনার লোকাল ডেভেলপমেন্ট সিঙ্ক সার্ভারে ব্যাকআপ পাঠান।',
+              icon: Icons.computer_rounded,
+              color: Colors.purpleAccent,
+              isDark: isDark,
+              onTap: _isLocalBackingUp ? null : _runLocalBackup,
+              isLoading: _isLocalBackingUp,
             ),
             const SizedBox(height: 20),
             _buildActionCard(

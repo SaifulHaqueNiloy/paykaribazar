@@ -221,13 +221,20 @@ service cloud.firestore {
 
     // ==================== API QUOTA & LOGS ====================
     match /settings/api_quota/{provider} {
-      allow read: if isAdmin();
+      allow read: if isAuth();
       allow update: if isAuth();
     }
 
     match /settings/app_config/{docId} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+
+    // ==================== USER MEDIA ====================
+    match /user_media/{mediaId} {
+      allow read: if isAuth() && (resource.data.userId == request.auth.uid || isStaff());
+      allow create: if isAuth() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAuth() && (resource.data.userId == request.auth.uid || isStaff());
     }
 
     // ==================== SYSTEM SETTINGS ====================
@@ -262,6 +269,12 @@ service cloud.firestore {
     match /_system/billing/usage/{docId} {
       allow create: if isAuth();
       allow read, write: if isAdmin();
+    }
+
+    // ==================== LOCALIZATION ====================
+    match /localization/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
 
     // ==================== DEFAULT DENY ====================

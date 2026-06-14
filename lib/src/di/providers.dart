@@ -27,7 +27,8 @@ export '../features/commerce/providers/cart_provider.dart'
         cartPointsDiscountProvider,
         cartTotalProvider,
         CartNotifier,
-        CartState;
+        CartState,
+        selectedAddressIdProvider;
 export '../services/language_provider.dart' show languageProvider;
 export '../services/nav_provider.dart' show navProvider;
 export '../services/theme_provider.dart' show themeProvider;
@@ -141,7 +142,11 @@ final currentUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
       .collection(HubPaths.users)
       .doc(uid)
       .snapshots()
-      .map((snap) => snap.data());
+      .map((snap) {
+        final data = snap.data();
+        if (data == null) return null;
+        return {'id': snap.id, ...data};
+      });
 });
 
 final actualUserDataProvider = currentUserDataProvider;
@@ -149,7 +154,11 @@ final actualUserDataProvider = currentUserDataProvider;
 final authUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
   final user = ref.watch(authStateProvider).value;
   if (user == null) return Stream.value(null);
-  return FirebaseFirestore.instance.collection(HubPaths.users).doc(user.uid).snapshots().map((snap) => snap.data());
+  return FirebaseFirestore.instance.collection(HubPaths.users).doc(user.uid).snapshots().map((snap) {
+    final data = snap.data();
+    if (data == null) return null;
+    return {'id': snap.id, ...data};
+  });
 });
 
 final allUsersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
@@ -326,7 +335,7 @@ final firebaseUsageMetricsProvider = FutureProvider<UsageMetricsPage>((ref) asyn
 });
 
 final remoteLocalizationProvider = FutureProvider<Map<String, dynamic>>((ref) async {
-  final snap = await FirebaseFirestore.instance.collection('localization').doc('strings').get();
+  final snap = await FirebaseFirestore.instance.doc(HubPaths.localizationDoc).get();
   return snap.data() ?? {};
 });
 

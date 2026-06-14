@@ -66,24 +66,25 @@ void main() {
 
     // Run Database Seeding once
     try {
-      await DatabaseSeeder.seedAiQuota();
+      await DatabaseSeeder.seedAiQuota().timeout(const Duration(seconds: 5));
       debugPrint('AI Quota Seeded successfully');
       
       // Auto seed/sync locations if database is empty or has no districts
       final snap = await FirebaseFirestore.instance.collection(HubPaths.locations)
           .where('type', isEqualTo: 'district')
           .limit(1)
-          .get();
+          .get()
+          .timeout(const Duration(seconds: 4));
       if (snap.docs.isEmpty) {
-        await DatabaseSeeder.seedLocations();
+        await DatabaseSeeder.seedLocations().timeout(const Duration(seconds: 8));
         debugPrint('✅ Auto-seeded locations at startup');
       }
 
-      final infoSnap = await FirebaseFirestore.instance.doc(HubPaths.aboutUs).get();
-      final partnersSnap = await FirebaseFirestore.instance.doc(HubPaths.partners).get();
-      final staffSnap = await FirebaseFirestore.instance.doc(HubPaths.staffList).get();
+      final infoSnap = await FirebaseFirestore.instance.doc(HubPaths.aboutUs).get().timeout(const Duration(seconds: 4));
+      final partnersSnap = await FirebaseFirestore.instance.doc(HubPaths.partners).get().timeout(const Duration(seconds: 4));
+      final staffSnap = await FirebaseFirestore.instance.doc(HubPaths.staffList).get().timeout(const Duration(seconds: 4));
       if (!infoSnap.exists || !partnersSnap.exists || !staffSnap.exists) {
-        await DatabaseSeeder.seedStaticInfo();
+        await DatabaseSeeder.seedStaticInfo().timeout(const Duration(seconds: 8));
         debugPrint('✅ Auto-seeded static info documents');
       }
     } catch (e) {
@@ -101,7 +102,10 @@ void main() {
     ));
 
     // Sentry initialization
-    String dsn = (dotenv.env['SENTRY_DSN'] ?? '').trim();
+    String dsn = '';
+    try {
+      dsn = (dotenv.env['SENTRY_DSN'] ?? '').trim();
+    } catch (_) {}
     if (dsn.isEmpty) {
       dsn = 'https://08442f2fde59f1f763b3c271df8c11bc@o4510812244869120.ingest.us.sentry.io/4510812374892544';
     }

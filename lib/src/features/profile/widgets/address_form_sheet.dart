@@ -24,6 +24,11 @@ class _AddressFormSheetState extends ConsumerState<AddressFormSheet> {
     super.initState();
     _distId = widget.userData?['districtId'];
     _upaId = widget.userData?['upazilaId'];
+    _stationId = widget.userData?['stationId'];
+    _areaId = widget.userData?['areaId'];
+    _details.text = widget.userData?['details'] ?? '';
+    _nameTag = widget.userData?['nameTag'] ?? 'Home';
+    _charge = (widget.userData?['charge'] ?? 0.0).toDouble();
   }
 
   @override
@@ -72,35 +77,45 @@ class _AddressFormSheetState extends ConsumerState<AddressFormSheet> {
             _upaId = null;
             _stationId = null;
             _areaId = null;
-            _charge = 0;
+            _charge = (d['baseCharge'] ?? 50.0).toDouble();
           });
         }),
         const SizedBox(height: 12),
         _dropdown('Select Upazila', upazilas, _upaId, (v) {
           final u = upazilas.firstWhere((e) => e['id'] == v);
+          final d = districts.firstWhere((e) => e['id'] == _distId);
           setState(() {
             _upaId = v;
             _upaName = u['name'];
             _stationId = null;
             _areaId = null;
-            _charge = 0;
+            _charge = (u['baseCharge'] ?? d['baseCharge'] ?? 50.0).toDouble();
           });
         }, enabled: _distId != null),
         const SizedBox(height: 12),
         _dropdown('Select Station / Bazar', stations, _stationId, (v) {
+          final s = stations.firstWhere((e) => e['id'] == v);
+          final u = upazilas.firstWhere((e) => e['id'] == _upaId);
+          final d = districts.firstWhere((e) => e['id'] == _distId);
           setState(() {
             _stationId = v;
             _areaId = null;
-            _charge = 0;
+            _charge = (s['baseCharge'] ?? u['baseCharge'] ?? d['baseCharge'] ?? 50.0).toDouble();
           });
         }, enabled: _upaId != null),
         const SizedBox(height: 12),
         _dropdown('Select Specific Area', areas, _areaId, (v) {
           final a = areas.firstWhere((e) => e['id'] == v);
+          final s = stations.firstWhere((e) => e['id'] == _stationId);
+          final u = upazilas.firstWhere((e) => e['id'] == _upaId, 
+              orElse: () => {'baseCharge': null});
+          final d = districts.firstWhere((e) => e['id'] == _distId, 
+              orElse: () => {'baseCharge': 50.0});
+              
           setState(() {
             _areaId = v;
             _areaName = a['name'];
-            _charge = (a['baseCharge'] ?? 0).toDouble();
+            _charge = (a['baseCharge'] ?? s['baseCharge'] ?? u['baseCharge'] ?? d['baseCharge'] ?? 50.0).toDouble();
           });
         }, enabled: _stationId != null),
         const SizedBox(height: 20),
@@ -113,18 +128,18 @@ class _AddressFormSheetState extends ConsumerState<AddressFormSheet> {
                         const Icon(Icons.maps_home_work_outlined, size: 20))),
         const SizedBox(height: 24),
         ElevatedButton(
-            onPressed: _areaId == null ? null : _saveAddress,
+            onPressed: _distId == null ? null : _saveAddress,
             style: ElevatedButton.styleFrom(
               backgroundColor: AppStyles.primaryColor,
               minimumSize: const Size(double.infinity, 55),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15)),
             ),
-            child: Text('CONFIRM ADDRESS (৳${_charge.toInt()})',
+            child: Text(_distId == null ? 'SELECT LOCATION' : 'CONFIRM & SAVE (৳${_charge.toInt()})',
                 style: const TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1)))
+                    fontWeight: FontWeight.w900,
+                    letterSpacing: 0.5)))
       ])),
     );
   }
@@ -135,26 +150,58 @@ class _AddressFormSheetState extends ConsumerState<AddressFormSheet> {
         orElse: () => {'name': ''})['name'];
     _upaName ??= locs.firstWhere((l) => l['id'] == _upaId,
         orElse: () => {'name': ''})['name'];
+    final String stationName = _stationId != null
+        ? (locs.firstWhere((l) => l['id'] == _stationId, orElse: () => {'name': ''})['name'] ?? '')
+        : '';
+    _areaName ??= _areaId != null
+        ? (locs.firstWhere((l) => l['id'] == _areaId, orElse: () => {'name': ''})['name'] ?? '')
+        : '';
 
     final current = List<Map<String, dynamic>>.from(
         ref.read(currentUserDataProvider).value?['addresses'] ?? []);
     final String targetUid =
         widget.userData?['uid'] ?? FirebaseAuth.instance.currentUser?.uid ?? '';
+    final String? editAddressId = widget.userData?['addressId'];
 
     if (targetUid.isNotEmpty) {
-      await ref.read(firestoreServiceProvider).updateProfile(targetUid, {
-        'addresses': [
-          ...current,
-          {
-            'id': DateTime.now().millisecondsSinceEpoch.toString(),
-            'name': _nameTag,
-            'district': _distName,
-            'upazila': _upaName,
-            'area': _areaName,
-            'details': _details.text.trim(),
-            'charge': _charge,
+      final List<Map<String, dynamic>> newList = [];
+      bool replaced = false;
+
+      final newAddressMap = {
+        'id': editAddressId ?? DateTime.now().millisecondsSinceEpoch.toString(),
+        'name': _nameTag,
+        'district': _distName,
+        'upazila': _upaName,
+        'station': stationName,
+        'area': _areaName,
+        'areaId': _areaId ?? _stationId ?? _upaId ?? _distId,
+        'details': _details.text.trim(),
+        'charge': _charge,
+        'deliveryCharge': _charge,
+      };
+
+      if (editAddressId != null) {
+        for (final item in current) {
+          if (item['id'] == editAddressId) {
+            newList.add(newAddressMap);
+            replaced = true;
+          } else {
+            newList.add(item);
           }
-        ]
+        }
+      }
+
+      if (!replaced) {
+        newList.addAll(current);
+        newList.add(newAddressMap);
+      }
+
+      await ref.read(firestoreServiceProvider).updateProfile(targetUid, {
+        'addresses': newList,
+        'districtId': _distId,
+        'upazilaId': _upaId,
+        'stationId': _stationId,
+        'areaId': _areaId,
       });
     }
 
