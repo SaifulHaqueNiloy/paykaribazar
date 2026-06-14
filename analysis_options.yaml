@@ -7,9 +7,12 @@ analyzer:
     unused_element: warning
     dead_code: warning
     deprecated_member_use: info
-    subtype_of_sealed_class: ignore
+    subtype_of_sealed_class: warning
     unawaited_futures: error
     missing_required_param: error
+    avoid_print: error
+    prefer_const_constructors: error
+    always_specify_types: info
     todo: ignore
   exclude:
     - "**/*.g.dart"

@@ -126,10 +126,13 @@ final activeUserIdProvider = Provider<String?>((ref) {
   return authUser.uid;
 });
 
+/// User data stream - automatically handles simulation
 final currentUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
-  // Guard simulation and data fetching with actual auth state
-  // বাংলা: অথ স্টেট পরিবর্তন হলে সিমুলেশন বা ডেটা ফেচিং গার্ড করা হয়েছে
   final uid = ref.watch(activeUserIdProvider);
+  
+  // Ensure we stop listening if the user logs out
+  final authState = ref.watch(authStateProvider);
+  if (authState.value == null) return Stream.value(null);
   if (uid == null) return Stream.value(null);
 
   // Support Role Simulation for Admins

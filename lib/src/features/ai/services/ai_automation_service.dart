@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 import '../../../di/service_locator.dart';
 import 'ai_service.dart';
 import 'api_quota_service.dart';
@@ -134,10 +133,19 @@ class AiAutomationService {
         await doc.reference.update({
           'status': 'completed',
           'completed_at': FieldValue.serverTimestamp(),
+          'metadata': {
+            'processed_by': 'AiAutomationEngine_v1',
+          }
         });
       }
     } catch (e) {
-      if (kDebugMode) debugPrint('AI Automation Cycle Failed: $e');
+      // Use a structured log for the Admin Dashboard to pick up
+      await _db.collection('ai_audit_logs').add({
+        'timestamp': FieldValue.serverTimestamp(),
+        'status': 'critical_failure',
+        'error': e.toString(),
+        'context': 'automation_cycle',
+      });
     }
   }
 

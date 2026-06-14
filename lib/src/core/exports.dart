@@ -5,7 +5,6 @@ export 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // CORE EXPORTS
 export '../di/providers.dart';
-export 'extensions.dart';
 export 'constants/paths.dart';
 
 // MODEL EXPORTS
