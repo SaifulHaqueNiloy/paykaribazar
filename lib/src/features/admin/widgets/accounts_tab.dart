@@ -130,8 +130,8 @@ class _AccountsUserSubTabState extends ConsumerState<_AccountsUserSubTab> {
                 separatorBuilder: (c, i) => const Divider(height: 1),
                 itemBuilder: (context, index) {
                   final data = docs[index].data() as Map<String, dynamic>;
-                  final double limit = (data['storageLimit'] ?? 100.0).toDouble();
-                  final double used = (data['storageUsed'] ?? 0.0).toDouble();
+                  final double limit = ((data['storageLimit'] ?? (50.0 * 1024 * 1024)).toDouble()) / (1024 * 1024);
+                  final double used = ((data['usedStorage'] ?? 0.0).toDouble()) / (1024 * 1024);
                   final String role = data['role'] ?? 'customer';
 
                   return ListTile(
@@ -209,8 +209,9 @@ class _AccountsUserSubTabState extends ConsumerState<_AccountsUserSubTab> {
   void _showUserRoleAndSettings(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     final String currentRole = data['role'] ?? 'customer';
-    final double currentLimit = (data['storageLimit'] ?? 100.0).toDouble();
-    final storageCtrl = TextEditingController(text: currentLimit.toInt().toString());
+    final double currentLimitBytes = (data['storageLimit'] ?? (50.0 * 1024 * 1024)).toDouble();
+    final double currentLimitMB = currentLimitBytes / (1024 * 1024);
+    final storageCtrl = TextEditingController(text: currentLimitMB.toInt().toString());
 
     showModalBottomSheet(
       context: context,
@@ -260,9 +261,10 @@ class _AccountsUserSubTabState extends ConsumerState<_AccountsUserSubTab> {
               width: double.infinity, height: 55,
               child: ElevatedButton(
                 onPressed: () async {
-                  final newLimit = double.tryParse(storageCtrl.text);
-                  if (newLimit != null) {
-                    await FirebaseFirestore.instance.collection('users').doc(doc.id).update({'storageLimit': newLimit});
+                  final newLimitMB = double.tryParse(storageCtrl.text);
+                  if (newLimitMB != null) {
+                    final newLimitBytes = newLimitMB * 1024 * 1024;
+                    await FirebaseFirestore.instance.collection('users').doc(doc.id).update({'storageLimit': newLimitBytes});
                     if (!c.mounted) return;
                     Navigator.pop(c);
                   }

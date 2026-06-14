@@ -69,22 +69,31 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
       
       // If a new local image is selected, upload it first to Cloudinary
       if (_image != null) {
-        url = await ref
-                .read(firestoreServiceProvider)
-                .uploadImage(_image!, 'products') ?? '';
-        _imageUrlCtrl.text = url;
+        try {
+          url = await ref
+                  .read(firestoreServiceProvider)
+                  .uploadImage(_image!, 'products') ?? '';
+          _imageUrlCtrl.text = url;
+        } catch (e) {
+          debugPrint('Cloud upload failed, using local bytes directly: $e');
+        }
       }
 
-      if (url.isEmpty) throw Exception('Image URL is empty');
+      if (url.isEmpty && _image == null) {
+        throw Exception('Image URL is empty');
+      }
 
       // Initialize Multimodal AI Service
       final multimodalAi = MultimodalAIService(
         secrets: ref.read(secretsServiceProvider),
       );
 
+      final imageBytes = _image != null ? await _image!.readAsBytes() : null;
+
       // Analyze image
       final details = await multimodalAi.generateProductDetailsFromImage(
         imageUrl: url,
+        imageBytes: imageBytes,
         category: _catName,
       );
 

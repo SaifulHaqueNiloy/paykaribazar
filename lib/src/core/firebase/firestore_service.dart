@@ -414,7 +414,11 @@ class FirestoreService {
   Future<String?> uploadImage(File file, String folder) async {
     try {
       final media = getIt<MediaService>();
-      return await media.uploadToCloudinary(file, folder: folder);
+      final url = await media.uploadToCloudinary(file, folder: folder);
+      if (url == null || url.isEmpty) {
+        throw Exception('Cloudinary upload returned null or empty');
+      }
+      return url;
     } catch (e) {
       try {
         final ref = _storage

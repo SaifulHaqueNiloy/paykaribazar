@@ -105,7 +105,12 @@ class AIService {
       final provider =
           GeminiProvider(apiKey: key, modelName: AIConfig.primaryModel);
       _providers.add(provider);
-      _providerRegistry['gemini'] = provider;
+    }
+    if (geminiKeys.isNotEmpty) {
+      _providerRegistry['gemini'] = GeminiProvider(
+        apiKey: geminiKeys.first,
+        modelName: AIConfig.primaryModel,
+      );
     }
     
     if (_providers.isEmpty) {
@@ -175,6 +180,9 @@ class AIService {
       fallbackProvider: fallbackProvider,
     );
   }
+
+  Future<String> generate(String prompt, {AiWorkType? type}) =>
+      generateResponse(prompt, type: type);
 
   Future<String> generateResponse(String prompt,
       {AiWorkType? type, bool useCache = true, String? userId}) async {
@@ -268,24 +276,50 @@ class AIService {
   /// NEW: Smart Prescription Analysis (Bengali OCR + AI)
   Future<String> analyzePrescription(XFile image) async {
     final gemini = _providers.whereType<GeminiProvider>().firstOrNull;
-    if (gemini == null) return 'Healthcare AI support unavailable';
+    if (gemini == null) return 'দুঃখিত, আমাদের এআই ফার্মাসিস্ট এই মুহূর্তে অফলাইনে আছে।';
     
     try {
       final bytes = await image.readAsBytes();
       const prompt = """
-      You are a specialized medical pharmacist AI for Paykari Bazar.
-      Analyze this prescription image (which may be in Bengali or English).
-      1. Extract all medicine names and their dosages (e.g. Napa 500mg, 1+0+1).
-      2. Return ONLY a comma-separated list of the medicines found.
-      3. If no medicines are found, return 'No medicines detected'.
+      Persona: You are the Lead Pharmacist at Paykari Bazar.
+      Language: Bengali (Primary) and English (Medical Terms).
+
+      Instruction:
+      1. Extract all Medicine Names, Strengths (mg/ml), and Dosage instructions (e.g., 1+0+1).
+      2. Format the response with a professional greeting.
+      3. Structure the output as:
+         - [Medicine Name] | [Dosage] | [Duration]
+      4. If the handwriting is illegible, politely ask for a clearer photo.
+      5. End with: "পরামর্শ: এই তালিকাটি শুধুমাত্র আপনার সহায়তার জন্য। ঔষধ ক্রয়ের পূর্বে অবশ্যই নিবন্ধিত ফার্মাসিস্টের সাথে পুনরায় যাচাই করুন।"
+
+      Tone: Professional Medical. Language: Bengali.
       """;
       
       final result = await gemini.generateMultimodal(prompt, bytes, 'image/jpeg');
       return result.trim();
     } catch (e) {
       debugPrint('❌ [AIService] Prescription analysis error: $e');
-      return 'Analysis failed. Please type manually.';
+      return 'দুঃখিত, প্রেসক্রিপশনটি পড়া সম্ভব হয়নি। অনুগ্রহ করে একটি উজ্জ্বল আলোতে তোলা ছবি দিন।';
     }
+  }
+
+  /// NEW: Contextual Chat for Prescription Support
+  Future<String> chatWithPharmacist(String userQuery, String? prescriptionData, {Map<String, dynamic>? userMetadata}) async {
+    final userName = userMetadata?['name'] ?? 'User';
+    final loyalty = userMetadata?['loyaltyTier'] ?? 'Regular';
+    
+    final context = prescriptionData != null 
+        ? "User ($userName, $loyalty Tier) uploaded a prescription: $prescriptionData." 
+        : "User has no recent prescription.";
+    
+    final prompt = """
+    System: You are the Paykari Bazar AI Pharmacist. 
+    Context: $context. 
+    Query: '$userQuery'. 
+    Guideline: Be empathetic, use the user's name if known, and prioritize medical safety.
+    """;
+    
+    return generateResponse(prompt, useCache: false);
   }
 
   Stream<String> generateStreamedResponse(String prompt, {AiWorkType? type}) async* {

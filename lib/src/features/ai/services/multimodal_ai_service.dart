@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:http/http.dart' as http;
@@ -13,25 +14,41 @@ class MultimodalAIService {
     required SecretsService secrets,
   }) : _secrets = secrets;
 
-  /// Generate a professional product description in Bengali and English from a Cloudinary URL
+  /// Generate a professional product description in Bengali and English from a Cloudinary URL or direct bytes
   Future<Map<String, dynamic>> generateProductDetailsFromImage({
     required String imageUrl,
+    Uint8List? imageBytes,
     String? category,
     List<String>? keywords,
   }) async {
     try {
-      debugPrint('🎨 Analyzing image from Cloudinary: $imageUrl');
+      debugPrint('🎨 Analyzing image: $imageUrl');
 
-      // Step 1: Fetch image bytes from Cloudinary URL
-      final response = await http.get(Uri.parse(imageUrl));
-      if (response.statusCode != 200) {
-        throw Exception('Failed to fetch image from Cloudinary');
+      final Uint8List finalBytes;
+      if (imageBytes != null) {
+        finalBytes = imageBytes;
+      } else {
+        // Step 1: Fetch image bytes from URL
+        final response = await http.get(Uri.parse(imageUrl));
+        if (response.statusCode != 200) {
+          throw Exception('Failed to fetch image from URL: $imageUrl (Status: ${response.statusCode})');
+        }
+        finalBytes = response.bodyBytes;
       }
-      final imageBytes = response.bodyBytes;
 
       // Step 2: Prepare Gemini 2.0 Flash Model
       // Note: We use the helper from AIService to get rotated keys
-      final apiKey = _secrets.getSecret('GEMINI_API_KEY'); 
+      var apiKey = _secrets.getSecret('GEMINI_API_KEY'); 
+      if (apiKey.isEmpty) {
+        final keys = [
+          ..._secrets.getKeysByPrefix('GEMINI_MASTER_KEY'),
+          ..._secrets.getKeysByPrefix('GEMINI_SUPPORT_KEY'),
+          ..._secrets.getKeysByPrefix('GEMINI_API_KEY'),
+        ].where((k) => k.isNotEmpty).toList();
+        if (keys.isNotEmpty) {
+          apiKey = keys.first;
+        }
+      }
       final model = GenerativeModel(
         model: 'gemini-2.0-flash', 
         apiKey: apiKey,
@@ -62,7 +79,7 @@ class MultimodalAIService {
       final content = [
         Content.multi([
           TextPart(prompt),
-          DataPart('image/jpeg', imageBytes),
+          DataPart('image/jpeg', finalBytes),
         ])
       ];
 
