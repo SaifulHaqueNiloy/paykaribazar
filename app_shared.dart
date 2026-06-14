@@ -26,3 +26,5 @@ class AppTheme {
         brightness: Brightness.light,
       );
 }
+
+// Trigger GitHub Actions full run verification
