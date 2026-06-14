@@ -125,6 +125,7 @@ jobs:
               - 'lib/src/features/!(admin|customer)/**'
               - 'lib/src/models/**'
               - 'lib/src/core/**'
+              - 'app_shared.dart'
               - 'pubspec.yaml'
               - 'pubspec.lock'
               - 'android/**'
