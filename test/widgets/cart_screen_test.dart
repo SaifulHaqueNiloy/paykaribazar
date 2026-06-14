@@ -235,7 +235,7 @@ void main() {
       await tester.pump(const Duration(milliseconds: 100));
 
       expect(find.text('Checkout'), findsOneWidget);
-      expect(find.text('৳220.0'), findsOneWidget);
+      expect(find.text('৳220'), findsOneWidget);
     });
 
     testWidgets('displays discount row when discount > 0', (WidgetTester tester) async {
@@ -277,7 +277,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 100));
 
-      expect(find.text('-৳20.0'), findsOneWidget);
+      expect(find.text('-৳20'), findsOneWidget);
     });
 
     testWidgets('checkout button opens checkout bottom sheet when tapped', (WidgetTester tester) async {

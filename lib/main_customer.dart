@@ -103,9 +103,6 @@ void main() {
       if (snap.docs.isEmpty) {
         await DatabaseSeeder.seedAll();
         if (kDebugMode) debugPrint('✅ Auto-seeded all default database collections at startup');
-      } else {
-        await DatabaseSeeder.seedStaticInfo();
-        if (kDebugMode) debugPrint('✅ Seeded/Updated static info documents at startup');
       }
     } catch (e) {
       if (kDebugMode) debugPrint('⚠️ Auto-seed check skipped/failed: $e');

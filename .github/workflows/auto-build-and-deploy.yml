@@ -2,7 +2,9 @@ name: 🚀 Auto Build & Deploy (Master Pipeline)
 
 on:
   push:
-    branches: [main, develop, staging]
+    # Run on all branches to test changes immediately on push. 
+    # To restrict again, uncomment the line below and comment/remove this note.
+    # branches: [main, develop, staging]
     paths-ignore:
       - '**.md'
       - '**.txt'

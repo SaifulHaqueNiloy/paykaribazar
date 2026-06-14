@@ -18,8 +18,12 @@ class SecurityInitializer {
 
       // 1. Initialize encryption service — key from .env
       if (!getIt.isRegistered<EncryptionService>()) {
-        final encKey = dotenv.env['ENCRYPTION_KEY'] ?? 'MySecureAES256KeyFor32BytLength!';
-        getIt.registerSingleton<EncryptionService>(EncryptionService(encKey));
+        final encKey = dotenv.env['ENCRYPTION_KEY'];
+        if (encKey == null && !kDebugMode) {
+          throw Exception('❌ ENCRYPTION_KEY missing in production environment!');
+        }
+        final effectiveKey = encKey ?? 'MySecureAES256KeyFor32BytLength!';
+        getIt.registerSingleton<EncryptionService>(EncryptionService(effectiveKey));
         if (kDebugMode) debugPrint('✅ [SecurityInitializer] EncryptionService registered');
       }
 
