@@ -5,7 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../../services/role_simulator_provider.dart';
 import '../../utils/styles.dart';
 import '../../di/providers.dart';
-import '../../core/constants/paths.dart';
 
 /// অ্যাডমিনকে যেকোনো ইউজারের মত অ্যাপ ব্যবহার করার সুযোগ দেয়
 class CustomerSimulatorScreen extends ConsumerStatefulWidget {
@@ -149,7 +148,7 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
                                         onPressed: () {
                                           // Pro-tip: Automatically navigate to home to see the changes
                                           Navigator.of(context).popUntil((route) => route.isFirst);
-                                          ref.read(navProvider.notifier).state = 0; // Set to Home tab
+                                          ref.read(navProvider.notifier).setIndex(0); // Set to Home tab
                                         },
                                       ),
                                     ),
