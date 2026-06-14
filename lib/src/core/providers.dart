@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'constants/paths.dart';
 import '../di/service_locator.dart';
+import '../services/role_simulator_provider.dart';
 
 // --- MODELS & TYPES ---
 export 'constants/paths.dart';
@@ -86,11 +87,17 @@ class WishlistNotifier extends StateNotifier<List<String>> {
   }
 }
 
-// --- DATA STREAMS ---
 final authStateProvider =
     StreamProvider<User?>((ref) => FirebaseAuth.instance.authStateChanges());
 
 final currentUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
+  // Support Role Simulation for Admins
+  // বাংলা: অ্যাডমিনদের জন্য ইউজার সিমুলেশন সাপোর্ট
+  final simulatedUid = ref.watch(simulatedUserUidProvider);
+  if (simulatedUid != null) {
+    return FirebaseFirestore.instance.collection(HubPaths.users).doc(simulatedUid).snapshots().map((snap) => snap.data());
+  }
+
   final user = ref.watch(authStateProvider).value;
   if (user == null) return Stream.value(null);
   return FirebaseFirestore.instance
@@ -316,7 +323,7 @@ final aiStatusProvider = FutureProvider<Map<String, String>>((ref) async {
   final aiHealth = await getIt<AIService>().performGlobalSystemCheck();
   return {
     'NEURAL': aiHealth['status']?.toString().toUpperCase() ?? 'OFFLINE',
-    'GATEWAY': health['connectivity'] == true ? 'ONLINE' : 'OFFLINE',
+    'GATEWAY': health['firebaseLive'] == true ? 'ONLINE' : 'OFFLINE',
     'LOAD': aiHealth['neural_load'] ?? '0%',
     'LATENCY': aiHealth['latency'] ?? '0ms'
   };

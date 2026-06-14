@@ -15,7 +15,11 @@ class HealthCheckService {
           .get()
           .timeout(const Duration(seconds: 5));
       firebaseLive = true;
-    } catch (_) {}
+    } catch (e) {
+      if (e is FirebaseException && (e.code == 'permission-denied' || e.code == 'unauthenticated')) {
+        firebaseLive = true;
+      }
+    }
 
     return {
       'isOnline': isOnline,

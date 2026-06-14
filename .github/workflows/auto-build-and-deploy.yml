@@ -383,12 +383,33 @@ jobs:
         if: needs.setup.outputs.should_deploy == 'true'
         run: |
           cp shorebird_${{ matrix.app }}.yaml shorebird.yaml
-          (shorebird patch android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart -- --build-number=${{ needs.setup.outputs.build_number }} || \
-           shorebird release android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}) || \
-          (echo "⚠️ Shorebird failed. Falling back to standard Flutter build..." && \
-           flutter build apk -t lib/main_${{ matrix.app }}.dart --release --build-number=${{ needs.setup.outputs.build_number }})
+          
+          # Try patching first
+          if shorebird patch android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart -- --build-number=${{ needs.setup.outputs.build_number }}; then
+            echo "✅ Shorebird patch succeeded!"
+          # If patch fails, attempt a full release
+          elif shorebird release android --flutter-version=${{ env.FLUTTER_VERSION }} -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}; then
+            echo "✅ Shorebird release succeeded!"
+          # Fallback to standard Flutter build for verification
+          else
+            echo "::warning::Shorebird build failed. Falling back to standard Flutter build for code verification."
+            echo "### ⚠️ Shorebird Build Failure (${{ matrix.app }})" >> $GITHUB_STEP_SUMMARY
+            echo "Shorebird patch and release both failed. Running standard Flutter build to verify if the issue is code-related." >> $GITHUB_STEP_SUMMARY
+            
+            flutter build apk -t lib/main_${{ matrix.app }}.dart --release --build-number=${{ needs.setup.outputs.build_number }}
+          fi
         env:
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
+
+      - name: Rename APK for Artifact Upload
+        run: |
+          # Copy and rename the built APK to match the expected artifact name
+          if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
+            cp build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/${{ matrix.app }}-release.apk
+            echo "✅ Renamed APK to ${{ matrix.app }}-release.apk"
+          else
+            echo "❌ Built APK not found at default location!"
+          fi
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4

@@ -25,7 +25,7 @@ final aiServiceProvider = Provider((ref) => getIt<AIService>());
 class AIService {
   final SecretsService _secrets;
   late final AICacheService _cache;
-  late final AIProviderManager _providerManager;
+  late AIProviderManager _providerManager;
   late final ApiQuotaService _quotaService;
 
   String? _currentUserId;
@@ -37,9 +37,16 @@ class AIService {
     required SecretsService secrets,
     List<AIProvider>? mockProviders,
   }) : _secrets = secrets {
+    _cache = AICacheService();
+    _quotaService = getIt.isRegistered<ApiQuotaService>()
+        ? getIt<ApiQuotaService>()
+        : ApiQuotaService();
     if (mockProviders != null) {
       _providers.addAll(mockProviders);
+    } else {
+      _setupProviders();
     }
+    _initializeProviderManager();
   }
 
   /// Returns true if at least one AI provider is configured
@@ -47,21 +54,11 @@ class AIService {
 
   Future<void> initialize({String? userId}) async {
     _currentUserId = userId;
-    _cache = AICacheService();
-    _quotaService = getIt.isRegistered<ApiQuotaService>()
-        ? getIt<ApiQuotaService>()
-        : ApiQuotaService();
-
-    await _cache.initialize();
     
-    if (_providers.isEmpty) {
-      _setupProviders();
-    }
+    await _cache.initialize();
     
     // Auto-Initialize Quota Tracking in Firestore
     await _initializeQuotaTracking();
-    
-    _initializeProviderManager();
   }
 
   Future<void> _initializeQuotaTracking() async {
