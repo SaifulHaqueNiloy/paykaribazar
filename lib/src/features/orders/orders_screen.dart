@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import 'package:paykari_bazar/src/core/firebase/firestore_paginator.dart';
+import 'package:paykari_bazar/src/services/role_simulator_provider.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_strings.dart';
 import 'order_details_screen.dart';
@@ -27,8 +28,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
   }
 
   void _initPaginator() {
+    final simulatedUid = ref.read(simulatedUserUidProvider);
     final authState = ref.read(authStateProvider);
-    final uid = authState.value?.uid;
+    final uid = simulatedUid ?? authState.value?.uid;
 
     _paginator = FirestorePaginator<dynamic>(
       collectionPath: 'orders',
@@ -51,6 +53,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     // Initial load
     _paginator.fetchFirstPage().then((_) {
       if (mounted) setState(() {});
+    }).catchError((error) {
+      debugPrint('❌ Orders page load failed: $error');
+      if (mounted) setState(() {});
     });
   }
 
@@ -59,6 +64,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         _scrollController.position.maxScrollExtent - 200) {
       if (!_paginator.isLoading && _paginator.hasMore) {
         _paginator.fetchNextPage().then((_) {
+          if (mounted) setState(() {});
+        }).catchError((error) {
+          debugPrint('❌ Orders page fetchNextPage failed: $error');
           if (mounted) setState(() {});
         });
       }
