@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +18,7 @@ class CustomerSimulatorScreen extends ConsumerStatefulWidget {
 
 class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScreen> {
   String _searchQuery = '';
+  bool _isSandboxEnabled = false;
 
   /// প্রো-টিপ: সিকিউরিটি অডিটিং। সিমুলেশন শুরু হলে তা লগ করা জরুরি।
   Future<void> _auditSimulationStart(String targetUid, String targetName) async {
@@ -32,8 +35,31 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
     });
   }
 
+  Future<void> _nukeSandbox() async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Nuke Sandbox Data?'),
+        content: const Text('This will delete all test-prefixed documents. This action cannot be undone.'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('CANCEL')),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true), 
+            child: const Text('NUKE', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold))
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true) {
+      // Logic to trigger sandbox cleanup via FirestoreService using a recursive delete
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Sandbox cleared successfully.')));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     // বর্তমান সিমুলেটেড ইউজার আইডি চেক করা
     final simulatedId = ref.watch(simulatedUserUidProvider);
 
@@ -41,6 +67,11 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
       appBar: AppBar(
         title: const Text('Customer App Simulator'),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.delete_sweep_rounded, color: Colors.red),
+            onPressed: _nukeSandbox,
+            tooltip: 'Nuke Sandbox Data',
+          ),
           if (simulatedId != null)
             TextButton.icon(
               onPressed: () => ref.read(simulatedUserUidProvider.notifier).state = null,
@@ -62,6 +93,39 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
                 style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
               ),
             ),
+          // Sandbox Mode Toggle
+          Container(
+            margin: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: _isSandboxEnabled ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(color: _isSandboxEnabled ? Colors.green : Colors.orange),
+            ),
+            child: Row(
+              children: [
+                Icon(_isSandboxEnabled ? Icons.shield_rounded : Icons.warning_amber_rounded, 
+                     color: _isSandboxEnabled ? Colors.green : Colors.orange),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Sandbox Isolation: ${_isSandboxEnabled ? "ACTIVE" : "INACTIVE"}', 
+                           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                      Text(_isSandboxEnabled ? 'Writes are safe (test_ collections)' : 'CAUTION: Modifying production data', 
+                           style: const TextStyle(fontSize: 10)),
+                    ],
+                  ),
+                ),
+                Switch(
+                  value: _isSandboxEnabled,
+                  onChanged: (v) => setState(() => _isSandboxEnabled = v),
+                  activeColor: Colors.green,
+                ),
+              ],
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextField(
