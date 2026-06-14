@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/foundation.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:http/http.dart' as http;
+import '../config/ai_config.dart';
 import '../../../core/services/secrets_service.dart';
 
 /// Service for Multi-Modal AI operations (Image + Text)
@@ -20,6 +21,10 @@ class MultimodalAIService {
     Uint8List? imageBytes,
     String? category,
     List<String>? keywords,
+    String? existingTitleEn,
+    String? existingTitleBn,
+    String? existingDescEn,
+    String? existingDescBn,
   }) async {
     try {
       debugPrint('🎨 Analyzing image: $imageUrl');
@@ -49,8 +54,9 @@ class MultimodalAIService {
           apiKey = keys.first;
         }
       }
+      debugPrint('🔑 Multimodal API Key: ${apiKey.isEmpty ? "EMPTY" : apiKey.substring(0, 8)}... Length: ${apiKey.length}');
       final model = GenerativeModel(
-        model: 'gemini-2.0-flash', 
+        model: AIConfig.primaryModel, 
         apiKey: apiKey,
       );
 
@@ -59,6 +65,12 @@ class MultimodalAIService {
         Analyze this product image carefully for a Bangladeshi e-commerce platform "Paykari Bazar".
         Category: ${category ?? 'General'}
         Additional Keywords: ${keywords?.join(', ') ?? 'None'}
+
+        Context of existing fields (if provided):
+        ${existingTitleEn != null && existingTitleEn.isNotEmpty ? '- Existing Title (English): $existingTitleEn' : ''}
+        ${existingTitleBn != null && existingTitleBn.isNotEmpty ? '- Existing Title (Bengali): $existingTitleBn' : ''}
+        ${existingDescEn != null && existingDescEn.isNotEmpty ? '- Existing Description (English): $existingDescEn' : ''}
+        ${existingDescBn != null && existingDescBn.isNotEmpty ? '- Existing Description (Bengali): $existingDescBn' : ''}
 
         Please provide the following in a strict JSON format:
         {

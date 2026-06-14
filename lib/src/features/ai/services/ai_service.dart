@@ -20,8 +20,6 @@ import 'ai_provider_manager.dart';
 import 'api_quota_service.dart';
 import 'package:flutter/material.dart';
 
-final aiServiceProvider = Provider((ref) => getIt<AIService>());
-
 class AIService {
   final SecretsService _secrets;
   late final AICacheService _cache;
@@ -244,9 +242,19 @@ class AIService {
 
   Future<Map<String, dynamic>> performGlobalSystemCheck() async {
     final providerStats = _providerManager.getStats();
+    
+    // Check health of all providers in parallel with a timeout to identify actually active keys
+    final healthChecks = await Future.wait(
+      _providers.map((p) => p.healthCheck().timeout(
+        const Duration(seconds: 4),
+        onTimeout: () => false,
+      )),
+    );
+    final activeCount = healthChecks.where((status) => status == true).length;
+
     return {
-      'status': 'healthy',
-      'providers_active': _providers.length,
+      'status': activeCount > 0 ? 'healthy' : 'offline',
+      'providers_active': activeCount,
       'primary_available': providerStats['primaryAvailable'],
       'using_fallback': providerStats['usingFallback'],
       'active_provider': providerStats['activeProvider'],

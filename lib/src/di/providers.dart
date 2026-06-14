@@ -63,7 +63,7 @@ final firestoreService = Provider((ref) => getIt<FirestoreService>());
 final firestoreServiceProvider = firestoreService;
 final authServiceProvider = Provider((ref) => getIt<AuthService>());
 final authProvider = authServiceProvider;
-final aiServiceProvider = Provider((ref) => getIt<AIService>());
+final aiServiceProvider = Provider<AIService>((ref) => getIt<AIService>());
 final loyaltyServiceProvider = Provider((ref) => getIt<LoyaltyService>());
 final notificationServiceProvider = Provider((ref) => getIt<NotificationService>());
 final locationServiceProvider = Provider((ref) => getIt<LocationService>());
@@ -75,7 +75,7 @@ final billingMonitorProvider =
     Provider((ref) => getIt<FirebaseBillingMonitor>());
 
 final secretsServiceProvider = Provider((ref) => getIt<SecretsService>());
-final aiAutomationProvider = Provider((ref) => getIt<AiAutomationService>());
+final aiAutomationProvider = Provider<AiAutomationService>((ref) => getIt<AiAutomationService>());
 final updateServiceProvider = Provider((ref) => getIt<UpdateService>());
 final syncServiceProvider = Provider((ref) => getIt<SyncService>());
 final noticeServiceProvider = Provider((ref) => getIt<NoticeService>());
@@ -357,6 +357,7 @@ final aiStatusProvider = FutureProvider<Map<String, String>>((ref) async {
   return {
     'NEURAL': aiHealth['status']?.toString().toUpperCase() ?? 'OFFLINE',
     'GATEWAY': health['firebaseLive'] == true ? 'ONLINE' : 'OFFLINE',
+    'KEYS': aiHealth['providers_active']?.toString() ?? '0',
     'LOAD': aiHealth['neural_load'] ?? '0%',
     'LATENCY': aiHealth['latency'] ?? '0ms',
   };

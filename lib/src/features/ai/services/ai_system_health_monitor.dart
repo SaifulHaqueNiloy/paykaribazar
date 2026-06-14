@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'ai_service.dart';
 import '../config/ai_config.dart';
+import '../../../di/providers.dart';
 
 /// Real-time health monitoring service for AI systems
 class AISystemHealthMonitor {

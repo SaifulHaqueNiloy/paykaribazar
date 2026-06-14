@@ -26,6 +26,11 @@ class SecretsService {
         allKeys.add(v.toString().trim());
       }
     });
+    dotenv.env.forEach((k, v) {
+      if (k.startsWith(prefix) && v.isNotEmpty) {
+        allKeys.add(v.trim());
+      }
+    });
     return allKeys.toList();
   }
 

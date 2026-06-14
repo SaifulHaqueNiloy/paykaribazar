@@ -65,9 +65,13 @@ void main() {
 
     // Load Environment Variables
     try {
-      await dotenv.load();
+      await dotenv.load(fileName: '.env');
     } catch (e) {
-      if (kDebugMode) debugPrint('Dotenv Load Error: $e');
+      try {
+        await dotenv.load(fileName: 'assets/.env');
+      } catch (e2) {
+        if (kDebugMode) debugPrint('Dotenv Load Error: $e2');
+      }
     }
 
     // Initialize all services

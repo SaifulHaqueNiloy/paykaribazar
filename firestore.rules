@@ -220,9 +220,9 @@ service cloud.firestore {
     }
 
     // ==================== API QUOTA & LOGS ====================
-    match /settings/api_quota/{provider} {
+    match /api_quota/{provider} {
       allow read: if isAuth();
-      allow update: if isAuth();
+      allow write: if isAuth();
     }
 
     match /settings/app_config/{docId} {

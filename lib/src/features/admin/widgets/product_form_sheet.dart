@@ -95,14 +95,27 @@ class _ProductFormSheetState extends ConsumerState<ProductFormSheet> {
         imageUrl: url,
         imageBytes: imageBytes,
         category: _catName,
+        existingTitleEn: _nameEn.text,
+        existingTitleBn: _nameBn.text,
+        existingDescEn: _descEn.text,
+        existingDescBn: _descBn.text,
       );
 
       if (mounted) {
         setState(() {
-          _nameEn.text = details['title_en'] ?? _nameEn.text;
-          _nameBn.text = details['title_bn'] ?? _nameBn.text;
-          _descEn.text = details['description_en'] ?? _descEn.text;
-          _descBn.text = details['description_bn'] ?? _descBn.text;
+          // Fill only empty fields to avoid overwriting user edits
+          if (_nameEn.text.trim().isEmpty && details['title_en'] != null) {
+            _nameEn.text = details['title_en'];
+          }
+          if (_nameBn.text.trim().isEmpty && details['title_bn'] != null) {
+            _nameBn.text = details['title_bn'];
+          }
+          if (_descEn.text.trim().isEmpty && details['description_en'] != null) {
+            _descEn.text = details['description_en'];
+          }
+          if (_descBn.text.trim().isEmpty && details['description_bn'] != null) {
+            _descBn.text = details['description_bn'];
+          }
           
           // Suggest price if empty
           if (_price.text.isEmpty && details['suggested_price_range'] != null) {

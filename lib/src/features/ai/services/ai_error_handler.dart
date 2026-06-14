@@ -161,7 +161,9 @@ class AIErrorHandler {
   bool shouldUseFallback(AIErrorCode errorCode) {
     return errorCode == AIErrorCode.serverError ||
         errorCode == AIErrorCode.unknown ||
-        errorCode == AIErrorCode.modelError;
+        errorCode == AIErrorCode.modelError ||
+        errorCode == AIErrorCode.quotaExceeded ||
+        errorCode == AIErrorCode.timeout;
   }
 }
 

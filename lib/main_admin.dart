@@ -56,9 +56,13 @@ void main() {
 
     // Load Environment Variables
     try { 
-      await dotenv.load(); 
+      await dotenv.load(fileName: '.env'); 
     } catch (e) {
-      debugPrint('Dotenv Load Error: $e');
+      try {
+        await dotenv.load(fileName: 'assets/.env');
+      } catch (e2) {
+        debugPrint('Dotenv Load Error: $e2');
+      }
     }
     
     // Initialize all services via GetIt (v2.0 Architecture)
