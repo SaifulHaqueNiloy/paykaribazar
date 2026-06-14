@@ -380,22 +380,15 @@ jobs:
         uses: shorebirdtech/setup-shorebird@v1
         if: needs.setup.outputs.should_deploy == 'true'
 
-      - name: Build & Deploy (Shorebird with Flutter Fallback)
+      - name: Build & Deploy (Shorebird only)
         if: needs.setup.outputs.should_deploy == 'true'
         run: |
           # Try patching first
           if shorebird patch android --flavor ${{ matrix.app }} -t lib/main_${{ matrix.app }}.dart -- --build-number=${{ needs.setup.outputs.build_number }}; then
             echo "✅ Shorebird patch succeeded!"
           # If patch fails, attempt a full release
-          elif shorebird release android --flavor ${{ matrix.app }} -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}; then
-            echo "✅ Shorebird release succeeded!"
-          # Fallback to standard Flutter build for verification
           else
-            echo "::warning::Shorebird build failed. Falling back to standard Flutter build for code verification."
-            echo "### ⚠️ Shorebird Build Failure (${{ matrix.app }})" >> $GITHUB_STEP_SUMMARY
-            echo "Shorebird patch and release both failed. Running standard Flutter build to verify if the issue is code-related." >> $GITHUB_STEP_SUMMARY
-            
-            flutter build apk --flavor ${{ matrix.app }} -t lib/main_${{ matrix.app }}.dart --release --build-number=${{ needs.setup.outputs.build_number }}
+            shorebird release android --flavor ${{ matrix.app }} -t lib/main_${{ matrix.app }}.dart --artifact apk -- --build-number=${{ needs.setup.outputs.build_number }}
           fi
         env:
           SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_AUTH_TOKEN }}
