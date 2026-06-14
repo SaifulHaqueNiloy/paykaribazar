@@ -31,7 +31,6 @@ import '../di/providers.dart';
 
 class GoRouterRefreshStream extends ChangeNotifier {
   GoRouterRefreshStream(Stream<dynamic> stream) {
-    notifyListeners();
     _subscription = stream.asBroadcastStream().listen((_) => notifyListeners());
   }
 
@@ -55,15 +54,27 @@ final customerRouter = GoRouter(
     final isAuthPage = path == '/login' || path == '/signup' || path == '/forgot-password';
 
     if (!loggedIn && !isAuthPage) return '/login';
-    if (loggedIn && isAuthPage) return '/';
+    if (loggedIn && isAuthPage) {
+      final container = ProviderScope.containerOf(context);
+      final userData = container.read(actualUserDataProvider).value;
+      if (userData != null) {
+        final role = userData['role'] ?? 'customer';
+        const allowedRoles = ['admin', 'customer', 'reseller', 'staff', 'logistic', 'marketing', 'accountsFinance'];
+        if (!allowedRoles.contains(role)) return null;
+      }
+      return '/';
+    }
 
     if (loggedIn) {
       final container = ProviderScope.containerOf(context);
-      final userData = container.read(actualUserDataProvider).value;
+      // DNA ENFORCED: Use authUserDataProvider for session security to prevent simulation from triggering auto-logout
+      // বাংলা: সেশন সিকিউরিটির জন্য authUserDataProvider ব্যবহার করা হয়েছে যাতে সিমুলেশন অটো-লগআউট ট্রিগার না করে
+      final userData = container.read(authUserDataProvider).value;
       
       if (userData != null) {
         final role = userData['role'] ?? 'customer';
-        if (role != 'admin' && role != 'customer' && role != 'reseller' && role != 'staff' && role != 'logistic') {
+        const allowedRoles = ['admin', 'customer', 'reseller', 'staff', 'logistic', 'marketing', 'accountsFinance'];
+        if (!allowedRoles.contains(role)) {
           auth.signOut();
           return '/login';
         }

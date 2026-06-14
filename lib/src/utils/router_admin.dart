@@ -19,11 +19,21 @@ final adminRouter = GoRouter(
     final isAuthPage = state.uri.path == '/login';
 
     if (!loggedIn && !isAuthPage) return '/login';
-    if (loggedIn && isAuthPage) return '/';
+    if (loggedIn && isAuthPage) {
+      final container = ProviderScope.containerOf(context);
+      final userData = container.read(actualUserDataProvider).value;
+      if (userData != null) {
+        final role = userData['role'] ?? 'customer';
+        if (role == 'customer') return null;
+      }
+      return '/';
+    }
 
     if (loggedIn) {
       final container = ProviderScope.containerOf(context);
-      final userData = container.read(actualUserDataProvider).value;
+      // DNA ENFORCED: Use authUserDataProvider for session security to prevent simulation from triggering auto-logout
+      // বাংলা: সেশন সিকিউরিটির জন্য authUserDataProvider ব্যবহার করা হয়েছে যাতে সিমুলেশন অটো-লগআউট ট্রিগার না করে
+      final userData = container.read(authUserDataProvider).value;
       
       if (userData != null) {
         final role = userData['role'] ?? 'customer';

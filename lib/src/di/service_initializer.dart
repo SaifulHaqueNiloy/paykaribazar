@@ -1,4 +1,6 @@
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:flutter/foundation.dart';
 import 'service_locator.dart';
 
 // Core Services
@@ -71,6 +73,14 @@ class ServiceInitializer {
     final firebaseCore = FirebaseCoreService();
     await firebaseCore.initialize();
     getIt.registerLazySingleton<FirebaseCoreService>(() => firebaseCore);
+
+    // DNA ENFORCED: Activate App Check before using any Firebase services
+    // বাংলা: কোনো ফায়ারবেস সার্ভিস ব্যবহারের আগে অ্যাপ চেক চালু করা হয়েছে
+    await FirebaseAppCheck.instance.activate(
+      androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
+      appleProvider: kDebugMode ? AppleProvider.debug : AppleProvider.deviceCheck,
+    );
+
     getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
     getIt.registerLazySingleton<FirebaseAuthService>(
         () => FirebaseAuthService());

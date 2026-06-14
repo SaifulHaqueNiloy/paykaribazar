@@ -94,13 +94,6 @@ void main() {
     // Initialize all services
     await ServiceInitializer.initialize();
 
-    // DNA ENFORCED: Initialize Firebase App Check for API Security (Audit Point #2)
-    // বাংলা: এপিআই সিকিউরিটি নিশ্চিত করতে অ্যাপ চেক চালু করা হয়েছে
-    await FirebaseAppCheck.instance.activate(
-      androidProvider: AndroidProvider.playIntegrity,
-      appleProvider: AppleProvider.deviceCheck,
-    );
-
     // Auto seed/sync locations if database is empty or has no districts
     try {
       final snap = await FirebaseFirestore.instance.collection(HubPaths.locations)

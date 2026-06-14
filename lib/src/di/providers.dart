@@ -53,6 +53,7 @@ import '../services/auto_translation_service.dart';
 import '../services/chat_service.dart';
 import '../features/qibla/services/compass_service.dart';
 import '../features/ota/services/ota_service.dart';
+import '../services/backup_service.dart';
 
 // --- PROVIDERS ---
 final firestoreService = Provider((ref) => getIt<FirestoreService>());
@@ -78,6 +79,12 @@ final autoTranslationProvider = Provider((ref) => getIt<AutoTranslationService>(
 final chatServiceProvider = Provider((ref) => getIt<ChatService>());
 final compassServiceProvider = Provider((ref) => getIt<CompassService>());
 final otaServiceProvider = Provider((ref) => OTAService());
+final backupServiceProvider = Provider((ref) {
+  final secrets = ref.watch(secretsServiceProvider);
+  final masterKey = secrets.getSecret('backup_master_key', fallback: 'paykari_bazar_secure_master_key_!');
+  return BackupService(masterKey.padRight(32).substring(0, 32));
+});
+
 
 // --- WISHLIST ---
 final wishlistProvider = StateNotifierProvider<WishlistNotifier, List<String>>((ref) => WishlistNotifier());
@@ -94,20 +101,44 @@ class WishlistNotifier extends StateNotifier<List<String>> {
 
 final authStateProvider = StreamProvider<User?>((ref) => FirebaseAuth.instance.authStateChanges());
 
-final currentUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
-  // Support Role Simulation for Admins
-  // বাংলা: অ্যাডমিনদের জন্য ইউজার সিমুলেশন সাপোর্ট
-  final simulatedUid = ref.watch(simulatedUserUidProvider);
-  if (simulatedUid != null) {
-    return FirebaseFirestore.instance.collection(HubPaths.users).doc(simulatedUid).snapshots().map((snap) => snap.data());
+/// বর্তমানে যে ইউজার আইডিটি একটিভ আছে (সিমুলেশন সহ)
+/// এটি ব্যবহার করলে রিড এবং রাইট উভয়ই সিমুলেটেড ইউজারের ওপর কাজ করবে
+final activeUserIdProvider = Provider<String?>((ref) {
+  // Logic check: If user is logged out, simulation MUST be null
+  final authUser = ref.watch(authStateProvider).value;
+  if (authUser == null) {
+    // If no one is logged in, ensure simulation is cleared for next session
+    Future.microtask(() => ref.read(simulatedUserUidProvider.notifier).state = null);
+    return null;
   }
 
+  final simulatedUid = ref.watch(simulatedUserUidProvider);
+  if (simulatedUid != null) return simulatedUid;
+  return authUser.uid;
+});
+
+final currentUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
+  // Guard simulation and data fetching with actual auth state
+  // বাংলা: অথ স্টেট পরিবর্তন হলে সিমুলেশন বা ডেটা ফেচিং গার্ড করা হয়েছে
+  final uid = ref.watch(activeUserIdProvider);
+  if (uid == null) return Stream.value(null);
+
+  // Support Role Simulation for Admins
+  // বাংলা: অ্যাডমিনদের জন্য ইউজার সিমুলেশন সাপোর্ট
+  return FirebaseFirestore.instance
+      .collection(HubPaths.users)
+      .doc(uid)
+      .snapshots()
+      .map((snap) => snap.data());
+});
+
+final actualUserDataProvider = currentUserDataProvider;
+
+final authUserDataProvider = StreamProvider<Map<String, dynamic>?>((ref) {
   final user = ref.watch(authStateProvider).value;
   if (user == null) return Stream.value(null);
   return FirebaseFirestore.instance.collection(HubPaths.users).doc(user.uid).snapshots().map((snap) => snap.data());
 });
-
-final actualUserDataProvider = currentUserDataProvider;
 
 final allUsersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
   // Guarded to prevent PERMISSION_DENIED console logs when logged out or during auto-logout redirection

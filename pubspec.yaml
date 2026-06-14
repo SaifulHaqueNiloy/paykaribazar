@@ -120,3 +120,4 @@ flutter:
     - assets/images/
     - assets/lottie/
     - shorebird.yaml
+    - .env

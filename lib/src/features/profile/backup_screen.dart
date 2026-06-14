@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter/foundation.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -40,10 +41,15 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
 
     setState(() => _isBackingUp = true);
     try {
-      await BackupService.performBackgroundBackup(user.uid);
+      final backupService = ref.read(backupServiceProvider);
+      await backupService.performFullBackup(user.uid);
+
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('আপনার ডাটা সফলভাবে ব্যাকআপ করা হয়েছে।'), backgroundColor: Colors.green),
+          const SnackBar(
+            content: Text('আপনার ডাটা সফলভাবে ব্যাকআপ করা হয়েছে।'),
+            backgroundColor: Colors.green,
+          ),
         );
         _loadLastBackupInfo();
       }
@@ -140,11 +146,13 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     required Color color,
     required bool isDark,
     required VoidCallback? onTap,
+    VoidCallback? onLongPress,
     String? extra,
     bool isLoading = false,
   }) {
     return InkWell(
       onTap: onTap,
+      onLongPress: onLongPress,
       borderRadius: BorderRadius.circular(20),
       child: Container(
         padding: const EdgeInsets.all(20),
@@ -159,7 +167,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: color.withOpacity(0.1), shape: BoxShape.circle),
-              child: isLoading 
+              child: isLoading
                   ? SizedBox(height: 24, width: 24, child: CircularProgressIndicator(color: color, strokeWidth: 2))
                   : Icon(icon, color: color, size: 24),
             ),
@@ -185,4 +193,3 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     );
   }
 }
-
