@@ -11,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:workmanager/workmanager.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 
 import 'firebase_options.dart';
 import 'src/di/service_initializer.dart';
@@ -19,6 +18,7 @@ import 'src/di/service_locator.dart';
 import 'src/di/providers.dart';
 import 'src/services/database_seeder.dart';
 import 'src/services/backup_service.dart';
+import 'src/services/background_task_service.dart';
 import 'src/shared/services/update_service.dart';
 import 'src/utils/router_customer.dart';
 import 'src/utils/styles.dart';
@@ -26,22 +26,6 @@ import 'src/utils/globals.dart';
 import 'src/utils/update_dialog.dart';
 import 'src/utils/touch_glow_overlay.dart';
 
-@pragma('vm:entry-point')
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) async {
-    try {
-      if (Firebase.apps.isEmpty) {
-        await Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform);
-      }
-      final String? uid = FirebaseAuth.instance.currentUser?.uid;
-      if (uid != null) await BackupService.performBackgroundBackup(uid);
-    } catch (e) {
-      if (kDebugMode) debugPrint('Background Task Error: $e');
-    }
-    return Future.value(true);
-  });
-}
 
 void main() {
   runZonedGuarded(() async {
@@ -122,12 +106,12 @@ void main() {
       if (kDebugMode) debugPrint('⚠️ Auto-seed check skipped/failed: $e');
     }
 
-    // Initialize Workmanager
+    // Initialize and schedule background tasks (Auto-Backup, AI Audit)
     try {
-      await Workmanager().initialize(callbackDispatcher,
-          isInDebugMode: dotenv.env['DEBUG'] == 'true');
+      await BackgroundTaskService.initialize();
+      await BackgroundTaskService.scheduleAll();
     } catch (e) {
-      if (kDebugMode) debugPrint('Workmanager Init Error: $e');
+      if (kDebugMode) debugPrint('BackgroundTaskService Init Error: $e');
     }
 
     FirebaseFirestore.instance.settings = const Settings(

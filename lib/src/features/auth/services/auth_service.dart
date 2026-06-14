@@ -30,7 +30,7 @@ class AuthService {
   String _normalizePhone(String phone) {
     String cleaned = phone.replaceAll(RegExp(r'[\s\-()]+'), '');
     if (cleaned.startsWith('+880')) {
-      cleaned = cleaned.substring(3);
+      cleaned = cleaned.substring(4);
     } else if (cleaned.startsWith('880')) {
       cleaned = cleaned.substring(2);
     } else if (cleaned.startsWith('+88')) {

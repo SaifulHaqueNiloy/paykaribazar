@@ -7,7 +7,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import '../../di/providers.dart';
-import '../../services/backup_service.dart';
 import '../../utils/styles.dart';
 
 class BackupScreen extends ConsumerStatefulWidget {
@@ -86,8 +85,11 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
     setState(() => _isRestoring = true);
     try {
       final backupService = ref.read(backupServiceProvider);
-      // Implementation should verify schema version before applying
-      await backupService.performFullBackup(user.uid); // Assumed restore method in service
+      final history = await backupService.getBackupHistory().first;
+      if (history.isEmpty) throw Exception('কোনো ব্যাকআপ পাওয়া যায়নি');
+      final selected = history.first;
+      final fileUrl = selected['fileUrl'] as String;
+      await backupService.restoreFromBackup(fileUrl);
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

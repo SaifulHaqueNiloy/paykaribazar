@@ -64,7 +64,7 @@ service cloud.firestore {
     // ==================== PRODUCTS (DNA PATH) ====================
     match /hub/data/products/{productId} {
       allow read: if true;
-      allow write: if isAdmin() || isReseller() || isAuth();
+      allow write: if isAdmin() || isReseller();
       
       match /reviews/{reviewId} {
         allow read: if true;
@@ -154,7 +154,7 @@ service cloud.firestore {
     // ==================== PROMOS & DISCOUNTS ====================
     match /promos/{promoId} {
       allow read: if true;
-      allow write: if isAdmin() || isAuth();
+      allow write: if isAdmin();
     }
 
     // ==================== HERO RECORDS / LEADERBOARD ====================

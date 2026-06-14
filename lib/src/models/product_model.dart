@@ -121,7 +121,7 @@ class Product {
     this.tags = const [],
     this.isFlashSale = false,
     this.isCombo = false,
-    this.isNewArrival = true,
+    this.isNewArrival = false,
     this.isFeatured = false,
     this.isHotSelling = false,
     this.isComboPack = false,
@@ -242,6 +242,7 @@ class Product {
       'updatedAt': Timestamp.fromDate(updatedAt),
       'aiOptimized': aiOptimized,
       'aiAuditPending': aiAuditPending,
+      'aiDescriptionBnEnriched': aiDescriptionBnEnriched,
     };
   }
 

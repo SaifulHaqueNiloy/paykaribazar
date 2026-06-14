@@ -70,7 +70,8 @@ dependencies:
 
   # AI & Maps (UPDATED TO LATEST)
   google_generative_ai: ^0.4.3
-  crypto: 3.0.7
+  crypto: ^3.0.7
+  collection: ^1.18.0
   google_maps_flutter: ^2.7.0
   geolocator: ^12.0.0
   fl_chart: ^0.69.0
@@ -120,4 +121,3 @@ flutter:
     - assets/images/
     - assets/lottie/
     - shorebird.yaml
-    - .env
