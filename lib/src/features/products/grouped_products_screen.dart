@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
-import 'package:paykari_bazar/src/core/constants/paths.dart';
 import 'package:paykari_bazar/src/features/home/widgets/home_widgets.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/styles.dart';
@@ -112,10 +111,10 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
 
   // Calculate child aspect ratio for main lists (Shops/Categories grid)
   double get _mainGridAspectRatio {
-    if (_gridFormat == '3*3') return 0.95; 
-    if (_gridFormat == '4*3') return 1.2; 
-    if (_gridFormat == '4*4') return 0.95; 
-    return 0.95;
+    if (_gridFormat == '3*3') return 0.9; 
+    if (_gridFormat == '4*3') return 0.75; 
+    if (_gridFormat == '4*4') return 0.75; 
+    return 0.9;
   }
 
   // Calculate child aspect ratio for product cards
@@ -177,6 +176,155 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
       _sortBy = 'name_asc';
     });
   }
+  Widget _buildCapsuleTabs(bool isDark) {
+    return Container(
+      width: 190,
+      height: 36,
+      padding: const EdgeInsets.all(2),
+      decoration: BoxDecoration(
+        color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Colors.white.withOpacity(0.03)),
+      ),
+      child: Stack(
+        children: [
+          AnimatedAlign(
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeInOut,
+            alignment: _mode == GroupMode.shop ? Alignment.centerLeft : Alignment.centerRight,
+            child: FractionallySizedBox(
+              widthFactor: 0.5,
+              heightFactor: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
+                  borderRadius: BorderRadius.circular(23),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.1),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    _resetSelection();
+                    setState(() => _mode = GroupMode.shop);
+                  },
+                  borderRadius: BorderRadius.circular(23),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.storefront_rounded,
+                          size: 14,
+                          color: _mode == GroupMode.shop ? AppStyles.primaryColor : (isDark ? Colors.white70 : Colors.black54),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Shop',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: _mode == GroupMode.shop ? (isDark ? Colors.white : AppStyles.primaryColor) : (isDark ? Colors.white70 : Colors.black54),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    _resetSelection();
+                    setState(() => _mode = GroupMode.category);
+                  },
+                  borderRadius: BorderRadius.circular(23),
+                  child: Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.category_rounded,
+                          size: 14,
+                          color: _mode == GroupMode.category ? AppStyles.primaryColor : (isDark ? Colors.white70 : Colors.black54),
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Category',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.bold,
+                            color: _mode == GroupMode.category ? (isDark ? Colors.white : AppStyles.primaryColor) : (isDark ? Colors.white70 : Colors.black54),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildGridFormatSelector(bool isDark) {
+    Widget buildSelectorItem(String format, IconData icon) {
+      final isSelected = _gridFormat == format;
+      return GestureDetector(
+        onTap: () => setState(() => _gridFormat = format),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+            color: isSelected ? AppStyles.primaryColor : Colors.transparent,
+            borderRadius: BorderRadius.circular(6),
+            border: Border.all(
+              color: isSelected ? Colors.transparent : (isDark ? Colors.white10 : Colors.black.withOpacity(0.1)),
+            ),
+          ),
+          child: Row(
+            children: [
+              Icon(
+                icon,
+                size: 12,
+                color: isSelected ? Colors.white : (isDark ? Colors.white70 : Colors.black87),
+              ),
+              const SizedBox(width: 4),
+              Text(
+                format,
+                style: TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: isSelected ? Colors.white : (isDark ? Colors.white70 : Colors.black87),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Row(
+      children: [
+        buildSelectorItem('3*3', Icons.grid_3x3_rounded),
+        const SizedBox(width: 6),
+        buildSelectorItem('4*3', Icons.grid_4x4_rounded),
+        const SizedBox(width: 6),
+        buildSelectorItem('4*4', Icons.grid_on_rounded),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -204,34 +352,14 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
                 },
               )
             : null,
-        backgroundColor: AppStyles.primaryColor,
+        backgroundColor: isDark ? AppStyles.darkSurfaceColor : AppStyles.primaryColor,
         foregroundColor: Colors.white,
         elevation: 0,
         actions: [
           if (_selectedShopId == null && _selectedCategoryName == null && !_inResellerSubView)
-            SegmentedButton<GroupMode>(
-              style: SegmentedButton.styleFrom(
-                backgroundColor: isDark ? Colors.white10 : Colors.white,
-                selectedBackgroundColor: Colors.white,
-                selectedForegroundColor: AppStyles.primaryColor,
-              ),
-              segments: const [
-                ButtonSegment<GroupMode>(
-                  value: GroupMode.shop,
-                  label: Text('Shop', style: TextStyle(fontSize: 12)),
-                  icon: Icon(Icons.storefront_outlined, size: 16),
-                ),
-                ButtonSegment<GroupMode>(
-                  value: GroupMode.category,
-                  label: Text('Category', style: TextStyle(fontSize: 12)),
-                  icon: Icon(Icons.category_outlined, size: 16),
-                ),
-              ],
-              selected: {_mode},
-              onSelectionChanged: (selected) {
-                _resetSelection();
-                setState(() => _mode = selected.first);
-              },
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: _buildCapsuleTabs(isDark),
             ),
           const SizedBox(width: 8),
         ],
@@ -274,30 +402,9 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
           // Format Selector
           Row(
             children: [
-              const Text('Grid:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12)),
+              const Text('Grid:', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
               const SizedBox(width: 8),
-              ToggleButtons(
-                isSelected: [
-                  _gridFormat == '3*3',
-                  _gridFormat == '4*3',
-                  _gridFormat == '4*4',
-                ],
-                onPressed: (index) {
-                  setState(() {
-                    _gridFormat = index == 0 ? '3*3' : (index == 1 ? '4*3' : '4*4');
-                  });
-                },
-                borderRadius: BorderRadius.circular(8),
-                constraints: const BoxConstraints(minHeight: 28, minWidth: 42),
-                selectedColor: Colors.white,
-                fillColor: AppStyles.primaryColor,
-                color: isDark ? Colors.white60 : Colors.black87,
-                children: const [
-                  Text('3*3', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-                  Text('4*3', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-                  Text('4*4', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-                ],
-              ),
+              _buildGridFormatSelector(isDark),
             ],
           ),
           
@@ -556,41 +663,99 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
     required bool isDark,
     required VoidCallback onTap,
   }) {
-    // Sizing font based on columns density
     final titleSize = _layoutColumns == 4 ? 10.0 : 12.0;
     final subtitleSize = _layoutColumns == 4 ? 8.0 : 10.0;
-    final iconSize = _layoutColumns == 4 ? 26.0 : 36.0;
+    final iconSize = _layoutColumns == 4 ? 24.0 : 34.0;
 
-    return Card(
-      elevation: 2,
-      color: isDark ? Colors.white.withOpacity(0.06) : Colors.white,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(icon, size: iconSize, color: iconColor),
-              const SizedBox(height: 8),
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: titleSize),
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0.95, end: 1.0),
+      duration: const Duration(milliseconds: 150),
+      builder: (context, scale, child) {
+        return Transform.scale(
+          scale: scale,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: isDark
+                    ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.03)]
+                    : [Colors.white, Colors.grey.shade50],
               ),
-              const SizedBox(height: 2),
-              Text(
-                subtitle,
-                style: TextStyle(fontSize: subtitleSize, color: Colors.grey),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.05),
               ),
-            ],
+              boxShadow: !isDark
+                  ? [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.03),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      )
+                    ]
+                  : [
+                      BoxShadow(
+                        color: iconColor.withOpacity(0.05),
+                        blurRadius: 15,
+                        offset: const Offset(0, 4),
+                      )
+                    ],
+            ),
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: onTap,
+                borderRadius: BorderRadius.circular(16),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: iconColor.withOpacity(0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(icon, size: iconSize, color: iconColor),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        title,
+                        textAlign: TextAlign.center,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w900,
+                          fontSize: titleSize,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          subtitle,
+                          style: TextStyle(
+                            fontSize: subtitleSize,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 

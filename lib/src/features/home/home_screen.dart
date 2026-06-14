@@ -6,12 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/styles.dart';
-import '../../services/role_simulator_provider.dart';
 import 'widgets/greeting_widget.dart';
 import 'widgets/notice_slider.dart';
 import 'widgets/home_widgets.dart';
 import 'widgets/flash_sale_timer.dart';
-import 'widgets/loyalty_status_card.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +21,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   final ScrollController _scroll = ScrollController();
   final ValueNotifier<bool> _showStickyHeader = ValueNotifier<bool>(false);
   Timer? _rewardTimer;
+
+  final GlobalKey _flashKey = GlobalKey();
+  final GlobalKey _comboKey = GlobalKey();
+  final GlobalKey _hotKey = GlobalKey();
+  final GlobalKey _newKey = GlobalKey();
+  final GlobalKey _specialKey = GlobalKey();
+  final GlobalKey _justForYouKey = GlobalKey();
 
   @override
   void initState() {
@@ -113,6 +118,87 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     ref.read(navProvider.notifier).setIndex(2);
   }
 
+  void _scrollToSection(GlobalKey key) {
+    final context = key.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  Widget _buildSectionShortcuts(bool isDark) {
+    final shortcuts = [
+      {'label': _t('flashDeals'), 'icon': Icons.bolt_rounded, 'color': Colors.amber, 'key': _flashKey},
+      {'label': _t('comboPack'), 'icon': Icons.card_giftcard_rounded, 'color': Colors.purpleAccent, 'key': _comboKey},
+      {'label': _t('topSellingProducts'), 'icon': Icons.local_fire_department_rounded, 'color': Colors.deepOrange, 'key': _hotKey},
+      {'label': _t('newArrivals'), 'icon': Icons.auto_awesome_rounded, 'color': Colors.teal, 'key': _newKey},
+      {'label': _t('specialOffers'), 'icon': Icons.local_offer_rounded, 'color': Colors.redAccent, 'key': _specialKey},
+      {'label': _t('justForYou'), 'icon': Icons.favorite_rounded, 'color': Colors.pinkAccent, 'key': _justForYouKey},
+    ];
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      child: Row(
+        children: shortcuts.map((shortcut) {
+          final label = shortcut['label'] as String;
+          final icon = shortcut['icon'] as IconData;
+          final color = shortcut['color'] as Color;
+          final key = shortcut['key'] as GlobalKey;
+
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: InkWell(
+              onTap: () => _scrollToSection(key),
+              borderRadius: BorderRadius.circular(12),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: isDark 
+                        ? [color.withOpacity(0.12), color.withOpacity(0.04)] 
+                        : [color.withOpacity(0.08), color.withOpacity(0.02)],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: color.withOpacity(isDark ? 0.3 : 0.2),
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: color.withOpacity(0.05),
+                      blurRadius: 6,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Icon(icon, size: 16, color: color),
+                    const SizedBox(width: 6),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white.withOpacity(0.9) : Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -199,31 +285,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       ),
                     ),
                     const GreetingWidget(),
-                    const LoyaltyStatusCard(),
-                    filterProducts('flash').when(
-                      data: (deals) {
-                        if (deals.isEmpty) return const SizedBox.shrink();
-                        // Tip #5: Use actual end time from Firestore instead of static now+4h
-                        final endTimeRaw = deals.first['flashSaleEndTime'];
-                        DateTime endTime;
-                        if (endTimeRaw is Timestamp) {
-                          endTime = endTimeRaw.toDate();
-                        } else if (endTimeRaw is String) {
-                          endTime = DateTime.tryParse(endTimeRaw) ?? DateTime.now().add(const Duration(hours: 4));
-                        } else {
-                          endTime = DateTime.now().add(const Duration(hours: 4));
-                        }
-                        return FlashSaleTimer(endTime: endTime);
-                      },
-                      loading: () => const SizedBox.shrink(),
-                      error: (_, __) => const SizedBox.shrink(),
-                    ),
-                    
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      child: StaticSearchBar(isDark: isDark, t: _t),
-                    ),
-                    const SizedBox(height: 10),
                     promoAsync.when(
                       data: (promo) {
                         if (promo.isEmpty) return const SizedBox.shrink();
@@ -235,14 +296,39 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       loading: () => const SizedBox(height: 150, child: Center(child: CircularProgressIndicator())),
                       error: (e, _) => const SizedBox.shrink(),
                     ),
+                    const SizedBox(height: 10),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      child: StaticSearchBar(isDark: isDark, t: _t),
+                    ),
+                    _buildSectionShortcuts(isDark),
                     
                     // Product Sections using optimized providers
                     filterProducts('flash').when(
                       data: (flashDeals) {
                         return Column(
+                          key: _flashKey,
                           children: [
-                            if (flashDeals.isNotEmpty)
+                            if (flashDeals.isNotEmpty) ...[
                               SectionHeader(title: _t('flashDeals'), onTap: _navigateToAllProducts),
+                              Builder(
+                                builder: (context) {
+                                  final endTimeRaw = flashDeals.first['flashSaleEndTime'];
+                                  DateTime endTime;
+                                  if (endTimeRaw is Timestamp) {
+                                    endTime = endTimeRaw.toDate();
+                                  } else if (endTimeRaw is String) {
+                                    endTime = DateTime.tryParse(endTimeRaw) ?? DateTime.now().add(const Duration(hours: 4));
+                                  } else {
+                                    endTime = DateTime.now().add(const Duration(hours: 4));
+                                  }
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: FlashSaleTimer(endTime: endTime),
+                                  );
+                                }
+                              ),
+                            ],
                             if (flashDeals.isNotEmpty)
                               ProductHorizontalList(
                                 products: flashDeals,
@@ -260,6 +346,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       data: (comboPacks) {
                         if (comboPacks.isEmpty) return const SizedBox.shrink();
                         return Column(
+                          key: _comboKey,
                           children: [
                             SectionHeader(
                               title: _t('comboPack'),
@@ -281,6 +368,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       data: (hotSelling) {
                         if (hotSelling.isEmpty) return const SizedBox.shrink();
                         return Column(
+                          key: _hotKey,
                           children: [
                             SectionHeader(
                               title: _t('topSellingProducts'),
@@ -302,6 +390,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       data: (newArrivals) {
                         if (newArrivals.isEmpty) return const SizedBox.shrink();
                         return Column(
+                          key: _newKey,
                           children: [
                             SectionHeader(
                               title: _t('newArrivals'),
@@ -323,6 +412,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       data: (specialOffers) {
                         if (specialOffers.isEmpty) return const SizedBox.shrink();
                         return Column(
+                          key: _specialKey,
                           children: [
                             SectionHeader(
                               title: _t('specialOffers'),
@@ -344,6 +434,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       data: (justForYou) {
                         if (justForYou.isEmpty) return const SizedBox.shrink();
                         return Column(
+                          key: _justForYouKey,
                           children: [
                             SectionHeader(
                               title: _t('justForYou'),

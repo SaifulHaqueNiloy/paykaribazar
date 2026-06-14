@@ -217,7 +217,21 @@ class ProductCard extends ConsumerWidget {
                   Positioned(
                     top: 8,
                     right: 8,
-                    child: _iconCircle(Icons.favorite_border, Colors.black26),
+                    child: GestureDetector(
+                      onTap: () {
+                        ref.read(wishlistProvider.notifier).toggle(effectiveProduct!.id);
+                      },
+                      child: Builder(
+                        builder: (context) {
+                          final wishlist = ref.watch(wishlistProvider);
+                          final isLiked = wishlist.contains(effectiveProduct!.id);
+                          return _iconCircle(
+                            isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                            isLiked ? Colors.red.withOpacity(0.9) : Colors.black26,
+                          );
+                        }
+                      ),
+                    ),
                   ),
                   // Discount Badge
                   if (effectiveProduct.hasDiscount)

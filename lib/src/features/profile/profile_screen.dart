@@ -364,6 +364,21 @@ class ProfileScreen extends ConsumerWidget {
     final String? district = data['districtId'];
     final String? upazila = data['upazilaId'];
 
+    final int points = (data['points'] ?? 0).toInt();
+    String tier = 'BRONZE';
+    Color tierColor = Colors.brown;
+
+    if (points >= 5000) {
+      tier = 'PLATINUM';
+      tierColor = Colors.cyan;
+    } else if (points >= 2500) {
+      tier = 'GOLD';
+      tierColor = Colors.amber;
+    } else if (points >= 1000) {
+      tier = 'SILVER';
+      tierColor = Colors.grey;
+    }
+
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
@@ -391,7 +406,32 @@ class ProfileScreen extends ConsumerWidget {
                         color: Colors.blueAccent, size: 18),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 6),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: tierColor.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: tierColor.withOpacity(0.4)),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.stars_rounded, color: tierColor, size: 12),
+                      const SizedBox(width: 4),
+                      Text(
+                        tier,
+                        style: TextStyle(
+                          color: tierColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 9,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 6),
                 if (phone.isNotEmpty)
                   Text(phone,
                       style: const TextStyle(color: Colors.white70, fontSize: 13, fontWeight: FontWeight.bold)),
@@ -422,7 +462,7 @@ class ProfileScreen extends ConsumerWidget {
               ],
             ),
           ),
-          _headerActionButtons(ref, isDark),
+          _headerActionButtons(context, ref, data, isDark),
         ],
       ),
     );
@@ -454,10 +494,16 @@ class ProfileScreen extends ConsumerWidget {
     );
   }
 
-  Widget _headerActionButtons(WidgetRef ref, bool isDark) {
+  Widget _headerActionButtons(BuildContext context, WidgetRef ref, Map<String, dynamic> data, bool isDark) {
+    final String roleStr = data['role'] ?? 'customer';
+    final bool isAdmin = roleStr == 'admin';
+
     return Column(
       children: [
-        _circleIconButton(Icons.help_outline, () => _launchWhatsApp()),
+        _circleIconButton(
+          isAdmin ? Icons.tune_rounded : Icons.help_outline,
+          () => isAdmin ? context.push('/customer-simulator') : _launchWhatsApp(),
+        ),
         const SizedBox(height: 10),
         _circleIconButton(Icons.translate_rounded,
             () => ref.read(languageProvider.notifier).toggleLanguage()),

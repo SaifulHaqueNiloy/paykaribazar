@@ -116,6 +116,27 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             onPressed: () => context.pop(),
           ),
         ),
+        actions: [
+          CircleAvatar(
+            backgroundColor: Colors.black26,
+            child: Consumer(
+              builder: (context, ref, child) {
+                final wishlist = ref.watch(wishlistProvider);
+                final isLiked = wishlist.contains(_product!.id);
+                return IconButton(
+                  icon: Icon(
+                    isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
+                    color: isLiked ? Colors.red : Colors.white,
+                  ),
+                  onPressed: () {
+                    ref.read(wishlistProvider.notifier).toggle(_product!.id);
+                  },
+                );
+              }
+            ),
+          ),
+          const SizedBox(width: 16),
+        ],
       );
 
   Widget _buildTitleSection(Product p, String lang) => Column(
