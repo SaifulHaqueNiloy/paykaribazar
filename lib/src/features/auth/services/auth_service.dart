@@ -161,14 +161,18 @@ class AuthService {
           email ?? (normalizedPhone != null ? '$normalizedPhone@paykaribazar.com' : null);
       if (authEmail == null) throw Exception('Email or Phone is required');
 
+      // ১. প্রথমে ইউজার তৈরি করা (অবশ্যই আগে করতে হবে সিকিউরিটির জন্য)
       final res = await _auth.createUserWithEmailAndPassword(
         email: authEmail,
         password: password,
       );
 
       if (res.user != null) {
+        // ২. ইউজার এখন লগইন অবস্থায় আছে, এখন প্যারালাল কাজ শুরু করা নিরাপদ
+        final settingsFuture = _db.doc(HubPaths.loyaltyDoc).get();
+        final myCodeFuture = _generateReferralCode(name, normalizedPhone);
+        
         String? referrerUid;
-
         if (referralCode != null && referralCode.isNotEmpty) {
           final refDoc = await _db
               .collection(HubPaths.users)
@@ -176,23 +180,26 @@ class AuthService {
               .limit(1)
               .get();
 
-          if (refDoc.docs.isEmpty) {
-            throw Exception('Invalid referral code');
+          if (refDoc.docs.isNotEmpty) {
+            referrerUid = refDoc.docs.first.id;
+          } else {
+             throw Exception('Invalid referral code');
           }
-
-          referrerUid = refDoc.docs.first.id;
         }
 
-        final myCode = await _generateReferralCode(name, normalizedPhone);
+        // ৩. প্যারালাল টাস্কগুলোর জন্য অপেক্ষা করা
+        final results = await Future.wait([myCodeFuture, settingsFuture]);
+        final myCode = results[0] as String;
+        final settingsSnap = results[1] as DocumentSnapshot<Map<String, dynamic>>;
+        
+        final signupBonus = (settingsSnap.data()?['signupPoints'] ?? 
+                             settingsSnap.data()?['signup_bonus'] ?? 100).toInt();
 
-        // Get current signup bonus from settings
-        int signupBonus = 100;
-        try {
-          final settings = await _db.doc(HubPaths.loyaltyDoc).get();
-          signupBonus = (settings.data()?['signupPoints'] ?? settings.data()?['signup_bonus'] ?? 100).toInt();
-        } catch (_) {}
-
-        await _firestore.updateProfile(res.user!.uid, {
+        // ৪. ব্যাচ অপারেশন দিয়ে একবারে সব ডাটা সেভ করা (Super Fast)
+        final batch = _db.batch();
+        final userRef = _db.collection(HubPaths.users).doc(res.user!.uid);
+        
+        batch.set(userRef, {
           'name': name,
           'email': email,
           'phone': normalizedPhone,
@@ -207,10 +214,11 @@ class AuthService {
           'isBloodDonor': isBloodDonor,
           'bloodContactNumber': bloodContactNumber,
           'createdAt': FieldValue.serverTimestamp(),
-        });
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
 
-        // Add to transaction history
-        await _db.collection(HubPaths.users).doc(res.user!.uid).collection('transactions').add({
+        final txRef = userRef.collection('transactions').doc();
+        batch.set(txRef, {
           'title': 'স্বাগতম বোনাস (Welcome Bonus)',
           'points': signupBonus,
           'type': 'credit',
@@ -218,11 +226,30 @@ class AuthService {
         });
 
         if (referrerUid != null) {
-          await _db.collection(HubPaths.users).doc(referrerUid).update({
+          final referrerRef = _db.collection(HubPaths.users).doc(referrerUid);
+          batch.update(referrerRef, {
             'referredCount': FieldValue.increment(1),
             'updatedAt': FieldValue.serverTimestamp(),
           });
         }
+
+        if (isBloodDonor && bloodGroup != null) {
+          final donorRef = _db.collection(HubPaths.donors).doc();
+          batch.set(donorRef, {
+            'uid': res.user!.uid,
+            'name': name,
+            'group': bloodGroup,
+            'phone': bloodContactNumber ?? normalizedPhone,
+            'districtId': districtId,
+            'upazilaId': upazilaId,
+            'isVisible': true,
+            'lastDonated': null,
+            'type': 'donor',
+            'createdAt': FieldValue.serverTimestamp(),
+          });
+        }
+
+        await batch.commit();
       }
       return res;
     } catch (e) {

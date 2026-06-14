@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import '../../../di/providers.dart';
-import '../../../core/constants/app_strings.dart';
+import '../../../utils/app_strings.dart';
 import '../../../../core/constants/app_styles.dart';
 
 class AnalyticsTab extends ConsumerStatefulWidget {

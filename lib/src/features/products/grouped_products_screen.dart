@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import 'package:paykari_bazar/src/core/constants/paths.dart';
 import 'package:paykari_bazar/src/features/home/widgets/home_widgets.dart';
+import '../../utils/app_strings.dart';
 import '../../utils/styles.dart';
 
 enum GroupMode { shop, category }
@@ -39,6 +40,11 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
 
   // Category Names Cache: categoryId -> name
   Map<String, String> _categoryNames = {};
+
+  String _t(String k) {
+    final locale = ref.watch(languageProvider);
+    return AppStrings.get(k, locale.languageCode);
+  }
 
   @override
   void initState() {
@@ -232,6 +238,10 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
+            child: StaticSearchBar(isDark: isDark, t: _t),
+          ),
           _buildToolbar(isDark),
           Expanded(
             child: RefreshIndicator(

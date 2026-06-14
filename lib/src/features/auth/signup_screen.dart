@@ -75,24 +75,8 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   : _phoneCtrl.text.trim())
               : null);
 
-      if (res != null) {
-        final uid = res.user!.uid;
+      // ব্লাড ডোনার রেজিস্ট্রেশন এখন সরাসরি AuthService.signUp এর ভেতরেই (Batch) হয়ে যাবে
 
-        if (_isBloodDonor && _selectedBloodGroup != null) {
-          await ref.read(firestoreServiceProvider).registerAsDonor({
-            'uid': uid,
-            'name': _nameCtrl.text.trim(),
-            'group': _selectedBloodGroup,
-            'phone': _bloodPhoneCtrl.text.isNotEmpty
-                ? _bloodPhoneCtrl.text.trim()
-                : _phoneCtrl.text.trim(),
-            'districtId': _selectedDistrict,
-            'upazilaId': _selectedUpazila,
-            'isVisible': true,
-            'lastDonated': null,
-          });
-        }
-      }
 
       if (mounted) {
         Navigator.pop(context);

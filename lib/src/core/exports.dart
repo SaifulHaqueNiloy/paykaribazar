@@ -4,7 +4,7 @@ export 'package:flutter/services.dart';
 export 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // CORE EXPORTS
-export 'providers.dart';
+export '../di/providers.dart';
 export 'extensions.dart';
 export 'constants/paths.dart';
 
