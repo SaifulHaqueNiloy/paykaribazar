@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../core/constants/paths.dart';
 import 'service_locator.dart';
+import 'dart:async';
+import '../core/services/cache_service.dart';
+import 'package:flutter/foundation.dart';
 import '../services/role_simulator_provider.dart';
 
 // --- MODELS & TYPES ---
@@ -117,7 +120,46 @@ final allUsersProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
 });
 
 final productsProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {
-  return FirebaseFirestore.instance.collection(HubPaths.products).snapshots().map((snap) => snap.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList());
+  final cacheService = getIt<CacheService>();
+  final controller = StreamController<List<Map<String, dynamic>>>();
+
+  // Load from cache initially as fallback
+  cacheService.get<List<dynamic>>('products_cache').then((cached) {
+    if (cached != null && !controller.isClosed) {
+      final products = cached.map((p) => Map<String, dynamic>.from(p)).toList();
+      controller.add(products);
+    }
+  });
+
+  // Listen to Firestore
+  final sub = FirebaseFirestore.instance.collection(HubPaths.products).snapshots().listen(
+    (snap) {
+      final products = snap.docs.map((doc) => {'id': doc.id, ...doc.data()}).toList();
+      if (products.isNotEmpty) {
+        cacheService.set(key: 'products_cache', value: products);
+      }
+      if (!controller.isClosed) {
+        controller.add(products);
+      }
+    },
+    onError: (error) async {
+      if (kDebugMode) debugPrint('Firestore products stream error, checking cache fallback: $error');
+      final cached = await cacheService.get<List<dynamic>>('products_cache');
+      if (cached != null && !controller.isClosed) {
+        final products = cached.map((p) => Map<String, dynamic>.from(p)).toList();
+        controller.add(products);
+      } else if (!controller.isClosed) {
+        controller.addError(error);
+      }
+    },
+  );
+
+  ref.onDispose(() {
+    sub.cancel();
+    controller.close();
+  });
+
+  return controller.stream;
 });
 
 final categoriesProvider = StreamProvider<List<Map<String, dynamic>>>((ref) {

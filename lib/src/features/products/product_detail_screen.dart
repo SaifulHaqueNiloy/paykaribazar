@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:collection/collection.dart';
+import 'package:flutter/foundation.dart';
 import '../../models/product_model.dart';
 import '../../di/providers.dart';
 import '../home/widgets/home_widgets.dart';
@@ -31,7 +33,10 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
     setState(() => _isLoading = true);
     try {
       final products = ref.read(productsProvider).value ?? [];
-      final map = products.firstWhere((p) => p['id'] == widget.productId);
+      final map = products.firstWhereOrNull((p) => p['id'] == widget.productId);
+      if (map == null) {
+        return;
+      }
       _product = Product.fromMap(map, map['id']);
 
       if (_product != null) {
@@ -43,7 +48,7 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
             .toList();
       }
     } catch (e) {
-      debugPrint('Error loading product: $e');
+      if (kDebugMode) debugPrint('Error loading product: $e');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -205,26 +210,29 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                 offset: const Offset(0, -5))
           ],
         ),
-        child: ElevatedButton(
-          onPressed: () {
-            ref.read(cartProvider.notifier).addItem(CartItem(
-                  id: _product!.id,
-                  name: _product!.name,
-                  imageUrl: _product!.imageUrl,
-                  price: _product!.price,
-                  quantity: _quantity,
-                  unit: _product!.unit,
-                ));
-            ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('Added to cart')));
+        child: Consumer(
+          builder: (context, ref, child) {
+            final isOutOfStock = (_product?.stock ?? 0) <= 0;
+            return ElevatedButton(
+              onPressed: isOutOfStock ? null : () {
+                ref.read(cartProvider.notifier).addItem(CartItem(
+                      id: _product!.id,
+                      name: _product!.name,
+                      imageUrl: _product!.imageUrl,
+                      price: _product!.price,
+                      quantity: _quantity,
+                      unit: _product!.unit,
+                    ));
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(const SnackBar(content: Text('Added to cart')));
+              },
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: isOutOfStock ? Colors.grey : Colors.teal,
+                  minimumSize: const Size(double.infinity, 50)),
+              child: Text(isOutOfStock ? 'OUT OF STOCK' : 'ADD TO CART',
+                  style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
+            );
           },
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal,
-              minimumSize: const Size(double.infinity, 50)),
-          child: const Text('ADD TO CART',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
         ),
       );
 }
-

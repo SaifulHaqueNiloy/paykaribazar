@@ -117,7 +117,6 @@ flutter_launcher_icons:
 flutter:
   uses-material-design: true
   assets:
-    - .env
     - assets/images/
     - assets/lottie/
     - shorebird.yaml

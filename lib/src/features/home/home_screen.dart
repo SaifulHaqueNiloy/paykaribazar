@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import '../../utils/app_strings.dart';
 import '../../utils/styles.dart';
@@ -117,13 +118,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final promoAsync = ref.watch(promoProvider);
     
-    // Use optimized providers instead of raw data filtering
-    final flashDealsAsync = ref.watch(flashDealsProvider);
-    final newArrivalsAsync = ref.watch(newArrivalsProvider);
-    final hotSellingAsync = ref.watch(hotSellingProvider);
-    final comboPacksAsync = ref.watch(comboPacksProvider);
-    final specialOffersAsync = ref.watch(specialOffersProvider);
-    final justForYouAsync = ref.watch(justForYouProvider);
+    // 🔵 Performance Optimization: Watch single productsProvider and filter locally.
+    // This replaces 6 separate Firestore listeners with one, significantly reducing listener overhead.
+    final productsAsync = ref.watch(productsProvider);
+
+    // Local filtering helper for different sections
+    AsyncValue<List<Map<String, dynamic>>> filterProducts(String type) {
+      return productsAsync.whenData((list) {
+        switch (type) {
+          case 'flash': return list.where((p) => p['isFlashSale'] == true).toList();
+          case 'new': return list.where((p) => p['isNewArrival'] == true || p['isNew'] == true).toList();
+          case 'hot': return list.where((p) => p['isHotSelling'] == true || p['isHot'] == true).toList();
+          case 'combo': return list.where((p) => p['category'] == 'Combo' || p['category'] == 'কম্বো').toList();
+          case 'special': return list.where((p) => (p['discountPrice'] ?? 0) > 0).toList();
+          case 'justForYou': return list.where((p) => p['isRecommended'] == true).toList();
+          default: return [];
+        }
+      });
+    }
 
     return Scaffold(
       backgroundColor: isDark ? AppStyles.darkBackgroundColor : AppStyles.backgroundColor,
@@ -147,7 +159,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     IconButton(
                       icon: const Icon(Icons.notifications_none_rounded, color: Colors.white),
                       onPressed: () {
-                        // বাংলা: নোটিফিকেশন ফিচারটি এখনো যুক্ত না থাকায় স্নাকবার দেখানো হচ্ছে
+                        // 💡 Issue 15: Placeholder until NotificationsScreen is implemented
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text('কোনো নতুন নোটিফিকেশন নেই')),
                         );
@@ -162,10 +174,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   children: [
                     const GreetingWidget(),
                     const LoyaltyStatusCard(),
-                    flashDealsAsync.when(
+                    filterProducts('flash').when(
                       data: (deals) {
                         if (deals.isEmpty) return const SizedBox.shrink();
-                        return FlashSaleTimer(endTime: DateTime.now().add(const Duration(hours: 4)));
+                        // Tip #5: Use actual end time from Firestore instead of static now+4h
+                        final endTimeRaw = deals.first['flashSaleEndTime'];
+                        DateTime endTime;
+                        if (endTimeRaw is Timestamp) {
+                          endTime = endTimeRaw.toDate();
+                        } else if (endTimeRaw is String) {
+                          endTime = DateTime.tryParse(endTimeRaw) ?? DateTime.now().add(const Duration(hours: 4));
+                        } else {
+                          endTime = DateTime.now().add(const Duration(hours: 4));
+                        }
+                        return FlashSaleTimer(endTime: endTime);
                       },
                       loading: () => const SizedBox.shrink(),
                       error: (_, __) => const SizedBox.shrink(),
@@ -189,7 +211,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     
                     // Product Sections using optimized providers
-                    flashDealsAsync.when(
+                    filterProducts('flash').when(
                       data: (flashDeals) {
                         return Column(
                           children: [
@@ -197,7 +219,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               SectionHeader(title: _t('flashDeals'), onTap: _navigateToAllProducts),
                             if (flashDeals.isNotEmpty)
                               ProductHorizontalList(
-                                products: flashDeals.map((p) => p.toMap()).toList(),
+                                products: flashDeals,
                                 emptyMessage: _t('noFlashSales'),
                               ),
                           ],
@@ -208,7 +230,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     
                     // Combo Packs Section
-                    comboPacksAsync.when(
+                    filterProducts('combo').when(
                       data: (comboPacks) {
                         if (comboPacks.isEmpty) return const SizedBox.shrink();
                         return Column(
@@ -218,7 +240,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               onTap: _navigateToAllProducts,
                             ),
                             ProductHorizontalList(
-                              products: comboPacks.map((p) => p.toMap()).toList(),
+                              products: comboPacks,
                               emptyMessage: _t('noProductsFound'),
                             ),
                           ],
@@ -229,7 +251,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     
                     // Top Selling Products Section
-                    hotSellingAsync.when(
+                    filterProducts('hot').when(
                       data: (hotSelling) {
                         if (hotSelling.isEmpty) return const SizedBox.shrink();
                         return Column(
@@ -239,7 +261,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               onTap: _navigateToAllProducts,
                             ),
                             ProductHorizontalList(
-                              products: hotSelling.map((p) => p.toMap()).toList(),
+                              products: hotSelling,
                               emptyMessage: _t('noProductsFound'),
                             ),
                           ],
@@ -250,7 +272,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     
                     // New Arrivals Section
-                    newArrivalsAsync.when(
+                    filterProducts('new').when(
                       data: (newArrivals) {
                         if (newArrivals.isEmpty) return const SizedBox.shrink();
                         return Column(
@@ -260,7 +282,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               onTap: _navigateToAllProducts,
                             ),
                             ProductHorizontalList(
-                              products: newArrivals.map((p) => p.toMap()).toList(),
+                              products: newArrivals,
                               emptyMessage: _t('noProductsFound'),
                             ),
                           ],
@@ -271,7 +293,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
                     
                     // Special Offers Section
-                    specialOffersAsync.when(
+                    filterProducts('special').when(
                       data: (specialOffers) {
                         if (specialOffers.isEmpty) return const SizedBox.shrink();
                         return Column(
@@ -281,7 +303,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               onTap: _navigateToAllProducts,
                             ),
                             ProductHorizontalList(
-                              products: specialOffers.map((p) => p.toMap()).toList(),
+                              products: specialOffers,
                               emptyMessage: _t('noProductsFound'),
                             ),
                           ],
@@ -292,7 +314,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     ),
 
                     // Just For You Section
-                    justForYouAsync.when(
+                    filterProducts('justForYou').when(
                       data: (justForYou) {
                         if (justForYou.isEmpty) return const SizedBox.shrink();
                         return Column(
@@ -302,7 +324,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               onTap: _navigateToAllProducts,
                             ),
                             ProductHorizontalList(
-                              products: justForYou.map((p) => p.toMap()).toList(),
+                              products: justForYou,
                               emptyMessage: _t('noProductsFound'),
                             ),
                           ],

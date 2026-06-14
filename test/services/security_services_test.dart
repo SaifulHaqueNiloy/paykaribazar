@@ -5,9 +5,11 @@ import 'package:paykari_bazar/src/core/services/api_security_service.dart';
 void main() {
   group('EncryptionService Tests', () {
     late EncryptionService encryptionService;
+    const testKey = 'MySecureAES256KeyFor32BytLength!';
 
     setUp(() {
-      encryptionService = EncryptionService();
+      // Using a test key for validation
+      encryptionService = EncryptionService(testKey);
     });
 
     test('encrypt and decrypt plaintext', () {
@@ -24,17 +26,13 @@ void main() {
     });
 
     test('encrypt produces different ciphertexts for same plaintext', () {
-      // Both should have different ciphertexts due to IV
-      // NOTE: In CBC mode with fixed IV, same plaintext = same ciphertext
-      // This is expected behavior
+      // Now producing random IVs, so same plaintext results in different ciphertexts
       const plaintext = 'test data';
 
       final encrypted1 = encryptionService.encrypt(plaintext);
       final encrypted2 = encryptionService.encrypt(plaintext);
 
-      // With fixed IV, these should be the same
-      // (In production, consider using random IVs)
-      expect(encrypted1, equals(encrypted2));
+      expect(encrypted1, isNot(equals(encrypted2)));
     });
 
     test('encrypt token', () {
@@ -142,7 +140,10 @@ void main() {
     late APISecurityService apiSecurityService;
 
     setUp(() {
-      apiSecurityService = APISecurityService();
+      apiSecurityService = APISecurityService(
+        apiKey: 'test_api_key',
+        apiSecret: 'test_api_secret_key_1234567890ab',
+      );
     });
 
     test('generate secure headers for GET request', () {
@@ -245,26 +246,19 @@ void main() {
       expect(isValid, isA<bool>());
     });
 
-    test('update and reset credentials', () {
+    test('update credentials', () {
       apiSecurityService.updateCredentials(
         apiKey: 'new_key',
         apiSecret: 'new_secret',
       );
 
-      // After update, signatures might be different
+      // After update, signatures should still generate
       final headers1 = apiSecurityService.getSecureHeaders(
         endpoint: '/api/v1/products',
       );
 
-      apiSecurityService.resetCredentials();
-
-      final headers2 = apiSecurityService.getSecureHeaders(
-        endpoint: '/api/v1/products',
-      );
-
-      // Headers should exist but might have different signatures
+      // Headers should exist
       expect(headers1.containsKey('X-Signature'), isTrue);
-      expect(headers2.containsKey('X-Signature'), isTrue);
     });
 
     test('get Dio headers includes user ID', () {
@@ -304,8 +298,11 @@ void main() {
 
   group('Security Integration Tests', () {
     test('encryption and API security work together', () {
-      final encryption = EncryptionService();
-      final apiSecurity = APISecurityService();
+      final encryption = EncryptionService('MySecureAES256KeyFor32BytLength!');
+      final apiSecurity = APISecurityService(
+        apiKey: 'test_api_key',
+        apiSecret: 'test_api_secret_key_1234567890ab',
+      );
 
       // Create sensitive data
       const sensitiveData = 'user_token_12345';

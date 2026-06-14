@@ -2,42 +2,55 @@ import 'dart:convert';
 
 import 'package:encrypt/encrypt.dart' as encrypt_lib;
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 
 class EncryptionService {
-  // 32-byte key for AES-256 (exactly 32 characters for UTF-8 encoding)
-  final _key = encrypt_lib.Key.fromUtf8('MySecureAES256KeyFor32BytLength!');
-  final _iv = encrypt_lib.IV.fromUtf8('MySecureIVFor16!');
+  final encrypt_lib.Key _key;
   late final encrypt_lib.Encrypter _encrypter;
 
-  EncryptionService() {
+  /// Initializes the encryption service with a 32-byte AES key.
+  /// 
+  /// [encryptionKey] should be loaded from a secure source (e.g., .env or secure storage).
+  EncryptionService(String encryptionKey) 
+      : _key = encrypt_lib.Key.fromUtf8(encryptionKey) {
     _encrypter = encrypt_lib.Encrypter(encrypt_lib.AES(_key));
-    debugPrint('✅ Encryption service initialized (AES-256)');
+    if (kDebugMode) debugPrint('✅ Encryption service initialized (AES-256)');
   }
 
   /// Encrypt plaintext to ciphertext
-  /// Returns base64-encoded encrypted data
+  /// Returns base64-encoded string in format "iv:ciphertext"
   String encrypt(String plaintext) {
     try {
-      final encrypted = _encrypter.encrypt(plaintext, iv: _iv);
-      final encodedBase64 = encrypted.base64;
-      debugPrint('✅ Data encrypted successfully');
+      // Generate a new random IV for every encryption operation
+      final iv = encrypt_lib.IV.fromSecureRandom(16);
+      final encrypted = _encrypter.encrypt(plaintext, iv: iv);
+      
+      // Store IV and ciphertext together separated by a colon
+      final encodedBase64 = '${iv.base64}:${encrypted.base64}';
+      if (kDebugMode) debugPrint('✅ Data encrypted successfully');
       return encodedBase64;
     } catch (e) {
-      debugPrint('❌ Encryption failed: $e');
+      if (kDebugMode) debugPrint('❌ Encryption failed: $e');
       rethrow;
     }
   }
 
   /// Decrypt ciphertext to plaintext
-  /// Expects base64-encoded encrypted data
+  /// Expects base64-encoded string in format "iv:ciphertext"
   String decrypt(String encryptedBase64) {
     try {
-      final encrypted = encrypt_lib.Encrypted.fromBase64(encryptedBase64);
-      final decrypted = _encrypter.decrypt(encrypted, iv: _iv);
-      debugPrint('✅ Data decrypted successfully');
+      final parts = encryptedBase64.split(':');
+      if (parts.length != 2) throw Exception('Invalid encrypted data format');
+
+      // Extract IV and encrypted data
+      final iv = encrypt_lib.IV.fromBase64(parts[0]);
+      final encrypted = encrypt_lib.Encrypted.fromBase64(parts[1]);
+
+      final decrypted = _encrypter.decrypt(encrypted, iv: iv);
+      if (kDebugMode) debugPrint('✅ Data decrypted successfully');
       return decrypted;
     } catch (e) {
-      debugPrint('❌ Decryption failed: $e');
+      if (kDebugMode) debugPrint('❌ Decryption failed: $e');
       rethrow;
     }
   }

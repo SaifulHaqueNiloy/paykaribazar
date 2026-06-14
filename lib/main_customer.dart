@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -36,7 +37,7 @@ void callbackDispatcher() {
       final String? uid = FirebaseAuth.instance.currentUser?.uid;
       if (uid != null) await BackupService.performBackgroundBackup(uid);
     } catch (e) {
-      debugPrint('Background Task Error: $e');
+      if (kDebugMode) debugPrint('Background Task Error: $e');
     }
     return Future.value(true);
   });
@@ -87,7 +88,7 @@ void main() {
     try {
       await dotenv.load();
     } catch (e) {
-      debugPrint('Dotenv Load Error: $e');
+      if (kDebugMode) debugPrint('Dotenv Load Error: $e');
     }
 
     // Initialize all services
@@ -108,13 +109,13 @@ void main() {
           .get();
       if (snap.docs.isEmpty) {
         await DatabaseSeeder.seedAll();
-        debugPrint('✅ Auto-seeded all default database collections at startup');
+        if (kDebugMode) debugPrint('✅ Auto-seeded all default database collections at startup');
       } else {
         await DatabaseSeeder.seedStaticInfo();
-        debugPrint('✅ Seeded/Updated static info documents at startup');
+        if (kDebugMode) debugPrint('✅ Seeded/Updated static info documents at startup');
       }
     } catch (e) {
-      debugPrint('⚠️ Auto-seed check skipped/failed: $e');
+      if (kDebugMode) debugPrint('⚠️ Auto-seed check skipped/failed: $e');
     }
 
     // Initialize Workmanager
@@ -122,7 +123,7 @@ void main() {
       await Workmanager().initialize(callbackDispatcher,
           isInDebugMode: dotenv.env['DEBUG'] == 'true');
     } catch (e) {
-      debugPrint('Workmanager Init Error: $e');
+      if (kDebugMode) debugPrint('Workmanager Init Error: $e');
     }
 
     FirebaseFirestore.instance.settings = const Settings(
@@ -130,23 +131,21 @@ void main() {
       cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
     );
 
-    // Sentry initialization
-    String dsn = (dotenv.env['SENTRY_DSN'] ?? '').trim();
-    if (dsn.isEmpty) {
-      dsn = 'https://08442f2fde59f1f763b3c271df8c11bc@o4510812244869120.ingest.us.sentry.io/4510812374892544';
-    }
+    // Sentry initialization — DSN from .env only, no hardcoded fallback
+    final dsn = (dotenv.env['SENTRY_DSN'] ?? '').trim();
 
     await SentryFlutter.init(
       (options) {
         options.dsn = dsn;
-        options.tracesSampleRate = 1.0;
+        // Tip #3: Use 0.2 in production to reduce cost (1.0 = 100% traces)
+        options.tracesSampleRate = 0.2;
       },
       appRunner: () => runApp(
         UncontrolledProviderScope(container: container, child: const CustomerApp()),
       ),
     );
   }, (error, stack) {
-    debugPrint('Fatal Global Error: $error');
+    if (kDebugMode) debugPrint('Fatal Global Error: $error');
     Sentry.captureException(error, stackTrace: stack);
   });
 }
@@ -168,13 +167,14 @@ class _CustomerAppState extends ConsumerState<CustomerApp> {
 
   Future<void> _init() async {
     try {
+      // Issue #6: Properly schedule sync without unawaited Future
       Future.delayed(const Duration(minutes: 2), () {
         if (mounted) {
           ref.read(syncServiceProvider).syncData();
         }
       });
     } catch (e) {
-      debugPrint('Init Error: $e');
+      if (kDebugMode) debugPrint('Init Error: $e');
     }
 
     if (mounted) {

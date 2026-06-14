@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import '../core/constants/paths.dart';
 import '../di/service_locator.dart';
+import '../core/services/cache_service.dart';
 import '../features/commerce/services/loyalty_service.dart';
 
 class SyncService {
@@ -21,16 +21,16 @@ class SyncService {
       try {
         await getIt<LoyaltyService>().handleDailyLoginBonus(user.uid);
       } catch (e) {
-        debugPrint('Daily Login Bonus Error: $e');
+        if (kDebugMode) debugPrint('Daily Login Bonus Error: $e');
       }
       await _cleanupOldData(user.uid);
       
       // DNA ENFORCED: Cache Locations locally for offline support
       await _cacheLocationsLocally();
 
-      debugPrint('Data Sync Completed');
+      if (kDebugMode) debugPrint('Data Sync Completed');
     } catch (e) {
-      debugPrint('Sync Error: $e');
+      if (kDebugMode) debugPrint('Sync Error: $e');
     }
   }
 
@@ -66,20 +66,25 @@ class SyncService {
         }
       }
     } catch (e) {
-      debugPrint('Notification cleanup error: $e');
+      if (kDebugMode) debugPrint('Notification cleanup error: $e');
     }
   }
 
   Future<void> _cacheLocationsLocally() async {
     try {
       final snap = await _firestore.collection(HubPaths.locations).get();
-      await Hive.initFlutter();
-      final box = await Hive.openBox('app_cache');
       final locList = snap.docs.map((d) => d.data()).toList();
-      await box.put('cached_locations', locList);
-      debugPrint('✅ Cached ${locList.length} locations locally');
+
+      // Use CacheService to avoid redundant Hive initialization and box naming mismatch
+      await getIt<CacheService>().set(
+        key: 'cached_locations',
+        value: locList,
+        ttl: const Duration(days: 7),
+      );
+      
+      if (kDebugMode) debugPrint('✅ Cached ${locList.length} locations locally');
     } catch (e) {
-      debugPrint('Location caching error: $e');
+      if (kDebugMode) debugPrint('Location caching error: $e');
     }
   }
 }

@@ -6,7 +6,7 @@ void main() {
     late EncryptionService encryptionService;
 
     setUp(() {
-      encryptionService = EncryptionService();
+      encryptionService = EncryptionService('MySecureAES256KeyFor32BytLength!');
     });
 
     test('Encrypt and Decrypt String', () {

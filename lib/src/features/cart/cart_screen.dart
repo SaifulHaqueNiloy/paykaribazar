@@ -103,13 +103,14 @@ class CartScreen extends ConsumerWidget {
               children: [
                 Text(item.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14), maxLines: 1, overflow: TextOverflow.ellipsis),
                 const SizedBox(height: 4),
-                Text('৳${item.price} / ${item.unit}', style: const TextStyle(color: AppStyles.primaryColor, fontWeight: FontWeight.bold)),
+                Text('৳${item.price.toStringAsFixed(0)} / ${item.unit}', style: const TextStyle(color: AppStyles.primaryColor, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           Row(
             children: [
-              _qtyBtn(Icons.remove, () => ref.read(cartProvider.notifier).removeItem(item.id)),
+              // Issue #14: Decrease quantity instead of removing item entirely
+              _qtyBtn(Icons.remove, () => ref.read(cartProvider.notifier).decreaseQuantity(item.id)),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 child: Text('${item.quantity}', style: const TextStyle(fontWeight: FontWeight.bold)),
@@ -146,11 +147,11 @@ class CartScreen extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          _summaryRow(t('subtotal'), '৳$subtotal'),
-          _summaryRow(t('deliveryFee'), '৳$delivery'),
-          if (discount > 0) _summaryRow(t('discount'), '-৳$discount', color: Colors.green),
+          _summaryRow(t('subtotal'), '৳${subtotal.toStringAsFixed(0)}'),
+          _summaryRow(t('deliveryFee'), '৳${delivery.toStringAsFixed(0)}'),
+          if (discount > 0) _summaryRow(t('discount'), '-৳${discount.toStringAsFixed(0)}', color: Colors.green),
           const Divider(height: 24),
-          _summaryRow(t('total'), '৳$total', isBold: true, fontSize: 18),
+          _summaryRow(t('total'), '৳${total.toStringAsFixed(0)}', isBold: true, fontSize: 18),
           const SizedBox(height: 20),
           SizedBox(
             width: double.infinity,

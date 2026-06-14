@@ -114,4 +114,9 @@ class FirestorePaginator<T> {
     _hasMore = true;
     _isLoading = false;
   }
+
+  /// Dispose of any resources
+  void dispose() {
+    // No-op for now
+  }
 }

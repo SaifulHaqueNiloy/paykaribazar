@@ -4,6 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:paykari_bazar/src/di/providers.dart';
 import 'package:paykari_bazar/src/core/firebase/firestore_paginator.dart';
 import 'package:paykari_bazar/src/services/role_simulator_provider.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter/foundation.dart';
 import '../../utils/styles.dart';
 import '../../utils/app_strings.dart';
 import 'order_details_screen.dart';
@@ -17,7 +19,7 @@ class OrdersScreen extends ConsumerStatefulWidget {
 
 class _OrdersScreenState extends ConsumerState<OrdersScreen> {
   String _activeFilter = 'All';
-  late FirestorePaginator<dynamic> _paginator;
+  FirestorePaginator<dynamic>? _paginator;
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -32,7 +34,10 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
     final authState = ref.read(authStateProvider);
     final uid = simulatedUid ?? authState.value?.uid;
 
-    _paginator = FirestorePaginator<dynamic>(
+    // Properly dispose the previous paginator instance to prevent memory leaks
+    _paginator?.dispose();
+
+    final newPaginator = FirestorePaginator<dynamic>(
       collectionPath: 'orders',
       pageSize: 10,
       queryBuilder: (query) {
@@ -50,11 +55,13 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
       },
     );
 
+    _paginator = newPaginator;
+
     // Initial load
-    _paginator.fetchFirstPage().then((_) {
+    newPaginator.fetchFirstPage().then((_) {
       if (mounted) setState(() {});
     }).catchError((error) {
-      debugPrint('❌ Orders page load failed: $error');
+      if (kDebugMode) debugPrint('❌ Orders page load failed: $error');
       if (mounted) setState(() {});
     });
   }
@@ -62,11 +69,12 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
   void _onScroll() {
     if (_scrollController.position.pixels >=
         _scrollController.position.maxScrollExtent - 200) {
-      if (!_paginator.isLoading && _paginator.hasMore) {
-        _paginator.fetchNextPage().then((_) {
+      final paginator = _paginator;
+      if (paginator != null && !paginator.isLoading && paginator.hasMore) {
+        paginator.fetchNextPage().then((_) {
           if (mounted) setState(() {});
         }).catchError((error) {
-          debugPrint('❌ Orders page fetchNextPage failed: $error');
+          if (kDebugMode) debugPrint('❌ Orders page fetchNextPage failed: $error');
           if (mounted) setState(() {});
         });
       }
@@ -75,7 +83,9 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
+    _paginator?.dispose();
     super.dispose();
   }
 
@@ -85,6 +95,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final paginator = _paginator;
 
     return Scaffold(
       backgroundColor:
@@ -99,22 +110,22 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         children: [
           _buildFilterChips(isDark),
           Expanded(
-            child: _paginator.items.isEmpty && _paginator.isLoading
+            child: paginator == null || (paginator.items.isEmpty && paginator.isLoading)
                 ? const Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
                     onRefresh: () async {
-                      await _paginator.fetchFirstPage();
+                      await paginator.fetchFirstPage();
                       if (mounted) setState(() {});
                     },
-                    child: _paginator.items.isEmpty
+                    child: paginator.items.isEmpty
                         ? Center(child: Text(_t('noOrdersFound')))
                         : ListView.builder(
                             controller: _scrollController,
                             padding: const EdgeInsets.all(16),
-                            itemCount: _paginator.items.length +
-                                (_paginator.hasMore ? 1 : 0),
+                            itemCount: paginator.items.length +
+                                (paginator.hasMore ? 1 : 0),
                             itemBuilder: (context, index) {
-                              if (index == _paginator.items.length) {
+                              if (index == paginator.items.length) {
                                 return const Center(
                                   child: Padding(
                                     padding: EdgeInsets.all(20),
@@ -122,7 +133,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                                   ),
                                 );
                               }
-                              return _buildOrderTile(_paginator.items[index], isDark);
+                              return _buildOrderTile(paginator.items[index], isDark);
                             },
                           ),
                   ),
@@ -151,6 +162,10 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                 if (v) {
                   setState(() {
                     _activeFilter = filters[index];
+                    // Reset scroll position to top when filter changes
+                    if (_scrollController.hasClients) {
+                      _scrollController.jumpTo(0);
+                    }
                     _initPaginator(); // Re-initialize with new filter
                   });
                 }
@@ -167,7 +182,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
 
   Widget _buildOrderTile(Map<String, dynamic> order, bool isDark) {
     final status = order['status']?.toString() ?? 'Pending';
-    final total = (order['total'] as num? ?? 0.0).toDouble();
+    final total = (order['totalAmount'] as num? ?? order['total'] as num? ?? 0.0).toDouble();
     final id = order['id']?.toString() ?? '';
     final createdAtStr = order['createdAt']?.toString();
     
@@ -188,14 +203,14 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
         subtitle: Text(
             orderDate != null
-                ? 'Placed on ${orderDate.toString().split('.')[0]}'
+                ? 'Placed on ${DateFormat('dd MMM, yyyy • hh:mm a').format(orderDate)}'
                 : 'Date N/A',
             style: const TextStyle(fontSize: 11)),
         trailing: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            Text('৳${total.toInt()}',
+            Text('৳${total.toStringAsFixed(0)}',
                 style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     color: AppStyles.primaryColor)),

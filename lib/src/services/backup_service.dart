@@ -11,12 +11,15 @@ import 'package:flutter/foundation.dart';
 class BackupService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final FirebaseStorage _storage = FirebaseStorage.instance;
+  late final encrypt.Encrypter _encrypter;
 
-  // AES-256 Encryption Setup
-  // DNA ENFORCED: Key must be 32 chars for AES-256
-  static final _key = encrypt.Key.fromUtf8('paykari_bazar_master_key_32_bits'); 
-  static final _iv = encrypt.IV.fromLength(16);
-  static final _encrypter = encrypt.Encrypter(encrypt.AES(_key));
+  /// Initializes BackupService with a 32-byte encryption key.
+  /// Key should be provided from a secure source (e.g. Remote Config).
+  BackupService(String masterKey) {
+    // DNA ENFORCED: Key must be 32 chars for AES-256
+    final key = encrypt.Key.fromUtf8(masterKey);
+    _encrypter = encrypt.Encrypter(encrypt.AES(key));
+  }
 
   /// Performs a full cloud backup with encryption
   Future<String> performFullBackup(String adminId) async {
@@ -46,11 +49,12 @@ class BackupService {
       }
 
       final jsonStr = jsonEncode(backupData);
-      final encrypted = _encrypter.encrypt(jsonStr, iv: _iv);
+      final iv = encrypt.IV.fromSecureRandom(16);
+      final encrypted = _encrypter.encrypt(jsonStr, iv: iv);
 
       final tempDir = await getTemporaryDirectory();
       final file = File('${tempDir.path}/backup_$timestamp.enc');
-      await file.writeAsBytes(encrypted.bytes);
+      await file.writeAsBytes(Uint8List.fromList(iv.bytes + encrypted.bytes));
 
       final ref = _storage.ref().child('backups/backup_$timestamp.enc');
       await ref.putFile(file);
@@ -67,7 +71,7 @@ class BackupService {
 
       return 'Backup successful and encrypted: backup_$timestamp.enc';
     } catch (e) {
-      debugPrint('Backup Error: $e');
+      if (kDebugMode) debugPrint('Backup Error: $e');
       return 'Backup failed: $e';
     }
   }
@@ -81,8 +85,10 @@ class BackupService {
       if (response.statusCode != 200) throw Exception('Download failed');
 
       // 2. Decrypt data
-      final encrypted = encrypt.Encrypted(response.bodyBytes);
-      final decryptedStr = _encrypter.decrypt(encrypted, iv: _iv);
+      final bytes = response.bodyBytes;
+      final iv = encrypt.IV(bytes.sublist(0, 16));
+      final encrypted = encrypt.Encrypted(bytes.sublist(16));
+      final decryptedStr = _encrypter.decrypt(encrypted, iv: iv);
       final Map<String, dynamic> backupData = jsonDecode(decryptedStr);
       final collectionsData = backupData['collections'] as Map<String, dynamic>;
 
@@ -94,9 +100,9 @@ class BackupService {
         await _restoreCollectionInBatches(collectionName, documents);
       }
       
-      debugPrint('✅ System Restoration Complete');
+      if (kDebugMode) debugPrint('✅ System Restoration Complete');
     } catch (e) {
-      debugPrint('❌ Restore failed: $e');
+      if (kDebugMode) debugPrint('❌ Restore failed: $e');
       rethrow;
     }
   }
@@ -117,12 +123,15 @@ class BackupService {
       }
 
       await batch.commit();
-      debugPrint('Restored $batchSize docs to $collectionName');
+      if (kDebugMode) debugPrint('Restored $batchSize docs to $collectionName');
     }
   }
 
   static Future<void> performBackgroundBackup(String uid) async {
-    final service = BackupService();
+    // For background tasks, ensure the master key is retrieved securely
+    // e.g., from flutter_secure_storage or a safe environment variable.
+    const masterKey = 'REPLACE_WITH_SECURELY_LOADED_KEY_32CHARS';
+    final service = BackupService(masterKey);
     await service.performFullBackup(uid);
   }
 

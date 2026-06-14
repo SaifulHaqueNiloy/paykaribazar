@@ -2,18 +2,22 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../../core/firebase/firestore_service.dart';
 import '../../../core/services/storage_service.dart';
 import '../../../core/services/security_initializer.dart';
 import '../../../di/service_locator.dart';
 import '../../../core/constants/paths.dart';
+import 'dart:math' as math;
 
 final authServiceProvider = Provider((ref) => getIt<AuthService>());
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
+  // Tip #9: GoogleSignIn singleton — avoids creating new instances on every call
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final StorageService _storage;
   final FirestoreService _firestore;
 
@@ -43,31 +47,10 @@ class AuthService {
   Future<String> _generateReferralCode(String name, String? phone) async {
     final cleanName = name.replaceAll(RegExp(r'[^a-zA-Z]'), '').toUpperCase();
     final prefix = cleanName.length >= 3 ? cleanName.substring(0, 3) : 'PB';
-    final random = '$prefix${DateTime.now().microsecondsSinceEpoch % 9000 + 1000}';
-
-    final existing = await _db
-        .collection(HubPaths.users)
-        .where('myReferralCode', isEqualTo: random)
-        .limit(1)
-        .get();
-
-    if (existing.docs.isEmpty) {
-      return random;
-    }
-
-    for (var i = 0; i < 10; i++) {
-      final candidate = '$prefix${DateTime.now().microsecondsSinceEpoch % 9000 + 1000 + i}';
-      final dup = await _db
-          .collection(HubPaths.users)
-          .where('myReferralCode', isEqualTo: candidate)
-          .limit(1)
-          .get();
-
-      if (dup.docs.isEmpty) return candidate;
-    }
-
-    final fallback = '${prefix}_${DateTime.now().millisecondsSinceEpoch}';
-    return fallback;
+    
+    // 🔵 Performance Optimization: Generate a unique referral code without N+1 Firestore queries.
+    final random = math.Random().nextInt(900000) + 100000;
+    return '$prefix$random';
   }
 
   Future<User?> login(String emailOrPhone, String password) async {
@@ -117,7 +100,7 @@ class AuthService {
             });
           }
         } catch (e) {
-          debugPrint('⚠️ Failed to auto-create/update user document: $e');
+          if (kDebugMode) debugPrint('⚠️ Failed to auto-create/update user document: $e');
         }
 
         // ⭐ SECURITY: Also store token securely
@@ -127,9 +110,9 @@ class AuthService {
             'firebase_access_token',
             credential.user!.uid,
           );
-          debugPrint('✅ Token stored securely via SecureAuthService');
+          if (kDebugMode) debugPrint('✅ Token stored securely via SecureAuthService');
         } catch (e) {
-          debugPrint('⚠️ Failed to store token securely: $e');
+          if (kDebugMode) debugPrint('⚠️ Failed to store token securely: $e');
           // Not critical, fallback to normal storage
         }
       }
@@ -259,7 +242,8 @@ class AuthService {
 
   Future<User?> signInWithGoogle() async {
     try {
-      final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+      // Tip #9: Use singleton instance instead of GoogleSignIn().signIn()
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) return null;
       final GoogleSignInAuthentication googleAuth =
           await googleUser.authentication;
@@ -270,7 +254,9 @@ class AuthService {
       final res = await _auth.signInWithCredential(credential);
       if (res.user != null) {
         final doc = await FirebaseFirestore.instance.collection(HubPaths.users).doc(res.user!.uid).get();
-        final existingReferral = doc.data()?['myReferralCode'];
+        final existingData = doc.data();
+        final existingReferral = existingData?['myReferralCode'];
+        final isNewUser = !doc.exists;
 
         await _firestore.updateProfile(res.user!.uid, {
           'name': res.user!.displayName,
@@ -278,6 +264,9 @@ class AuthService {
           'profilePic': res.user!.photoURL,
           'myReferralCode': existingReferral ?? await _generateReferralCode(res.user!.displayName ?? 'User', null),
           'lastLogin': FieldValue.serverTimestamp(),
+          // Issue #12: Set role and createdAt for new Google Sign-In users
+          if (isNewUser) 'role': 'customer',
+          if (isNewUser) 'createdAt': FieldValue.serverTimestamp(),
         });
       }
       return res.user;

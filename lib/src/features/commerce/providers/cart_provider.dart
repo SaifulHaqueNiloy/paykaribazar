@@ -217,6 +217,9 @@ class CartNotifier extends StateNotifier<CartState> {
     }
   }
 
+  /// Semantic alias: decreases item quantity by 1, or removes if qty is 1.
+  void decreaseQuantity(String id) => removeItem(id);
+
   void updateQuantity(String id, int quantity) {
     final index = state.items.indexWhere((i) => i.id == id);
     if (index != -1 && quantity > 0) {

@@ -8,7 +8,6 @@ analyzer:
     dead_code: warning
     deprecated_member_use: info
     subtype_of_sealed_class: ignore
-    must_be_immutable: ignore
   exclude:
     - "**/*.g.dart"
     - "**/*.freezed.dart"

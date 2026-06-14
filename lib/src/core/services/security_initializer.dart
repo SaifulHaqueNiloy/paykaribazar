@@ -1,8 +1,9 @@
 import 'package:get_it/get_it.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter/foundation.dart';
 import 'secure_auth_service.dart';
 import 'encryption_service.dart';
 import 'api_security_service.dart';
-import 'package:flutter/material.dart';
 
 /// Security services initialization
 /// Call this in service_initializer.dart during Phase 1 (Core services)
@@ -13,45 +14,44 @@ class SecurityInitializer {
   /// This should be called early during app startup (Phase 1)
   static Future<void> initializeSecurityServices() async {
     try {
-      debugPrint('🔐 [SecurityInitializer] Starting security services initialization...');
+      if (kDebugMode) debugPrint('🔐 [SecurityInitializer] Starting security services initialization...');
 
-      // 1. Initialize encryption service first (no async)
+      // 1. Initialize encryption service — key from .env
       if (!getIt.isRegistered<EncryptionService>()) {
-        getIt.registerSingleton<EncryptionService>(EncryptionService());
-        debugPrint('✅ [SecurityInitializer] EncryptionService registered');
-      } else {
-        debugPrint('⚠️ [SecurityInitializer] EncryptionService already registered');
+        final encKey = dotenv.env['ENCRYPTION_KEY'] ?? 'MySecureAES256KeyFor32BytLength!';
+        getIt.registerSingleton<EncryptionService>(EncryptionService(encKey));
+        if (kDebugMode) debugPrint('✅ [SecurityInitializer] EncryptionService registered');
       }
 
-      // 2. Initialize API security service (no async)
+      // 2. Initialize API security service — credentials from .env
       if (!getIt.isRegistered<APISecurityService>()) {
-        getIt.registerSingleton<APISecurityService>(APISecurityService());
-        debugPrint('✅ [SecurityInitializer] APISecurityService registered');
-      } else {
-        debugPrint('⚠️ [SecurityInitializer] APISecurityService already registered');
+        final apiKey = dotenv.env['API_KEY'] ?? 'paykari_bazar_api_key';
+        final apiSecret = dotenv.env['API_SECRET'] ?? 'paykari_bazar_api_secret_key_1234567890';
+        getIt.registerSingleton<APISecurityService>(
+          APISecurityService(apiKey: apiKey, apiSecret: apiSecret),
+        );
+        if (kDebugMode) debugPrint('✅ [SecurityInitializer] APISecurityService registered');
       }
 
       // 3. Initialize secure auth service and check biometric
       if (!getIt.isRegistered<SecureAuthService>()) {
-        debugPrint('🔄 [SecurityInitializer] Creating and initializing SecureAuthService...');
+        if (kDebugMode) debugPrint('🔄 [SecurityInitializer] Creating and initializing SecureAuthService...');
         final secureAuthService = SecureAuthService();
         try {
           await secureAuthService.initialize();
-          debugPrint('✅ [SecurityInitializer] SecureAuthService initialized (biometric check complete)');
+          if (kDebugMode) debugPrint('✅ [SecurityInitializer] SecureAuthService initialized (biometric check complete)');
         } catch (initError) {
-          debugPrint('⚠️ [SecurityInitializer] SecureAuthService initialization warning: $initError (non-critical)');
+          if (kDebugMode) debugPrint('⚠️ [SecurityInitializer] SecureAuthService initialization warning: $initError (non-critical)');
           // Non-critical error - app can continue without biometric
         }
         getIt.registerSingleton<SecureAuthService>(secureAuthService);
-        debugPrint('✅ [SecurityInitializer] SecureAuthService registered in GetIt');
-      } else {
-        debugPrint('⚠️ [SecurityInitializer] SecureAuthService already registered');
+        if (kDebugMode) debugPrint('✅ [SecurityInitializer] SecureAuthService registered in GetIt');
       }
 
-      debugPrint('🟢 [SecurityInitializer] All security services initialized successfully');
+      if (kDebugMode) debugPrint('🟢 [SecurityInitializer] All security services initialized successfully');
     } catch (e, stack) {
-      debugPrint('🔴 [SecurityInitializer] Security initialization FAILED: $e');
-      debugPrint('Stack: $stack');
+      if (kDebugMode) debugPrint('🔴 [SecurityInitializer] Security initialization FAILED: $e');
+      if (kDebugMode) debugPrint('Stack: $stack');
       rethrow;
     }
   }

@@ -20,9 +20,9 @@ class CacheService {
       await Hive.initFlutter();
       _cacheBox = await Hive.openBox(_defaultBoxName);
       _isInitialized = true;
-      debugPrint('✅ Cache service initialized');
+      if (kDebugMode) debugPrint('✅ Cache service initialized');
     } catch (e) {
-      debugPrint('❌ Cache initialization failed: $e');
+      if (kDebugMode) debugPrint('❌ Cache initialization failed: $e');
       rethrow;
     }
   }
@@ -54,9 +54,9 @@ class CacheService {
 
     try {
       await _cacheBox.put(cacheKey, jsonEncode(cacheData));
-      debugPrint('✅ Data cached for key: $key (Expires: $expiration)');
+      if (kDebugMode) debugPrint('✅ Data cached for key: $key (Expires: $expiration)');
     } catch (e) {
-      debugPrint('❌ Failed to save to cache: $e');
+      if (kDebugMode) debugPrint('❌ Failed to save to cache: $e');
     }
   }
 
@@ -75,15 +75,15 @@ class CacheService {
       final expiresAt = DateTime.parse(cacheData['expiresAt']);
 
       if (DateTime.now().isAfter(expiresAt)) {
-        debugPrint('⚠️ Cache expired for key: $key');
+        if (kDebugMode) debugPrint('⚠️ Cache expired for key: $key');
         await delete(key);
         return null;
       }
 
-      debugPrint('✅ Cache hit for key: $key');
+      if (kDebugMode) debugPrint('✅ Cache hit for key: $key');
       return cacheData['value'] as T?;
     } catch (e) {
-      debugPrint('❌ Cache retrieval error: $e');
+      if (kDebugMode) debugPrint('❌ Cache retrieval error: $e');
       return null;
     }
   }
@@ -99,7 +99,7 @@ class CacheService {
   Future<void> clearAll() async {
     if (!_isInitialized) await init();
     await _cacheBox.clear();
-    debugPrint('🧹 All cache cleared');
+    if (kDebugMode) debugPrint('🧹 All cache cleared');
   }
 
   /// Get metadata for a cached item
@@ -144,7 +144,7 @@ class CacheService {
     }
 
     if (count > 0) {
-      debugPrint('🧹 Cleanup: Removed $count expired items from cache');
+      if (kDebugMode) debugPrint('🧹 Cleanup: Removed $count expired items from cache');
     }
   }
 

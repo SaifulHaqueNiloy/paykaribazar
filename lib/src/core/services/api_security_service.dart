@@ -1,5 +1,7 @@
 import 'package:crypto/crypto.dart';
 import 'dart:convert';
+import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 /// Service for securing API requests with HMAC-SHA256 signatures
@@ -10,32 +12,29 @@ import 'package:flutter/material.dart';
 /// 2. Sign with API secret using HMAC-SHA256
 /// 3. Add to request headers: X-Signature, X-Timestamp, X-Nonce, X-API-Key
 class APISecurityService {
-  // API credentials - TODO: Move to environment variables / secure storage
-  static const String apiKey = 'paykari_bazar_api_key';
-  static const String apiSecret = 'paykari_bazar_api_secret_key_1234567890';
+  /// API credentials — must be provided from a secure source (e.g., .env or Remote Config).
+  /// Never hardcode secrets in source code.
+  String _apiKey;
+  String _apiSecret;
 
-  String? _customApiKey;
-  String? _customApiSecret;
-
+  /// Creates an APISecurityService.
+  /// [apiKey] and [apiSecret] should be loaded from environment variables or secure storage.
   APISecurityService({
-    String? apiKey,
-    String? apiSecret,
-  }) {
-    _customApiKey = apiKey;
-    _customApiSecret = apiSecret;
-  }
+    required String apiKey,
+    required String apiSecret,
+  })  : _apiKey = apiKey,
+        _apiSecret = apiSecret;
 
-  /// Get current API key (custom or default)
-  String get _activeApiKey => _customApiKey ?? apiKey;
+  /// Get current API key
+  String get _activeApiKey => _apiKey;
 
-  /// Get current API secret (custom or default)
-  String get _activeApiSecret => _customApiSecret ?? apiSecret;
+  /// Get current API secret
+  String get _activeApiSecret => _apiSecret;
 
-  /// Generate cryptographically secure nonce
+  /// Generate cryptographically secure nonce using Random.secure()
   String _generateNonce() {
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
-    final random = DateTime.now().microsecond;
-    return '${timestamp}_${random}_${DateTime.now().millisecondsSinceEpoch}';
+    final r = Random.secure();
+    return List.generate(32, (_) => r.nextInt(256).toRadixString(16).padLeft(2, '0')).join();
   }
 
   /// Create signature from request elements
@@ -76,14 +75,14 @@ class APISecurityService {
         'Accept': 'application/json',
       };
 
-      debugPrint(
+      if (kDebugMode) debugPrint(
         '✅ Secure headers generated for $endpoint\n'
         '   Signature: ${signature.substring(0, 16)}...',
       );
 
       return headers;
     } catch (e) {
-      debugPrint('❌ Failed to generate secure headers: $e');
+      if (kDebugMode) debugPrint('❌ Failed to generate secure headers: $e');
       rethrow;
     }
   }
@@ -106,12 +105,12 @@ class APISecurityService {
 
       final isValid = signature == expectedSignature;
       isValid
-          ? debugPrint('✅ Response signature verified')
-          : debugPrint('❌ Response signature verification FAILED');
+          ? {if (kDebugMode) debugPrint('✅ Response signature verified')}
+          : {if (kDebugMode) debugPrint('❌ Response signature verification FAILED')};
 
       return isValid;
     } catch (e) {
-      debugPrint('❌ Signature verification error: $e');
+      if (kDebugMode) debugPrint('❌ Signature verification error: $e');
       return false;
     }
   }
@@ -168,16 +167,9 @@ class APISecurityService {
 
   /// Update API credentials (for multi-tenant support)
   void updateCredentials({required String apiKey, required String apiSecret}) {
-    _customApiKey = apiKey;
-    _customApiSecret = apiSecret;
-    debugPrint('✅ API credentials updated');
-  }
-
-  /// Reset to default credentials
-  void resetCredentials() {
-    _customApiKey = null;
-    _customApiSecret = null;
-    debugPrint('✅ API credentials reset to default');
+    _apiKey = apiKey;
+    _apiSecret = apiSecret;
+    if (kDebugMode) debugPrint('✅ API credentials updated');
   }
 
   // ============================================================================
@@ -239,7 +231,7 @@ class APISecurityService {
 
       return signature == expectedSignature.toString();
     } catch (e) {
-      debugPrint('❌ Webhook signature verification failed: $e');
+      if (kDebugMode) debugPrint('❌ Webhook signature verification failed: $e');
       return false;
     }
   }
