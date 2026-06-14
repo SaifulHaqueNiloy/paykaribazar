@@ -1,7 +1,7 @@
-// Customer Application Entry Point
+// Admin Application Entry Point - Consolidated
 
 import 'package:flutter/material.dart';
-import 'app_shared.dart';
+import '../../paykari_bazar/lib/app_shared.dart';
 
 void main() {
   AppLauncher.launch(const MyApp());
@@ -13,9 +13,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Paykari Bazar Customer',
+      title: 'Paykari Admin',
       theme: AppTheme.light,
-      home: const MyHomePage(title: 'Paykari Bazar'),
+      home: const MyHomePage(title: 'Admin Dashboard'),
     );
   }
 }
@@ -49,9 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('You have pushed the button this many times:'),
+            const Text('Admin Dashboard Stats:'),
             Text(
-              '$_counter',
+              'Total Actions: $_counter',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],

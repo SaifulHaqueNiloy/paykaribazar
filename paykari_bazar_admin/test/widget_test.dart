@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:paykari_bazar_admin/main.dart';
+import 'package:paykari_bazar_admin/main_admin.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
