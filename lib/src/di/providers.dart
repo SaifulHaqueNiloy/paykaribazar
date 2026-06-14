@@ -105,10 +105,14 @@ final authStateProvider = StreamProvider<User?>((ref) => FirebaseAuth.instance.a
 /// এটি ব্যবহার করলে রিড এবং রাইট উভয়ই সিমুলেটেড ইউজারের ওপর কাজ করবে
 final activeUserIdProvider = Provider<String?>((ref) {
   // Logic check: If user is logged out, simulation MUST be null
+  ref.listen<AsyncValue<User?>>(authStateProvider, (previous, next) {
+    if (next.value == null) {
+      ref.read(simulatedUserUidProvider.notifier).state = null;
+    }
+  });
+
   final authUser = ref.watch(authStateProvider).value;
   if (authUser == null) {
-    // If no one is logged in, ensure simulation is cleared for next session
-    Future.microtask(() => ref.read(simulatedUserUidProvider.notifier).state = null);
     return null;
   }
 

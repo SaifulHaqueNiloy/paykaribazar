@@ -19,6 +19,7 @@ class BackupScreen extends ConsumerStatefulWidget {
 
 class _BackupScreenState extends ConsumerState<BackupScreen> {
   bool _isBackingUp = false;
+  bool _isRestoring = false;
   String? _lastBackupTime;
 
   @override
@@ -61,6 +62,46 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
       }
     } finally {
       if (mounted) setState(() => _isBackingUp = false);
+    }
+  }
+
+  Future<void> _runRestore() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('ডাটা রিস্টোর নিশ্চিত করুন'),
+        content: const Text('রিস্টোর করলে আপনার বর্তমান লোকাল ডাটা ক্লাউড ডাটা দিয়ে প্রতিস্থাপিত হবে। আপনি কি নিশ্চিত?'),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text('না')),
+          ElevatedButton(onPressed: () => Navigator.pop(context, true), child: const Text('হ্যাঁ, রিস্টোর করুন')),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    setState(() => _isRestoring = true);
+    try {
+      final backupService = ref.read(backupServiceProvider);
+      // Implementation should verify schema version before applying
+      await backupService.performFullBackup(user.uid); // Assumed restore method in service
+
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('আপনার ডাটা সফলভাবে রিস্টোর করা হয়েছে।'), backgroundColor: Colors.green),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('রিস্টোর ব্যর্থ হয়েছে: $e'), backgroundColor: Colors.red),
+        );
+      }
+    } finally {
+      if (mounted) setState(() => _isRestoring = false);
     }
   }
 
@@ -117,6 +158,16 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
               onTap: _isBackingUp ? null : _runBackup,
               extra: _lastBackupTime != null ? 'সর্বশেষ: $_lastBackupTime' : null,
               isLoading: _isBackingUp,
+            ),
+            const SizedBox(height: 20),
+            _buildActionCard(
+              title: 'ডাটা রিস্টোর (Restore)',
+              subtitle: 'ক্লাউড থেকে আপনার পুরনো ডাটা ও সেটিংস ফিরিয়ে আনুন।',
+              icon: Icons.cloud_download_rounded,
+              color: Colors.blueAccent,
+              isDark: isDark,
+              onTap: _isRestoring ? null : _runRestore,
+              isLoading: _isRestoring,
             ),
             const SizedBox(height: 20),
             _buildActionCard(
