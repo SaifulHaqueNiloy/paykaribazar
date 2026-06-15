@@ -79,6 +79,8 @@ class AIService {
     _providers.clear();
     _providerRegistry.clear();
 
+    // Kimi & DeepSeek disabled from root as no active keys are available
+    /*
     final kimiKey = _secrets.getSecret('NVIDIA_API_KEY');
     if (kimiKey.isNotEmpty) {
       final provider = KimiProvider(apiKey: kimiKey);
@@ -92,6 +94,7 @@ class AIService {
       _providers.add(provider);
       _providerRegistry['deepseek'] = provider;
     }
+    */
 
     final geminiKeys = [
       ..._secrets.getKeysByPrefix('GEMINI_MASTER_KEY'),
@@ -169,7 +172,7 @@ class AIService {
   void _initializeProviderManager() {
     final primaryProvider = _providers.isNotEmpty 
         ? _providers.first 
-        : DeepSeekProvider(apiKey: 'test');
+        : GeminiProvider(apiKey: 'test', modelName: AIConfig.primaryModel);
     
     final fallbackProvider = FallbackProvider();
     
