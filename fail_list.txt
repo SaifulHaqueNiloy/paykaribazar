@@ -1,8 +1,0 @@
-﻿
-00:22 +221 -1: loading C:/Users/n/paykari_bazar/test/services/ai_service_test.dart [E]
-00:42 +326 -2: loading C:/Users/n/paykari_bazar/test/unit/ai_service_test.dart [E]
-01:10 +456 -3: loading C:/Users/n/paykari_bazar/test/widgets/cart_screen_test.dart [E]
-01:37 +507 -4: loading C:/Users/n/paykari_bazar/test/widgets/home_widgets_test.dart [E]
-02:44 +535 -4: Some tests failed.
-
-
