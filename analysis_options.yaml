@@ -9,6 +9,7 @@ analyzer:
     deprecated_member_use: info
     subtype_of_sealed_class: warning
     unawaited_futures: error
+    use_build_context_synchronously: error
     missing_required_param: error
     avoid_print: error
     prefer_const_constructors: error

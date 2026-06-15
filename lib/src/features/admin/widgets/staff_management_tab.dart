@@ -66,7 +66,7 @@ class StaffManagementTab extends ConsumerWidget {
       child: Row(
         children: [
           CircleAvatar(
-            backgroundColor: _getCol(role).withOpacity(0.1),
+            backgroundColor: _getCol(role).withValues(alpha: 0.1),
             child: Icon(_getIcon(role), color: _getCol(role), size: 20),
           ),
           const SizedBox(width: 16),
@@ -196,7 +196,7 @@ class StaffManagementTab extends ConsumerWidget {
                         color: Colors.grey)),
                 const SizedBox(height: 8),
                 DropdownButtonFormField<String>(
-                  value: role,
+                  initialValue: role,
                   items: [
                     'admin',
                     'staff',
@@ -228,7 +228,7 @@ class StaffManagementTab extends ConsumerWidget {
                   value: allowMultipleDevices,
                   onChanged: (v) =>
                       setModalState(() => allowMultipleDevices = v),
-                  activeColor: AppStyles.primaryColor,
+                  activeThumbColor: AppStyles.primaryColor,
                 ),
                 const SizedBox(height: 32),
                 SizedBox(

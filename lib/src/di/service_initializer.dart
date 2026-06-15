@@ -81,11 +81,19 @@ class ServiceInitializer {
     getIt.registerLazySingleton<FirebaseCoreService>(() => firebaseCore);
 
     // DNA ENFORCED: Activate App Check before using any Firebase services
-    // বাংলা: কোনো ফায়ারবেস সার্ভিস ব্যবহারের আগে অ্যাপ চেক চালু করা হয়েছে
-    await FirebaseAppCheck.instance.activate(
-      androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
-      appleProvider: kDebugMode ? AppleProvider.debug : AppleProvider.deviceCheck,
-    );
+    // বাংলা: কোনো ফায়ারবেস সার্ভিস ব্যবহারের আগে অ্যাপ চেক চালু করা হয়েছে
+    // NOTE: Shorebird preview তে kDebugMode=false হয় কিন্তু Play Integrity
+    // কাজ করে না (Play Store certified না)। তাই debug/profile উভয়তেই
+    // debug provider ব্যবহার করা হচ্ছে।
+    try {
+      const isRelease = !kDebugMode && !kProfileMode;
+      await FirebaseAppCheck.instance.activate(
+        providerAndroid: isRelease ? AndroidProvider.playIntegrity : AndroidProvider.debug,
+        providerApple: isRelease ? AppleProvider.deviceCheck : AppleProvider.debug,
+      ).timeout(const Duration(seconds: 5));
+    } catch (e) {
+      if (kDebugMode) debugPrint('⚠️ App Check activation failed (non-fatal): $e');
+    }
 
     getIt.registerLazySingleton<FirestoreService>(() => FirestoreService());
     getIt.registerLazySingleton<FirebaseAuthService>(
@@ -95,17 +103,29 @@ class ServiceInitializer {
     
     // Firebase Billing Monitor (tracks usage and costs)
     final billingMonitor = FirebaseBillingMonitor();
-    await billingMonitor.initialize();
+    try {
+      await billingMonitor.initialize().timeout(const Duration(seconds: 5));
+    } catch (e) {
+      debugPrint('⚠️ BillingMonitor init failed (non-fatal): $e');
+    }
     getIt.registerLazySingleton<FirebaseBillingMonitor>(() => billingMonitor);
     
     // Dynamic Feature Control (admin controls for customer app)
     final featureControl = DynamicFeatureControl();
-    await featureControl.initialize();
+    try {
+      await featureControl.initialize().timeout(const Duration(seconds: 5));
+    } catch (e) {
+      debugPrint('⚠️ DynamicFeatureControl init failed (non-fatal): $e');
+    }
     getIt.registerLazySingleton<DynamicFeatureControl>(() => featureControl);
 
     // Phase 3: Shared
     final notificationService = NotificationService();
-    await notificationService.init();
+    try {
+      await notificationService.init().timeout(const Duration(seconds: 5));
+    } catch (e) {
+      debugPrint('⚠️ NotificationService init failed (non-fatal): $e');
+    }
     getIt.registerLazySingleton<NotificationService>(() => notificationService);
 
     getIt.registerLazySingleton<LocationService>(() => LocationService());
@@ -122,7 +142,11 @@ class ServiceInitializer {
     
     // Initialize OTA Service
     final otaService = OTAService();
-    await otaService.initialize();
+    try {
+      await otaService.initialize().timeout(const Duration(seconds: 5));
+    } catch (e) {
+      debugPrint('⚠️ OTAService init failed (non-fatal): $e');
+    }
 
     // Phase 4: Feature Services
     getIt.registerLazySingleton<AuthService>(() => AuthService(

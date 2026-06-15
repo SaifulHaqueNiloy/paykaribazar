@@ -74,8 +74,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
       }
 
       final fileName = file.path.split('/').last;
-      final int points = (user['points'] ?? 0).toInt();
-      final String role = user['role'] ?? 'customer';
+
 
       await userMediaService.uploadUserMedia(authUser.uid, file, fileName);
 
@@ -163,7 +162,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
         stream: userMediaService.getUserMediaStream(authUser.uid),
         builder: (context, snapshot) {
           final list = snapshot.data ?? [];
-          final int usedBytes = list.fold<int>(0, (sum, item) => sum + (item['fileSize'] as int? ?? 0));
+          final int usedBytes = list.fold<int>(0, (acc, item) => acc + (item['fileSize'] as int? ?? 0));
           final double usedMB = usedBytes / (1024 * 1024);
           final double usagePercent = (usedBytes / limitBytes).clamp(0.0, 1.0);
 
@@ -179,12 +178,12 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: isDark
-                            ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.03)]
-                            : [Colors.teal.withOpacity(0.05), Colors.teal.withOpacity(0.01)],
+                            ? [Colors.white.withValues(alpha: 0.08), Colors.white.withValues(alpha: 0.03)]
+                            : [Colors.teal.withValues(alpha: 0.05), Colors.teal.withValues(alpha: 0.01)],
                       ),
                       borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                        color: isDark ? Colors.white.withOpacity(0.08) : Colors.teal.withOpacity(0.1),
+                        color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.teal.withValues(alpha: 0.1),
                       ),
                     ),
                     child: Column(
@@ -206,7 +205,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               decoration: BoxDecoration(
-                                color: AppStyles.primaryColor.withOpacity(0.1),
+                                color: AppStyles.primaryColor.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -222,7 +221,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                           child: LinearProgressIndicator(
                             value: usagePercent,
                             minHeight: 12,
-                            backgroundColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[200],
+                            backgroundColor: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[200],
                             valueColor: const AlwaysStoppedAnimation<Color>(AppStyles.primaryColor),
                           ),
                         ),
@@ -253,7 +252,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     decoration: BoxDecoration(
-                      color: isDark ? Colors.white.withOpacity(0.03) : Colors.white,
+                      color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.white,
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: !isDark ? AppStyles.softShadow : null,
                     ),
@@ -263,7 +262,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                         const Row(
                           children: [
                             Icon(Icons.backup_rounded, color: AppStyles.primaryColor, size: 20),
-                            const SizedBox(width: 12),
+                            SizedBox(width: 12),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -284,7 +283,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                               }
                             }
                           },
-                          activeColor: AppStyles.primaryColor,
+                          activeThumbColor: AppStyles.primaryColor,
                         ),
                       ],
                     ),
@@ -340,7 +339,7 @@ class _CloudStorageScreenState extends ConsumerState<CloudStorageScreen> {
                                   color: isDark ? const Color(0xFF1E293B) : Colors.white,
                                   borderRadius: BorderRadius.circular(16),
                                   boxShadow: !isDark ? AppStyles.softShadow : null,
-                                  border: Border.all(color: Colors.white.withOpacity(0.03)),
+                                  border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
                                 ),
                                 child: Row(
                                   children: [

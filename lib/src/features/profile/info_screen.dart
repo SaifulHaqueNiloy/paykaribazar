@@ -135,7 +135,7 @@ class InfoScreen extends ConsumerWidget {
                               borderRadius: BorderRadius.circular(16),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
+                                  color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
                                   blurRadius: 10,
                                   offset: const Offset(0, 4),
                                 )
@@ -159,7 +159,7 @@ class InfoScreen extends ConsumerWidget {
                                       decoration: BoxDecoration(
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                          color: roleColor.withOpacity(0.3),
+                                          color: roleColor.withValues(alpha: 0.3),
                                           width: 2,
                                         ),
                                       ),
@@ -191,7 +191,7 @@ class InfoScreen extends ConsumerWidget {
                                           Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                             decoration: BoxDecoration(
-                                              color: roleColor.withOpacity(0.1),
+                                              color: roleColor.withValues(alpha: 0.1),
                                               borderRadius: BorderRadius.circular(8),
                                             ),
                                             child: Row(
@@ -217,7 +217,7 @@ class InfoScreen extends ConsumerWidget {
                                     if (phone.isNotEmpty)
                                       Container(
                                         decoration: BoxDecoration(
-                                          color: Colors.green.withOpacity(0.1),
+                                          color: Colors.green.withValues(alpha: 0.1),
                                           shape: BoxShape.circle,
                                         ),
                                         child: IconButton(

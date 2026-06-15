@@ -2,7 +2,7 @@ import 'package:crypto/crypto.dart';
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+
 
 /// Service for securing API requests with HMAC-SHA256 signatures
 /// Ensures: Request authenticity, integrity, and non-repudiation

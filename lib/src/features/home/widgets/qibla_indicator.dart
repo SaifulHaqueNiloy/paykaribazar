@@ -177,14 +177,14 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
                 height: widget.size,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDark ? Colors.white.withOpacity(0.02) : Colors.grey[50],
+                  color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.grey[50],
                   border: Border.all(
-                    color: _isAligned ? Colors.teal.withOpacity(0.5) : Colors.grey.withOpacity(0.1), 
+                    color: _isAligned ? Colors.teal.withValues(alpha: 0.5) : Colors.grey.withValues(alpha: 0.1), 
                     width: 2
                   ),
                   boxShadow: [
                     if (_isAligned) 
-                      BoxShadow(color: Colors.teal.withOpacity(0.2), blurRadius: 20, spreadRadius: 5),
+                      BoxShadow(color: Colors.teal.withValues(alpha: 0.2), blurRadius: 20, spreadRadius: 5),
                   ],
                 ),
               ),
@@ -250,7 +250,7 @@ class _QiblaIndicatorState extends State<QiblaIndicator> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             decoration: BoxDecoration(
-              color: _isAligned ? Colors.teal.withOpacity(0.1) : Colors.transparent,
+              color: _isAligned ? Colors.teal.withValues(alpha: 0.1) : Colors.transparent,
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

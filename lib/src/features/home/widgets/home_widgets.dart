@@ -46,7 +46,7 @@ class _BannerSliderState extends State<BannerSlider> {
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.1),
+                    color: Colors.black.withValues(alpha: 0.1),
                     blurRadius: 8,
                     offset: const Offset(0, 4),
                   )
@@ -80,7 +80,7 @@ class _BannerSliderState extends State<BannerSlider> {
               margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 3.0),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
-                color: AppStyles.primaryColor.withOpacity(
+                color: AppStyles.primaryColor.withValues(alpha: 
                   _current == entry.key ? 1.0 : 0.2,
                 ),
               ),
@@ -114,7 +114,7 @@ class SectionHeader extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.blueAccent.withOpacity(0.1),
+                color: Colors.blueAccent.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: const Text('সব দেখুন',
@@ -186,7 +186,7 @@ class ProductCard extends ConsumerWidget {
           color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
           borderRadius: BorderRadius.circular(16),
           boxShadow: AppStyles.softShadow,
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -207,7 +207,7 @@ class ProductCard extends ConsumerWidget {
                       memCacheWidth: 400, 
                       memCacheHeight: 400,
                       placeholder: (context, url) => Container(
-                        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey[200],
+                        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey[200],
                         child: const Center(child: CircularProgressIndicator(strokeWidth: 1)),
                       ),
                       errorWidget: (context, url, error) => const Icon(Icons.broken_image, color: Colors.grey),
@@ -227,7 +227,7 @@ class ProductCard extends ConsumerWidget {
                           final isLiked = wishlist.contains(effectiveProduct!.id);
                           return _iconCircle(
                             isLiked ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                            isLiked ? Colors.red.withOpacity(0.9) : Colors.black26,
+                            isLiked ? Colors.red.withValues(alpha: 0.9) : Colors.black26,
                           );
                         }
                       ),
@@ -255,7 +255,7 @@ class ProductCard extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: effectiveProduct.stock > 0 ? Colors.green.withOpacity(0.8) : Colors.red.withOpacity(0.8),
+                        color: effectiveProduct.stock > 0 ? Colors.green.withValues(alpha: 0.8) : Colors.red.withValues(alpha: 0.8),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(effectiveProduct.stock > 0 ? 'IN STOCK' : 'OUT',
@@ -356,7 +356,7 @@ class StaticSearchBar extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFF1E293B),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white.withOpacity(0.05)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
       ),
       child: Row(
         children: [
@@ -403,7 +403,7 @@ class StickyHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: AppStyles.darkBackgroundColor.withOpacity(0.95),
+      color: AppStyles.darkBackgroundColor.withValues(alpha: 0.95),
       padding: const EdgeInsets.fromLTRB(16, 40, 16, 12),
       child: StaticSearchBar(isDark: isDark, t: t),
     );

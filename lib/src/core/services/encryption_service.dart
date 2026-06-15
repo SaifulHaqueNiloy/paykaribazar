@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:encrypt/encrypt.dart' as encrypt_lib;
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+
 
 class EncryptionService {
   final encrypt_lib.Key _key;

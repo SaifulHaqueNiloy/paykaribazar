@@ -145,7 +145,7 @@ class _AiMasterTabState extends ConsumerState<AiMasterTab>
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF0F172A) : Colors.white,
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
         ],
       ),
       child: Column(
@@ -260,12 +260,12 @@ class _AiMasterTabState extends ConsumerState<AiMasterTab>
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.03) : Colors.white,
+        color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.white,
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
             color: isExhausted
-                ? Colors.red.withOpacity(0.3)
-                : Colors.green.withOpacity(0.1)),
+                ? Colors.red.withValues(alpha: 0.3)
+                : Colors.green.withValues(alpha: 0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -305,7 +305,7 @@ class _AiMasterTabState extends ConsumerState<AiMasterTab>
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-          color: color.withOpacity(0.1),
+          color: color.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8)),
       child: Text(text,
           style: TextStyle(
@@ -319,9 +319,9 @@ class _AiMasterTabState extends ConsumerState<AiMasterTab>
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         decoration: BoxDecoration(
-            color: AppStyles.primaryColor.withOpacity(0.1),
+            color: AppStyles.primaryColor.withValues(alpha: 0.1),
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppStyles.primaryColor.withOpacity(0.3))),
+            border: Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.3))),
         child: Row(
           children: [
             Icon(icon, color: AppStyles.primaryColor, size: 14),
@@ -347,8 +347,8 @@ class _AiMasterTabState extends ConsumerState<AiMasterTab>
         boxShadow: [
           BoxShadow(
               color: active
-                  ? Colors.green.withOpacity(0.5)
-                  : Colors.red.withOpacity(0.5),
+                  ? Colors.green.withValues(alpha: 0.5)
+                  : Colors.red.withValues(alpha: 0.5),
               blurRadius: 8,
               spreadRadius: 2)
         ],
@@ -606,12 +606,12 @@ class SovereignRulesLab extends ConsumerWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.03) : Colors.white,
+          color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.white,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
               color: enabled
-                  ? Colors.green.withOpacity(0.2)
-                  : Colors.grey.withOpacity(0.2))),
+                  ? Colors.green.withValues(alpha: 0.2)
+                  : Colors.grey.withValues(alpha: 0.2))),
       child: ListTile(
         leading: Icon(Icons.auto_fix_high_rounded,
             color: enabled ? Colors.green : Colors.grey),
@@ -974,7 +974,7 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab>
       Container(
         padding: const EdgeInsets.symmetric(horizontal: 16),
         decoration: BoxDecoration(
-            color: Colors.blueGrey.withOpacity(0.05),
+            color: Colors.blueGrey.withValues(alpha: 0.05),
             borderRadius: BorderRadius.circular(12)),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
@@ -1005,7 +1005,7 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab>
             hintText: hint,
             hintStyle: const TextStyle(fontSize: 12),
             filled: true,
-            fillColor: Colors.blueGrey.withOpacity(0.05),
+            fillColor: Colors.blueGrey.withValues(alpha: 0.05),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
                 borderSide: BorderSide.none)),
@@ -1020,9 +1020,9 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab>
       width: double.infinity,
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.03) : Colors.white,
+          color: isDark ? Colors.white.withValues(alpha: 0.03) : Colors.white,
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(color: Colors.indigo.withOpacity(0.2))),
+          border: Border.all(color: Colors.indigo.withValues(alpha: 0.2))),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1041,7 +1041,7 @@ class _VirtualDataLabState extends ConsumerState<VirtualDataLab>
           ...items.map((item) => ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: CircleAvatar(
-                    backgroundColor: Colors.indigo.withOpacity(0.1),
+                    backgroundColor: Colors.indigo.withValues(alpha: 0.1),
                     child: const Icon(Icons.auto_awesome_rounded,
                         size: 18, color: Colors.indigo)),
                 title: Text(item['title'] ?? 'Record',
@@ -1150,11 +1150,11 @@ class DesignControlTab extends ConsumerWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isSelected
-              ? themeColor.withOpacity(0.1)
-              : Colors.white.withOpacity(0.05),
+              ? themeColor.withValues(alpha: 0.1)
+              : Colors.white.withValues(alpha: 0.05),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-              color: isSelected ? themeColor : Colors.grey.withOpacity(0.1),
+              color: isSelected ? themeColor : Colors.grey.withValues(alpha: 0.1),
               width: 2),
         ),
         child: Row(
@@ -1305,7 +1305,7 @@ class CustomUiLabTab extends ConsumerWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           decoration: BoxDecoration(
-              color: Colors.blueGrey.withOpacity(0.05),
+              color: Colors.blueGrey.withValues(alpha: 0.05),
               borderRadius: BorderRadius.circular(12)),
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(

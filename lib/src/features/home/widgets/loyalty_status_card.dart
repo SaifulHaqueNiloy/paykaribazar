@@ -41,7 +41,7 @@ class LoyaltyStatusCard extends ConsumerWidget {
             color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
             borderRadius: BorderRadius.circular(20),
             boxShadow: AppStyles.softShadow,
-            border: Border.all(color: tierColor.withOpacity(0.3)),
+            border: Border.all(color: tierColor.withValues(alpha: 0.3)),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -58,7 +58,7 @@ class LoyaltyStatusCard extends ConsumerWidget {
                   ),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(color: tierColor.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+                    decoration: BoxDecoration(color: tierColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(20)),
                     child: Text('$points Points', style: TextStyle(color: tierColor, fontWeight: FontWeight.bold, fontSize: 12)),
                   ),
                 ],
@@ -68,7 +68,7 @@ class LoyaltyStatusCard extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(10),
                 child: LinearProgressIndicator(
                   value: progress,
-                  backgroundColor: tierColor.withOpacity(0.1),
+                  backgroundColor: tierColor.withValues(alpha: 0.1),
                   color: tierColor,
                   minHeight: 8,
                 ),

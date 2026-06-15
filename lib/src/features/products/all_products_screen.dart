@@ -306,7 +306,7 @@ class _AllProductsScreenState extends ConsumerState<AllProductsScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.inventory_2_outlined, size: 80, color: Colors.grey.withOpacity(0.3)),
+          Icon(Icons.inventory_2_outlined, size: 80, color: Colors.grey.withValues(alpha: 0.3)),
           const SizedBox(height: 16),
           const Text('কোন পণ্য পাওয়া যায়নি', style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold)),
         ],

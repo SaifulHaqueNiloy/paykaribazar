@@ -161,17 +161,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: isDark 
-                        ? [color.withOpacity(0.12), color.withOpacity(0.04)] 
-                        : [color.withOpacity(0.08), color.withOpacity(0.02)],
+                        ? [color.withValues(alpha: 0.12), color.withValues(alpha: 0.04)] 
+                        : [color.withValues(alpha: 0.08), color.withValues(alpha: 0.02)],
                   ),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: color.withOpacity(isDark ? 0.3 : 0.2),
+                    color: color.withValues(alpha: isDark ? 0.3 : 0.2),
                     width: 1.5,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: color.withOpacity(0.05),
+                      color: color.withValues(alpha: 0.05),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
@@ -186,7 +186,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       style: TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white.withOpacity(0.9) : Colors.black87,
+                        color: isDark ? Colors.white.withValues(alpha: 0.9) : Colors.black87,
                       ),
                     ),
                   ],
@@ -267,9 +267,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         margin: const EdgeInsets.all(16),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.red.withOpacity(0.1),
+                          color: Colors.red.withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(8),
-                          border: Border.all(color: Colors.red.withOpacity(0.3)),
+                          border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
                         ),
                         child: Column(
                           children: [

@@ -117,7 +117,7 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
             margin: const EdgeInsets.all(16),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: _isSandboxEnabled ? Colors.green.withOpacity(0.1) : Colors.orange.withOpacity(0.1),
+              color: _isSandboxEnabled ? Colors.green.withValues(alpha: 0.1) : Colors.orange.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: _isSandboxEnabled ? Colors.green : Colors.orange),
             ),
@@ -140,7 +140,7 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
                 Switch(
                   value: _isSandboxEnabled,
                   onChanged: (v) => setState(() => _isSandboxEnabled = v),
-                  activeColor: Colors.green,
+                  activeThumbColor: Colors.green,
                 ),
               ],
             ),
@@ -176,7 +176,7 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
               builder: (context, snapshot) {
                 if (!snapshot.hasData) return const Center(child: CircularProgressIndicator());
 
-                var users = snapshot.data!.docs.where((doc) {
+                final users = snapshot.data!.docs.where((doc) {
                   final data = doc.data() as Map<String, dynamic>;
                   final name = data['name']?.toString().toLowerCase() ?? '';
                   final phone = data['phone']?.toString() ?? '';
@@ -192,7 +192,7 @@ class _CustomerSimulatorScreenState extends ConsumerState<CustomerSimulatorScree
 
                     return ListTile(
                       selected: isCurrent,
-                      selectedTileColor: AppStyles.primaryColor.withOpacity(0.05),
+                      selectedTileColor: AppStyles.primaryColor.withValues(alpha: 0.05),
                       leading: CircleAvatar(
                         backgroundColor: isCurrent ? AppStyles.primaryColor : Colors.grey.shade200,
                         backgroundImage: userData['profilePic'] != null 

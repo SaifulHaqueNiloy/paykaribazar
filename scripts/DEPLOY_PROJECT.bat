@@ -53,7 +53,6 @@ set /p SUB="Choice: "
 if "%SUB%"=="1" call :release_customer_logic
 if "%SUB%"=="2" call :release_admin_logic
 if "%SUB%"=="3" ( call :release_customer_logic && call :release_admin_logic )
-copy /y shorebird_customer.yaml shorebird.yaml >nul
 exit /b
 
 :patch_workflow
@@ -68,7 +67,6 @@ set /p VER="Release Version (e.g., 1.0.0+1): "
 if "%SUB%"=="1" call :patch_customer_logic %VER%
 if "%SUB%"=="2" call :patch_admin_logic %VER%
 if "%SUB%"=="3" ( call :patch_customer_logic %VER% && call :patch_admin_logic %VER% )
-copy /y shorebird_customer.yaml shorebird.yaml >nul
 exit /b
 
 :web_workflow
@@ -102,17 +100,15 @@ exit /b
 :release_customer_logic
 echo [Building CUSTOMER Shorebird Release...]
 if exist build\app\outputs\flutter-apk\customer-release.apk del /q build\app\outputs\flutter-apk\customer-release.apk
-copy /y shorebird_customer.yaml shorebird.yaml >nul
-call shorebird release android -t lib/main_customer.dart --artifact apk -- --target-platform android-arm64 --obfuscate --split-debug-info=build/app/outputs/symbols
-if exist build\app\outputs\flutter-apk\app-release.apk move /y build\app\outputs\flutter-apk\app-release.apk build\app\outputs\flutter-apk\customer-release.apk
+call shorebird release android -t lib/main_customer.dart --flavor customer --artifact apk -- --obfuscate --split-debug-info=build/app/outputs/symbols
+if exist build\app\outputs\flutter-apk\app-customer-release.apk move /y build\app\outputs\flutter-apk\app-customer-release.apk build\app\outputs\flutter-apk\customer-release.apk
 exit /b
 
 :release_admin_logic
 echo [Building ADMIN Shorebird Release...]
 if exist build\app\outputs\flutter-apk\admin-release.apk del /q build\app\outputs\flutter-apk\admin-release.apk
-copy /y shorebird_admin.yaml shorebird.yaml >nul
-call shorebird release android -t lib/main_admin.dart --artifact apk -- --target-platform android-arm64 --obfuscate --split-debug-info=build/app/outputs/symbols
-if exist build\app\outputs\flutter-apk\app-release.apk move /y build\app\outputs\flutter-apk\app-release.apk build\app\outputs\flutter-apk\admin-release.apk
+call shorebird release android -t lib/main_admin.dart --flavor admin --artifact apk -- --obfuscate --split-debug-info=build/app/outputs/symbols
+if exist build\app\outputs\flutter-apk\app-admin-release.apk move /y build\app\outputs\flutter-apk\app-admin-release.apk build\app\outputs\flutter-apk\admin-release.apk
 exit /b
 
 :patch_customer_logic

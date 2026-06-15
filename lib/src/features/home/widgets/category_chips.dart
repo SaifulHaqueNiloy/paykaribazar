@@ -38,7 +38,7 @@ class CategoryChips extends ConsumerWidget {
                         color: isDark ? AppStyles.darkSurfaceColor : Colors.white,
                         shape: BoxShape.circle,
                         boxShadow: AppStyles.softShadow,
-                        border: Border.all(color: AppStyles.primaryColor.withOpacity(0.1)),
+                        border: Border.all(color: AppStyles.primaryColor.withValues(alpha: 0.1)),
                       ),
                       child: Icon(icon, color: AppStyles.primaryColor, size: 24),
                     ),

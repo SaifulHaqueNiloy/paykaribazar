@@ -4,8 +4,8 @@
   "description": "Paykari Bazar Build & Deploy System",
   "main": "server.js",
   "scripts": {
-    "release-admin": "shorebird release android -t lib/main_admin.dart --artifact apk -- --target-platform android-arm64 && mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/admin-release.apk",
-    "release-customer": "shorebird release android -t lib/main_customer.dart --artifact apk -- --target-platform android-arm64 && mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/customer-release.apk",
+    "release-admin": "shorebird release android -t lib/main_admin.dart --flavor admin --artifact apk -- --obfuscate --split-debug-info=build/app/outputs/symbols && copy build\\app\\outputs\\flutter-apk\\app-admin-release.apk build\\app\\outputs\\flutter-apk\\admin-release.apk",
+    "release-customer": "shorebird release android -t lib/main_customer.dart --flavor customer --artifact apk -- --obfuscate --split-debug-info=build/app/outputs/symbols && copy build\\app\\outputs\\flutter-apk\\app-customer-release.apk build\\app\\outputs\\flutter-apk\\customer-release.apk",
     "deploy-apps": "node server.js",
     "build-and-deploy": "npm run release-admin && npm run release-customer && npm run deploy-apps"
   },

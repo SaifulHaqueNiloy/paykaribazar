@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 import '../../../di/service_locator.dart';
 import 'ai_service.dart';
 import 'api_quota_service.dart';
@@ -73,6 +74,31 @@ class AiAutomationService {
         'timestamp': FieldValue.serverTimestamp(),
       });
     }
+  }
+
+  /// NEW: AI Price Suggestion for Sellers
+  Future<Map<String, dynamic>> suggestProductPricing(String productName, double costPrice) async {
+    final prompt = """
+    Based on the product "$productName" with a cost of ৳$costPrice, suggest a competitive wholesale 
+    selling price for the Bangladesh market. 
+    Return JSON: {"suggestedPrice": 0.0, "marginPercentage": 0, "strategy": "Bengali reason"}
+    """;
+    
+    final response = await _ai.generate(prompt);
+    try {
+      return Map<String, dynamic>.from(jsonDecode(response.replaceAll('```json', '').replaceAll('```', '').trim()));
+    } catch (_) { return {}; }
+  }
+
+  /// NEW: Fraud Detection AI
+  Future<bool> detectOrderAnomaly(Map<String, dynamic> orderData) async {
+    final prompt = """
+    Analyze this order for potential fraud or suspicious behavior:
+    Order Data: ${jsonEncode(orderData)}
+    Return ONLY 'true' if suspicious, 'false' if safe.
+    """;
+    final response = await _ai.generate(prompt);
+    return response.toLowerCase().contains('true');
   }
 
   /// Runs background caching using leftover quota

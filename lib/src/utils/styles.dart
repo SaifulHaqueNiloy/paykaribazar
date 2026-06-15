@@ -40,7 +40,7 @@ class AppStyles {
 
   static List<BoxShadow> get softShadow => [
     BoxShadow(
-      color: Colors.black.withOpacity(shadowOpacity()),
+      color: Colors.black.withValues(alpha: shadowOpacity()),
       blurRadius: 10,
       offset: const Offset(0, 4),
     ),
@@ -89,7 +89,7 @@ class AppStyles {
 
   static List<BoxShadow> softShadowWithConfig([Map<String, dynamic>? config]) => [
         BoxShadow(
-          color: Colors.black.withOpacity(shadowOpacity(config)),
+          color: Colors.black.withValues(alpha: shadowOpacity(config)),
           blurRadius: 10,
           offset: const Offset(0, 4),
         ),
@@ -143,7 +143,7 @@ class AppStyles {
       borderRadius: BorderRadius.circular(20 * scale),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(shadowOpacity(configMap)),
+          color: Colors.black.withValues(alpha: shadowOpacity(configMap)),
           blurRadius: 10 * scale,
           offset: Offset(0, 4 * scale),
         ),
@@ -175,7 +175,7 @@ class AppStyles {
       hintText: hint,
       prefixIcon: prefix,
       filled: true,
-      fillColor: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+      fillColor: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
       border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: const BorderSide(color: primaryColor, width: 1.5)),
@@ -278,7 +278,7 @@ class AppStyles {
   static ThemeData getDarkTheme(TextTheme baseTextTheme, {Map<String, dynamic>? config}) {
     final effectiveConfig = _effectiveConfig(config);
     syncDynamicConfig(effectiveConfig);
-    final p = _getColor(config, 'primary_color_dark', primary(config).withOpacity(0.7));
+    final p = _getColor(config, 'primary_color_dark', primary(config).withValues(alpha: 0.7));
     final scale = textScale(config);
 
     final baseTheme = GoogleFonts.hindSiliguriTextTheme(baseTextTheme);
@@ -296,7 +296,7 @@ class AppStyles {
       textTheme: scaledTextTheme,
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: Colors.white.withOpacity(0.05),
+        fillColor: Colors.white.withValues(alpha: 0.05),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       ),
     );
@@ -469,7 +469,7 @@ class PrimaryGradient extends LinearGradient {
   PrimaryGradient([Map<String, dynamic>? config]) : super(
     colors: [
       AppStyles.primary(config),
-      AppStyles.primary(config).withOpacity(0.8),
+      AppStyles.primary(config).withValues(alpha: 0.8),
     ],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,

@@ -111,12 +111,12 @@ class _PremiumFloatingCartState extends ConsumerState<PremiumFloatingCart>
                 end: Alignment.bottomRight,
               ),
               border: Border.all(
-                color: AppStyles.primaryColor.withOpacity(0.3), 
+                color: AppStyles.primaryColor.withValues(alpha: 0.3), 
                 width: 4
               ),
               boxShadow: [
                 BoxShadow(
-                  color: AppStyles.primaryColor.withOpacity(0.4),
+                  color: AppStyles.primaryColor.withValues(alpha: 0.4),
                   blurRadius: 20,
                   spreadRadius: 2,
                   offset: const Offset(0, 8),

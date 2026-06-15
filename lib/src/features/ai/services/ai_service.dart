@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 
 import '../../../core/firebase/firestore_service.dart';
 import '../../../core/services/secrets_service.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../di/service_locator.dart';
 import '../domain/ai_work_type.dart';
 
@@ -13,11 +12,10 @@ import '../config/ai_config.dart';
 import 'ai_cache_service.dart';
 import 'ai_provider.dart';
 import 'gemini_provider.dart';
-import 'kimi_provider.dart';
-import 'deepseek_provider.dart';
 import 'fallback_provider.dart';
 import 'ai_provider_manager.dart';
 import 'api_quota_service.dart';
+
 import 'package:flutter/material.dart';
 
 class AIService {
@@ -195,6 +193,10 @@ class AIService {
 
     userId ??= _currentUserId;
 
+    // Feature: System Prompt - Ensuring AI knows its identity
+    final enhancedPrompt = "You are the Paykari Bazar AI Assistant, a helpful expert in the Bangladesh B2B wholesale market. "
+        "Respond naturally in Bengali or English as requested. Context: $prompt";
+
     try {
       if (useCache) {
         final cached = _cache.get(prompt, params: {'type': type?.toString()});
@@ -202,7 +204,7 @@ class AIService {
       }
 
       final trackedResult =
-          await _generateWithTrackedProviders(prompt, type: type);
+          await _generateWithTrackedProviders(enhancedPrompt, type: type);
       
       if (trackedResult != null && trackedResult.isNotEmpty) {
         if (useCache) {
@@ -212,7 +214,7 @@ class AIService {
       }
 
       // Last resort fallback
-      final result = await _providerManager.generate(prompt, type: type);
+      final result = await _providerManager.generate(enhancedPrompt, type: type);
       
       if (useCache && result.isNotEmpty) {
         await _cache.set(prompt, result, params: {'type': type?.toString()});
@@ -282,6 +284,41 @@ class AIService {
     } catch (_) {
       return '';
     }
+  }
+
+  /// NEW: AI Order Status Summary
+  Future<String> generateOrderStatusSummary(Map<String, dynamic> orderData) async {
+    final status = orderData['status'] ?? 'Pending';
+    final items = (orderData['items'] as List?)?.length ?? 0;
+    
+    final prompt = """
+    Summarize this order status for the customer in a friendly, professional Bengali tone:
+    Order Status: $status
+    Total Items: $items
+    Estimated Delivery: ${orderData['estimatedDelivery'] ?? 'Updating'}
+    Include a branded closing like 'পাইকারী বাজার আপনার সাথেই আছে।'
+    """;
+    
+    return generateResponse(prompt, useCache: false);
+  }
+
+  /// NEW: AI-based Review Summarizer
+  Future<String> summarizeProductReviews(List<String> reviews) async {
+    if (reviews.isEmpty) return 'কোন রিভিউ পাওয়া যায়নি।';
+    
+    final prompt = """
+    Act as a Product Analyst. Summarize the following customer reviews for this product. 
+    Highlight the pros, cons, and overall sentiment in Bengali.
+    Reviews:
+    ${reviews.join('\n- ')}
+    
+    Format:
+    - সামগ্রিক সারাংশ: ...
+    - ইতিবাচক দিক: ...
+    - নেতিবাচক দিক: ...
+    """;
+    
+    return generateResponse(prompt, type: AiWorkType.dashboardInsight);
   }
 
   /// NEW: Smart Prescription Analysis (Bengali OCR + AI)

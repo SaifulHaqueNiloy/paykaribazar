@@ -373,7 +373,6 @@ class ProfileScreen extends ConsumerWidget {
     }
 
     final mediaService = ref.watch(userMediaServiceProvider);
-    final String roleStr = data['role'] ?? 'customer';
     final int limit = mediaService.getQuotaLimit(data);
     final int used = (data['usedStorage'] ?? 0).toInt();
     final double usedPercent = limit > 0 ? (used / limit) * 100 : 0.0;
@@ -425,9 +424,9 @@ class ProfileScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                   decoration: BoxDecoration(
-                    color: tierColor.withOpacity(0.2),
+                    color: tierColor.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: tierColor.withOpacity(0.4)),
+                    border: Border.all(color: tierColor.withValues(alpha: 0.4)),
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -510,8 +509,7 @@ class ProfileScreen extends ConsumerWidget {
   }
 
   Widget _headerActionButtons(BuildContext context, WidgetRef ref, Map<String, dynamic> data, bool isDark) {
-    final String roleStr = data['role'] ?? 'customer';
-    final bool isAdmin = roleStr == 'admin';
+    final bool isAdmin = (data['role'] ?? 'customer') == 'admin';
 
     return Column(
       children: [
@@ -557,7 +555,7 @@ class ProfileScreen extends ConsumerWidget {
               child: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.amber.withOpacity(0.05),
+                  color: Colors.amber.withValues(alpha: 0.05),
                   borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       bottomLeft: Radius.circular(15)),
@@ -589,7 +587,7 @@ class ProfileScreen extends ConsumerWidget {
             ),
             Container(
                 width: 1,
-                color: isDark ? Colors.white10 : Colors.grey.withOpacity(0.1)),
+                color: isDark ? Colors.white10 : Colors.grey.withValues(alpha: 0.1)),
             Expanded(
               child: InkWell(
                 onTap: () {
@@ -604,7 +602,7 @@ class ProfileScreen extends ConsumerWidget {
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: Colors.blueAccent.withOpacity(0.05),
+                    color: Colors.blueAccent.withValues(alpha: 0.05),
                     borderRadius: const BorderRadius.only(
                         topRight: Radius.circular(15),
                         bottomRight: Radius.circular(15)),
@@ -764,4 +762,3 @@ class ProfileScreen extends ConsumerWidget {
     if (await canLaunchUrl(Uri.parse(url))) await launchUrl(Uri.parse(url));
   }
 }
-

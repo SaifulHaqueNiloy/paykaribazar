@@ -53,7 +53,7 @@ class CartScreen extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Icon(Icons.shopping_cart_outlined, size: 80, color: Colors.grey.withOpacity(0.5)),
+          Icon(Icons.shopping_cart_outlined, size: 80, color: Colors.grey.withValues(alpha: 0.5)),
           const SizedBox(height: 16),
           Text(t('emptyCart'), style: const TextStyle(fontSize: 18, color: Colors.grey, fontWeight: FontWeight.bold)),
           const SizedBox(height: 24),
@@ -78,7 +78,7 @@ class CartScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5)],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 5)],
       ),
       child: Row(
         children: [
@@ -129,7 +129,7 @@ class CartScreen extends ConsumerWidget {
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: AppStyles.primaryColor.withOpacity(0.1),
+          color: AppStyles.primaryColor.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
         child: Icon(icon, size: 18, color: AppStyles.primaryColor),
@@ -143,7 +143,7 @@ class CartScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 10, offset: const Offset(0, -5))],
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 10, offset: const Offset(0, -5))],
       ),
       child: Column(
         children: [

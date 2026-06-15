@@ -182,9 +182,9 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
       height: 36,
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.06) : Colors.black.withOpacity(0.05),
+        color: isDark ? Colors.white.withValues(alpha: 0.06) : Colors.black.withValues(alpha: 0.05),
         borderRadius: BorderRadius.circular(25),
-        border: Border.all(color: Colors.white.withOpacity(0.03)),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.03)),
       ),
       child: Stack(
         children: [
@@ -201,7 +201,7 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
                   borderRadius: BorderRadius.circular(23),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
+                      color: Colors.black.withValues(alpha: 0.1),
                       blurRadius: 4,
                       offset: const Offset(0, 2),
                     )
@@ -290,7 +290,7 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
             color: isSelected ? AppStyles.primaryColor : Colors.transparent,
             borderRadius: BorderRadius.circular(6),
             border: Border.all(
-              color: isSelected ? Colors.transparent : (isDark ? Colors.white10 : Colors.black.withOpacity(0.1)),
+              color: isSelected ? Colors.transparent : (isDark ? Colors.white10 : Colors.black.withValues(alpha: 0.1)),
             ),
           ),
           child: Row(
@@ -395,7 +395,7 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: isDark ? Colors.white.withOpacity(0.02) : Colors.grey[100],
+      color: isDark ? Colors.white.withValues(alpha: 0.02) : Colors.grey[100],
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -679,24 +679,24 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: isDark
-                    ? [Colors.white.withOpacity(0.08), Colors.white.withOpacity(0.03)]
+                    ? [Colors.white.withValues(alpha: 0.08), Colors.white.withValues(alpha: 0.03)]
                     : [Colors.white, Colors.grey.shade50],
               ),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
-                color: isDark ? Colors.white.withOpacity(0.08) : Colors.black.withOpacity(0.05),
+                color: isDark ? Colors.white.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.05),
               ),
               boxShadow: !isDark
                   ? [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
+                        color: Colors.black.withValues(alpha: 0.03),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       )
                     ]
                   : [
                       BoxShadow(
-                        color: iconColor.withOpacity(0.05),
+                        color: iconColor.withValues(alpha: 0.05),
                         blurRadius: 15,
                         offset: const Offset(0, 4),
                       )
@@ -715,7 +715,7 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
                       Container(
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: iconColor.withOpacity(0.12),
+                          color: iconColor.withValues(alpha: 0.12),
                           shape: BoxShape.circle,
                         ),
                         child: Icon(icon, size: iconSize, color: iconColor),
@@ -736,7 +736,7 @@ class _ProductGroupedScreenState extends ConsumerState<ProductGroupedScreen> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                         decoration: BoxDecoration(
-                          color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+                          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
                           borderRadius: BorderRadius.circular(20),
                         ),
                         child: Text(

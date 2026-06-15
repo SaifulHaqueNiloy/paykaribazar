@@ -40,8 +40,9 @@ class _CsvImportSheetState extends ConsumerState<CsvImportSheet> {
         final input = file.openRead();
         final fields = await input
             .transform(utf8.decoder)
-            .transform(const CsvToListConverter())
+            .transform(Csv().decoder)
             .toList();
+
 
         if (fields.isEmpty) throw 'CSV file is empty';
 
@@ -242,7 +243,7 @@ class _CsvImportSheetState extends ConsumerState<CsvImportSheet> {
                 padding: const EdgeInsets.all(12),
                 margin: const EdgeInsets.only(bottom: 20),
                 decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
+                    color: Colors.green.withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12)),
                 child: Text(_statusMessage!,
                     style: const TextStyle(
@@ -305,4 +306,3 @@ class _CsvImportSheetState extends ConsumerState<CsvImportSheet> {
     );
   }
 }
-

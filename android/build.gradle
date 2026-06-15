@@ -2,7 +2,6 @@ ext.flutter = [
     compileSdkVersion: 36,
     minSdkVersion: 23,
     targetSdkVersion: 36,
-    ndkVersion: "25.1.8937393",
 ]
 
 allprojects {
@@ -38,6 +37,7 @@ subprojects {
     def configBlock = { proj ->
         if (proj.hasProperty('android')) {
             proj.android {
+// Automatically managed NDK to avoid corrupted local downloads
                 compileOptions {
                     sourceCompatibility JavaVersion.VERSION_17
                     targetCompatibility JavaVersion.VERSION_17
@@ -48,11 +48,13 @@ subprojects {
             sourceCompatibility = "17"
             targetCompatibility = "17"
         }
+        // Force all plugin Kotlin tasks to use JVM 17 to avoid mismatch
         proj.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
             kotlinOptions {
                 jvmTarget = "17"
             }
         }
+
     }
     if (project.state.executed) {
         configBlock(project)

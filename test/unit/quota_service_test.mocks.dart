@@ -121,9 +121,20 @@ class _FakeFuture_8<T1> extends _i1.SmartFake implements _i5.Future<T1> {
         );
 }
 
-class _FakeFirebaseFirestore_9 extends _i1.SmartFake
+class _FakePipelineSource_9 extends _i1.SmartFake
+    implements _i4.PipelineSource {
+  _FakePipelineSource_9(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeFirebaseFirestore_10 extends _i1.SmartFake
     implements _i4.FirebaseFirestore {
-  _FakeFirebaseFirestore_9(
+  _FakeFirebaseFirestore_10(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -132,9 +143,9 @@ class _FakeFirebaseFirestore_9 extends _i1.SmartFake
         );
 }
 
-class _FakeAggregateQuery_10 extends _i1.SmartFake
+class _FakeAggregateQuery_11 extends _i1.SmartFake
     implements _i4.AggregateQuery {
-  _FakeAggregateQuery_10(
+  _FakeAggregateQuery_11(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -143,9 +154,9 @@ class _FakeAggregateQuery_10 extends _i1.SmartFake
         );
 }
 
-class _FakeDocumentSnapshot_11<T1 extends Object?> extends _i1.SmartFake
+class _FakeDocumentSnapshot_12<T1 extends Object?> extends _i1.SmartFake
     implements _i4.DocumentSnapshot<T1> {
-  _FakeDocumentSnapshot_11(
+  _FakeDocumentSnapshot_12(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -154,9 +165,9 @@ class _FakeDocumentSnapshot_11<T1 extends Object?> extends _i1.SmartFake
         );
 }
 
-class _FakeSnapshotMetadata_12 extends _i1.SmartFake
+class _FakeSnapshotMetadata_13 extends _i1.SmartFake
     implements _i4.SnapshotMetadata {
-  _FakeSnapshotMetadata_12(
+  _FakeSnapshotMetadata_13(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -187,24 +198,6 @@ class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
         Invocation.setter(
           #app,
           _app,
-        ),
-        returnValueForMissingStub: null,
-      );
-
-  @override
-  String get databaseURL => (super.noSuchMethod(
-        Invocation.getter(#databaseURL),
-        returnValue: _i6.dummyValue<String>(
-          this,
-          Invocation.getter(#databaseURL),
-        ),
-      ) as String);
-
-  @override
-  set databaseURL(String? _databaseURL) => super.noSuchMethod(
-        Invocation.setter(
-          #databaseURL,
-          _databaseURL,
         ),
         returnValueForMissingStub: null,
       );
@@ -288,18 +281,6 @@ class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
         Invocation.method(
           #clearPersistence,
           [],
-        ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
-
-  @override
-  _i5.Future<void> enablePersistence(
-          [_i3.PersistenceSettings? persistenceSettings]) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #enablePersistence,
-          [persistenceSettings],
         ),
         returnValue: _i5.Future<void>.value(),
         returnValueForMissingStub: _i5.Future<void>.value(),
@@ -520,22 +501,19 @@ class MockFirebaseFirestore extends _i1.Mock implements _i4.FirebaseFirestore {
       ) as _i5.Future<void>);
 
   @override
-  _i5.Future<void> setIndexConfiguration({
-    required List<_i3.Index>? indexes,
-    List<_i3.FieldOverrides>? fieldOverrides,
-  }) =>
-      (super.noSuchMethod(
+  _i4.PipelineSource pipeline() => (super.noSuchMethod(
         Invocation.method(
-          #setIndexConfiguration,
+          #pipeline,
           [],
-          {
-            #indexes: indexes,
-            #fieldOverrides: fieldOverrides,
-          },
         ),
-        returnValue: _i5.Future<void>.value(),
-        returnValueForMissingStub: _i5.Future<void>.value(),
-      ) as _i5.Future<void>);
+        returnValue: _FakePipelineSource_9(
+          this,
+          Invocation.method(
+            #pipeline,
+            [],
+          ),
+        ),
+      ) as _i4.PipelineSource);
 
   @override
   _i5.Future<void> setIndexConfigurationFromJSON(String? json) =>
@@ -580,7 +558,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
   @override
   _i4.FirebaseFirestore get firestore => (super.noSuchMethod(
         Invocation.getter(#firestore),
-        returnValue: _FakeFirebaseFirestore_9(
+        returnValue: _FakeFirebaseFirestore_10(
           this,
           Invocation.getter(#firestore),
         ),
@@ -923,7 +901,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
           #count,
           [],
         ),
-        returnValue: _FakeAggregateQuery_10(
+        returnValue: _FakeAggregateQuery_11(
           this,
           Invocation.method(
             #count,
@@ -1001,7 +979,7 @@ class MockCollectionReference<T extends Object?> extends _i1.Mock
             aggregateField30,
           ],
         ),
-        returnValue: _FakeAggregateQuery_10(
+        returnValue: _FakeAggregateQuery_11(
           this,
           Invocation.method(
             #aggregate,
@@ -1055,7 +1033,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
   @override
   _i4.FirebaseFirestore get firestore => (super.noSuchMethod(
         Invocation.getter(#firestore),
-        returnValue: _FakeFirebaseFirestore_9(
+        returnValue: _FakeFirebaseFirestore_10(
           this,
           Invocation.getter(#firestore),
         ),
@@ -1133,7 +1111,7 @@ class MockDocumentReference<T extends Object?> extends _i1.Mock
           [options],
         ),
         returnValue: _i5.Future<_i4.DocumentSnapshot<T>>.value(
-            _FakeDocumentSnapshot_11<T>(
+            _FakeDocumentSnapshot_12<T>(
           this,
           Invocation.method(
             #get,
@@ -1234,7 +1212,7 @@ class MockDocumentSnapshot<T extends Object?> extends _i1.Mock
   @override
   _i4.SnapshotMetadata get metadata => (super.noSuchMethod(
         Invocation.getter(#metadata),
-        returnValue: _FakeSnapshotMetadata_12(
+        returnValue: _FakeSnapshotMetadata_13(
           this,
           Invocation.getter(#metadata),
         ),
@@ -1283,7 +1261,7 @@ class MockQuerySnapshot<T extends Object?> extends _i1.Mock
   @override
   _i4.SnapshotMetadata get metadata => (super.noSuchMethod(
         Invocation.getter(#metadata),
-        returnValue: _FakeSnapshotMetadata_12(
+        returnValue: _FakeSnapshotMetadata_13(
           this,
           Invocation.getter(#metadata),
         ),
@@ -1326,7 +1304,7 @@ class MockQueryDocumentSnapshot<T extends Object?> extends _i1.Mock
   @override
   _i4.SnapshotMetadata get metadata => (super.noSuchMethod(
         Invocation.getter(#metadata),
-        returnValue: _FakeSnapshotMetadata_12(
+        returnValue: _FakeSnapshotMetadata_13(
           this,
           Invocation.getter(#metadata),
         ),
@@ -1414,7 +1392,7 @@ class MockWriteBatch extends _i1.Mock implements _i4.WriteBatch {
   @override
   void update(
     _i4.DocumentReference<Object?>? document,
-    Map<String, dynamic>? data,
+    Map<Object, Object?>? data,
   ) =>
       super.noSuchMethod(
         Invocation.method(

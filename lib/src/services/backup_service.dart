@@ -63,7 +63,7 @@ class BackupService {
           } else {
             collectionDocs.addAll(snap.docs.map((doc) => {
               'id': doc.id,
-              ...doc.data() as Map<String, dynamic>,
+              ...doc.data(),
             }));
             lastSnap = snap;
             if (snap.docs.length < 500) {
@@ -210,7 +210,7 @@ class BackupService {
         } else {
           collectionDocs.addAll(snap.docs.map((doc) => {
             'id': doc.id,
-            ...doc.data() as Map<String, dynamic>,
+            ...doc.data(),
           }));
           lastSnap = snap;
           if (snap.docs.length < 500) {

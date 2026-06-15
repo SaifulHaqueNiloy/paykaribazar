@@ -186,7 +186,7 @@ class _EmergencyDetailsScreenState
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
         ],
       ),
       child: Column(
@@ -208,7 +208,7 @@ class _EmergencyDetailsScreenState
                   borderSide: BorderSide.none),
               filled: true,
               fillColor: isDark
-                  ? Colors.white.withOpacity(0.05)
+                  ? Colors.white.withValues(alpha: 0.05)
                   : Colors.grey.shade100,
             ),
           ),
@@ -244,7 +244,7 @@ class _EmergencyDetailsScreenState
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
         ],
       ),
       child: Column(
@@ -316,7 +316,7 @@ class _EmergencyDetailsScreenState
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade100,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(10),
       ),
       child: DropdownButtonHideUnderline(
@@ -344,7 +344,7 @@ class _EmergencyDetailsScreenState
         height: 60,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: isDark ? Colors.white.withOpacity(0.05) : Colors.grey.shade50,
+          color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.grey.shade50,
           borderRadius: BorderRadius.circular(10),
           border: Border.all(color: Colors.grey.shade300),
         ),
@@ -385,7 +385,7 @@ class _EmergencyDetailsScreenState
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
         ],
       ),
       child: Column(
@@ -449,7 +449,7 @@ class _EmergencyDetailsScreenState
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: Colors.orangeAccent.withOpacity(0.3),
+                                  color: Colors.orangeAccent.withValues(alpha: 0.3),
                                   width: 2,
                                 ),
                               ),
@@ -475,7 +475,7 @@ class _EmergencyDetailsScreenState
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.orangeAccent.withOpacity(0.1),
+                                      color: Colors.orangeAccent.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: const Text(
@@ -493,7 +493,7 @@ class _EmergencyDetailsScreenState
                             if (phone.isNotEmpty)
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.1),
+                                  color: Colors.green.withValues(alpha: 0.1),
                                   shape: BoxShape.circle,
                                 ),
                                 child: IconButton(
@@ -528,7 +528,7 @@ class _EmergencyDetailsScreenState
         color: isDark ? const Color(0xFF1E293B) : Colors.white,
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10)
+          BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10)
         ],
       ),
       child: StreamBuilder<QuerySnapshot>(
@@ -589,13 +589,13 @@ class _EmergencyDetailsScreenState
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(
-                                  color: Colors.redAccent.withOpacity(0.3),
+                                  color: Colors.redAccent.withValues(alpha: 0.3),
                                   width: 2,
                                 ),
                               ),
                               child: CircleAvatar(
                                 radius: 24,
-                                backgroundColor: Colors.redAccent.withOpacity(0.1),
+                                backgroundColor: Colors.redAccent.withValues(alpha: 0.1),
                                 child: Text(
                                   group,
                                   style: const TextStyle(
@@ -622,7 +622,7 @@ class _EmergencyDetailsScreenState
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                     decoration: BoxDecoration(
-                                      color: Colors.redAccent.withOpacity(0.1),
+                                      color: Colors.redAccent.withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(8),
                                     ),
                                     child: Row(
@@ -647,7 +647,7 @@ class _EmergencyDetailsScreenState
                             if (phone.isNotEmpty)
                               Container(
                                 decoration: BoxDecoration(
-                                  color: Colors.green.withOpacity(0.1),
+                                  color: Colors.green.withValues(alpha: 0.1),
                                   shape: BoxShape.circle,
                                 ),
                                 child: IconButton(
@@ -753,9 +753,9 @@ class _EmergencyDetailsScreenState
       height: 45,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        color: isDark ? Colors.white.withOpacity(0.05) : Colors.white,
+        color: isDark ? Colors.white.withValues(alpha: 0.05) : Colors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.withOpacity(0.2)),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
       ),
       child: Opacity(
         opacity: enabled ? 1.0 : 0.5,
@@ -815,7 +815,7 @@ class _EmergencyDetailsScreenState
                 borderRadius: BorderRadius.circular(16),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(isDark ? 0.2 : 0.05),
+                    color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   )
@@ -839,7 +839,7 @@ class _EmergencyDetailsScreenState
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: Colors.blueAccent.withOpacity(0.3),
+                            color: Colors.blueAccent.withValues(alpha: 0.3),
                             width: 2,
                           ),
                         ),
@@ -865,7 +865,7 @@ class _EmergencyDetailsScreenState
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               decoration: BoxDecoration(
-                                color: Colors.blueAccent.withOpacity(0.1),
+                                color: Colors.blueAccent.withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Row(
@@ -890,7 +890,7 @@ class _EmergencyDetailsScreenState
                       if (phone.isNotEmpty)
                         Container(
                           decoration: BoxDecoration(
-                            color: Colors.green.withOpacity(0.1),
+                            color: Colors.green.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: IconButton(

@@ -125,9 +125,6 @@ Future<bool> _routeTask(String task, Map<String, dynamic>? data) async {
         final userMediaService = getIt<UserMediaService>();
         final userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
         if (userDoc.exists) {
-          final userData = userDoc.data()!;
-          final int points = (userData['points'] ?? 0).toInt();
-          final String role = userData['role'] ?? 'customer';
           await userMediaService.runAutomaticBackup(uid);
         }
       } catch (e) {

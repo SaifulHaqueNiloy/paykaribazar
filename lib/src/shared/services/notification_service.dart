@@ -27,10 +27,10 @@ class NotificationService {
       const iosInit = DarwinInitializationSettings();
       
       await _local.initialize(
-        const InitializationSettings(android: androidInit, iOS: iosInit),
-        onDidReceiveNotificationResponse: (NotificationResponse response) {
-          _handleNotificationTap(response.payload);
+        onDidReceiveNotificationResponse: (details) {
+          _handleNotificationTap(details.payload);
         },
+        settings: const InitializationSettings(android: androidInit, iOS: iosInit),
       );
       
       if (!kIsWeb) {
@@ -130,13 +130,14 @@ class NotificationService {
 
     if (!kIsWeb) {
       await _local.show(
-        DateTime.now().millisecond, 
-        title, body, 
-        NotificationDetails(
+        id: DateTime.now().millisecond,
+        title: title,
+        body: body,
+        notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
-            'high_importance_channel', 
-            'High Importance Notifications', 
-            importance: Importance.max, 
+            'high_importance_channel',
+            'High Importance Notifications',
+            importance: Importance.max,
             priority: Priority.max,
             color: isEm ? Colors.red : Colors.indigo,
             icon: '@mipmap/ic_launcher',

@@ -9,7 +9,6 @@ class SecureAuthService {
   final LocalAuthentication _localAuth = LocalAuthentication();
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage(
     aOptions: AndroidOptions(
-      encryptedSharedPreferences: true,
       resetOnError: true,
     ),
     iOptions: IOSOptions(
@@ -64,9 +63,10 @@ class SecureAuthService {
 
       return await _localAuth.authenticate(
         localizedReason: localizedReason,
-        options: const AuthenticationOptions(
+        options: AuthenticationOptions(
           stickyAuth: true,
           biometricOnly: true,
+          useErrorDialogs: useErrorDialogs,
         ),
       );
     } catch (e) {

@@ -1,7 +1,6 @@
 plugins {
     id "com.android.application"
     id 'com.google.gms.google-services'
-    id "org.jetbrains.kotlin.android"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -17,24 +16,12 @@ def pubspecVersionCode = flutter.versionCode.toInteger()
 android {
     namespace "com.paykaribazar.app"
     compileSdk 36 // Reverted to 36 as required by facebook_auth, photo_manager, and sentry_flutter plugins
-    // ndkVersion = "28.2.13676358" // Commented out to use default Flutter-provided NDK
+    ndkVersion = "28.2.13676358"
 
     compileOptions {
         coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = "17"
-        // Blueprint: Native Core Kotlin 2.1.0
-        // We use language-version 1.9 to bypass the K2 internal compiler bug
-        // while remaining on the 2.1.0 infrastructure.
-        freeCompilerArgs += [
-            "-language-version", "1.9",
-            "-api-version", "1.9",
-            "-Xskip-metadata-version-check"
-        ]
     }
 
     signingConfigs {
@@ -50,7 +37,7 @@ android {
 
     defaultConfig {
         // applicationId is defined dynamically in productFlavors
-        minSdkVersion 23 // Updated to 23 as required by plugins (e.g., record_android, geolocator_android)
+        minSdkVersion flutter.minSdkVersion // Updated to 23 as required by plugins (e.g., record_android, geolocator_android)
         targetSdk 36 // Reverted to 36 as required by facebook_auth, photo_manager, and sentry_flutter plugins
         versionCode pubspecVersionCode
         versionName pubspecVersionName

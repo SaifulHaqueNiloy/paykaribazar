@@ -30,8 +30,8 @@ class AccountsCommissionsTab extends ConsumerWidget {
               child: ListTile(
                 leading: CircleAvatar(
                   backgroundColor: isPaid
-                      ? Colors.green.withOpacity(0.1)
-                      : Colors.orange.withOpacity(0.1),
+                      ? Colors.green.withValues(alpha: 0.1)
+                      : Colors.orange.withValues(alpha: 0.1),
                   child: Icon(isPaid ? Icons.check_circle : Icons.pending,
                       color: isPaid ? Colors.green : Colors.orange),
                 ),
