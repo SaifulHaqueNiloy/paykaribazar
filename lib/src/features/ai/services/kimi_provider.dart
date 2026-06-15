@@ -9,7 +9,7 @@ class KimiProvider implements AIProvider {
   KimiProvider({required this.apiKey});
 
   @override
-  String get name => 'NVIDIA NIM';
+  String get name => 'Kimi';
 
   @override
   Future<bool> healthCheck() async {
@@ -18,7 +18,7 @@ class KimiProvider implements AIProvider {
         'https://integrate.api.nvidia.com/v1/chat/completions',
         options: Options(headers: {'Authorization': 'Bearer $apiKey'}),
         data: {
-          'model': 'meta/llama-3.1-70b-instruct',
+          'model': 'meta/llama3-8b-instruct',
           'messages': [{'role': 'user', 'content': 'hi'}],
           'max_tokens': 1,
         },
@@ -36,13 +36,13 @@ class KimiProvider implements AIProvider {
         'https://integrate.api.nvidia.com/v1/chat/completions',
         options: Options(headers: {'Authorization': 'Bearer $apiKey'}),
         data: {
-          'model': 'meta/llama-3.1-70b-instruct',
+          'model': 'meta/llama3-8b-instruct',
           'messages': [{'role': 'user', 'content': prompt}],
         },
       );
       return response.data['choices'][0]['message']['content'] ?? '';
     } catch (e) {
-      return 'AI Error: ${e.toString()}';
+      return 'Kimi Error: ${e.toString()}';
     }
   }
 
