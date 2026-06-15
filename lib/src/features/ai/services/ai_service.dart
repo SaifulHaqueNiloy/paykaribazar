@@ -117,7 +117,7 @@ class AIService {
   }
 
   List<String> _fallbackProviderOrder() {
-    final ordered = ['kimi', 'deepseek', 'gemini']
+    final ordered = ['gemini', 'deepseek', 'kimi']
         .where(_providerRegistry.containsKey)
         .toList();
     if (ordered.isEmpty && _providers.isNotEmpty) {

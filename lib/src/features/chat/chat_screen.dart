@@ -100,9 +100,14 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
     setState(() => _isTyping = true);
 
     try {
+      final greeting = name ?? 'Customer';
+      final prompt = isBn
+          ? 'তুমি পাইকারীবাজার অ্যাপের AI সহকারী। বর্তমান ইউজার: $greeting। কথোপকথন: "$msg"। সংক্ষিপ্ত ও বন্ধুত্বপূর্ণভাবে বাংলায় উত্তর দাও। পণ্য, অর্ডার, ডেলিভারি, পেমেন্ট বা অ্যাপ ব্যবহারের কোনো প্রশ্নের উত্তর দাও।'
+          : 'You are the AI assistant of Paykari Bazar app. Current user: $greeting. User said: "$msg". Reply briefly and helpfully in English. Help with products, orders, delivery, payments, or app usage questions.';
+
       final res = await ref
           .read(aiServiceProvider)
-          .generateResponse(msg, type: AiWorkType.text);
+          .generateResponse(prompt, type: AiWorkType.text);
 
       if (res.isNotEmpty && mounted) {
         final chatSnap =

@@ -9,17 +9,16 @@ class KimiProvider implements AIProvider {
   KimiProvider({required this.apiKey});
 
   @override
-  String get name => 'Kimi';
+  String get name => 'NVIDIA NIM';
 
   @override
   Future<bool> healthCheck() async {
     try {
-      // Small request to check health
       final response = await _dio.post(
-        'https://api.moonshot.cn/v1/chat/completions',
+        'https://integrate.api.nvidia.com/v1/chat/completions',
         options: Options(headers: {'Authorization': 'Bearer $apiKey'}),
         data: {
-          'model': 'moonshot-v1-8k',
+          'model': 'meta/llama-3.1-70b-instruct',
           'messages': [{'role': 'user', 'content': 'hi'}],
           'max_tokens': 1,
         },
@@ -34,22 +33,21 @@ class KimiProvider implements AIProvider {
   Future<String> generate(String prompt, {AiWorkType? type}) async {
     try {
       final response = await _dio.post(
-        'https://api.moonshot.cn/v1/chat/completions',
+        'https://integrate.api.nvidia.com/v1/chat/completions',
         options: Options(headers: {'Authorization': 'Bearer $apiKey'}),
         data: {
-          'model': 'moonshot-v1-8k',
+          'model': 'meta/llama-3.1-70b-instruct',
           'messages': [{'role': 'user', 'content': prompt}],
         },
       );
       return response.data['choices'][0]['message']['content'] ?? '';
     } catch (e) {
-      return 'Kimi Error: ${e.toString()}';
+      return 'AI Error: ${e.toString()}';
     }
   }
 
   @override
   Stream<String> generateStream(String prompt, {AiWorkType? type}) async* {
-    // Implementation for streaming if needed
     yield await generate(prompt, type: type);
   }
 }

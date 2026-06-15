@@ -2,7 +2,7 @@
 /// Configuration constants for the AI system
 class AIConfig {
   // Model Selection (DNA ENFORCED: Use ONLY 2.0+ but fallback to 1.5 due to free-tier quota constraints)
-  static const String primaryModel = 'gemini-flash-latest';
+  static const String primaryModel = 'gemini-1.5-flash-latest';
   static const String fallbackModel = 'gemini-pro-latest';
 
   // Caching Settings
