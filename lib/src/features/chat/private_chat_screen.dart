@@ -15,7 +15,7 @@ class PrivateChatScreen extends ConsumerStatefulWidget {
   final String receiverName;
   final String? receiverId;
   final bool isStaffChat;
-
+  
   const PrivateChatScreen({
     super.key,
     required this.chatId,
@@ -277,7 +277,3 @@ class _PrivateChatScreenState extends ConsumerState<PrivateChatScreen> {
           ),
         ],
       ),
-    );
-  }
-}
-

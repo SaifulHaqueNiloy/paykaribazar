@@ -345,13 +345,10 @@ class _DatabaseTabState extends State<DatabaseTab> {
                         color: Colors.blue,
                         fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(
-                        minWidth: MediaQuery.of(context).size.width - 64),
-                    child: _buildDataGrid(data),
-                  ),
+                Container(
+                  constraints: BoxConstraints(
+                      maxWidth: MediaQuery.of(context).size.width - 64),
+                  child: _buildDataGrid(data),
                 ),
                 const Divider(),
                 Row(

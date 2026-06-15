@@ -1,6 +1,8 @@
 // Trigger build: Secret updated
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -128,12 +130,21 @@ void main() {
     await SentryFlutter.init(
       (options) {
         options.dsn = dsn;
-        // Tip #3: Use 0.2 in production to reduce cost (1.0 = 100% traces)
         options.tracesSampleRate = 0.2;
       },
-      appRunner: () => runApp(
-        UncontrolledProviderScope(container: container, child: const CustomerApp()),
-      ),
+      appRunner: () async {
+        if (defaultTargetPlatform == TargetPlatform.android || defaultTargetPlatform == TargetPlatform.iOS) {
+          await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
+          FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+          PlatformDispatcher.instance.onError = (error, stack) {
+            FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+            return true;
+          };
+        }
+        runApp(
+          UncontrolledProviderScope(container: container, child: const CustomerApp()),
+        );
+      },
     );
   }, (error, stack) {
     if (kDebugMode) debugPrint('Fatal Global Error: $error');

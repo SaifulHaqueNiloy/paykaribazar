@@ -272,6 +272,12 @@ class AppStyles {
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(style: primaryButtonStyle(config)),
+      extensions: const [
+        AppColors(
+          brandGold: Color(0xFFFFC107),
+          successGreen: Colors.green,
+        ),
+      ],
     );
   }
 
@@ -299,6 +305,12 @@ class AppStyles {
         fillColor: Colors.white.withValues(alpha: 0.05),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide.none),
       ),
+      extensions: const [
+        AppColors(
+          brandGold: Color(0xFFFFD54F),
+          successGreen: Colors.greenAccent,
+        ),
+      ],
     );
   }
 
@@ -475,4 +487,29 @@ class PrimaryGradient extends LinearGradient {
     end: Alignment.bottomRight,
   );
   LinearGradient call([Map<String, dynamic>? config]) => PrimaryGradient(config);
+}
+
+@immutable
+class AppColors extends ThemeExtension<AppColors> {
+  final Color brandGold;
+  final Color successGreen;
+
+  const AppColors({required this.brandGold, required this.successGreen});
+
+  @override
+  AppColors copyWith({Color? brandGold, Color? successGreen}) {
+    return AppColors(
+      brandGold: brandGold ?? this.brandGold,
+      successGreen: successGreen ?? this.successGreen,
+    );
+  }
+
+  @override
+  AppColors lerp(ThemeExtension<AppColors>? other, double t) {
+    if (other is! AppColors) return this;
+    return AppColors(
+      brandGold: Color.lerp(brandGold, other.brandGold, t)!,
+      successGreen: Color.lerp(successGreen, other.successGreen, t)!,
+    );
+  }
 }

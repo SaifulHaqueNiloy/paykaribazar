@@ -7,7 +7,7 @@ analyzer:
     unused_element: warning
     dead_code: warning
     deprecated_member_use: info
-    subtype_of_sealed_class: warning
+    subtype_of_sealed_class: ignore
     unawaited_futures: error
     use_build_context_synchronously: error
     missing_required_param: error

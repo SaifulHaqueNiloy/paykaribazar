@@ -11,12 +11,13 @@ import '../../../di/service_locator.dart';
 import '../../../core/constants/paths.dart';
 import 'dart:math' as math;
 
-final authServiceProvider = Provider((ref) => getIt<AuthService>());
+final authServiceProvider = Provider((ref) {
+  return getIt<AuthService>();
+});
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
-  // Tip #9: GoogleSignIn singleton — avoids creating new instances on every call
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final StorageService _storage;
   final FirestoreService _firestore;
@@ -24,8 +25,8 @@ class AuthService {
   AuthService({
     required StorageService storage,
     required FirestoreService firestore,
-  })  : _storage = storage,
-        _firestore = firestore;
+  }) : _storage = storage,
+       _firestore = firestore;
 
   String _normalizePhone(String phone) {
     String cleaned = phone.replaceAll(RegExp(r'[\s\-()]+'), '');
@@ -44,13 +45,12 @@ class AuthService {
     return cleaned;
   }
 
-  Future<String> _generateReferralCode(String name, String? phone) async {
+  String _generateReferralCode(String name, String uid) {
     final cleanName = name.replaceAll(RegExp(r'[^a-zA-Z]'), '').toUpperCase();
     final prefix = cleanName.length >= 3 ? cleanName.substring(0, 3) : 'PB';
-    
-    // 🔵 Performance Optimization: Generate a unique referral code without N+1 Firestore queries.
-    final random = math.Random().nextInt(900000) + 100000;
-    return '$prefix$random';
+    // Use the last 4 characters of the UID to ensure uniqueness
+    final suffix = uid.substring(uid.length - 4).toUpperCase();
+    return '$prefix$suffix';
   }
 
   Future<User?> login(String emailOrPhone, String password) async {
@@ -69,12 +69,21 @@ class AuthService {
       if (credential.user != null) {
         await _storage.setString('user_id', credential.user!.uid);
 
-        // Auto-create user document in Firestore if missing or incomplete
+        // Verify role via Firebase Custom Claims before trusting Firestore
+        String? role;
+        try {
+          final idTokenResult = await credential.user!.getIdTokenResult();
+          final claims = idTokenResult.claims ?? {};
+          role = claims['role'] as String?;
+        } catch (_) {
+          role = null;
+        }
+
+        // Fallback to user doc role if custom claims missing
         try {
           final userDoc = await _db.collection(HubPaths.users).doc(credential.user!.uid).get();
           final userData = userDoc.data();
           if (!userDoc.exists || userData?['myReferralCode'] == null) {
-            String role = userData?['role'] ?? 'customer';
             String name = userData?['name'] ?? 'User';
             if (!userDoc.exists) {
               if (email.startsWith('admin')) {
@@ -89,7 +98,7 @@ class AuthService {
               }
             }
             
-            final myCode = await _generateReferralCode(name, null);
+            final myCode = _generateReferralCode(name, credential.user!.uid);
             await _firestore.updateProfile(credential.user!.uid, {
               if (!userDoc.exists) 'name': name,
               if (!userDoc.exists) 'email': email.contains('paykaribazar.com') && !emailOrPhone.contains('@') ? null : email,
@@ -154,7 +163,7 @@ class AuthService {
       if (res.user != null) {
         // ২. ইউজার এখন লগইন অবস্থায় আছে, এখন প্যারালাল কাজ শুরু করা নিরাপদ
         final settingsFuture = _db.doc(HubPaths.loyaltyDoc).get();
-        final myCodeFuture = _generateReferralCode(name, normalizedPhone);
+        final myCode = _generateReferralCode(name, res.user!.uid); // Use the actual UID
         
         String? referrerUid;
         if (referralCode != null && referralCode.isNotEmpty) {
@@ -172,8 +181,7 @@ class AuthService {
         }
 
         // ৩. প্যারালাল টাস্কগুলোর জন্য অপেক্ষা করা
-        final results = await Future.wait([myCodeFuture, settingsFuture]);
-        final myCode = results[0] as String;
+        final results = await Future.wait([settingsFuture]); // Only wait for settings now
         final settingsSnap = results[1] as DocumentSnapshot<Map<String, dynamic>>;
         
         final signupBonus = (settingsSnap.data()?['signupPoints'] ?? 
@@ -263,8 +271,8 @@ class AuthService {
         await _firestore.updateProfile(res.user!.uid, {
           'name': res.user!.displayName,
           'email': res.user!.email,
-          'profilePic': res.user!.photoURL,
-          'myReferralCode': existingReferral ?? await _generateReferralCode(res.user!.displayName ?? 'User', null),
+          'profilePic': res.user!.photoURL, // Use the actual UID
+          'myReferralCode': existingReferral ?? _generateReferralCode(res.user!.displayName ?? 'User', res.user!.uid),
           'lastLogin': FieldValue.serverTimestamp(),
           // Issue #12: Set role and createdAt for new Google Sign-In users
           if (isNewUser) 'role': 'customer',
@@ -290,7 +298,7 @@ class AuthService {
         email: email, password: password);
     if (res.user != null) {
       final normalizedPhone = _normalizePhone(phone);
-      final myCode = await _generateReferralCode(name, normalizedPhone);
+      final myCode = _generateReferralCode(name, res.user!.uid); // Use the actual UID
       await _firestore.updateProfile(res.user!.uid, {
         'name': name,
         'phone': normalizedPhone,

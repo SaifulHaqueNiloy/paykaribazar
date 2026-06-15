@@ -143,7 +143,7 @@ class _ApplicationsView extends ConsumerWidget {
   }
 
   void _update(WidgetRef ref, String id, String status, Map data) =>
-      ref.read(firestoreService).updateResellerAppStatus(id, status,
+      ref.read(firestoreServiceProvider).updateResellerAppStatus(id, status,
           uid: data['uid'], shopName: data['shopName']);
 }
 
@@ -175,7 +175,7 @@ class _ActiveResellersView extends ConsumerWidget {
                 ),
                 child: ListTile(
                   leading: CircleAvatar(
-                    backgroundColor: Colors.teal.withValues(alpha: 0.1),
+                    backgroundColor: Colors.teal.withOpacity(0.1),
                     child: const Icon(Icons.store, color: Colors.teal, size: 20)
                   ),
                   title: Text(u['name'] ?? 'N/A',
@@ -197,4 +197,3 @@ class _ActiveResellersView extends ConsumerWidget {
       .doc(uid)
       .update({'role': 'customer'});
 }
-

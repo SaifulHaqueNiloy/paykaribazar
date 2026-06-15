@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
+import 'package:intl/intl.dart'; // Keep this import
 import 'package:paykari_bazar/src/di/providers.dart'; // MASTER HUB
 import '../../utils/styles.dart';
 import '../../utils/app_strings.dart';
@@ -104,7 +104,7 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
       final prompt = isBn
           ? 'তুমি পাইকারীবাজার অ্যাপের AI সহকারী। বর্তমান ইউজার: $greeting। কথোপকথন: "$msg"। সংক্ষিপ্ত ও বন্ধুত্বপূর্ণভাবে বাংলায় উত্তর দাও। পণ্য, অর্ডার, ডেলিভারি, পেমেন্ট বা অ্যাপ ব্যবহারের কোনো প্রশ্নের উত্তর দাও।'
           : 'You are the AI assistant of Paykari Bazar app. Current user: $greeting. User said: "$msg". Reply briefly and helpfully in English. Help with products, orders, delivery, payments, or app usage questions.';
-
+      
       final res = await ref
           .read(aiServiceProvider)
           .generateResponse(prompt, type: AiWorkType.text);
@@ -327,6 +327,3 @@ class _ChatScreenState extends ConsumerState<ChatScreen> {
                 backgroundColor: AppStyles.primaryColor,
                 child:
                     Icon(Icons.send_rounded, color: Colors.white, size: 20))),
-      ]));
-}
-

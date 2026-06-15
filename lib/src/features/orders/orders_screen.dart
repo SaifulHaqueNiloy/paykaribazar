@@ -90,7 +90,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
   }
 
   String _t(String k) =>
-      AppStrings.get(k, ref.watch(languageProvider).languageCode);
+      AppStrings.get(k, ref.watch(languageProvider.select((l) => l.languageCode)));
 
   @override
   Widget build(BuildContext context) {

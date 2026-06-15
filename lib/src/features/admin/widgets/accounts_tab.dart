@@ -6,6 +6,27 @@ import '../../../utils/styles.dart';
 import '../../../services/language_provider.dart';
 import '../../../utils/app_strings.dart';
 import '../../../models/user_model.dart';
+import '../../../providers/auth_provider.dart';
+
+class ConstraintSolver {
+  static bool canOpenDialog(WidgetRef ref) {
+    final user = ref.read(currentUserProvider);
+    return user?.role == 'admin';
+  }
+
+  static String? validateExpense(String title, String amountStr) {
+    if (title.trim().isEmpty) return 'Title is required';
+    final amount = double.tryParse(amountStr);
+    if (amount == null || amount <= 0) return 'Enter a valid amount';
+    return null;
+  }
+
+  static String? validateStorageLimit(String limitStr) {
+    final limit = double.tryParse(limitStr);
+    if (limit == null || limit <= 0) return 'Enter a valid limit in MB';
+    return null;
+  }
+}
 
 class AccountsTab extends ConsumerStatefulWidget {
   const AccountsTab({super.key});
@@ -207,6 +228,11 @@ class _AccountsUserSubTabState extends ConsumerState<_AccountsUserSubTab> {
   }
 
   void _showUserRoleAndSettings(DocumentSnapshot doc) {
+    if (!ConstraintSolver.canOpenDialog(ref)) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Access denied. Admin only.')));
+      return;
+    }
     final data = doc.data() as Map<String, dynamic>;
     final String currentRole = data['role'] ?? 'customer';
     final double currentLimitBytes = (data['storageLimit'] ?? (50.0 * 1024 * 1024)).toDouble();

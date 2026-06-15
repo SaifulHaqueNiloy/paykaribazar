@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_performance/firebase_performance.dart';
 
 class BusinessConfigService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
@@ -73,6 +74,8 @@ class BusinessConfigService {
 
   /// Gets a specific rule value with a fallback
   Future<T> getRule<T>(String key) async {
+    final trace = FirebasePerformance.instance.newTrace('get_business_rule');
+    await trace.start();
     try {
       final doc = await _db.doc(_rulesDoc).get();
       final merged = mergeWithDefaults(doc.data());
@@ -81,6 +84,8 @@ class BusinessConfigService {
       }
     } catch (e) {
       // Error fetching business rule handled silently
+    } finally {
+      await trace.stop();
     }
     return defaults[key] as T;
   }
