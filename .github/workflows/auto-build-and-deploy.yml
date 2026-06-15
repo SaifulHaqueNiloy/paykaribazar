@@ -206,8 +206,7 @@ jobs:
     name: 🧪 Test & Analyze
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    # Modified to run immediately on push instead of waiting for setup/prepare
-    # needs: [setup, prepare]
+    needs: [setup, prepare]
     if: github.event.inputs.skip_tests != 'true'
 
     steps:
@@ -227,8 +226,11 @@ jobs:
       - name: Create dummy Firebase options
         run: bash .github/scripts/create_dummy_firebase_options.sh
 
-      - name: Generate code
-        run: dart run build_runner build --delete-conflicting-outputs
+      - name: Restore cached generated files
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-gen-${{ github.sha }}
 
       - name: 📦 Dependency Audit
         run: |
@@ -340,7 +342,8 @@ jobs:
     name: 🏗️ Mobile (${{ matrix.app }})
     runs-on: ubuntu-latest
     timeout-minutes: 45
-    # needs: [setup, prepare, test-security-analyze]
+    needs: [setup, prepare, test-security-analyze]
+    if: always() && needs.setup.outputs.has_code_changes == 'true' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     strategy:
       fail-fast: false
       matrix:
@@ -355,6 +358,7 @@ jobs:
           fetch-depth: 0 # Full history for versioning commit count
 
       - name: Calculate versioning
+         # line indentation correction
         id: versioning
         run: |
           BUILD_NUMBER=$(git rev-list --count HEAD)
@@ -377,8 +381,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate code
-        run: dart run build_runner build --delete-conflicting-outputs
+      - name: Restore cached generated files
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-gen-${{ github.sha }}
       
       - name: Create dummy Firebase options
         run: bash .github/scripts/create_dummy_firebase_options.sh
@@ -449,7 +456,8 @@ jobs:
     name: 🌐 Build Web (${{ matrix.web-app }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
-    # needs: [setup, prepare, test-security-analyze, vulnerability-scan, secrets-scan]
+    needs: [setup, prepare, test-security-analyze]
+    if: always() && needs.setup.outputs.has_code_changes == 'true' && !contains(needs.*.result, 'failure') && !contains(needs.*.result, 'cancelled')
     strategy:
       fail-fast: false
       matrix:
@@ -475,8 +483,11 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Generate code
-        run: dart run build_runner build --delete-conflicting-outputs
+      - name: Restore cached generated files
+        uses: actions/cache@v4
+        with:
+          path: .dart_tool
+          key: ${{ runner.os }}-build-gen-${{ github.sha }}
 
       - name: Create dummy Firebase options
         run: bash .github/scripts/create_dummy_firebase_options.sh

@@ -241,6 +241,7 @@ void main() {
           brand: 'AudioMax',
           tags: ['wireless', 'headphones', 'audio'],
           isFeatured: true,
+          isNewArrival: true,
           comboProductIds: [],
           variants: [],
           rating: 4.5,

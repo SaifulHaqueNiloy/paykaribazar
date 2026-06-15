@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paykari_bazar/src/features/home/widgets/home_widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -158,11 +159,13 @@ void main() {
         ];
 
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: ProductHorizontalList(
-                products: products,
-                emptyMessage: 'No products',
+          ProviderScope(
+            child: MaterialApp(
+              home: Scaffold(
+                body: ProductHorizontalList(
+                  products: products,
+                  emptyMessage: 'No products',
+                ),
               ),
             ),
           ),
@@ -179,11 +182,13 @@ void main() {
         );
 
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: ProductHorizontalList(
-                products: products,
-                emptyMessage: 'No products',
+          ProviderScope(
+            child: MaterialApp(
+              home: Scaffold(
+                body: ProductHorizontalList(
+                  products: products,
+                  emptyMessage: 'No products',
+                ),
               ),
             ),
           ),
@@ -200,11 +205,13 @@ void main() {
         ];
 
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: ProductHorizontalList(
-                products: products,
-                emptyMessage: 'No products',
+          ProviderScope(
+            child: MaterialApp(
+              home: Scaffold(
+                body: ProductHorizontalList(
+                  products: products,
+                  emptyMessage: 'No products',
+                ),
               ),
             ),
           ),
@@ -221,11 +228,13 @@ void main() {
         ];
 
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: ProductHorizontalList(
-                products: products,
-                emptyMessage: 'No products',
+          ProviderScope(
+            child: MaterialApp(
+              home: Scaffold(
+                body: ProductHorizontalList(
+                  products: products,
+                  emptyMessage: 'No products',
+                ),
               ),
             ),
           ),
@@ -248,21 +257,23 @@ void main() {
         ];
 
         await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    BannerSlider(banners: banners),
-                    SectionHeader(
-                      title: 'Featured',
-                      onTap: () {},
-                    ),
-                    ProductHorizontalList(
-                      products: products,
-                      emptyMessage: 'No products',
-                    ),
-                  ],
+          ProviderScope(
+            child: MaterialApp(
+              home: Scaffold(
+                body: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      BannerSlider(banners: banners),
+                      SectionHeader(
+                        title: 'Featured',
+                        onTap: () {},
+                      ),
+                      ProductHorizontalList(
+                        products: products,
+                        emptyMessage: 'No products',
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
